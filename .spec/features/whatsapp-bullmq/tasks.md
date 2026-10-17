@@ -22,7 +22,7 @@
 - Arquivos: backend/src/routes/webhooks.ts, backend/src/app.ts
 - Notas: Endpoint POST /api/webhooks/whatsapp com verificação de instância, atualização de agendamento por telefone, tratamento de número desconhecido e evento de desconexão.
 
-## T-017 — Suíte de Testes Automatizados TDD Integrada [pendente]
+## T-017 — Suíte de Testes Automatizados TDD Integrada [concluida]
 - Refs: US-011, US-012, US-013, US-014, AC-019, AC-020, AC-021, AC-022, AC-023, AC-024, AC-025, AC-026
 - Arquivos: backend/src/whatsapp/__tests__/whatsapp.spec.ts
 - Notas: Testes de ponta a ponta com ioredis-mock e pg-mem cobrindo todos os critérios AC-019 a AC-026.

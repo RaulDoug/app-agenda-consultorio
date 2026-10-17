@@ -1,12 +1,36 @@
 import { describe, it, expect, beforeEach } from 'vitest';
+import request from 'supertest';
+import type { Express } from 'express';
 import { parsePatientMessage, resolveStatusTransition } from '../parser.js';
 import { processSpintax, generateSpintaxVariations } from '../spintax.js';
 import { sendWithRetry } from '../evolution-client.js';
 import { MockEvolutionClient } from './mock-evolution.js';
-import { InMemoryConfirmationQueue } from '../queue.js';
+import { InMemoryConfirmationQueue, setConfirmationQueue } from '../queue.js';
 import { scheduleConfirmationBatch, type AppointmentConfirmationCandidate } from '../scheduler.js';
+import { createApp } from '../../app.js';
+import { createInMemoryDatabase, setDatabase, type IDatabase } from '../../db/connection.js';
 
 describe('Motor WhatsApp, BullMQ e Webhook Evolution API — OdontoFlow', () => {
+  let db: IDatabase;
+  let testApp: Express;
+  let queue: InMemoryConfirmationQueue;
+
+  const tenantId = '11111111-1111-1111-1111-111111111111';
+  const instanceName = 'consultorio_dr_a';
+
+  beforeEach(async () => {
+    db = createInMemoryDatabase();
+    setDatabase(db);
+    queue = new InMemoryConfirmationQueue();
+    setConfirmationQueue(queue);
+    testApp = createApp();
+
+    await db.query(
+      `INSERT INTO tenants (id, name, whatsapp_instance_name, whatsapp_connected) VALUES ($1, $2, $3, $4)`,
+      [tenantId, 'Consultório Dr. A', instanceName, true]
+    );
+  });
+
   describe('US-011 — Parser Inteligente de Mensagens e Ciclo de Confirmação', () => {
     it('AC-019: Classificação semântica de confirmação, reagendamento e dúvidas @spec:AC-019', () => {
       // 1. Casos canônicos de Confirmação
@@ -170,16 +194,131 @@ describe('Motor WhatsApp, BullMQ e Webhook Evolution API — OdontoFlow', () => 
   });
 
   describe('US-014 — Webhook da Evolution API e Gerenciamento de Sessão', () => {
-    it('AC-024: Atualização do agendamento a partir do webhook da Evolution API @spec:AC-024', () => {
-      throw new Error('critério de aceite AC-024 ainda não provado — implemente este teste (T-016)');
+    it('AC-024: Atualização do agendamento a partir do webhook da Evolution API @spec:AC-024', async () => {
+      const patientId = '22222222-2222-2222-2222-222222222222';
+      const appointmentId = '33333333-3333-3333-3333-333333333333';
+      const patientPhone = '5511999991111';
+
+      // 1. Cria paciente e agendamento PENDING no banco
+      await db.query(
+        `INSERT INTO patients (id, tenant_id, name, whatsapp) VALUES ($1, $2, $3, $4)`,
+        [patientId, tenantId, 'Paciente Webhook', patientPhone]
+      );
+
+      await db.query(
+        `INSERT INTO appointments (id, tenant_id, patient_id, start_time, end_time, status)
+         VALUES ($1, $2, $3, '2026-10-25 10:00:00+00', '2026-10-25 10:30:00+00', 'PENDING')`,
+        [appointmentId, tenantId, patientId]
+      );
+
+      // 2. Simula payload de mensagem da Evolution API ("1" para confirmar)
+      const webhookPayload = {
+        event: 'messages.upsert',
+        instance: instanceName,
+        data: {
+          key: {
+            remoteJid: `${patientPhone}@s.whatsapp.net`,
+            fromMe: false,
+          },
+          message: {
+            conversation: '1',
+          },
+        },
+      };
+
+      const res = await request(testApp)
+        .post('/api/webhooks/whatsapp')
+        .send(webhookPayload);
+
+      expect(res.status).toBe(200);
+      expect(res.body.status).toBe('processed');
+      expect(res.body.new_status).toBe('CONFIRMED');
+
+      // 3. Verifica atualização direta no banco de dados
+      const appCheck = await db.query(
+        `SELECT status FROM appointments WHERE id = $1`,
+        [appointmentId]
+      );
+      expect(appCheck.rows[0].status).toBe('CONFIRMED');
     });
 
-    it('AC-025: Tratamento silencioso e seguro para mensagens de números desconhecidos @spec:AC-025', () => {
-      throw new Error('critério de aceite AC-025 ainda não provado — implemente este teste (T-016)');
+    it('AC-025: Tratamento silencioso e seguro para mensagens de números desconhecidos @spec:AC-025', async () => {
+      const unknownPhone = '5511977779999';
+
+      const webhookPayload = {
+        event: 'messages.upsert',
+        instance: instanceName,
+        data: {
+          key: {
+            remoteJid: `${unknownPhone}@s.whatsapp.net`,
+            fromMe: false,
+          },
+          message: {
+            conversation: 'Boa tarde, qual o valor da consulta?',
+          },
+        },
+      };
+
+      const res = await request(testApp)
+        .post('/api/webhooks/whatsapp')
+        .send(webhookPayload);
+
+      // Deve responder 200 OK sem falha e ignorar de forma limpa
+      expect(res.status).toBe(200);
+      expect(res.body.status).toBe('ignored_unknown_number');
     });
 
-    it('AC-026: Pausa e retomada inteligente de fila em desconexão com salvaguarda de expiração @spec:AC-026', () => {
-      throw new Error('critério de aceite AC-026 ainda não provado — implemente este teste (T-016)');
+    it('AC-026: Pausa e retomada inteligente de fila em desconexão com salvaguarda de expiração @spec:AC-026', async () => {
+      // 1. Simula desconexão da instância WhatsApp (CONNECTION_LOST)
+      const disconnectPayload = {
+        event: 'connection.update',
+        instance: instanceName,
+        data: {
+          state: 'close',
+          statusReason: 'CONNECTION_LOST',
+        },
+      };
+
+      const resDisconnect = await request(testApp)
+        .post('/api/webhooks/whatsapp')
+        .send(disconnectPayload);
+
+      expect(resDisconnect.status).toBe(200);
+      expect(resDisconnect.body.queue_paused).toBe(true);
+
+      // Checa se fila foi pausada
+      expect(await queue.isPaused()).toBe(true);
+
+      // Checa se tenant foi marcado como desconectado
+      const tenantCheck = await db.query(
+        `SELECT whatsapp_connected FROM tenants WHERE id = $1`,
+        [tenantId]
+      );
+      expect(tenantCheck.rows[0].whatsapp_connected).toBe(false);
+
+      // 2. Simula reconexão (CONNECTION_ESTABLISHED)
+      const reconnectPayload = {
+        event: 'connection.update',
+        instance: instanceName,
+        data: {
+          state: 'open',
+          statusReason: 'CONNECTION_ESTABLISHED',
+        },
+      };
+
+      const resReconnect = await request(testApp)
+        .post('/api/webhooks/whatsapp')
+        .send(reconnectPayload);
+
+      expect(resReconnect.status).toBe(200);
+      expect(resReconnect.body.whatsapp_connected).toBe(true);
+
+      // Checa se tenant foi atualizado para conectado
+      const tenantCheck2 = await db.query(
+        `SELECT whatsapp_connected FROM tenants WHERE id = $1`,
+        [tenantId]
+      );
+      expect(tenantCheck2.rows[0].whatsapp_connected).toBe(true);
     });
   });
 });

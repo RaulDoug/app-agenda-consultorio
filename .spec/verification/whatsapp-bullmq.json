@@ -1,10 +1,10 @@
 {
   "feature": "whatsapp-bullmq",
-  "timestamp": "2026-10-17T20:41:52.557Z",
-  "gitRev": "be9e8c5",
+  "timestamp": "2026-10-17T20:45:42.992Z",
+  "gitRev": "7c531de",
   "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
-  "exitCode": 1,
+  "exitCode": 0,
   "testsParsed": 26,
   "results": {
     "AC-019": {
@@ -33,17 +33,17 @@
       "method": "vitest-json"
     },
     "AC-024": {
-      "status": "fail",
+      "status": "pass",
       "testName": "Motor WhatsApp, BullMQ e Webhook Evolution API — OdontoFlow US-014 — Webhook da Evolution API e Gerenciamento de Sessão AC-024: Atualização do agendamento a partir do webhook da Evolution API @spec:AC-024 AC-024: Atualização do agendamento a partir do webhook da Evolution API @spec:AC-024",
       "method": "vitest-json"
     },
     "AC-025": {
-      "status": "fail",
+      "status": "pass",
       "testName": "Motor WhatsApp, BullMQ e Webhook Evolution API — OdontoFlow US-014 — Webhook da Evolution API e Gerenciamento de Sessão AC-025: Tratamento silencioso e seguro para mensagens de números desconhecidos @spec:AC-025 AC-025: Tratamento silencioso e seguro para mensagens de números desconhecidos @spec:AC-025",
       "method": "vitest-json"
     },
     "AC-026": {
-      "status": "fail",
+      "status": "pass",
       "testName": "Motor WhatsApp, BullMQ e Webhook Evolution API — OdontoFlow US-014 — Webhook da Evolution API e Gerenciamento de Sessão AC-026: Pausa e retomada inteligente de fila em desconexão com salvaguarda de expiração @spec:AC-026 AC-026: Pausa e retomada inteligente de fila em desconexão com salvaguarda de expiração @spec:AC-026",
       "method": "vitest-json"
     }
