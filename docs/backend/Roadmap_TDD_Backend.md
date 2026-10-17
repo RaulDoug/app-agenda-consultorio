@@ -21,19 +21,19 @@ O desenvolvimento do `backend/` segue estritamente o ciclo **Red-Green-Refactor*
 > **Objetivo:** Implementar as funções puras de domínio e regras de negócio no servidor antes do banco de dados.
 
 ##### 1.1 Testes Padrão (Happy Path) — `backend/src/domain/__tests__/schedule-domain.spec.ts`
-* [ ] **Soma de Duração de Múltiplos Procedimentos:** Validar cálculo exato de `end_time` a partir de `start_time` + lista de durações (ex: 30m + 45m = 75m).
-* [ ] **Normalização de WhatsApp Brasileiro:** Converter entradas como `(11) 99999-8888`, `+55 11 99999-8888`, `11999998888` para o formato canônico `5511999998888`.
-* [ ] **Validação de Expediente Flexível (`business_hours`):** Permitir horários estendidos customizados (ex: 08:00 às 21:00) e dias com ou sem intervalo de almoço (`break_start_time = null`).
-* [ ] **Algoritmo de Retorno Inteligente (Sugestão de 3 Horários Vagos):** Dado um horário ocupado, domingo ou feriado (`schedule_blocks`) daqui a 15/30/180 dias, retornar exatamente os **3 slots vagos mais próximos** dentro do expediente.
-* [ ] **Máquina de Estados do Agendamento:** Validar transições permitidas (`PENDING ➔ CONFIRMED`, `CONFIRMED ➔ RESCHEDULE_REQUESTED`, `CONFIRMED ➔ COMPLETED`, `PENDING ➔ NO_SHOW`).
+* [x] **Soma de Duração de Múltiplos Procedimentos:** Validar cálculo exato de `end_time` a partir de `start_time` + lista de durações (ex: 30m + 45m = 75m).
+* [x] **Normalização de WhatsApp Brasileiro:** Converter entradas como `(11) 99999-8888`, `+55 11 99999-8888`, `11999998888` para o formato canônico `5511999998888`.
+* [x] **Validação de Expediente Flexível (`business_hours`):** Permitir horários estendidos customizados (ex: 08:00 às 21:00) e dias com ou sem intervalo de almoço (`break_start_time = null`).
+* [x] **Algoritmo de Retorno Inteligente (Sugestão de 3 Horários Vagos):** Dado um horário ocupado, domingo ou feriado (`schedule_blocks`) daqui a 15/30/180 dias, retornar exatamente os **3 slots vagos mais próximos** dentro do expediente.
+* [x] **Máquina de Estados do Agendamento:** Validar transições permitidas (`PENDING ➔ CONFIRMED`, `CONFIRMED ➔ RESCHEDULE_REQUESTED`, `CONFIRMED ➔ COMPLETED`, `PENDING ➔ NO_SHOW`).
 
 ##### 1.2 Testes de Edge Cases (Casos de Borda)
-* [ ] **Edge Case BE-1.1 (Encaixe / Horário Extraordinário):** Agendamento após o fim do expediente (ex: 19:30 quando fecha às 18:00) ou no almoço:
+* [x] **Edge Case BE-1.1 (Encaixe / Horário Extraordinário):** Agendamento após o fim do expediente (ex: 19:30 quando fecha às 18:00) ou no almoço:
   * Sem flag `confirm_overtime`: deve retornar alerta `outside_business_hours: true` sem gravar.
   * Com flag `confirm_overtime: true`: deve permitir e marcar `is_overtime = true`.
-* [ ] **Edge Case BE-1.2 (Imutabilidade de Consulta Concluída):** Impedir qualquer transição de status caso o agendamento já esteja `COMPLETED` ou `CANCELLED`.
-* [ ] **Edge Case BE-1.3 (Procedimento Inválido):** Rejeitar procedimentos com duração `<= 0` ou preço negativo (`< 0`).
-* [ ] **Edge Case BE-1.4 (Fuso Horário UTC-3):** Garantir que agendamentos às 22:00 (`America/Sao_Paulo`) não mudem de data civil ao converter de/para UTC.
+* [x] **Edge Case BE-1.2 (Imutabilidade de Consulta Concluída):** Impedir qualquer transição de status caso o agendamento já esteja `COMPLETED` ou `CANCELLED`.
+* [x] **Edge Case BE-1.3 (Procedimento Inválido):** Rejeitar procedimentos com duração `<= 0` ou preço negativo (`< 0`).
+* [x] **Edge Case BE-1.4 (Fuso Horário UTC-3):** Garantir que agendamentos às 22:00 (`America/Sao_Paulo`) não mudem de data civil ao converter de/para UTC.
 
 ---
 
@@ -41,20 +41,20 @@ O desenvolvimento do `backend/` segue estritamente o ciclo **Red-Green-Refactor*
 > **Objetivo:** Construir a camada de persistência em SQL puro e endpoints REST blindados contra vazamento entre clínicas.
 
 ##### 2.1 Testes Padrão (Happy Path) — `backend/src/routes/__tests__/api.spec.ts`
-* [ ] **Middleware JWT & Tenant Context:** Extrair `tenant_id` do token JWT e rejeitar requisições sem token com `401 Unauthorized`.
-* [ ] **Isolamento Multi-Tenant Estrito:**
+* [x] **Middleware JWT & Tenant Context:** Extrair `tenant_id` do token JWT e rejeitar requisições sem token com `401 Unauthorized`.
+* [x] **Isolamento Multi-Tenant Estrito:**
   * Inserir pacientes, procedimentos e agendamentos no `Tenant A`.
   * Consultar todos os endpoints autenticado como `Tenant B` e confirmar retorno vazio `[]`.
-* [ ] **CRUD de Pacientes e Procedimentos (On-the-Fly):** Criar e buscar pacientes/procedimentos com queries parametrizadas (`$1, $2`).
-* [ ] **Criação Atômica de Agendamento (`BEGIN ... COMMIT`):** Inserir registro em `appointments` e múltiplos itens em `appointment_items` na mesma transação SQL.
-* [ ] **Endpoint de Sincronização Offline (`POST /api/sync/batch`):** Receber lote de operações criadas offline pelo PWA e aplicar com estratégia *Last-Write-Wins* por `updated_at`.
+* [x] **CRUD de Pacientes e Procedimentos (On-the-Fly):** Criar e buscar pacientes/procedimentos com queries parametrizadas (`$1, $2`).
+* [x] **Criação Atômica de Agendamento (`BEGIN ... COMMIT`):** Inserir registro em `appointments` e múltiplos itens em `appointment_items` na mesma transação SQL.
+* [x] **Endpoint de Sincronização Offline (`POST /api/sync/batch`):** Receber lote de operações criadas offline pelo PWA e aplicar com estratégia *Last-Write-Wins* por `updated_at`.
 
 ##### 2.2 Testes de Edge Cases
-* [ ] **Edge Case BE-2.1 (Double Booking / Concorrência):** Duas requisições tentando agendar no mesmo horário para o mesmo consultório (sem flag de encaixe) devem resultar em `409 Conflict` na segunda requisição.
-* [ ] **Edge Case BE-2.2 (Rollback em Falha Parcial):** Se a inserção de um item em `appointment_items` falhar, a transação deve executar `ROLLBACK` e nenhum registro órfão pode restar em `appointments`.
-* [ ] **Edge Case BE-2.3 (Soft Delete de Paciente):** Ao excluir um paciente (`DELETE /api/patients/:id`), o registro deve receber `is_active = false`, preservando intactos os agendamentos passados e transações financeiras.
-* [ ] **Edge Case BE-2.4 (Proteção contra SQL Injection):** Enviar `' OR '1'='1; DROP TABLE patients; --` no parâmetro de busca por nome e comprovar que a parametrização do `pg` trata como texto literal inofensivo.
-* [ ] **Edge Case BE-2.5 (Idempotência de Sincronização):** Enviar duas vezes o mesmo lote de sincronização offline com os mesmos UUIDs não deve duplicar agendamentos nem transações.
+* [x] **Edge Case BE-2.1 (Double Booking / Concorrência):** Duas requisições tentando agendar no mesmo horário para o mesmo consultório (sem flag de encaixe) devem resultar em `409 Conflict` na segunda requisição.
+* [x] **Edge Case BE-2.2 (Rollback em Falha Parcial):** Se a inserção de um item em `appointment_items` falhar, a transação deve executar `ROLLBACK` e nenhum registro órfão pode restar em `appointments`.
+* [x] **Edge Case BE-2.3 (Soft Delete de Paciente):** Ao excluir um paciente (`DELETE /api/patients/:id`), o registro deve receber `is_active = false`, preservando intactos os agendamentos passados e transações financeiras.
+* [x] **Edge Case BE-2.4 (Proteção contra SQL Injection):** Enviar `' OR '1'='1; DROP TABLE patients; --` no parâmetro de busca por nome e comprovar que a parametrização do `pg` trata como texto literal inofensivo.
+* [x] **Edge Case BE-2.5 (Idempotência de Sincronização):** Enviar duas vezes o mesmo lote de sincronização offline com os mesmos UUIDs não deve duplicar agendamentos nem transações.
 
 ---
 
