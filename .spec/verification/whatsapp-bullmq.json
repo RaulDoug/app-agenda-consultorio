@@ -1,0 +1,52 @@
+{
+  "feature": "whatsapp-bullmq",
+  "timestamp": "2026-10-17T20:30:33.271Z",
+  "gitRev": "fe5cce1",
+  "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
+  "reporter": "vitest-json",
+  "exitCode": 1,
+  "testsParsed": 26,
+  "results": {
+    "AC-019": {
+      "status": "pass",
+      "testName": "Motor WhatsApp, BullMQ e Webhook Evolution API — OdontoFlow US-011 — Parser Inteligente de Mensagens e Ciclo de Confirmação AC-019: Classificação semântica de confirmação, reagendamento e dúvidas @spec:AC-019 AC-019: Classificação semântica de confirmação, reagendamento e dúvidas @spec:AC-019",
+      "method": "vitest-json"
+    },
+    "AC-020": {
+      "status": "pass",
+      "testName": "Motor WhatsApp, BullMQ e Webhook Evolution API — OdontoFlow US-011 — Parser Inteligente de Mensagens e Ciclo de Confirmação AC-020: Transição de status quando paciente muda de ideia @spec:AC-020 AC-020: Transição de status quando paciente muda de ideia @spec:AC-020",
+      "method": "vitest-json"
+    },
+    "AC-021": {
+      "status": "pass",
+      "testName": "Motor WhatsApp, BullMQ e Webhook Evolution API — OdontoFlow US-012 — Gerador Spintax Anti-Ban e Variação Textual AC-021: Variação textual dinâmica entre disparos consecutivos @spec:AC-021 AC-021: Variação textual dinâmica entre disparos consecutivos @spec:AC-021",
+      "method": "vitest-json"
+    },
+    "AC-022": {
+      "status": "fail",
+      "testName": "Motor WhatsApp, BullMQ e Webhook Evolution API — OdontoFlow US-013 — Enfileiramento com Jitter Humanizado e Salvaguardas de Horário AC-022: Intervalo de jitter humanizado entre 20 e 50 segundos e salvaguarda temporal @spec:AC-022 AC-022: Intervalo de jitter humanizado entre 20 e 50 segundos e salvaguarda temporal @spec:AC-022",
+      "method": "vitest-json"
+    },
+    "AC-023": {
+      "status": "fail",
+      "testName": "Motor WhatsApp, BullMQ e Webhook Evolution API — OdontoFlow US-013 — Enfileiramento com Jitter Humanizado e Salvaguardas de Horário AC-023: Retry exponencial em caso de instabilidade na Evolution API @spec:AC-023 AC-023: Retry exponencial em caso de instabilidade na Evolution API @spec:AC-023",
+      "method": "vitest-json"
+    },
+    "AC-024": {
+      "status": "fail",
+      "testName": "Motor WhatsApp, BullMQ e Webhook Evolution API — OdontoFlow US-014 — Webhook da Evolution API e Gerenciamento de Sessão AC-024: Atualização do agendamento a partir do webhook da Evolution API @spec:AC-024 AC-024: Atualização do agendamento a partir do webhook da Evolution API @spec:AC-024",
+      "method": "vitest-json"
+    },
+    "AC-025": {
+      "status": "fail",
+      "testName": "Motor WhatsApp, BullMQ e Webhook Evolution API — OdontoFlow US-014 — Webhook da Evolution API e Gerenciamento de Sessão AC-025: Tratamento silencioso e seguro para mensagens de números desconhecidos @spec:AC-025 AC-025: Tratamento silencioso e seguro para mensagens de números desconhecidos @spec:AC-025",
+      "method": "vitest-json"
+    },
+    "AC-026": {
+      "status": "fail",
+      "testName": "Motor WhatsApp, BullMQ e Webhook Evolution API — OdontoFlow US-014 — Webhook da Evolution API e Gerenciamento de Sessão AC-026: Pausa e retomada inteligente de fila em desconexão com salvaguarda de expiração @spec:AC-026 AC-026: Pausa e retomada inteligente de fila em desconexão com salvaguarda de expiração @spec:AC-026",
+      "method": "vitest-json"
+    }
+  },
+  "principles": {}
+}

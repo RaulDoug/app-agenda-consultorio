@@ -5,7 +5,7 @@
 
 ## Contexto
 
-Implementação do motor de comunicação com WhatsApp via Evolution API e mensageria assíncrona com BullMQ/Redis: parser inteligente de respostas de pacientes, gerador de variações textuais Spintax anti-ban, enfileiramento cadenciado com jitter humanizado (20s a 50s), webhook para captura de respostas, tratamento para pacientes que mudam de ideia e pausa automática de fila em caso de queda de sessão da instância.
+Implementação do motor de comunicação com WhatsApp via Evolution API e mensageria assíncrona com BullMQ/Redis: parser inteligente de respostas de pacientes (texto, emojis e áudio/mídia extensível), gerador de variações textuais Spintax anti-ban, enfileiramento cadenciado com jitter humanizado (20s a 50s) restrito à janela comercial (08:00 às 20:00) com salvaguarda de envio nunca no mesmo dia da consulta (24h a 48h antes), webhook para captura de respostas, tratamento para pacientes que mudam de ideia e pausa/retomada inteligente de fila em caso de queda de sessão da instância com descarte seguro de jobs expirados.
 
 ## Histórias
 
@@ -15,9 +15,9 @@ Como dentista ou secretária, quero que as respostas dos pacientes no WhatsApp s
 
 #### AC-019 — Classificação semântica de confirmação, reagendamento e dúvidas
 
-- **Dado** uma mensagem recebida de um paciente (ex: "1", "Sim", "👍", "confirmado", "2", "remarcar", ou texto livre com dúvida)
-- **Quando** o parser inteligente processar o texto da mensagem
-- **Então** o sistema deve classificar deterministicamente o status em `CONFIRMED`, `RESCHEDULE_REQUESTED` ou `MESSAGE_RECEIVED`.
+- **Dado** uma mensagem recebida de um paciente (ex: "1", "Sim", "👍", "confirmado", "2", "remarcar", texto livre com dúvida ou mensagem de áudio/mídia)
+- **Quando** o parser inteligente processar o conteúdo da mensagem
+- **Então** o sistema deve classificar deterministicamente o status em `CONFIRMED`, `RESCHEDULE_REQUESTED` ou `MESSAGE_RECEIVED` (com handler extensível para áudio/mídia permitindo resposta automática futura).
 
 #### AC-020 — Transição de status quando paciente muda de ideia
 
@@ -35,15 +35,15 @@ Como operador da clínica, quero que as mensagens automáticas de confirmação 
 - **Quando** 10 mensagens forem geradas consecutivamente pelo gerador Spintax
 - **Então** o sistema deve produzir saídas com variações dinâmicas de texto, garantindo que disparos sucessivos não sejam réplicas idênticas.
 
-### US-013 — Enfileiramento com Jitter Humanizado e Retry com Backoff
+### US-013 — Enfileiramento com Jitter Humanizado e Salvaguardas de Horário
 
-Como consultório odontológico, quero que o disparo de mensagens para o dia seguinte seja cadenciado com atrasos variáveis entre 20 e 50 segundos e com recuperação automática de falhas, simulando comportamento humano e resistindo a oscilações da API.
+Como consultório odontológico, quero que o disparo de mensagens para o dia seguinte seja cadenciado com atrasos variáveis entre 20 e 50 segundos, restrito à janela permitida (08:00 às 20:00), com salvaguarda estrita para nunca enviar confirmação no próprio dia da consulta e com recuperação de falhas.
 
-#### AC-022 — Intervalo de jitter humanizado entre 20 e 50 segundos por agendamento
+#### AC-022 — Intervalo de jitter humanizado entre 20 e 50 segundos e salvaguarda temporal
 
-- **Dado** uma lista de 10 agendamentos do dia seguinte para disparo da rotina matinal
+- **Dado** uma lista de agendamentos para disparo da rotina de confirmação
 - **Quando** os agendamentos forem adicionados à fila BullMQ
-- **Então** cada job deve receber um atraso incremental com jitter randômico de 20 a 50 segundos em relação ao anterior, sem disparos em rajada simultânea.
+- **Então** cada job deve receber atraso incremental com jitter randômico de 20 a 50 segundos, respeitando a janela comercial (08:00 às 20:00) e com salvaguarda inegociável de NUNCA disparar confirmação no mesmo dia da consulta (apenas 24h ou 48h antes).
 
 #### AC-023 — Retry exponencial em caso de instabilidade na Evolution API
 
@@ -53,7 +53,7 @@ Como consultório odontológico, quero que o disparo de mensagens para o dia seg
 
 ### US-014 — Webhook da Evolution API e Gerenciamento de Sessão
 
-Como dentista, quero que o sistema receba eventos em tempo real da Evolution API via webhook, atualizando a agenda, lidando com números desconhecidos e pausando envios se a conexão do WhatsApp cair.
+Como dentista, quero que o sistema receba eventos em tempo real da Evolution API via webhook, atualizando a agenda, lidando com números desconhecidos e pausando envios se a conexão do WhatsApp cair, com retomada inteligente e segura.
 
 #### AC-024 — Atualização do agendamento a partir do webhook da Evolution API
 
@@ -67,11 +67,11 @@ Como dentista, quero que o sistema receba eventos em tempo real da Evolution API
 - **Quando** o endpoint do webhook processar a requisição
 - **Então** o sistema deve retornar HTTP 200 OK de forma limpa e silenciosa, sem gerar erro 500 nem travar o processamento da fila.
 
-#### AC-026 — Detecção de desconexão da sessão e pausa automática da fila
+#### AC-026 — Pausa e retomada inteligente de fila em desconexão com salvaguarda de expiração
 
-- **Dado** um evento de webhook da Evolution API indicando desconexão da instância (`CONNECTION_LOST` ou `DISCONNECTED`)
-- **Quando** o processador de webhooks tratar o evento
-- **Então** o sistema deve atualizar `whatsapp_connected = false` no consultório e pausar imediatamente a fila BullMQ para não perder mensagens pendentes.
+- **Dado** uma desconexão da instância WhatsApp (`CONNECTION_LOST`) seguida de posterior reconexão (`CONNECTION_ESTABLISHED`)
+- **Quando** a reconexão ocorrer
+- **Então** a fila BullMQ deve retomar automaticamente apenas se os jobs pendentes ainda estiverem dentro da janela diária permitida (08:00 às 20:00) e antes do dia da consulta; se o horário ou dia foi ultrapassado, os jobs defasados devem ser abortados e um alerta emitido para o dentista.
 
 ## Fora de escopo
 
@@ -85,9 +85,13 @@ Como dentista, quero que o sistema receba eventos em tempo real da Evolution API
 |---|---|---|---|
 | ASM-005 | As instâncias da Evolution API enviam payloads de webhook contendo evento, dados da instância, remetente e corpo da mensagem. | confirmada | Formato padrão de webhooks da Evolution API v1.8/v2. |
 | ASM-006 | Em ambiente de teste automatizado, as filas BullMQ podem operar com ioredis-mock sem exigir serviço Redis externo rodando. | confirmada | Garante testes ultrarrápidos e determinísticos sem dependência externa. |
+| ASM-007 | Disparos de confirmação de agendamento ocorrem em lote matinal agendado previamente (24h a 48h antes da data da consulta). | confirmada | Alinhado com o PO: nunca disparar no mesmo dia da consulta. |
 
 ## Perguntas em aberto
 
 | ID | Pergunta | Status | Resposta |
 |---|---|---|---|
-| Q-003 | Nenhuma. | respondida | Regras anti-ban, spintax e cadenciamento de jitter acordados no Roadmap TDD BE-3. |
+| Q-003 | Qual a janela de horário permitida para disparos automáticos e qual a salvaguarda de antecedência? | respondida | Janela das 08:00 às 20:00. Salvaguarda obrigatória: confirmação nunca no dia da consulta, apenas 24h ou 48h antes. |
+| Q-004 | Como o sistema deve reagir a mensagens de áudio ou mídia enviadas pelo paciente? | respondida | Opção A: Classificar como `MESSAGE_RECEIVED` (notifica no painel), estruturado com handler modular para facilitar resposta automática futura. |
+| Q-005 | Qual o comportamento da fila BullMQ após restabelecimento de conexão (`CONNECTION_ESTABLISHED`)? | respondida | Retomar automaticamente apenas se dentro da janela de horário (08:00-20:00) e do dia anterior à consulta. Se ultrapassar o horário ou o dia, abortar disparos defasados e alertar o dentista. |
+| Q-006 | Como sinalizar consultas em que o paciente não respondeu à confirmação até o prazo limite antes da consulta? | respondida | O status permanece PENDING e o sistema exibe um aviso visual/alerta de "Não respondeu" no painel da clínica para ação da equipe. |

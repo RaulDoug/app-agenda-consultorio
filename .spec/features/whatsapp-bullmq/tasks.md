@@ -2,7 +2,7 @@
 
 > feature: whatsapp-bullmq
 
-## T-013 — Parser Semântico de Respostas e Gerador Spintax Anti-Ban [pendente]
+## T-013 — Parser Semântico de Respostas e Gerador Spintax Anti-Ban [concluida]
 - Refs: US-011, US-012, AC-019, AC-020, AC-021
 - Arquivos: backend/src/whatsapp/parser.ts, backend/src/whatsapp/spintax.ts
 - Notas: Classificação determinística de respostas de pacientes (confirmação, reagendamento, texto livre) e geração estocástica Spintax de mensagens.

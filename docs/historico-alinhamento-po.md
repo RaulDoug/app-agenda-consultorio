@@ -55,3 +55,18 @@ Toda a documentação gerada e validada nesta sessão está disponível em:
 * `docs/backend/Roadmap_TDD_Backend.md` — Sprints BE-1 a BE-5 e suítes de teste TDD do Backend.
 * `docs/frontend/Arquitetura_e_UX_Frontend.md` — Arquitetura Local-First e 5 Wireframes Mobile.
 * `docs/frontend/Roadmap_TDD_Frontend.md` — Sprints FE-1 a FE-4 e suítes de teste TDD do Frontend.
+
+---
+
+### 5. Alinhamentos Contínuos de Sprint (PO Refinamento)
+
+#### Sprint BE-3 — Motor WhatsApp, Filas BullMQ e Webhooks
+* **Janela Permitida para Disparos Automáticos:** Restrita estritamente ao horário comercial (**08:00 às 20:00**, fuso de São Paulo).
+* **Salvaguarda Temporal de Antecedência:** Confirmações automáticas **NUNCA** devem ser disparadas no próprio dia da consulta (apenas 24h a 48h antes).
+* **Mensagens de Áudio ou Mídia do Paciente:** Classificadas como `MESSAGE_RECEIVED` (notifica no painel para escuta manual da equipe), arquitetadas com hook extensível (`registerMediaResponseHook`) para permitir resposta automática no futuro sem refatoração.
+* **Comportamento em Queda de Conexão WhatsApp (`CONNECTION_LOST`):**
+  * Ao cair a conexão, a fila BullMQ é pausada imediatamente.
+  * Ao reconectar (`CONNECTION_ESTABLISHED`), a fila despausa e retoma **automaticamente apenas se** os disparos pendentes ainda estiverem dentro da janela permitida (08:00 - 20:00) e antes do dia da consulta.
+  * Se a queda ultrapassar a janela comercial ou virar o dia da consulta, os jobs defasados são abortados e um aviso de atenção é emitido para o dentista.
+* **Pacientes Sem Resposta à Confirmação:** O status permanece `PENDING` e a consulta recebe um indicador visual de alerta *"Não respondeu"* no painel da clínica para acompanhamento ativo.
+
