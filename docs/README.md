@@ -9,6 +9,8 @@ Bem-vindo à documentação central do **OdontoFlow**. Toda a especificação fo
 ### 1. Visão Geral e Produto
 * 📄 **[01_PRD_Geral_OdontoFlow.md](./01_PRD_Geral_OdontoFlow.md)**  
   Visão de negócio, persona do *Dentista-Operador*, requisitos não-funcionais, épicos e histórias de usuário (`US1.1` a `US4.4`) e diagrama conceitual de entidades.
+* 📄 **[historico-alinhamento-po.md](./historico-alinhamento-po.md)**  
+  Memória de contexto completa da sessão de concepção/alinhamento com os POs (decisões tomadas, alternativas rejeitadas e justificativas).
 
 ### 2. Back-end (`back-end/`)
 * 📄 **[backend/Arquitetura_Backend.md](./backend/Arquitetura_Backend.md)**  
