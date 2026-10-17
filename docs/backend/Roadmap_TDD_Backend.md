@@ -62,19 +62,19 @@ O desenvolvimento do `backend/` segue estritamente o ciclo **Red-Green-Refactor*
 > **Objetivo:** Implementar o disparo cadenciado de confirmações e o processamento automático de respostas dos pacientes.
 
 ##### 3.1 Testes Padrão (Happy Path) — `backend/src/whatsapp/__tests__/whatsapp.spec.ts`
-* [ ] **Parser Inteligente de Respostas do Paciente:**
+* [x] **Parser Inteligente de Respostas do Paciente:**
   * Classificar como `CONFIRMED`: `"1"`, `"1."`, `"Sim"`, `"sim"`, `"confirmado"`, `"👍"`, `"ok"`.
   * Classificar como `RESCHEDULE_REQUESTED`: `"2"`, `"não posso"`, `"remarcar"`, `"cancelar"`, `"preciso trocar"`.
   * Classificar como `MESSAGE_RECEIVED`: textos livres, dúvidas (`"posso chegar 10 min depois?"`) ou metadados de áudio.
-* [ ] **Gerador Spintax Anti-Ban:** Gerar variações dinâmicas de saudação e estrutura de frase garantindo que disparos consecutivos não tenham o mesmo texto exato.
-* [ ] **Enfileiramento com Jitter Humanizado (BullMQ):** Ao disparar a rotina diária para 10 agendamentos de amanhã, verificar se cada job recebe um delay incremental randômico entre **20 e 50 segundos**.
-* [ ] **Webhook de Resposta (`POST /api/webhooks/whatsapp`):** Receber payload da Evolution API, localizar o agendamento `PENDING` daquele telefone, atualizar o status no PostgreSQL e disparar evento de notificação para o dentista.
+* [x] **Gerador Spintax Anti-Ban:** Gerar variações dinâmicas de saudação e estrutura de frase garantindo que disparos consecutivos não tenham o mesmo texto exato.
+* [x] **Enfileiramento com Jitter Humanizado (BullMQ):** Ao disparar a rotina diária para 10 agendamentos de amanhã, verificar se cada job recebe um delay incremental randômico entre **20 e 50 segundos**.
+* [x] **Webhook de Resposta (`POST /api/webhooks/whatsapp`):** Receber payload da Evolution API, localizar o agendamento `PENDING` daquele telefone, atualizar o status no PostgreSQL e disparar evento de notificação para o dentista.
 
 ##### 3.2 Testes de Edge Cases
-* [ ] **Edge Case BE-3.1 (Queda de Sessão do WhatsApp `CONNECTION_LOST`):** Ao receber webhook de desconexão da Evolution API, atualizar `tenants.whatsapp_connected = false` e **pausar imediatamente a fila BullMQ** para não perder mensagens.
-* [ ] **Edge Case BE-3.2 (Mensagem de Número Desconhecido):** Se um número não cadastrado mandar mensagem no WhatsApp do dentista, o webhook deve retornar `200 OK` silenciosamente sem gerar erro.
-* [ ] **Edge Case BE-3.3 (Paciente Muda de Ideia):** Paciente responde `"1"` de manhã (status vira `CONFIRMED`) e à tarde responde `"2"` (deve permitir atualizar para `RESCHEDULE_REQUESTED` e notificar o dentista).
-* [ ] **Edge Case BE-3.4 (Retry Automático com Backoff):** Se a Evolution API retornar erro `502/503` no momento do envio, o Worker do BullMQ deve agendar nova tentativa sem duplicar envios que já tiveram sucesso.
+* [x] **Edge Case BE-3.1 (Queda de Sessão do WhatsApp `CONNECTION_LOST`):** Ao receber webhook de desconexão da Evolution API, atualizar `tenants.whatsapp_connected = false` e **pausar imediatamente a fila BullMQ** para não perder mensagens.
+* [x] **Edge Case BE-3.2 (Mensagem de Número Desconhecido):** Se um número não cadastrado mandar mensagem no WhatsApp do dentista, o webhook deve retornar `200 OK` silenciosamente sem gerar erro.
+* [x] **Edge Case BE-3.3 (Paciente Muda de Ideia):** Paciente responde `"1"` de manhã (status vira `CONFIRMED`) e à tarde responde `"2"` (deve permitir atualizar para `RESCHEDULE_REQUESTED` e notificar o dentista).
+* [x] **Edge Case BE-3.4 (Retry Automático com Backoff):** Se a Evolution API retornar erro `502/503` no momento do envio, o Worker do BullMQ deve agendar nova tentativa sem duplicar envios que já tiveram sucesso.
 
 ---
 

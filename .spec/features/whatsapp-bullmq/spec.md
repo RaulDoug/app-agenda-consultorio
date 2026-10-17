@@ -1,7 +1,7 @@
 # Spec: Whatsapp bullmq
 
 > feature: whatsapp-bullmq
-> status: pronta
+> status: auditada
 
 ## Contexto
 

@@ -70,3 +70,7 @@ Toda a documentação gerada e validada nesta sessão está disponível em:
   * Se a queda ultrapassar a janela comercial ou virar o dia da consulta, os jobs defasados são abortados e um aviso de atenção é emitido para o dentista.
 * **Pacientes Sem Resposta à Confirmação:** O status permanece `PENDING` e a consulta recebe um indicador visual de alerta *"Não respondeu"* no painel da clínica para acompanhamento ativo.
 
+#### Refinamentos Aprovados de Sprints Anteriores (BE-1 e BE-2)
+* **Sugestão de Retorno Inteligente (BE-1):** Quando a data de retorno cair em domingo ou feriado fechado, o algoritmo deve pesquisar e sugerir opções vagas tanto do **último dia útil anterior** quanto do **próximo dia útil posterior**, dando mais flexibilidade de escolha ao profissional.
+* **Soft Delete de Paciente com Consultas Futuras (BE-2):** Se um paciente com consultas futuras agendadas for excluído, o sistema deve **alertar o operador** com aviso visual no modal/endpoint, oferecendo a opção de cancelar as consultas futuras para liberar a vaga na grade ou manter ambos os registros intactos.
+
