@@ -1,6 +1,8 @@
 import { describe, it, expect } from 'vitest';
 import { calculateAppointmentDuration, validateProcedureDuration } from '../duration.js';
 import { normalizeBrazilianPhone } from '../phone.js';
+import { validateBusinessHours } from '../business-hours.js';
+import type { BusinessHours } from '@odontoflow/shared';
 
 describe('Domínio de Agendamento — OdontoFlow', () => {
   describe('US-001 — Cálculo Dinâmico de Duração por Procedimentos', () => {
@@ -66,12 +68,62 @@ describe('Domínio de Agendamento — OdontoFlow', () => {
   });
 
   describe('US-003 — Validação de Expediente e Encaixe com Soft-Warning', () => {
+    const regularBusinessHours: BusinessHours[] = [
+      {
+        id: 'bh-1',
+        tenant_id: 'tenant-1',
+        day_of_week: 2, // Terça-feira (2026-10-20 é terça)
+        is_open: true,
+        start_time: '08:00',
+        end_time: '18:00',
+        break_start_time: '12:00',
+        break_end_time: '13:00',
+      },
+    ];
+
     it('AC-005: Alerta de agendamento fora do expediente regular @spec:AC-005', () => {
-      throw new Error('AC-005 pendente de implementação (T-004)');
+      // 1. Horário durante o almoço (12:30 às 13:30) sem confirm_overtime
+      const lunchTimeStart = new Date(2026, 9, 20, 12, 30);
+      const lunchTimeEnd = new Date(2026, 9, 20, 13, 15);
+
+      const lunchResult = validateBusinessHours(lunchTimeStart, lunchTimeEnd, regularBusinessHours);
+      expect(lunchResult.allowed).toBe(false);
+      expect(lunchResult.outside_business_hours).toBe(true);
+      expect(lunchResult.is_overtime).toBe(false);
+      expect(lunchResult.warning).toBeDefined();
+
+      // 2. Horário após o término do expediente (18:30 às 19:15) sem confirm_overtime
+      const overtimeStart = new Date(2026, 9, 20, 18, 30);
+      const overtimeEnd = new Date(2026, 9, 20, 19, 15);
+
+      const overtimeResult = validateBusinessHours(overtimeStart, overtimeEnd, regularBusinessHours);
+      expect(overtimeResult.allowed).toBe(false);
+      expect(overtimeResult.outside_business_hours).toBe(true);
+      expect(overtimeResult.is_overtime).toBe(false);
+      expect(overtimeResult.warning).toBeDefined();
+
+      // 3. Horário regular válido (10:00 às 11:00) deve passar sem alerta
+      const regularStart = new Date(2026, 9, 20, 10, 0);
+      const regularEnd = new Date(2026, 9, 20, 11, 0);
+
+      const regularResult = validateBusinessHours(regularStart, regularEnd, regularBusinessHours);
+      expect(regularResult.allowed).toBe(true);
+      expect(regularResult.outside_business_hours).toBe(false);
+      expect(regularResult.is_overtime).toBe(false);
     });
 
     it('AC-006: Confirmação de encaixe extraordinário marca flag no agendamento @spec:AC-006', () => {
-      throw new Error('AC-006 pendente de implementação (T-004)');
+      const overtimeStart = new Date(2026, 9, 20, 18, 30);
+      const overtimeEnd = new Date(2026, 9, 20, 19, 15);
+
+      const result = validateBusinessHours(overtimeStart, overtimeEnd, regularBusinessHours, {
+        confirm_overtime: true,
+      });
+
+      expect(result.allowed).toBe(true);
+      expect(result.outside_business_hours).toBe(true);
+      expect(result.is_overtime).toBe(true);
+      expect(result.warning).toContain('encaixe extraordinário');
     });
   });
 

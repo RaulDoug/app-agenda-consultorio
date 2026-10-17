@@ -1,7 +1,7 @@
 {
   "feature": "dominio-agenda",
-  "timestamp": "2026-10-17T19:05:00.412Z",
-  "gitRev": "8dab64e",
+  "timestamp": "2026-10-17T19:06:52.196Z",
+  "gitRev": "38d35b4",
   "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
   "exitCode": 1,
@@ -28,12 +28,12 @@
       "method": "vitest-json"
     },
     "AC-005": {
-      "status": "fail",
+      "status": "pass",
       "testName": "Domínio de Agendamento — OdontoFlow US-003 — Validação de Expediente e Encaixe com Soft-Warning AC-005: Alerta de agendamento fora do expediente regular @spec:AC-005 AC-005: Alerta de agendamento fora do expediente regular @spec:AC-005",
       "method": "vitest-json"
     },
     "AC-006": {
-      "status": "fail",
+      "status": "pass",
       "testName": "Domínio de Agendamento — OdontoFlow US-003 — Validação de Expediente e Encaixe com Soft-Warning AC-006: Confirmação de encaixe extraordinário marca flag no agendamento @spec:AC-006 AC-006: Confirmação de encaixe extraordinário marca flag no agendamento @spec:AC-006",
       "method": "vitest-json"
     },

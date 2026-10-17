@@ -17,8 +17,7 @@
 - Arquivos: backend/src/domain/phone.ts, backend/src/domain/__tests__/schedule-domain.spec.ts
 - Notas: Sanitização para DDI 55 + DDD + 9 dígitos e rejeição de entradas inválidas.
 
-## T-004 — Funções de Domínio: Validação de Expediente e Encaixe com Soft-Warning [pendente]
-
+## T-004 — Funções de Domínio: Validação de Expediente e Encaixe com Soft-Warning [concluida]
 - Refs: US-003, AC-005, AC-006
 - Arquivos: backend/src/domain/business-hours.ts, backend/src/domain/__tests__/schedule-domain.spec.ts
 - Notas: Identificação de conflito com intervalo de almoço e fechamento, com aprovação via flag confirm_overtime.
