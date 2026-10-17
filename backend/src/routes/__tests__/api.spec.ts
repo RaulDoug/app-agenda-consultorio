@@ -172,12 +172,107 @@ describe('API REST e Persistência Multi-Tenant — OdontoFlow', () => {
   });
 
   describe('US-009 — Criação Atômica de Agendamento com Múltiplos Procedimentos', () => {
-    it('AC-015: Inserção transacional com rollback automático @spec:AC-015', () => {
-      throw new Error('AC-015 pendente de implementação (T-011)');
+    it('AC-015: Inserção transacional com rollback automático @spec:AC-015', async () => {
+      // 1. Cadastra paciente válido
+      const patientRes = await request(testApp)
+        .post('/api/patients')
+        .set('Authorization', `Bearer ${tokenTenantA}`)
+        .send({ name: 'Paciente Transação', whatsapp: '5511999998888' });
+      const patientId = patientRes.body.id;
+
+      // 2. Cadastra um procedimento válido
+      const procRes = await request(testApp)
+        .post('/api/procedures')
+        .set('Authorization', `Bearer ${tokenTenantA}`)
+        .send({
+          name: 'Limpeza Dental',
+          default_duration_minutes: 30,
+          default_price_cents: 15000,
+        });
+      const validProcId = procRes.body.id;
+      const invalidProcId = '99999999-9999-9999-9999-999999999999';
+
+      // 3. Tenta criar agendamento contendo 1 procedimento válido e 1 inválido (que força falha)
+      const resCreate = await request(testApp)
+        .post('/api/appointments')
+        .set('Authorization', `Bearer ${tokenTenantA}`)
+        .send({
+          patient_id: patientId,
+          start_time: '2026-10-20T10:00:00.000Z',
+          procedure_ids: [validProcId, invalidProcId],
+        });
+
+      // Deve falhar com 400
+      expect(resCreate.status).toBe(400);
+
+      // 4. Verificação no banco: ROLLBACK executado — nenhum agendamento órfão deve existir
+      const rawAppointments = await db.query(
+        `SELECT * FROM appointments WHERE tenant_id = $1 AND patient_id = $2`,
+        [tenantA, patientId]
+      );
+      expect(rawAppointments.rows).toHaveLength(0);
+
+      // Nenhum item de agendamento deve ter sido persistido
+      const rawItems = await db.query(`SELECT * FROM appointment_items`);
+      expect(rawItems.rows).toHaveLength(0);
     });
 
-    it('AC-016: Prevenção de conflito de horário (Double Booking) @spec:AC-016', () => {
-      throw new Error('AC-016 pendente de implementação (T-011)');
+    it('AC-016: Prevenção de conflito de horário (Double Booking) @spec:AC-016', async () => {
+      // 1. Cria paciente e procedimento
+      const pRes = await request(testApp)
+        .post('/api/patients')
+        .set('Authorization', `Bearer ${tokenTenantA}`)
+        .send({ name: 'Paciente Conflito', whatsapp: '5511911112222' });
+
+      const procRes = await request(testApp)
+        .post('/api/procedures')
+        .set('Authorization', `Bearer ${tokenTenantA}`)
+        .send({
+          name: 'Restauração',
+          default_duration_minutes: 45,
+          default_price_cents: 20000,
+        });
+
+      // 2. Primeiro agendamento: 14:00 às 14:45
+      const res1 = await request(testApp)
+        .post('/api/appointments')
+        .set('Authorization', `Bearer ${tokenTenantA}`)
+        .send({
+          patient_id: pRes.body.id,
+          start_time: '2026-10-21T14:00:00.000Z',
+          procedure_ids: [procRes.body.id],
+        });
+      expect(res1.status).toBe(201);
+      expect(res1.body.id).toBeDefined();
+
+      // 3. Segundo agendamento sobreposto (14:30 às 15:15) SEM flag confirm_overtime
+      const resConflict = await request(testApp)
+        .post('/api/appointments')
+        .set('Authorization', `Bearer ${tokenTenantA}`)
+        .send({
+          patient_id: pRes.body.id,
+          start_time: '2026-10-21T14:30:00.000Z',
+          procedure_ids: [procRes.body.id],
+          confirm_overtime: false,
+        });
+
+      // Deve ser recusado com 409 Conflict
+      expect(resConflict.status).toBe(409);
+      expect(resConflict.body.error).toContain('Double Booking');
+
+      // 4. Terceiro agendamento no mesmo horário sobreposto COM flag confirm_overtime (encaixe extraordinário)
+      const resOvertime = await request(testApp)
+        .post('/api/appointments')
+        .set('Authorization', `Bearer ${tokenTenantA}`)
+        .send({
+          patient_id: pRes.body.id,
+          start_time: '2026-10-21T14:30:00.000Z',
+          procedure_ids: [procRes.body.id],
+          confirm_overtime: true,
+        });
+
+      expect(resOvertime.status).toBe(201);
+      expect(resOvertime.body.is_overtime).toBe(true);
     });
   });
 

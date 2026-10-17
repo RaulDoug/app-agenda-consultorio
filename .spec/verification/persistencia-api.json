@@ -1,7 +1,7 @@
 {
   "feature": "persistencia-api",
-  "timestamp": "2026-10-17T19:33:48.609Z",
-  "gitRev": "f03e5cf",
+  "timestamp": "2026-10-17T19:39:38.872Z",
+  "gitRev": "61e6ec3",
   "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
   "exitCode": 1,
@@ -28,12 +28,12 @@
       "method": "vitest-json"
     },
     "AC-015": {
-      "status": "fail",
+      "status": "pass",
       "testName": "API REST e Persistência Multi-Tenant — OdontoFlow US-009 — Criação Atômica de Agendamento com Múltiplos Procedimentos AC-015: Inserção transacional com rollback automático @spec:AC-015 AC-015: Inserção transacional com rollback automático @spec:AC-015",
       "method": "vitest-json"
     },
     "AC-016": {
-      "status": "fail",
+      "status": "pass",
       "testName": "API REST e Persistência Multi-Tenant — OdontoFlow US-009 — Criação Atômica de Agendamento com Múltiplos Procedimentos AC-016: Prevenção de conflito de horário (Double Booking) @spec:AC-016 AC-016: Prevenção de conflito de horário (Double Booking) @spec:AC-016",
       "method": "vitest-json"
     },

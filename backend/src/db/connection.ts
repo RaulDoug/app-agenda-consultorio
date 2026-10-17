@@ -105,8 +105,20 @@ export function createInMemoryDatabase(): IDatabase {
     async getClient(): Promise<IDatabaseClient> {
       const client = new pgAdapter.Client();
       await client.connect();
+      let backup: any = null;
       return {
         query: async <R = any>(sql: string, params?: any[]) => {
+          const trimmed = sql.trim().toUpperCase();
+          if (trimmed === 'BEGIN' || trimmed.startsWith('BEGIN;')) {
+            backup = memDb.backup();
+          } else if (trimmed === 'ROLLBACK' || trimmed.startsWith('ROLLBACK;')) {
+            if (backup) {
+              backup.restore();
+              backup = null;
+            }
+          } else if (trimmed === 'COMMIT' || trimmed.startsWith('COMMIT;')) {
+            backup = null;
+          }
           const res = await client.query(sql, params);
           return { rows: res.rows, rowCount: res.rowCount };
         },
