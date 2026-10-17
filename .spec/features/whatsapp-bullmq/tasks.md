@@ -17,7 +17,7 @@
 - Arquivos: backend/src/whatsapp/queue.ts, backend/src/whatsapp/scheduler.ts
 - Notas: Configuração de filas BullMQ, enfileiramento com delays incrementais de 20s a 50s e mecanismo de pausa imediata ao perder conexão.
 
-## T-016 — Rota de Webhook da Evolution API e Atualização de Status da Agenda [pendente]
+## T-016 — Rota de Webhook da Evolution API e Atualização de Status da Agenda [concluida]
 - Refs: US-011, US-014, AC-024, AC-025, AC-026
 - Arquivos: backend/src/routes/webhooks.ts, backend/src/app.ts
 - Notas: Endpoint POST /api/webhooks/whatsapp com verificação de instância, atualização de agendamento por telefone, tratamento de número desconhecido e evento de desconexão.
