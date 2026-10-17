@@ -277,12 +277,174 @@ describe('API REST e Persistência Multi-Tenant — OdontoFlow', () => {
   });
 
   describe('US-010 — Sincronização em Lote Offline-First', () => {
-    it('AC-017: Processamento idempotente de lote de sincronização @spec:AC-017', () => {
-      throw new Error('AC-017 pendente de implementação (T-012)');
+    it('AC-017: Processamento idempotente de lote de sincronização @spec:AC-017', async () => {
+      // 1. Cadastra paciente e procedimento para os agendamentos do lote
+      const pRes = await request(testApp)
+        .post('/api/patients')
+        .set('Authorization', `Bearer ${tokenTenantA}`)
+        .send({ name: 'Paciente Offline', whatsapp: '5511955556666' });
+      const patientId = pRes.body.id;
+
+      const procRes = await request(testApp)
+        .post('/api/procedures')
+        .set('Authorization', `Bearer ${tokenTenantA}`)
+        .send({
+          name: 'Profilaxia',
+          default_duration_minutes: 30,
+          default_price_cents: 12000,
+        });
+      const procedureId = procRes.body.id;
+
+      const appSyncId1 = '77777777-7777-7777-7777-777777777771';
+      const appSyncId2 = '77777777-7777-7777-7777-777777777772';
+
+      const batchPayload = {
+        appointments: [
+          {
+            id: appSyncId1,
+            patient_id: patientId,
+            start_time: '2026-10-22T09:00:00.000Z',
+            end_time: '2026-10-22T09:30:00.000Z',
+            status: 'CONFIRMED',
+            is_overtime: false,
+            total_charged_cents: 12000,
+            notes: 'Criado no celular 1',
+            created_at: '2026-10-22T08:00:00.000Z',
+            updated_at: '2026-10-22T08:00:00.000Z',
+            items: [
+              {
+                procedure_id: procedureId,
+                effective_price_cents: 12000,
+                duration_minutes: 30,
+              },
+            ],
+          },
+          {
+            id: appSyncId2,
+            patient_id: patientId,
+            start_time: '2026-10-22T10:00:00.000Z',
+            end_time: '2026-10-22T10:30:00.000Z',
+            status: 'PENDING',
+            is_overtime: false,
+            total_charged_cents: 12000,
+            notes: 'Criado no celular 2',
+            created_at: '2026-10-22T08:00:00.000Z',
+            updated_at: '2026-10-22T08:00:00.000Z',
+          },
+        ],
+      };
+
+      // 2. Primeira submissão do lote
+      const resFirst = await request(testApp)
+        .post('/api/sync/batch')
+        .set('Authorization', `Bearer ${tokenTenantA}`)
+        .send(batchPayload);
+
+      expect(resFirst.status).toBe(200);
+      expect(resFirst.body.success).toBe(true);
+      expect(resFirst.body.applied).toBe(2);
+
+      // 3. Segunda submissão idêntica (simulando reenvio de conexão oscilante)
+      const resSecond = await request(testApp)
+        .post('/api/sync/batch')
+        .set('Authorization', `Bearer ${tokenTenantA}`)
+        .send(batchPayload);
+
+      // Não deve gerar erro 500 de chave única nem duplicar registros
+      expect(resSecond.status).toBe(200);
+      expect(resSecond.body.success).toBe(true);
+
+      // 4. Verificação no banco: exatamente 2 registros no total
+      const countRes = await db.query(
+        `SELECT COUNT(*) as total FROM appointments WHERE id IN ($1, $2)`,
+        [appSyncId1, appSyncId2]
+      );
+      expect(Number(countRes.rows[0].total)).toBe(2);
     });
 
-    it('AC-018: Resolução de conflito Last-Write-Wins @spec:AC-018', () => {
-      throw new Error('AC-018 pendente de implementação (T-012)');
+    it('AC-018: Resolução de conflito Last-Write-Wins @spec:AC-018', async () => {
+      // 1. Cadastra paciente
+      const pRes = await request(testApp)
+        .post('/api/patients')
+        .set('Authorization', `Bearer ${tokenTenantA}`)
+        .send({ name: 'Paciente LWW', whatsapp: '5511944443333' });
+      const patientId = pRes.body.id;
+
+      const appointmentId = '88888888-8888-8888-8888-888888888888';
+
+      // 2. Estado inicial no servidor: criado às 10:00
+      await db.query(
+        `INSERT INTO appointments (
+          id, tenant_id, patient_id, start_time, end_time, status,
+          is_overtime, total_charged_cents, notes, created_at, updated_at
+        ) VALUES (
+          $1, $2, $3, '2026-10-25 14:00:00+00', '2026-10-25 14:30:00+00', 'PENDING',
+          false, 10000, 'Versão Servidor Antiga', '2026-10-20 10:00:00+00', '2026-10-20 10:00:00+00'
+        )`,
+        [appointmentId, tenantA, patientId]
+      );
+
+      // 3. Submete lote offline com updated_at MAIS RECENTE (12:00): status alterado para COMPLETED
+      const resNewer = await request(testApp)
+        .post('/api/sync/batch')
+        .set('Authorization', `Bearer ${tokenTenantA}`)
+        .send({
+          appointments: [
+            {
+              id: appointmentId,
+              patient_id: patientId,
+              start_time: '2026-10-25T14:00:00.000Z',
+              end_time: '2026-10-25T14:30:00.000Z',
+              status: 'COMPLETED',
+              is_overtime: false,
+              total_charged_cents: 10000,
+              notes: 'Atualização Recente Offline',
+              updated_at: '2026-10-20T12:00:00.000Z',
+            },
+          ],
+        });
+
+      expect(resNewer.status).toBe(200);
+      expect(resNewer.body.applied).toBe(1);
+
+      // Verificação: os dados mais recentes prevaleceram no servidor
+      const checkNewer = await db.query(
+        `SELECT status, notes FROM appointments WHERE id = $1`,
+        [appointmentId]
+      );
+      expect(checkNewer.rows[0].status).toBe('COMPLETED');
+      expect(checkNewer.rows[0].notes).toBe('Atualização Recente Offline');
+
+      // 4. Submete lote atrasado com updated_at MAIS ANTIGO (09:00): não deve sobrescrever
+      const resOlder = await request(testApp)
+        .post('/api/sync/batch')
+        .set('Authorization', `Bearer ${tokenTenantA}`)
+        .send({
+          appointments: [
+            {
+              id: appointmentId,
+              patient_id: patientId,
+              start_time: '2026-10-25T14:00:00.000Z',
+              end_time: '2026-10-25T14:30:00.000Z',
+              status: 'CANCELLED',
+              is_overtime: false,
+              total_charged_cents: 10000,
+              notes: 'Atualização Antiga Atrasada',
+              updated_at: '2026-10-20T09:00:00.000Z',
+            },
+          ],
+        });
+
+      expect(resOlder.status).toBe(200);
+      expect(resOlder.body.ignored).toBe(1);
+
+      // Verificação: continua com a versão mais recente intacta
+      const checkFinal = await db.query(
+        `SELECT status, notes FROM appointments WHERE id = $1`,
+        [appointmentId]
+      );
+      expect(checkFinal.rows[0].status).toBe('COMPLETED');
+      expect(checkFinal.rows[0].notes).toBe('Atualização Recente Offline');
     });
   });
 });

@@ -1,10 +1,10 @@
 {
   "feature": "persistencia-api",
-  "timestamp": "2026-10-17T19:39:38.872Z",
-  "gitRev": "61e6ec3",
+  "timestamp": "2026-10-17T19:42:04.822Z",
+  "gitRev": "0fc9be6",
   "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
-  "exitCode": 1,
+  "exitCode": 0,
   "testsParsed": 18,
   "results": {
     "AC-011": {
@@ -38,12 +38,12 @@
       "method": "vitest-json"
     },
     "AC-017": {
-      "status": "fail",
+      "status": "pass",
       "testName": "API REST e Persistência Multi-Tenant — OdontoFlow US-010 — Sincronização em Lote Offline-First AC-017: Processamento idempotente de lote de sincronização @spec:AC-017 AC-017: Processamento idempotente de lote de sincronização @spec:AC-017",
       "method": "vitest-json"
     },
     "AC-018": {
-      "status": "fail",
+      "status": "pass",
       "testName": "API REST e Persistência Multi-Tenant — OdontoFlow US-010 — Sincronização em Lote Offline-First AC-018: Resolução de conflito Last-Write-Wins @spec:AC-018 AC-018: Resolução de conflito Last-Write-Wins @spec:AC-018",
       "method": "vitest-json"
     }

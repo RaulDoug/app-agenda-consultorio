@@ -3,6 +3,7 @@ import { authMiddleware } from './middlewares/auth.js';
 import { patientsRouter } from './routes/patients.js';
 import { proceduresRouter } from './routes/procedures.js';
 import { appointmentsRouter } from './routes/appointments.js';
+import { syncRouter } from './routes/sync.js';
 
 export function createApp(): Express {
   const app = express();
@@ -15,6 +16,7 @@ export function createApp(): Express {
   app.use('/api/patients', patientsRouter);
   app.use('/api/procedures', proceduresRouter);
   app.use('/api/appointments', appointmentsRouter);
+  app.use('/api/sync', syncRouter);
 
   return app;
 }

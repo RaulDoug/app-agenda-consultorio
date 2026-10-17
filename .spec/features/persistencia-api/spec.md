@@ -1,7 +1,7 @@
 # Spec: Persistencia api
 
 > feature: persistencia-api
-> status: pronta
+> status: auditada
 
 ## Contexto
 

@@ -22,8 +22,7 @@
 - Arquivos: backend/src/repositories/appointment-repository.ts, backend/src/routes/appointments.ts, backend/src/routes/__tests__/api.spec.ts
 - Notas: Inserção atômica em appointments e appointment_items com rollback automático e rejeição 409 Conflict em double booking.
 
-## T-012 — Rota de Sincronização em Lote Offline-First e Setup do App Express [pendente]
-
+## T-012 — Rota de Sincronização em Lote Offline-First e Setup do App Express [concluida]
 - Refs: US-010, AC-017, AC-018
 - Arquivos: backend/src/routes/sync.ts, backend/src/app.ts, backend/src/routes/__tests__/api.spec.ts
 - Notas: Endpoint POST /api/sync/batch com resolução Last-Write-Wins e idempotência por UUID.
