@@ -1,0 +1,52 @@
+{
+  "feature": "persistencia-api",
+  "timestamp": "2026-10-17T19:29:48.257Z",
+  "gitRev": "41c4bac",
+  "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
+  "reporter": "vitest-json",
+  "exitCode": 1,
+  "testsParsed": 18,
+  "results": {
+    "AC-011": {
+      "status": "pass",
+      "testName": "API REST e Persistência Multi-Tenant — OdontoFlow US-007 — Isolamento Multi-Tenant e Autenticação JWT AC-011: Rejeição de requisições sem token de autenticação @spec:AC-011 AC-011: Rejeição de requisições sem token de autenticação @spec:AC-011",
+      "method": "vitest-json"
+    },
+    "AC-012": {
+      "status": "pass",
+      "testName": "API REST e Persistência Multi-Tenant — OdontoFlow US-007 — Isolamento Multi-Tenant e Autenticação JWT AC-012: Isolamento estrito entre diferentes consultórios @spec:AC-012 AC-012: Isolamento estrito entre diferentes consultórios @spec:AC-012",
+      "method": "vitest-json"
+    },
+    "AC-013": {
+      "status": "fail",
+      "testName": "API REST e Persistência Multi-Tenant — OdontoFlow US-008 — Gestão Rápida de Pacientes e Procedimentos AC-013: Proteção contra injeção SQL em buscas @spec:AC-013 AC-013: Proteção contra injeção SQL em buscas @spec:AC-013",
+      "method": "vitest-json"
+    },
+    "AC-014": {
+      "status": "fail",
+      "testName": "API REST e Persistência Multi-Tenant — OdontoFlow US-008 — Gestão Rápida de Pacientes e Procedimentos AC-014: Soft Delete em remoção de pacientes @spec:AC-014 AC-014: Soft Delete em remoção de pacientes @spec:AC-014",
+      "method": "vitest-json"
+    },
+    "AC-015": {
+      "status": "fail",
+      "testName": "API REST e Persistência Multi-Tenant — OdontoFlow US-009 — Criação Atômica de Agendamento com Múltiplos Procedimentos AC-015: Inserção transacional com rollback automático @spec:AC-015 AC-015: Inserção transacional com rollback automático @spec:AC-015",
+      "method": "vitest-json"
+    },
+    "AC-016": {
+      "status": "fail",
+      "testName": "API REST e Persistência Multi-Tenant — OdontoFlow US-009 — Criação Atômica de Agendamento com Múltiplos Procedimentos AC-016: Prevenção de conflito de horário (Double Booking) @spec:AC-016 AC-016: Prevenção de conflito de horário (Double Booking) @spec:AC-016",
+      "method": "vitest-json"
+    },
+    "AC-017": {
+      "status": "fail",
+      "testName": "API REST e Persistência Multi-Tenant — OdontoFlow US-010 — Sincronização em Lote Offline-First AC-017: Processamento idempotente de lote de sincronização @spec:AC-017 AC-017: Processamento idempotente de lote de sincronização @spec:AC-017",
+      "method": "vitest-json"
+    },
+    "AC-018": {
+      "status": "fail",
+      "testName": "API REST e Persistência Multi-Tenant — OdontoFlow US-010 — Sincronização em Lote Offline-First AC-018: Resolução de conflito Last-Write-Wins @spec:AC-018 AC-018: Resolução de conflito Last-Write-Wins @spec:AC-018",
+      "method": "vitest-json"
+    }
+  },
+  "principles": {}
+}

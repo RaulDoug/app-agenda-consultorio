@@ -7,8 +7,7 @@
 - Arquivos: backend/src/db/schema.sql, backend/src/db/connection.ts
 - Notas: Definição do schema SQL compatível com pg e pg-mem e factory de pool/cliente.
 
-## T-009 — Middleware de Autenticação JWT e Contexto Multi-Tenant [pendente]
-
+## T-009 — Middleware de Autenticação JWT e Contexto Multi-Tenant [concluida]
 - Refs: US-007, AC-011, AC-012
 - Arquivos: backend/src/middlewares/auth.ts, backend/src/routes/__tests__/api.spec.ts
 - Notas: Extração de tenant_id a partir do Bearer Token e bloqueio 401 Unauthorized para acessos sem token.
