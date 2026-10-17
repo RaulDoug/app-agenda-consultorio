@@ -4,7 +4,6 @@
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "outDir": "./dist",
-    "baseUrl": ".",
     "paths": {
       "@odontoflow/shared": ["../shared/src/index.ts"],
       "@odontoflow/shared/*": ["../shared/src/*"]

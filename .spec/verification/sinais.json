@@ -5,10 +5,253 @@
       "codigo": "GLOB_SEM_ARQUIVOS",
       "feature": "—",
       "ref": "P-002",
-      "ocorrencias": 1,
+      "ocorrencias": 6,
       "primeiraVez": "2026-10-17T17:51:12.908Z",
-      "ultimaVez": "2026-10-17T17:51:12.909Z",
-      "gitRev": null
+      "ultimaVez": "2026-10-17T19:01:08.643Z",
+      "gitRev": "6ad40c7"
+    },
+    "ARQUIVO_INEXISTENTE::dominio-agenda::T-001": {
+      "codigo": "ARQUIVO_INEXISTENTE",
+      "feature": "dominio-agenda",
+      "ref": "T-001",
+      "ocorrencias": 10,
+      "primeiraVez": "2026-10-17T18:53:09.886Z",
+      "ultimaVez": "2026-10-17T18:56:11.237Z",
+      "gitRev": "d383c29"
+    },
+    "ARQUIVO_INEXISTENTE::dominio-agenda::T-002": {
+      "codigo": "ARQUIVO_INEXISTENTE",
+      "feature": "dominio-agenda",
+      "ref": "T-002",
+      "ocorrencias": 8,
+      "primeiraVez": "2026-10-17T18:53:09.887Z",
+      "ultimaVez": "2026-10-17T19:02:18.386Z",
+      "gitRev": "6ad40c7"
+    },
+    "ARQUIVO_INEXISTENTE::dominio-agenda::T-003": {
+      "codigo": "ARQUIVO_INEXISTENTE",
+      "feature": "dominio-agenda",
+      "ref": "T-003",
+      "ocorrencias": 8,
+      "primeiraVez": "2026-10-17T18:53:09.887Z",
+      "ultimaVez": "2026-10-17T19:02:18.386Z",
+      "gitRev": "6ad40c7"
+    },
+    "ARQUIVO_INEXISTENTE::dominio-agenda::T-004": {
+      "codigo": "ARQUIVO_INEXISTENTE",
+      "feature": "dominio-agenda",
+      "ref": "T-004",
+      "ocorrencias": 8,
+      "primeiraVez": "2026-10-17T18:53:09.887Z",
+      "ultimaVez": "2026-10-17T19:02:18.386Z",
+      "gitRev": "6ad40c7"
+    },
+    "ARQUIVO_INEXISTENTE::dominio-agenda::T-005": {
+      "codigo": "ARQUIVO_INEXISTENTE",
+      "feature": "dominio-agenda",
+      "ref": "T-005",
+      "ocorrencias": 8,
+      "primeiraVez": "2026-10-17T18:53:09.887Z",
+      "ultimaVez": "2026-10-17T19:02:18.386Z",
+      "gitRev": "6ad40c7"
+    },
+    "ARQUIVO_INEXISTENTE::dominio-agenda::T-006": {
+      "codigo": "ARQUIVO_INEXISTENTE",
+      "feature": "dominio-agenda",
+      "ref": "T-006",
+      "ocorrencias": 8,
+      "primeiraVez": "2026-10-17T18:53:09.887Z",
+      "ultimaVez": "2026-10-17T19:02:18.386Z",
+      "gitRev": "6ad40c7"
+    },
+    "ARQUIVO_INEXISTENTE::dominio-agenda::T-007": {
+      "codigo": "ARQUIVO_INEXISTENTE",
+      "feature": "dominio-agenda",
+      "ref": "T-007",
+      "ocorrencias": 12,
+      "primeiraVez": "2026-10-17T18:53:09.887Z",
+      "ultimaVez": "2026-10-17T19:02:18.386Z",
+      "gitRev": "6ad40c7"
+    },
+    "AC_SEM_TESTE::dominio-agenda::AC-001": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "dominio-agenda",
+      "ref": "AC-001",
+      "ocorrencias": 4,
+      "primeiraVez": "2026-10-17T18:53:09.887Z",
+      "ultimaVez": "2026-10-17T19:02:18.386Z",
+      "gitRev": "6ad40c7"
+    },
+    "AC_SEM_TESTE::dominio-agenda::AC-002": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "dominio-agenda",
+      "ref": "AC-002",
+      "ocorrencias": 4,
+      "primeiraVez": "2026-10-17T18:53:09.887Z",
+      "ultimaVez": "2026-10-17T19:02:18.386Z",
+      "gitRev": "6ad40c7"
+    },
+    "AC_SEM_TESTE::dominio-agenda::AC-003": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "dominio-agenda",
+      "ref": "AC-003",
+      "ocorrencias": 4,
+      "primeiraVez": "2026-10-17T18:53:09.887Z",
+      "ultimaVez": "2026-10-17T19:02:18.386Z",
+      "gitRev": "6ad40c7"
+    },
+    "AC_SEM_TESTE::dominio-agenda::AC-004": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "dominio-agenda",
+      "ref": "AC-004",
+      "ocorrencias": 4,
+      "primeiraVez": "2026-10-17T18:53:09.887Z",
+      "ultimaVez": "2026-10-17T19:02:18.386Z",
+      "gitRev": "6ad40c7"
+    },
+    "AC_SEM_TESTE::dominio-agenda::AC-005": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "dominio-agenda",
+      "ref": "AC-005",
+      "ocorrencias": 4,
+      "primeiraVez": "2026-10-17T18:53:09.887Z",
+      "ultimaVez": "2026-10-17T19:02:18.386Z",
+      "gitRev": "6ad40c7"
+    },
+    "AC_SEM_TESTE::dominio-agenda::AC-006": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "dominio-agenda",
+      "ref": "AC-006",
+      "ocorrencias": 4,
+      "primeiraVez": "2026-10-17T18:53:09.887Z",
+      "ultimaVez": "2026-10-17T19:02:18.386Z",
+      "gitRev": "6ad40c7"
+    },
+    "AC_SEM_TESTE::dominio-agenda::AC-007": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "dominio-agenda",
+      "ref": "AC-007",
+      "ocorrencias": 4,
+      "primeiraVez": "2026-10-17T18:53:09.887Z",
+      "ultimaVez": "2026-10-17T19:02:18.386Z",
+      "gitRev": "6ad40c7"
+    },
+    "AC_SEM_TESTE::dominio-agenda::AC-008": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "dominio-agenda",
+      "ref": "AC-008",
+      "ocorrencias": 4,
+      "primeiraVez": "2026-10-17T18:53:09.887Z",
+      "ultimaVez": "2026-10-17T19:02:18.386Z",
+      "gitRev": "6ad40c7"
+    },
+    "AC_SEM_TESTE::dominio-agenda::AC-009": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "dominio-agenda",
+      "ref": "AC-009",
+      "ocorrencias": 4,
+      "primeiraVez": "2026-10-17T18:53:09.887Z",
+      "ultimaVez": "2026-10-17T19:02:18.386Z",
+      "gitRev": "6ad40c7"
+    },
+    "AC_SEM_TESTE::dominio-agenda::AC-010": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "dominio-agenda",
+      "ref": "AC-010",
+      "ocorrencias": 4,
+      "primeiraVez": "2026-10-17T18:53:09.887Z",
+      "ultimaVez": "2026-10-17T19:02:18.386Z",
+      "gitRev": "6ad40c7"
+    },
+    "GLOB_SEM_ARQUIVOS::—::P-003": {
+      "codigo": "GLOB_SEM_ARQUIVOS",
+      "feature": "—",
+      "ref": "P-003",
+      "ocorrencias": 3,
+      "primeiraVez": "2026-10-17T18:56:11.237Z",
+      "ultimaVez": "2026-10-17T19:02:18.386Z",
+      "gitRev": "6ad40c7"
+    },
+    "ARQUIVO_ORFAO::—::shared/src/types/financial.ts": {
+      "codigo": "ARQUIVO_ORFAO",
+      "feature": "—",
+      "ref": "shared/src/types/financial.ts",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-17T19:01:08.643Z",
+      "ultimaVez": "2026-10-17T19:01:08.643Z",
+      "gitRev": "6ad40c7"
+    },
+    "VERIFY_FALHOU::dominio-agenda::AC-003": {
+      "codigo": "VERIFY_FALHOU",
+      "feature": "dominio-agenda",
+      "ref": "AC-003",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-17T19:03:21.987Z",
+      "ultimaVez": "2026-10-17T19:03:21.987Z",
+      "gitRev": "e299942"
+    },
+    "VERIFY_FALHOU::dominio-agenda::AC-004": {
+      "codigo": "VERIFY_FALHOU",
+      "feature": "dominio-agenda",
+      "ref": "AC-004",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-17T19:03:21.987Z",
+      "ultimaVez": "2026-10-17T19:03:21.987Z",
+      "gitRev": "e299942"
+    },
+    "VERIFY_FALHOU::dominio-agenda::AC-005": {
+      "codigo": "VERIFY_FALHOU",
+      "feature": "dominio-agenda",
+      "ref": "AC-005",
+      "ocorrencias": 2,
+      "primeiraVez": "2026-10-17T19:03:21.987Z",
+      "ultimaVez": "2026-10-17T19:05:00.480Z",
+      "gitRev": "8dab64e"
+    },
+    "VERIFY_FALHOU::dominio-agenda::AC-006": {
+      "codigo": "VERIFY_FALHOU",
+      "feature": "dominio-agenda",
+      "ref": "AC-006",
+      "ocorrencias": 2,
+      "primeiraVez": "2026-10-17T19:03:21.987Z",
+      "ultimaVez": "2026-10-17T19:05:00.480Z",
+      "gitRev": "8dab64e"
+    },
+    "VERIFY_FALHOU::dominio-agenda::AC-007": {
+      "codigo": "VERIFY_FALHOU",
+      "feature": "dominio-agenda",
+      "ref": "AC-007",
+      "ocorrencias": 3,
+      "primeiraVez": "2026-10-17T19:03:21.987Z",
+      "ultimaVez": "2026-10-17T19:06:52.263Z",
+      "gitRev": "38d35b4"
+    },
+    "VERIFY_FALHOU::dominio-agenda::AC-008": {
+      "codigo": "VERIFY_FALHOU",
+      "feature": "dominio-agenda",
+      "ref": "AC-008",
+      "ocorrencias": 4,
+      "primeiraVez": "2026-10-17T19:03:21.987Z",
+      "ultimaVez": "2026-10-17T19:08:38.398Z",
+      "gitRev": "6f7cd9c"
+    },
+    "VERIFY_FALHOU::dominio-agenda::AC-009": {
+      "codigo": "VERIFY_FALHOU",
+      "feature": "dominio-agenda",
+      "ref": "AC-009",
+      "ocorrencias": 4,
+      "primeiraVez": "2026-10-17T19:03:21.987Z",
+      "ultimaVez": "2026-10-17T19:08:38.398Z",
+      "gitRev": "6f7cd9c"
+    },
+    "VERIFY_FALHOU::dominio-agenda::AC-010": {
+      "codigo": "VERIFY_FALHOU",
+      "feature": "dominio-agenda",
+      "ref": "AC-010",
+      "ocorrencias": 5,
+      "primeiraVez": "2026-10-17T19:03:21.987Z",
+      "ultimaVez": "2026-10-17T19:10:29.313Z",
+      "gitRev": "760afeb"
     }
   }
 }

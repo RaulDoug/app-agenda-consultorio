@@ -24,4 +24,11 @@ AC_SEM_PROVA, TASK_CONCLUIDA_SEM_PROVA) — não precisa de teste extra seu.
 
 Chaves e senhas vêm de variáveis de ambiente, nunca hard-coded.
 
-- verificação(proibido): `(api[_-]?key|senha|password)\s*[:=]\s*['"][^'"]{8,}` em `src/**/*.js`
+- verificação(proibido): `(api[_-]?key|senha|password)\s*[:=]\s*['"][^'"]{8,}` em `**/*.ts`
+
+## P-003 [DEVE] Soft Delete em Entidades Críticas de Negócio
+
+Tabelas essenciais de negócio (patients, procedures, appointments, financial_transactions) devem preservar o histórico através de Soft Delete (is_active = false e/ou deleted_at). Fica expressamente proibido o uso de `DELETE FROM` direto nessas tabelas em código de backend.
+
+- verificação(proibido): `DELETE\s+FROM\s+(patients|procedures|appointments|financial_transactions)\b` em `backend/src/**/*.ts`
+

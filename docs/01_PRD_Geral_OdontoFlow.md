@@ -162,6 +162,7 @@ erDiagram
         string name
         string whatsapp
         boolean is_active
+        datetime deleted_at
         datetime created_at
     }
 
@@ -171,6 +172,7 @@ erDiagram
         int default_duration_minutes
         decimal default_price
         boolean is_active
+        datetime deleted_at
     }
 
     APPOINTMENT {
@@ -181,6 +183,7 @@ erDiagram
         boolean is_overtime
         decimal total_price
         text notes
+        datetime deleted_at
     }
 
     APPOINTMENT_ITEM {
@@ -201,6 +204,7 @@ erDiagram
         int installment_number
         int total_installments
         string category
+        datetime deleted_at
     }
 
     BUSINESS_HOURS {
@@ -218,6 +222,7 @@ erDiagram
         string title
         datetime start_time
         datetime end_time
+        datetime deleted_at
     }
 ```
 

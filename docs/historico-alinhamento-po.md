@@ -31,6 +31,7 @@
 | **Retorno Inteligente** | **Atalhos + Sugestão de 3 Vagos** | Atalhos ("Em 15 dias", "Em 30 dias"). Se o horário exato estiver ocupado ou fora do expediente, sugere instantaneamente as 3 alternativas vagas mais próximas. |
 | **Motor WhatsApp** | **Evolution API (QR Code)** | Utiliza o próprio número do dentista sem taxas da Meta. Fila no BullMQ/Redis com intervalo randômico de 20s a 50s (*jitter*) e Spintax para evitar bloqueios. |
 | **Armazenamento Offline** | **IndexedDB (Dexie.js) Local-First** | Leitura/escrita instantânea (< 5ms) no celular com fila de sincronização em segundo plano (`sync_outbox`). Volume de dados anual levíssimo (~2,5 MB). |
+| **Segurança & Soft Delete** | **Soft Delete Obrigatório (`is_active` + `deleted_at`)** | Entidades críticas (`patients`, `procedures`, `appointments`, `financial_transactions`, `schedule_blocks`) nunca sofrem hard delete (`DELETE FROM`). Preserva integridade referencial, rastreabilidade clínica e conformidade contábil. |
 
 ---
 

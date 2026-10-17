@@ -131,7 +131,7 @@ CREATE TABLE tenants (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
--- 2. Tabela de Pacientes (com Soft Delete is_active)
+-- 2. Tabela de Pacientes (com Soft Delete is_active e deleted_at)
 CREATE TABLE patients (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     tenant_id UUID NOT NULL REFERENCES tenants(id) ON DELETE CASCADE,
@@ -139,13 +139,14 @@ CREATE TABLE patients (
     whatsapp VARCHAR(20) NOT NULL,
     notes TEXT,
     is_active BOOLEAN DEFAULT TRUE,
+    deleted_at TIMESTAMP WITH TIME ZONE DEFAULT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 CREATE INDEX idx_patients_tenant_whatsapp ON patients(tenant_id, whatsapp);
-CREATE INDEX idx_patients_tenant_active ON patients(tenant_id, is_active);
+CREATE INDEX idx_patients_tenant_active ON patients(tenant_id, is_active) WHERE deleted_at IS NULL;
 
--- 3. Tabela de Procedimentos
+-- 3. Tabela de Procedimentos (com Soft Delete is_active e deleted_at)
 CREATE TABLE procedures (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     tenant_id UUID NOT NULL REFERENCES tenants(id) ON DELETE CASCADE,
@@ -153,11 +154,12 @@ CREATE TABLE procedures (
     default_duration_minutes INT NOT NULL DEFAULT 30 CHECK (default_duration_minutes > 0),
     default_price_cents INT NOT NULL DEFAULT 0 CHECK (default_price_cents >= 0),
     is_active BOOLEAN DEFAULT TRUE,
+    deleted_at TIMESTAMP WITH TIME ZONE DEFAULT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
-CREATE INDEX idx_procedures_tenant ON procedures(tenant_id);
+CREATE INDEX idx_procedures_tenant ON procedures(tenant_id) WHERE deleted_at IS NULL;
 
--- 4. Tabela de Agendamentos
+-- 4. Tabela de Agendamentos (com Soft Delete via deleted_at e status CANCELLED)
 CREATE TYPE appointment_status AS ENUM (
     'PENDING', 
     'CONFIRMED', 
@@ -178,10 +180,11 @@ CREATE TABLE appointments (
     is_overtime BOOLEAN DEFAULT FALSE, -- Flag para encaixe fora do expediente
     total_charged_cents INT,           -- Armazenado em centavos inteiros para precisão contábil
     notes TEXT,
+    deleted_at TIMESTAMP WITH TIME ZONE DEFAULT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
-CREATE INDEX idx_appointments_tenant_dates ON appointments(tenant_id, start_time, end_time);
+CREATE INDEX idx_appointments_tenant_dates ON appointments(tenant_id, start_time, end_time) WHERE deleted_at IS NULL;
 
 -- 5. Itens do Agendamento (Múltiplos Procedimentos por consulta)
 CREATE TABLE appointment_items (
@@ -192,7 +195,7 @@ CREATE TABLE appointment_items (
     duration_minutes INT NOT NULL CHECK (duration_minutes > 0)
 );
 
--- 6. Transações Financeiras (Caixa Simples & Contas a Receber)
+-- 6. Transações Financeiras (com Soft Delete para auditoria contábil)
 CREATE TYPE transaction_type AS ENUM ('INCOME', 'EXPENSE');
 CREATE TYPE transaction_status AS ENUM ('PAID', 'PENDING');
 CREATE TYPE payment_method AS ENUM ('PIX', 'CREDIT_CARD', 'DEBIT_CARD', 'CASH', 'BOLETO');
@@ -211,9 +214,10 @@ CREATE TABLE financial_transactions (
     payment_date DATE,
     installment_number INT DEFAULT 1,
     total_installments INT DEFAULT 1,
+    deleted_at TIMESTAMP WITH TIME ZONE DEFAULT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
-CREATE INDEX idx_transactions_tenant_dates ON financial_transactions(tenant_id, due_date, status);
+CREATE INDEX idx_transactions_tenant_dates ON financial_transactions(tenant_id, due_date, status) WHERE deleted_at IS NULL;
 
 -- 7. Horário de Funcionamento Regular do Consultório
 CREATE TABLE business_hours (
@@ -237,9 +241,10 @@ CREATE TABLE schedule_blocks (
     title VARCHAR(255) NOT NULL,
     start_time TIMESTAMP WITH TIME ZONE NOT NULL,
     end_time TIMESTAMP WITH TIME ZONE NOT NULL,
+    deleted_at TIMESTAMP WITH TIME ZONE DEFAULT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
-CREATE INDEX idx_blocks_tenant_dates ON schedule_blocks(tenant_id, start_time, end_time);
+CREATE INDEX idx_blocks_tenant_dates ON schedule_blocks(tenant_id, start_time, end_time) WHERE deleted_at IS NULL;
 ```
 
 ---
