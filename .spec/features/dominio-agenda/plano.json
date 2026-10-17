@@ -1,0 +1,150 @@
+{
+  "runId": "App-Agenda-Consultório-dominio-agenda-mvcr8dgm",
+  "feature": "dominio-agenda",
+  "agent": "antigravity",
+  "modo": "paralelo",
+  "paralelizar": null,
+  "modeloForcado": null,
+  "esforcoForcado": null,
+  "geradoEm": "2026-10-17 18:53",
+  "branchTrabalho": "spec/dominio-agenda",
+  "baseDir": ".spec/features/dominio-agenda",
+  "specDir": ".spec",
+  "repoName": "App-Agenda-Consultório",
+  "logsDir": "../onp-worktrees/App-Agenda-Consultório-dominio-agenda-logs",
+  "ondas": [
+    [
+      "faixa-1",
+      "faixa-2"
+    ]
+  ],
+  "faixas": [
+    {
+      "id": "faixa-1",
+      "branch": "spec/dominio-agenda-faixa-1",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-dominio-agenda-faixa-1",
+      "tarefas": [
+        {
+          "id": "T-001",
+          "titulo": "Modelagem dos Tipos e Contratos Compartilhados",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "shared/src/types/appointment.ts",
+            "shared/src/types/patient.ts",
+            "shared/src/types/procedure.ts",
+            "shared/src/types/business-hours.ts",
+            "shared/src/index.ts"
+          ],
+          "refs": [
+            "US-001",
+            "US-002",
+            "US-003",
+            "US-004",
+            "US-005",
+            "US-006"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "faixa-2",
+      "branch": "spec/dominio-agenda-faixa-2",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-dominio-agenda-faixa-2",
+      "tarefas": [
+        {
+          "id": "T-002",
+          "titulo": "Funções de Domínio: Duração Dinâmica e Validação de Procedimentos",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "backend/src/domain/duration.ts",
+            "backend/src/domain/__tests__/schedule-domain.spec.ts"
+          ],
+          "refs": [
+            "US-001",
+            "AC-001",
+            "AC-002"
+          ]
+        },
+        {
+          "id": "T-003",
+          "titulo": "Funções de Domínio: Normalização e Validação de Telefones WhatsApp",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "backend/src/domain/phone.ts",
+            "backend/src/domain/__tests__/schedule-domain.spec.ts"
+          ],
+          "refs": [
+            "US-002",
+            "AC-003",
+            "AC-004"
+          ]
+        },
+        {
+          "id": "T-004",
+          "titulo": "Funções de Domínio: Validação de Expediente e Encaixe com Soft-Warning",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "backend/src/domain/business-hours.ts",
+            "backend/src/domain/__tests__/schedule-domain.spec.ts"
+          ],
+          "refs": [
+            "US-003",
+            "AC-005",
+            "AC-006"
+          ]
+        },
+        {
+          "id": "T-005",
+          "titulo": "Funções de Domínio: Algoritmo de Retorno Inteligente",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "backend/src/domain/smart-return.ts",
+            "backend/src/domain/__tests__/schedule-domain.spec.ts"
+          ],
+          "refs": [
+            "US-004",
+            "AC-007"
+          ]
+        },
+        {
+          "id": "T-006",
+          "titulo": "Funções de Domínio: Máquina de Estados e Imutabilidade de Status",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "backend/src/domain/appointment-state.ts",
+            "backend/src/domain/__tests__/schedule-domain.spec.ts"
+          ],
+          "refs": [
+            "US-005",
+            "AC-008",
+            "AC-009"
+          ]
+        },
+        {
+          "id": "T-007",
+          "titulo": "Funções de Domínio: Fuso Horário UTC-3 e Exportações",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "backend/src/domain/timezone.ts",
+            "backend/src/domain/index.ts",
+            "backend/src/domain/__tests__/schedule-domain.spec.ts"
+          ],
+          "refs": [
+            "US-006",
+            "AC-010"
+          ]
+        }
+      ]
+    }
+  ],
+  "sequenciais": [],
+  "concluidas": [],
+  "avisos": []
+}
