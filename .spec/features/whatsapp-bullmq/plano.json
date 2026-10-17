@@ -1,0 +1,154 @@
+{
+  "runId": "App-Agenda-Consultório-whatsapp-bullmq-mvcu4g27",
+  "feature": "whatsapp-bullmq",
+  "agent": "antigravity",
+  "modo": "paralelo",
+  "paralelizar": null,
+  "modeloForcado": null,
+  "esforcoForcado": null,
+  "geradoEm": "2026-10-17 20:14",
+  "branchTrabalho": "spec/whatsapp-bullmq",
+  "baseDir": ".spec/features/whatsapp-bullmq",
+  "specDir": ".spec",
+  "repoName": "App-Agenda-Consultório",
+  "logsDir": "../onp-worktrees/App-Agenda-Consultório-whatsapp-bullmq-logs",
+  "ondas": [
+    [
+      "faixa-1",
+      "faixa-2",
+      "faixa-3"
+    ],
+    [
+      "faixa-4",
+      "faixa-5"
+    ]
+  ],
+  "faixas": [
+    {
+      "id": "faixa-1",
+      "branch": "spec/whatsapp-bullmq-faixa-1",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-whatsapp-bullmq-faixa-1",
+      "tarefas": [
+        {
+          "id": "T-013",
+          "titulo": "Parser Semântico de Respostas e Gerador Spintax Anti-Ban",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "backend/src/whatsapp/parser.ts",
+            "backend/src/whatsapp/spintax.ts"
+          ],
+          "refs": [
+            "US-011",
+            "US-012",
+            "AC-019",
+            "AC-020",
+            "AC-021"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "faixa-2",
+      "branch": "spec/whatsapp-bullmq-faixa-2",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-whatsapp-bullmq-faixa-2",
+      "tarefas": [
+        {
+          "id": "T-014",
+          "titulo": "Cliente Evolution API e Mock para Testes Determinísticos",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "backend/src/whatsapp/evolution-client.ts",
+            "backend/src/whatsapp/__tests__/mock-evolution.ts"
+          ],
+          "refs": [
+            "US-013",
+            "US-014",
+            "AC-023"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "faixa-3",
+      "branch": "spec/whatsapp-bullmq-faixa-3",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-whatsapp-bullmq-faixa-3",
+      "tarefas": [
+        {
+          "id": "T-015",
+          "titulo": "Fila BullMQ com Jitter Humanizado e Pausa Automática",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "backend/src/whatsapp/queue.ts",
+            "backend/src/whatsapp/scheduler.ts"
+          ],
+          "refs": [
+            "US-013",
+            "AC-022",
+            "AC-023",
+            "AC-026"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "faixa-4",
+      "branch": "spec/whatsapp-bullmq-faixa-4",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-whatsapp-bullmq-faixa-4",
+      "tarefas": [
+        {
+          "id": "T-016",
+          "titulo": "Rota de Webhook da Evolution API e Atualização de Status da Agenda",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "backend/src/routes/webhooks.ts",
+            "backend/src/app.ts"
+          ],
+          "refs": [
+            "US-011",
+            "US-014",
+            "AC-024",
+            "AC-025",
+            "AC-026"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "faixa-5",
+      "branch": "spec/whatsapp-bullmq-faixa-5",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-whatsapp-bullmq-faixa-5",
+      "tarefas": [
+        {
+          "id": "T-017",
+          "titulo": "Suíte de Testes Automatizados TDD Integrada",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "backend/src/whatsapp/__tests__/whatsapp.spec.ts"
+          ],
+          "refs": [
+            "US-011",
+            "US-012",
+            "US-013",
+            "US-014",
+            "AC-019",
+            "AC-020",
+            "AC-021",
+            "AC-022",
+            "AC-023",
+            "AC-024",
+            "AC-025",
+            "AC-026"
+          ]
+        }
+      ]
+    }
+  ],
+  "sequenciais": [],
+  "concluidas": [],
+  "avisos": []
+}

@@ -1,7 +1,7 @@
 {
   "feature": "persistencia-api",
-  "timestamp": "2026-10-17T19:43:21.099Z",
-  "gitRev": "a42371a",
+  "timestamp": "2026-10-17T20:09:57.014Z",
+  "gitRev": "aabd426",
   "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
   "exitCode": 0,

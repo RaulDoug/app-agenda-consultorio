@@ -257,10 +257,10 @@
       "codigo": "VERIFY_OBSOLETO",
       "feature": "dominio-agenda",
       "ref": "—",
-      "ocorrencias": 3,
+      "ocorrencias": 4,
       "primeiraVez": "2026-10-17T19:21:57.173Z",
-      "ultimaVez": "2026-10-17T19:43:11.017Z",
-      "gitRev": "a42371a"
+      "ultimaVez": "2026-10-17T20:14:56.090Z",
+      "gitRev": "d74857f"
     },
     "ARQUIVO_INEXISTENTE::persistencia-api::T-008": {
       "codigo": "ARQUIVO_INEXISTENTE",
@@ -437,10 +437,118 @@
       "codigo": "VERIFY_OBSOLETO",
       "feature": "persistencia-api",
       "ref": "—",
-      "ocorrencias": 1,
+      "ocorrencias": 2,
       "primeiraVez": "2026-10-17T19:43:11.018Z",
-      "ultimaVez": "2026-10-17T19:43:11.018Z",
-      "gitRev": "a42371a"
+      "ultimaVez": "2026-10-17T20:14:56.091Z",
+      "gitRev": "d74857f"
+    },
+    "ARQUIVO_INEXISTENTE::whatsapp-bullmq::T-013": {
+      "codigo": "ARQUIVO_INEXISTENTE",
+      "feature": "whatsapp-bullmq",
+      "ref": "T-013",
+      "ocorrencias": 2,
+      "primeiraVez": "2026-10-17T20:14:56.091Z",
+      "ultimaVez": "2026-10-17T20:14:56.091Z",
+      "gitRev": "d74857f"
+    },
+    "ARQUIVO_INEXISTENTE::whatsapp-bullmq::T-014": {
+      "codigo": "ARQUIVO_INEXISTENTE",
+      "feature": "whatsapp-bullmq",
+      "ref": "T-014",
+      "ocorrencias": 2,
+      "primeiraVez": "2026-10-17T20:14:56.091Z",
+      "ultimaVez": "2026-10-17T20:14:56.091Z",
+      "gitRev": "d74857f"
+    },
+    "ARQUIVO_INEXISTENTE::whatsapp-bullmq::T-015": {
+      "codigo": "ARQUIVO_INEXISTENTE",
+      "feature": "whatsapp-bullmq",
+      "ref": "T-015",
+      "ocorrencias": 2,
+      "primeiraVez": "2026-10-17T20:14:56.091Z",
+      "ultimaVez": "2026-10-17T20:14:56.091Z",
+      "gitRev": "d74857f"
+    },
+    "ARQUIVO_INEXISTENTE::whatsapp-bullmq::T-016": {
+      "codigo": "ARQUIVO_INEXISTENTE",
+      "feature": "whatsapp-bullmq",
+      "ref": "T-016",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-17T20:14:56.091Z",
+      "ultimaVez": "2026-10-17T20:14:56.091Z",
+      "gitRev": "d74857f"
+    },
+    "AC_SEM_PROVA::whatsapp-bullmq::AC-019": {
+      "codigo": "AC_SEM_PROVA",
+      "feature": "whatsapp-bullmq",
+      "ref": "AC-019",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-17T20:14:56.091Z",
+      "ultimaVez": "2026-10-17T20:14:56.091Z",
+      "gitRev": "d74857f"
+    },
+    "AC_SEM_PROVA::whatsapp-bullmq::AC-020": {
+      "codigo": "AC_SEM_PROVA",
+      "feature": "whatsapp-bullmq",
+      "ref": "AC-020",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-17T20:14:56.091Z",
+      "ultimaVez": "2026-10-17T20:14:56.091Z",
+      "gitRev": "d74857f"
+    },
+    "AC_SEM_PROVA::whatsapp-bullmq::AC-021": {
+      "codigo": "AC_SEM_PROVA",
+      "feature": "whatsapp-bullmq",
+      "ref": "AC-021",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-17T20:14:56.091Z",
+      "ultimaVez": "2026-10-17T20:14:56.091Z",
+      "gitRev": "d74857f"
+    },
+    "AC_SEM_PROVA::whatsapp-bullmq::AC-022": {
+      "codigo": "AC_SEM_PROVA",
+      "feature": "whatsapp-bullmq",
+      "ref": "AC-022",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-17T20:14:56.091Z",
+      "ultimaVez": "2026-10-17T20:14:56.091Z",
+      "gitRev": "d74857f"
+    },
+    "AC_SEM_PROVA::whatsapp-bullmq::AC-023": {
+      "codigo": "AC_SEM_PROVA",
+      "feature": "whatsapp-bullmq",
+      "ref": "AC-023",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-17T20:14:56.091Z",
+      "ultimaVez": "2026-10-17T20:14:56.091Z",
+      "gitRev": "d74857f"
+    },
+    "AC_SEM_PROVA::whatsapp-bullmq::AC-024": {
+      "codigo": "AC_SEM_PROVA",
+      "feature": "whatsapp-bullmq",
+      "ref": "AC-024",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-17T20:14:56.091Z",
+      "ultimaVez": "2026-10-17T20:14:56.091Z",
+      "gitRev": "d74857f"
+    },
+    "AC_SEM_PROVA::whatsapp-bullmq::AC-025": {
+      "codigo": "AC_SEM_PROVA",
+      "feature": "whatsapp-bullmq",
+      "ref": "AC-025",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-17T20:14:56.091Z",
+      "ultimaVez": "2026-10-17T20:14:56.091Z",
+      "gitRev": "d74857f"
+    },
+    "AC_SEM_PROVA::whatsapp-bullmq::AC-026": {
+      "codigo": "AC_SEM_PROVA",
+      "feature": "whatsapp-bullmq",
+      "ref": "AC-026",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-17T20:14:56.091Z",
+      "ultimaVez": "2026-10-17T20:14:56.091Z",
+      "gitRev": "d74857f"
     }
   }
 }
