@@ -257,10 +257,10 @@
       "codigo": "VERIFY_OBSOLETO",
       "feature": "dominio-agenda",
       "ref": "—",
-      "ocorrencias": 2,
+      "ocorrencias": 3,
       "primeiraVez": "2026-10-17T19:21:57.173Z",
-      "ultimaVez": "2026-10-17T19:41:53.072Z",
-      "gitRev": "0fc9be6"
+      "ultimaVez": "2026-10-17T19:43:11.017Z",
+      "gitRev": "a42371a"
     },
     "ARQUIVO_INEXISTENTE::persistencia-api::T-008": {
       "codigo": "ARQUIVO_INEXISTENTE",
@@ -432,6 +432,15 @@
       "primeiraVez": "2026-10-17T19:29:48.321Z",
       "ultimaVez": "2026-10-17T19:39:38.954Z",
       "gitRev": "61e6ec3"
+    },
+    "VERIFY_OBSOLETO::persistencia-api::—": {
+      "codigo": "VERIFY_OBSOLETO",
+      "feature": "persistencia-api",
+      "ref": "—",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-17T19:43:11.018Z",
+      "ultimaVez": "2026-10-17T19:43:11.018Z",
+      "gitRev": "a42371a"
     }
   }
 }
