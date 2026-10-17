@@ -24,7 +24,7 @@ AC_SEM_PROVA, TASK_CONCLUIDA_SEM_PROVA) — não precisa de teste extra seu.
 
 Chaves e senhas vêm de variáveis de ambiente, nunca hard-coded.
 
-- verificação(proibido): `(api[_-]?key|senha|password)\s*[:=]\s*['"][^'"]{8,}` em `{backend,frontend,shared}/src/**/*.{ts,tsx,js}`
+- verificação(proibido): `(api[_-]?key|senha|password)\s*[:=]\s*['"][^'"]{8,}` em `**/*.ts`
 
 ## P-003 [DEVE] Soft Delete em Entidades Críticas de Negócio
 

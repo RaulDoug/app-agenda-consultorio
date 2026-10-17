@@ -4,7 +4,7 @@
 
 ## T-001 — Modelagem dos Tipos e Contratos Compartilhados [em-andamento]
 - Refs: US-001, US-002, US-003, US-004, US-005, US-006
-- Arquivos: shared/src/types/appointment.ts, shared/src/types/patient.ts, shared/src/types/procedure.ts, shared/src/types/business-hours.ts, shared/src/index.ts
+- Arquivos: shared/src/types/appointment.ts, shared/src/types/patient.ts, shared/src/types/procedure.ts, shared/src/types/business-hours.ts, shared/src/types/financial.ts, shared/src/index.ts
 - Notas: Contratos e interfaces base para agendamentos, procedimentos, pacientes e expediente compartilhados entre backend e frontend.
 
 ## T-002 — Funções de Domínio: Duração Dinâmica e Validação de Procedimentos [pendente]
