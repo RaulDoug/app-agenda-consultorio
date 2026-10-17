@@ -1,7 +1,7 @@
 {
   "feature": "whatsapp-bullmq",
-  "timestamp": "2026-10-17T20:37:56.560Z",
-  "gitRev": "1098f89",
+  "timestamp": "2026-10-17T20:41:52.557Z",
+  "gitRev": "be9e8c5",
   "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
   "exitCode": 1,
@@ -23,7 +23,7 @@
       "method": "vitest-json"
     },
     "AC-022": {
-      "status": "fail",
+      "status": "pass",
       "testName": "Motor WhatsApp, BullMQ e Webhook Evolution API — OdontoFlow US-013 — Enfileiramento com Jitter Humanizado e Salvaguardas de Horário AC-022: Intervalo de jitter humanizado entre 20 e 50 segundos e salvaguarda temporal @spec:AC-022 AC-022: Intervalo de jitter humanizado entre 20 e 50 segundos e salvaguarda temporal @spec:AC-022",
       "method": "vitest-json"
     },

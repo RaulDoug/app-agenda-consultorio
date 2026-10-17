@@ -3,6 +3,8 @@ import { parsePatientMessage, resolveStatusTransition } from '../parser.js';
 import { processSpintax, generateSpintaxVariations } from '../spintax.js';
 import { sendWithRetry } from '../evolution-client.js';
 import { MockEvolutionClient } from './mock-evolution.js';
+import { InMemoryConfirmationQueue } from '../queue.js';
+import { scheduleConfirmationBatch, type AppointmentConfirmationCandidate } from '../scheduler.js';
 
 describe('Motor WhatsApp, BullMQ e Webhook Evolution API — OdontoFlow', () => {
   describe('US-011 — Parser Inteligente de Mensagens e Ciclo de Confirmação', () => {
@@ -89,8 +91,53 @@ describe('Motor WhatsApp, BullMQ e Webhook Evolution API — OdontoFlow', () => 
   });
 
   describe('US-013 — Enfileiramento com Jitter Humanizado e Salvaguardas de Horário', () => {
-    it('AC-022: Intervalo de jitter humanizado entre 20 e 50 segundos e salvaguarda temporal @spec:AC-022', () => {
-      throw new Error('critério de aceite AC-022 ainda não provado — implemente este teste (T-015)');
+    it('AC-022: Intervalo de jitter humanizado entre 20 e 50 segundos e salvaguarda temporal @spec:AC-022', async () => {
+      const queue = new InMemoryConfirmationQueue();
+      const referenceDate = new Date('2026-10-20T09:00:00.000Z');
+
+      // 1. Cria lista com 10 agendamentos para o dia seguinte (2026-10-21)
+      const nextDayCandidates: AppointmentConfirmationCandidate[] = Array.from({ length: 10 }).map((_, i) => ({
+        appointmentId: `app-${i + 1}`,
+        tenantId: 'tenant-1',
+        instanceName: 'inst-1',
+        phone: `551199999000${i}`,
+        patientName: `Paciente ${i + 1}`,
+        appointmentStartTime: '2026-10-21T10:00:00.000Z',
+      }));
+
+      // Adiciona 1 agendamento para o MESMO dia de hoje (2026-10-20)
+      const sameDayCandidate: AppointmentConfirmationCandidate = {
+        appointmentId: 'app-same-day',
+        tenantId: 'tenant-1',
+        instanceName: 'inst-1',
+        phone: '5511988880000',
+        patientName: 'Paciente Mesmo Dia',
+        appointmentStartTime: '2026-10-20T16:00:00.000Z',
+      };
+
+      const candidates = [...nextDayCandidates, sameDayCandidate];
+
+      // 2. Executa o agendamento em lote
+      const result = await scheduleConfirmationBatch(candidates, queue, {
+        referenceDate,
+        minJitterSec: 20,
+        maxJitterSec: 50,
+      });
+
+      // Salvaguarda temporal: O agendamento de hoje DEVE ser ignorado
+      expect(result.skippedSameDayCount).toBe(1);
+      expect(result.skippedSameDayAppointments).toContain('app-same-day');
+      expect(result.scheduledCount).toBe(10);
+
+      // 3. Validação do Jitter Humanizado: intervalo entre cada job consecutivo deve ser entre 20s e 50s
+      expect(result.enqueuedJobs).toHaveLength(10);
+      expect(result.enqueuedJobs[0].delayMs).toBe(0);
+
+      for (let i = 1; i < result.enqueuedJobs.length; i++) {
+        const intervalMs = result.enqueuedJobs[i].delayMs - result.enqueuedJobs[i - 1].delayMs;
+        expect(intervalMs).toBeGreaterThanOrEqual(20 * 1000);
+        expect(intervalMs).toBeLessThanOrEqual(50 * 1000);
+      }
     });
 
     it('AC-023: Retry exponencial em caso de instabilidade na Evolution API @spec:AC-023', async () => {

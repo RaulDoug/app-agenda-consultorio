@@ -12,7 +12,7 @@
 - Arquivos: backend/src/whatsapp/evolution-client.ts, backend/src/whatsapp/__tests__/mock-evolution.ts
 - Notas: Wrapper HTTP para disparos na Evolution API com tratamento de erros transitórios (502/503) e mock in-memory para testes sem internet.
 
-## T-015 — Fila BullMQ com Jitter Humanizado e Pausa Automática [pendente]
+## T-015 — Fila BullMQ com Jitter Humanizado e Pausa Automática [concluida]
 - Refs: US-013, AC-022, AC-023, AC-026
 - Arquivos: backend/src/whatsapp/queue.ts, backend/src/whatsapp/scheduler.ts
 - Notas: Configuração de filas BullMQ, enfileiramento com delays incrementais de 20s a 50s e mecanismo de pausa imediata ao perder conexão.

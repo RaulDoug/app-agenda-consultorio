@@ -572,28 +572,28 @@
       "codigo": "VERIFY_FALHOU",
       "feature": "whatsapp-bullmq",
       "ref": "AC-024",
-      "ocorrencias": 2,
+      "ocorrencias": 3,
       "primeiraVez": "2026-10-17T20:30:33.343Z",
-      "ultimaVez": "2026-10-17T20:37:56.633Z",
-      "gitRev": "1098f89"
+      "ultimaVez": "2026-10-17T20:41:52.634Z",
+      "gitRev": "be9e8c5"
     },
     "VERIFY_FALHOU::whatsapp-bullmq::AC-025": {
       "codigo": "VERIFY_FALHOU",
       "feature": "whatsapp-bullmq",
       "ref": "AC-025",
-      "ocorrencias": 2,
+      "ocorrencias": 3,
       "primeiraVez": "2026-10-17T20:30:33.343Z",
-      "ultimaVez": "2026-10-17T20:37:56.633Z",
-      "gitRev": "1098f89"
+      "ultimaVez": "2026-10-17T20:41:52.634Z",
+      "gitRev": "be9e8c5"
     },
     "VERIFY_FALHOU::whatsapp-bullmq::AC-026": {
       "codigo": "VERIFY_FALHOU",
       "feature": "whatsapp-bullmq",
       "ref": "AC-026",
-      "ocorrencias": 2,
+      "ocorrencias": 3,
       "primeiraVez": "2026-10-17T20:30:33.343Z",
-      "ultimaVez": "2026-10-17T20:37:56.633Z",
-      "gitRev": "1098f89"
+      "ultimaVez": "2026-10-17T20:41:52.634Z",
+      "gitRev": "be9e8c5"
     }
   }
 }
