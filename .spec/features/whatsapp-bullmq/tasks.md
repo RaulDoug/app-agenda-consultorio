@@ -7,7 +7,7 @@
 - Arquivos: backend/src/whatsapp/parser.ts, backend/src/whatsapp/spintax.ts
 - Notas: Classificação determinística de respostas de pacientes (confirmação, reagendamento, texto livre) e geração estocástica Spintax de mensagens.
 
-## T-014 — Cliente Evolution API e Mock para Testes Determinísticos [pendente]
+## T-014 — Cliente Evolution API e Mock para Testes Determinísticos [concluida]
 - Refs: US-013, US-014, AC-023
 - Arquivos: backend/src/whatsapp/evolution-client.ts, backend/src/whatsapp/__tests__/mock-evolution.ts
 - Notas: Wrapper HTTP para disparos na Evolution API com tratamento de erros transitórios (502/503) e mock in-memory para testes sem internet.

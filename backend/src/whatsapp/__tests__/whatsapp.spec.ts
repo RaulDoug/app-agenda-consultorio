@@ -1,6 +1,8 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { parsePatientMessage, resolveStatusTransition } from '../parser.js';
 import { processSpintax, generateSpintaxVariations } from '../spintax.js';
+import { sendWithRetry } from '../evolution-client.js';
+import { MockEvolutionClient } from './mock-evolution.js';
 
 describe('Motor WhatsApp, BullMQ e Webhook Evolution API — OdontoFlow', () => {
   describe('US-011 — Parser Inteligente de Mensagens e Ciclo de Confirmação', () => {
@@ -91,8 +93,32 @@ describe('Motor WhatsApp, BullMQ e Webhook Evolution API — OdontoFlow', () => 
       throw new Error('critério de aceite AC-022 ainda não provado — implemente este teste (T-015)');
     });
 
-    it('AC-023: Retry exponencial em caso de instabilidade na Evolution API @spec:AC-023', () => {
-      throw new Error('critério de aceite AC-023 ainda não provado — implemente este teste (T-014/T-015)');
+    it('AC-023: Retry exponencial em caso de instabilidade na Evolution API @spec:AC-023', async () => {
+      const mockClient = new MockEvolutionClient();
+
+      // 1. Simula 2 falhas consecutivas de instabilidade transitória (HTTP 502 Bad Gateway)
+      mockClient.simulateTransientFailures(2, 502);
+
+      const messageOptions = {
+        instanceName: 'consultorio_dr_a',
+        number: '5511999991111',
+        text: 'Olá, confirmamos sua consulta amanhã?',
+      };
+
+      // 2. Executa envio com retry e backoff exponencial (3 tentativas permitidas)
+      const res = await sendWithRetry(mockClient, messageOptions, 3, 5);
+
+      // Deve ter tentado 3 vezes no total (2 falhas transitórias + 1 sucesso)
+      expect(mockClient.totalAttempts).toBe(3);
+      expect(res.status).toBe('SENT');
+      expect(mockClient.sentMessages).toHaveLength(1);
+      expect(mockClient.sentMessages[0].text).toContain('Olá, confirmamos');
+
+      // 3. Garante que se ultrapassar o número máximo de tentativas em erro 503, lança EvolutionTransientError
+      mockClient.simulateTransientFailures(5, 503);
+      await expect(
+        sendWithRetry(mockClient, messageOptions, 2, 5)
+      ).rejects.toThrow('Erro simulado transitório HTTP 503');
     });
   });
 

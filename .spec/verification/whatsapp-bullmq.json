@@ -1,7 +1,7 @@
 {
   "feature": "whatsapp-bullmq",
-  "timestamp": "2026-10-17T20:30:33.271Z",
-  "gitRev": "fe5cce1",
+  "timestamp": "2026-10-17T20:37:56.560Z",
+  "gitRev": "1098f89",
   "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
   "exitCode": 1,
@@ -28,7 +28,7 @@
       "method": "vitest-json"
     },
     "AC-023": {
-      "status": "fail",
+      "status": "pass",
       "testName": "Motor WhatsApp, BullMQ e Webhook Evolution API — OdontoFlow US-013 — Enfileiramento com Jitter Humanizado e Salvaguardas de Horário AC-023: Retry exponencial em caso de instabilidade na Evolution API @spec:AC-023 AC-023: Retry exponencial em caso de instabilidade na Evolution API @spec:AC-023",
       "method": "vitest-json"
     },

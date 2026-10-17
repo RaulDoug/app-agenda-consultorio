@@ -554,10 +554,10 @@
       "codigo": "VERIFY_FALHOU",
       "feature": "whatsapp-bullmq",
       "ref": "AC-022",
-      "ocorrencias": 1,
+      "ocorrencias": 2,
       "primeiraVez": "2026-10-17T20:30:33.343Z",
-      "ultimaVez": "2026-10-17T20:30:33.343Z",
-      "gitRev": "fe5cce1"
+      "ultimaVez": "2026-10-17T20:37:56.633Z",
+      "gitRev": "1098f89"
     },
     "VERIFY_FALHOU::whatsapp-bullmq::AC-023": {
       "codigo": "VERIFY_FALHOU",
@@ -572,28 +572,28 @@
       "codigo": "VERIFY_FALHOU",
       "feature": "whatsapp-bullmq",
       "ref": "AC-024",
-      "ocorrencias": 1,
+      "ocorrencias": 2,
       "primeiraVez": "2026-10-17T20:30:33.343Z",
-      "ultimaVez": "2026-10-17T20:30:33.343Z",
-      "gitRev": "fe5cce1"
+      "ultimaVez": "2026-10-17T20:37:56.633Z",
+      "gitRev": "1098f89"
     },
     "VERIFY_FALHOU::whatsapp-bullmq::AC-025": {
       "codigo": "VERIFY_FALHOU",
       "feature": "whatsapp-bullmq",
       "ref": "AC-025",
-      "ocorrencias": 1,
+      "ocorrencias": 2,
       "primeiraVez": "2026-10-17T20:30:33.343Z",
-      "ultimaVez": "2026-10-17T20:30:33.343Z",
-      "gitRev": "fe5cce1"
+      "ultimaVez": "2026-10-17T20:37:56.633Z",
+      "gitRev": "1098f89"
     },
     "VERIFY_FALHOU::whatsapp-bullmq::AC-026": {
       "codigo": "VERIFY_FALHOU",
       "feature": "whatsapp-bullmq",
       "ref": "AC-026",
-      "ocorrencias": 1,
+      "ocorrencias": 2,
       "primeiraVez": "2026-10-17T20:30:33.343Z",
-      "ultimaVez": "2026-10-17T20:30:33.343Z",
-      "gitRev": "fe5cce1"
+      "ultimaVez": "2026-10-17T20:37:56.633Z",
+      "gitRev": "1098f89"
     }
   }
 }
