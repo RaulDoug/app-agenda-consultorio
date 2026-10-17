@@ -4,6 +4,7 @@ import { normalizeBrazilianPhone } from '../phone.js';
 import { validateBusinessHours } from '../business-hours.js';
 import { suggestSmartReturnSlots } from '../smart-return.js';
 import { canTransitionAppointmentStatus, assertValidStatusTransition } from '../appointment-state.js';
+import { parseSaoPauloDateTime, getCivilDateInSaoPaulo, getTimeInSaoPaulo, isSameCivilDaySaoPaulo } from '../timezone.js';
 import type { BusinessHours, AppointmentStatus } from '@odontoflow/shared';
 
 describe('Domínio de Agendamento — OdontoFlow', () => {
@@ -260,7 +261,26 @@ describe('Domínio de Agendamento — OdontoFlow', () => {
 
   describe('US-006 — Consistência de Fuso Horário UTC-3', () => {
     it('AC-010: Preservação da data civil no fuso America/Sao_Paulo @spec:AC-010', () => {
-      throw new Error('AC-010 pendente de implementação (T-007)');
+      // Agendamento às 22:00 do dia 2026-10-20 em São Paulo
+      const dateLocal = parseSaoPauloDateTime('2026-10-20 22:00:00');
+
+      // Em UTC puro, o horário já é 01:00 do dia 21
+      expect(dateLocal.toISOString()).toBe('2026-10-21T01:00:00.000Z');
+
+      // Ao recuperar a data civil de São Paulo, deve permanecer rigorosamente 2026-10-20
+      const civilDate = getCivilDateInSaoPaulo(dateLocal);
+      expect(civilDate).toBe('2026-10-20');
+
+      // O horário exibido deve ser 22:00
+      const civilTime = getTimeInSaoPaulo(dateLocal);
+      expect(civilTime.startsWith('22:00')).toBe(true);
+
+      // Comparações de mesmo dia civil em São Paulo
+      const morningSameDay = parseSaoPauloDateTime('2026-10-20 09:00:00');
+      const nextDayMorning = parseSaoPauloDateTime('2026-10-21 09:00:00');
+
+      expect(isSameCivilDaySaoPaulo(dateLocal, morningSameDay)).toBe(true);
+      expect(isSameCivilDaySaoPaulo(dateLocal, nextDayMorning)).toBe(false);
     });
   });
 });

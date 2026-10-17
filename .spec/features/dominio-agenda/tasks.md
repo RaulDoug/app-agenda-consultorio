@@ -2,7 +2,7 @@
 
 > feature: dominio-agenda
 
-## T-001 — Modelagem dos Tipos e Contratos Compartilhados [em-andamento]
+## T-001 — Modelagem dos Tipos e Contratos Compartilhados [concluida]
 - Refs: US-001, US-002, US-003, US-004, US-005, US-006
 - Arquivos: shared/src/types/appointment.ts, shared/src/types/patient.ts, shared/src/types/procedure.ts, shared/src/types/business-hours.ts, shared/src/types/financial.ts, shared/src/index.ts
 - Notas: Contratos e interfaces base para agendamentos, procedimentos, pacientes e expediente compartilhados entre backend e frontend.
@@ -32,8 +32,7 @@
 - Arquivos: backend/src/domain/appointment-state.ts, backend/src/domain/__tests__/schedule-domain.spec.ts
 - Notas: Validação de transições do ciclo de vida e bloqueio de alteração em consultas COMPLETED ou CANCELLED.
 
-## T-007 — Funções de Domínio: Fuso Horário UTC-3 e Exportações [pendente]
-
+## T-007 — Funções de Domínio: Fuso Horário UTC-3 e Exportações [concluida]
 - Refs: US-006, AC-010
 - Arquivos: backend/src/domain/timezone.ts, backend/src/domain/index.ts, backend/src/domain/__tests__/schedule-domain.spec.ts
 - Notas: Preservação de data civil em consultas noturnas no fuso America/Sao_Paulo e index agregador.
