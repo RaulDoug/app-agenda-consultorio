@@ -248,10 +248,10 @@
       "codigo": "VERIFY_FALHOU",
       "feature": "dominio-agenda",
       "ref": "AC-010",
-      "ocorrencias": 4,
+      "ocorrencias": 5,
       "primeiraVez": "2026-10-17T19:03:21.987Z",
-      "ultimaVez": "2026-10-17T19:08:38.398Z",
-      "gitRev": "6f7cd9c"
+      "ultimaVez": "2026-10-17T19:10:29.313Z",
+      "gitRev": "760afeb"
     }
   }
 }

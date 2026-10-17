@@ -27,8 +27,7 @@
 - Arquivos: backend/src/domain/smart-return.ts, backend/src/domain/__tests__/schedule-domain.spec.ts
 - Notas: Retorno dos 3 slots vagos mais próximos dentro do expediente em caso de colisão ou dia fechado.
 
-## T-006 — Funções de Domínio: Máquina de Estados e Imutabilidade de Status [pendente]
-
+## T-006 — Funções de Domínio: Máquina de Estados e Imutabilidade de Status [concluida]
 - Refs: US-005, AC-008, AC-009
 - Arquivos: backend/src/domain/appointment-state.ts, backend/src/domain/__tests__/schedule-domain.spec.ts
 - Notas: Validação de transições do ciclo de vida e bloqueio de alteração em consultas COMPLETED ou CANCELLED.

@@ -3,7 +3,8 @@ import { calculateAppointmentDuration, validateProcedureDuration } from '../dura
 import { normalizeBrazilianPhone } from '../phone.js';
 import { validateBusinessHours } from '../business-hours.js';
 import { suggestSmartReturnSlots } from '../smart-return.js';
-import type { BusinessHours } from '@odontoflow/shared';
+import { canTransitionAppointmentStatus, assertValidStatusTransition } from '../appointment-state.js';
+import type { BusinessHours, AppointmentStatus } from '@odontoflow/shared';
 
 describe('Domínio de Agendamento — OdontoFlow', () => {
   describe('US-001 — Cálculo Dinâmico de Duração por Procedimentos', () => {
@@ -195,11 +196,65 @@ describe('Domínio de Agendamento — OdontoFlow', () => {
 
   describe('US-005 — Máquina de Estados e Imutabilidade de Agendamento', () => {
     it('AC-008: Validação de transições de status permitidas @spec:AC-008', () => {
-      throw new Error('AC-008 pendente de implementação (T-006)');
+      // Transições válidas a partir de PENDING
+      const pendingTransitions: AppointmentStatus[] = [
+        'CONFIRMED',
+        'RESCHEDULE_REQUESTED',
+        'MESSAGE_RECEIVED',
+        'COMPLETED',
+        'NO_SHOW',
+        'CANCELLED',
+      ];
+
+      for (const target of pendingTransitions) {
+        const result = canTransitionAppointmentStatus('PENDING', target);
+        expect(result.allowed).toBe(true);
+        expect(() => assertValidStatusTransition('PENDING', target)).not.toThrow();
+      }
+
+      // Transições válidas a partir de CONFIRMED
+      const confirmedTransitions: AppointmentStatus[] = [
+        'RESCHEDULE_REQUESTED',
+        'MESSAGE_RECEIVED',
+        'COMPLETED',
+        'NO_SHOW',
+        'CANCELLED',
+      ];
+
+      for (const target of confirmedTransitions) {
+        const result = canTransitionAppointmentStatus('CONFIRMED', target);
+        expect(result.allowed).toBe(true);
+      }
     });
 
     it('AC-009: Imutabilidade de consultas concluídas ou canceladas @spec:AC-009', () => {
-      throw new Error('AC-009 pendente de implementação (T-006)');
+      const allStatuses: AppointmentStatus[] = [
+        'PENDING',
+        'CONFIRMED',
+        'RESCHEDULE_REQUESTED',
+        'MESSAGE_RECEIVED',
+        'COMPLETED',
+        'NO_SHOW',
+        'CANCELLED',
+      ];
+
+      // COMPLETED não pode mudar para nenhum outro status diferente
+      for (const target of allStatuses) {
+        if (target === 'COMPLETED') continue;
+        const result = canTransitionAppointmentStatus('COMPLETED', target);
+        expect(result.allowed).toBe(false);
+        expect(result.reason).toContain('Imutabilidade violada');
+        expect(() => assertValidStatusTransition('COMPLETED', target)).toThrow(/Imutabilidade violada/);
+      }
+
+      // CANCELLED não pode mudar para nenhum outro status diferente
+      for (const target of allStatuses) {
+        if (target === 'CANCELLED') continue;
+        const result = canTransitionAppointmentStatus('CANCELLED', target);
+        expect(result.allowed).toBe(false);
+        expect(result.reason).toContain('Imutabilidade violada');
+        expect(() => assertValidStatusTransition('CANCELLED', target)).toThrow(/Imutabilidade violada/);
+      }
     });
   });
 

@@ -1,7 +1,7 @@
 {
   "feature": "dominio-agenda",
-  "timestamp": "2026-10-17T19:08:38.327Z",
-  "gitRev": "6f7cd9c",
+  "timestamp": "2026-10-17T19:10:29.246Z",
+  "gitRev": "760afeb",
   "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
   "exitCode": 1,
@@ -43,12 +43,12 @@
       "method": "vitest-json"
     },
     "AC-008": {
-      "status": "fail",
+      "status": "pass",
       "testName": "Domínio de Agendamento — OdontoFlow US-005 — Máquina de Estados e Imutabilidade de Agendamento AC-008: Validação de transições de status permitidas @spec:AC-008 AC-008: Validação de transições de status permitidas @spec:AC-008",
       "method": "vitest-json"
     },
     "AC-009": {
-      "status": "fail",
+      "status": "pass",
       "testName": "Domínio de Agendamento — OdontoFlow US-005 — Máquina de Estados e Imutabilidade de Agendamento AC-009: Imutabilidade de consultas concluídas ou canceladas @spec:AC-009 AC-009: Imutabilidade de consultas concluídas ou canceladas @spec:AC-009",
       "method": "vitest-json"
     },
