@@ -12,8 +12,7 @@
 - Arquivos: backend/src/domain/duration.ts, backend/src/domain/__tests__/schedule-domain.spec.ts
 - Notas: Cálculo cumulativo de duração de múltiplos procedimentos e validação de durações positivas.
 
-## T-003 — Funções de Domínio: Normalização e Validação de Telefones WhatsApp [pendente]
-
+## T-003 — Funções de Domínio: Normalização e Validação de Telefones WhatsApp [concluida]
 - Refs: US-002, AC-003, AC-004
 - Arquivos: backend/src/domain/phone.ts, backend/src/domain/__tests__/schedule-domain.spec.ts
 - Notas: Sanitização para DDI 55 + DDD + 9 dígitos e rejeição de entradas inválidas.

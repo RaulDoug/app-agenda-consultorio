@@ -203,55 +203,55 @@
       "codigo": "VERIFY_FALHOU",
       "feature": "dominio-agenda",
       "ref": "AC-005",
-      "ocorrencias": 1,
+      "ocorrencias": 2,
       "primeiraVez": "2026-10-17T19:03:21.987Z",
-      "ultimaVez": "2026-10-17T19:03:21.987Z",
-      "gitRev": "e299942"
+      "ultimaVez": "2026-10-17T19:05:00.480Z",
+      "gitRev": "8dab64e"
     },
     "VERIFY_FALHOU::dominio-agenda::AC-006": {
       "codigo": "VERIFY_FALHOU",
       "feature": "dominio-agenda",
       "ref": "AC-006",
-      "ocorrencias": 1,
+      "ocorrencias": 2,
       "primeiraVez": "2026-10-17T19:03:21.987Z",
-      "ultimaVez": "2026-10-17T19:03:21.987Z",
-      "gitRev": "e299942"
+      "ultimaVez": "2026-10-17T19:05:00.480Z",
+      "gitRev": "8dab64e"
     },
     "VERIFY_FALHOU::dominio-agenda::AC-007": {
       "codigo": "VERIFY_FALHOU",
       "feature": "dominio-agenda",
       "ref": "AC-007",
-      "ocorrencias": 1,
+      "ocorrencias": 2,
       "primeiraVez": "2026-10-17T19:03:21.987Z",
-      "ultimaVez": "2026-10-17T19:03:21.987Z",
-      "gitRev": "e299942"
+      "ultimaVez": "2026-10-17T19:05:00.480Z",
+      "gitRev": "8dab64e"
     },
     "VERIFY_FALHOU::dominio-agenda::AC-008": {
       "codigo": "VERIFY_FALHOU",
       "feature": "dominio-agenda",
       "ref": "AC-008",
-      "ocorrencias": 1,
+      "ocorrencias": 2,
       "primeiraVez": "2026-10-17T19:03:21.987Z",
-      "ultimaVez": "2026-10-17T19:03:21.987Z",
-      "gitRev": "e299942"
+      "ultimaVez": "2026-10-17T19:05:00.480Z",
+      "gitRev": "8dab64e"
     },
     "VERIFY_FALHOU::dominio-agenda::AC-009": {
       "codigo": "VERIFY_FALHOU",
       "feature": "dominio-agenda",
       "ref": "AC-009",
-      "ocorrencias": 1,
+      "ocorrencias": 2,
       "primeiraVez": "2026-10-17T19:03:21.987Z",
-      "ultimaVez": "2026-10-17T19:03:21.987Z",
-      "gitRev": "e299942"
+      "ultimaVez": "2026-10-17T19:05:00.480Z",
+      "gitRev": "8dab64e"
     },
     "VERIFY_FALHOU::dominio-agenda::AC-010": {
       "codigo": "VERIFY_FALHOU",
       "feature": "dominio-agenda",
       "ref": "AC-010",
-      "ocorrencias": 1,
+      "ocorrencias": 2,
       "primeiraVez": "2026-10-17T19:03:21.987Z",
-      "ultimaVez": "2026-10-17T19:03:21.987Z",
-      "gitRev": "e299942"
+      "ultimaVez": "2026-10-17T19:05:00.480Z",
+      "gitRev": "8dab64e"
     }
   }
 }

@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { calculateAppointmentDuration, validateProcedureDuration } from '../duration.js';
+import { normalizeBrazilianPhone } from '../phone.js';
 
 describe('Domínio de Agendamento — OdontoFlow', () => {
   describe('US-001 — Cálculo Dinâmico de Duração por Procedimentos', () => {
@@ -31,11 +32,36 @@ describe('Domínio de Agendamento — OdontoFlow', () => {
 
   describe('US-002 — Normalização Canônica de Telefones WhatsApp', () => {
     it('AC-003: Sanitização e formatação canônica de celular brasileiro @spec:AC-003', () => {
-      throw new Error('AC-003 pendente de implementação (T-003)');
+      const inputs = [
+        '(11) 99999-8888',
+        '+55 11 99999-8888',
+        '11999998888',
+        '5511999998888',
+        '  (11)  99999 - 8888  ',
+      ];
+
+      for (const input of inputs) {
+        const result = normalizeBrazilianPhone(input);
+        expect(result.isValid).toBe(true);
+        expect(result.normalized).toBe('5511999998888');
+      }
     });
 
     it('AC-004: Rejeição de telefones inválidos @spec:AC-004', () => {
-      throw new Error('AC-004 pendente de implementação (T-003)');
+      const invalidInputs = [
+        '',
+        '12345',
+        '00999998888',     // DDD 00 inválido
+        '11888888888',     // não começa com 9
+        '119999998888888', // dígitos excessivos
+      ];
+
+      for (const input of invalidInputs) {
+        const result = normalizeBrazilianPhone(input);
+        expect(result.isValid).toBe(false);
+        expect(result.error).toBeDefined();
+        expect(result.normalized).toBeUndefined();
+      }
     });
   });
 
