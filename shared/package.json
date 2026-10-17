@@ -1,0 +1,11 @@
+{
+  "name": "@odontoflow/shared",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Tipos, interfaces e contratos compartilhados entre o back-end e o front-end do OdontoFlow",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "test": "echo \"No shared tests yet\" && exit 0"
+  }
+}

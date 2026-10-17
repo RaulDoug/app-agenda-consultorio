@@ -1,36 +1,76 @@
-# Especificação de Wireframes & Experiência de Uso (UX Mobile)
-## OdontoFlow — Aplicação Mobile-First para Consultórios Odontológicos
+# Especificação de Arquitetura Local-First & UX Mobile — Front-end
+## OdontoFlow — Aplicação PWA em React, Dexie.js (IndexedDB) e Wireframes Mobile
 
 ---
 
-### 1. Princípios de Design & Ergonomia para o "Dentista-Operador"
+### 1. Arquitetura Técnica do Front-end (PWA & Local-First)
+
+O front-end do **OdontoFlow** foi desenhado como uma aplicação **Local-First (Offline por Padrão)**: todas as leituras e escritas da interface acontecem diretamente no banco local do dispositivo (`IndexedDB` via `Dexie.js`) em menos de **5 milissegundos**, garantindo fluidez instantânea mesmo em salas de atendimento sem sinal de internet.
+
+```mermaid
+flowchart LR
+    subgraph Dispositivo ["Smartphone / Desktop do Dentista"]
+        UI["Componentes React 18 + Tailwind CSS"]
+        HOOKS["useLiveQuery (Reatividade Instantânea)"]
+        DEXIE[("Banco Local IndexedDB (Dexie.js)")]
+        OUTBOX[("Fila de Sincronização (sync_outbox)")]
+        SW["Service Worker (Cache Offline do App)"]
+
+        UI -->|Leitura < 5ms| HOOKS
+        HOOKS <--> DEXIE
+        UI -->|Escrita Otimista| DEXIE
+        DEXIE -->|Registra mutação| OUTBOX
+    end
+
+    subgraph Nuvem ["Servidor VPS (Quando Online)"]
+        API["API Express.js (/api/sync/batch)"]
+    end
+
+    OUTBOX -->|Background Sync / Reconexão| API
+    API -->|Delta de atualizações (Webhooks WhatsApp)| DEXIE
+```
+
+---
+
+### 2. Stack Tecnológica do Front-end
+
+* **Framework & Build:** **React 18+ com TypeScript e Vite** (geração de bundle estático ultraleve servido pelo Nginx).
+* **Contrato Compartilhado:** Importação direta de tipos e interfaces do pacote `@odontoflow/shared`.
+* **Estilização:** **Tailwind CSS** (foco em *One-Thumb Ergonomics* para celulares e layout responsivo adaptável para desktop).
+* **Camada PWA:** `vite-plugin-pwa` com estratégia *Stale-While-Revalidate* para assets e instalação nativa na tela inicial (iOS e Android) + Web Push Notifications.
+* **Banco de Dados Local:** **Dexie.js** sobre **IndexedDB**:
+  * Tabelas locais espelhadas: `patients`, `procedures`, `appointments`, `appointment_items`, `financial_transactions`, `business_hours`, `schedule_blocks`, `sync_outbox`.
+  * **Janela Ativa de Cache:** Mantém localmente o catálogo completo + últimos 90 dias de agenda + 100% dos agendamentos futuros + financeiro do ano corrente (~2,5 MB por ano).
+* **Stack de Testes do Front-end (TDD):**
+  * **Vitest** + **React Testing Library** + **@testing-library/user-event**.
+  * **fake-indexeddb:** Emulação 100% fiel do IndexedDB em memória para testar o Dexie.js e a fila offline antes de construir a interface.
+  * **MSW (Mock Service Worker):** Simulação da API do back-end e cenários de queda de internet.
+  * **Playwright:** Testes End-to-End (E2E) simulando viewport mobile e modo avião.
+
+---
+
+### 3. Princípios de Design & Ergonomia para o "Dentista-Operador"
 
 1. **Operação com uma só mão (One-Thumb Friendly):**
-   * Ações críticas, botões de salvar e atalhos rápidos ficam posicionados no terço inferior da tela do celular.
+   * Botões primários, gavetas (bottom sheets) e barra de navegação posicionados no terço inferior da tela.
 2. **Zero Fricção de Digitação:**
-   * Uso massivo de botões de seleção rápida (chips/pills), campos numéricos pré-formatados e preenchimento automático.
-3. **Visibilidade Imediata de Status por Cor:**
-   * Cores funcionais universais no calendário para bater o olho e entender o dia sem ler texto:
-     * 🟢 **Verde:** Confirmado pelo paciente via WhatsApp.
-     * 🟡 **Amarelo:** Aguardando confirmação (mensagem disparada).
-     * 🟠 **Laranja:** Paciente solicitou remarcação / Cancelamento.
-     * 🔵 **Azul:** Paciente respondeu com texto/dúvida (requer atenção humana).
-     * ⚪ **Cinza:** Atendimento concluído.
-     * 🔴 **Vermelho:** Faltou (*No-Show*).
+   * Uso de chips/pills de seleção rápida, busca preditiva unificada e criação *on-the-fly* de pacientes e procedimentos sem sair do modal.
+3. **Indicador de Conectividade e WhatsApp no Topo:**
+   * 🟢 **Online:** Sincronizado.
+   * 🟡 **Offline (X pendentes):** Operando normalmente no banco local; sincroniza automaticamente ao reconectar.
+   * 📱 **Status do WhatsApp:** Verde quando conectado; banner de alerta caso a sessão QR Code precise ser reconectada.
+4. **Visibilidade Imediata de Status por Cor nos Cards da Agenda:**
+   * 🟢 **Verde:** Confirmado pelo paciente via WhatsApp.
+   * 🟡 **Amarelo:** Aguardando confirmação (mensagem disparada).
+   * 🟠 **Laranja:** Paciente solicitou remarcação / Cancelamento.
+   * 🔵 **Azul:** Paciente respondeu com texto/dúvida (requer atenção humana).
+   * ⚪ **Cinza:** Atendimento concluído.
+   * 🔴 **Vermelho:** Faltou (*No-Show*).
+   * ⚡ **Selo de Encaixe:** Destaque sutil quando agendado fora do expediente regular.
 
 ---
 
-### 2. Arquitetura de Navegação
-
-A navegação principal do PWA utiliza uma **Bottom Navigation Bar** fixa com 4 seções:
-* 📅 **Agenda:** Grade diária/semanal e agendamento rápido (Home).
-* 👥 **Pacientes:** Lista de contatos, histórico e filtro de reativação (6+ meses).
-* 💰 **Caixa:** Entradas do dia, contas a receber (parcelas), despesas e DRE simples.
-* ⚙️ **Ajustes:** QR Code de conexão do WhatsApp, procedimentos e horários de trabalho.
-
----
-
-### 3. Wireframes Detalhados das Telas Centrais
+### 4. Wireframes Base das Telas Principais
 
 ---
 
@@ -72,11 +112,6 @@ A navegação principal do PWA utiliza uma **Bottom Navigation Bar** fixa com 4 
 +-------------------------------------------------------------+
 ```
 
-* **Microinterações:**
-  * Toque no card: abre a **Ficha de Ação da Consulta**.
-  * Toque em horário vago: abre instantaneamente a **Gaveta de Criação Rápida** com a data e horário pré-selecionados.
-  * Deslizar a fita de datas horizontalmente: transição fluida entre dias.
-
 ---
 
 #### Tela 2: Gaveta de Criação Rápida (< 10 Segundos)
@@ -110,7 +145,7 @@ A navegação principal do PWA utiliza uma **Bottom Navigation Bar** fixa com 4 
 +-------------------------------------------------------------+
 ```
 
-* **Cálculo de Tempo Automático:** Se marcar *Profilaxia (45m)* e *Restauração (60m)*, o card exibe imediatamente: *Duração Total: 1h45 | Término previsto: 16:45*.
+* **Soft Warning de Encaixe:** Se o horário selecionado ou o término ultrapassar o expediente regular do dia (ex: após as 18:00), exibe um aviso amigável perguntando se deseja confirmar como **⚡ Encaixe Extraordinário**, sem bloquear o dentista.
 
 ---
 
@@ -210,14 +245,3 @@ A navegação principal do PWA utiliza uma **Bottom Navigation Bar** fixa com 4 
 | • 22/Out  Ana Beatriz (Parcela 3/3)      R$ 150,00 [Boleto] |
 +-------------------------------------------------------------+
 ```
-
----
-
-### 4. Resumo da Eficiência Operacional
-
-| Ação do Dentista | Telas / Toques | Tempo Estimado |
-| :--- | :--- | :--- |
-| **Criar Agendamento** | 1 modal / 3 toques | ~8 segundos |
-| **Concluir + Lançar Entrada + Parcelas** | 1 tela / 4 toques | ~12 segundos |
-| **Agendar Retorno com conflito resolvido** | 1 clique no atalho + 1 toque na sugestão | ~4 segundos |
-| **Marcar Paciente Faltoso (*No-Show*)** | 1 toque no card | ~1 segundo |

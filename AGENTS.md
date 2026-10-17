@@ -17,7 +17,7 @@ Toda nova funcionalidade ou alteração deve seguir as fases do motor spec-drive
 ```
 ┌───────────┐  ┌────────┐  ┌───────┐  ┌───────┐  ┌────────┐  ┌───────┐
 │ESPECIFICAR│→ │PROJETAR│→ │TAREFAS│→ │ PLANO │→ │EXECUTAR│→ │AUDITAR│
-└───────────┘  └────────┘  └───────┘  └───────┘  └────────┘  └───────┘
+└───────────┘  └────────┘  └───────┘  └───────┐  └────────┘  └───────┘
 ```
 
 1. **Especificar (`onp-spec new <feature>`)**:
@@ -44,3 +44,19 @@ Os comandos são executados a partir da raiz do projeto:
 node .agents/skills/onp-spec-driven/scripts/onp-spec.mjs <comando>
 ```
 Comandos principais: `status`, `new <feature>`, `scaffold <feature>`, `verify <feature>`, `audit [--ci]`, `plano <feature>`, `licoes`.
+
+---
+
+## Estrutura do Monorepo e Documentação de Referência
+
+Este repositório está estruturado como um **Monorepo TypeScript (NPM Workspaces)**:
+
+- `shared/` (`@odontoflow/shared`): Contratos, interfaces TypeScript, Enums e tipos compartilhados entre Front-end e Back-end.
+- `back-end/`: API REST em Node.js + TypeScript + Express.js + PostgreSQL (`pg` com SQL puro) + BullMQ/Redis + Evolution API.
+- `front-end/`: Aplicação Web Mobile-First (PWA) em React + TypeScript + Vite + Tailwind CSS + Dexie.js (IndexedDB Offline-First).
+- `docs/`: Documentação completa de produto, arquitetura e roadmaps de TDD:
+  - `docs/01_PRD_Geral_OdontoFlow.md` — Visão de produto, personas, épicos e regras de negócio.
+  - `docs/backend/Arquitetura_Backend.md` — Arquitetura técnica do servidor, SQL Schema completo, filas e webhooks.
+  - `docs/backend/Roadmap_TDD_Backend.md` — Sprints, casos de teste prévios e edge cases exclusivos do Back-end.
+  - `docs/frontend/Arquitetura_e_UX_Frontend.md` — Arquitetura Local-First, sincronização offline e wireframes das telas mobile.
+  - `docs/frontend/Roadmap_TDD_Frontend.md` — Sprints, casos de teste UI/IndexedDB e E2E exclusivos do Front-end.

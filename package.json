@@ -1,0 +1,27 @@
+{
+  "name": "odontoflow-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Monorepo do sistema OdontoFlow — Gestão Ágil de Agenda, Confirmações WhatsApp e Caixa para Consultórios Odontológicos",
+  "workspaces": [
+    "shared",
+    "back-end",
+    "front-end"
+  ],
+  "scripts": {
+    "dev:backend": "npm run dev --workspace=back-end",
+    "dev:frontend": "npm run dev --workspace=front-end",
+    "build": "npm run build --workspaces --if-present",
+    "build:backend": "npm run build --workspace=back-end",
+    "build:frontend": "npm run build --workspace=front-end",
+    "test": "npm run test --workspaces --if-present",
+    "test:backend": "npm run test --workspace=back-end",
+    "test:frontend": "npm run test --workspace=front-end",
+    "spec:status": "node .agents/skills/onp-spec-driven/scripts/onp-spec.mjs status",
+    "spec:audit": "node .agents/skills/onp-spec-driven/scripts/onp-spec.mjs audit --ci"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

@@ -34,7 +34,7 @@ Um sistema **Mobile-First**, **Local-First (Offline)** e de **fricção zero**, 
 * **Tecnologia de Interface:** Progressive Web App (PWA) instalável no smartphone (iOS e Android) e no desktop.
 * **Armazenamento Local:** Banco de dados client-side (IndexedDB / Dexie.js) como fonte imediata de leitura e escrita.
 * **Janela Ativa de Cache:** 
-  * Catálogo completo de pacientes e procedimentos.
+  * Catálogo completo de pacientes, procedimentos e horários de funcionamento.
   * Histórico de agendamentos dos últimos 90 dias + 100% dos agendamentos futuros.
   * Transações financeiras do ano corrente.
 * **Resolução de Conflitos:** Estratégia *Last-Write-Wins* baseada em timestamp, adequada para perfil de operador único.
@@ -73,7 +73,7 @@ graph TD
 
 * **US1.1 - Grid Temporal Flexível & Expediente Customizável:**
   * Resolução visual em blocos de 15 minutos (permite agendamentos de 15, 30, 45, 60, 75, 90+ min).
-  * O dentista pode configurar livremente o horário de funcionamento de cada dia da semana (ex: 08:00 às 21:00 sem almoço, ou com intervalo customizado).
+  * O dentista pode configurar livremente o horário de funcionamento de cada dia da semana (ex: 08:00 às 21:00 sem almoço, ou com intervalo customizado) e registrar bloqueios de agenda (férias, feriados, congressos).
   * Visualização diária e semanal com rolagem vertical suave no mobile.
 * **US1.2 - Cadastro On-The-Fly de Pacientes e Procedimentos:**
   * O dentista pode digitar o nome de um novo paciente diretamente no campo de busca do agendamento. Se não existir, basta preencher o WhatsApp em um micro-modal inline e salvar.
@@ -149,6 +149,8 @@ erDiagram
     TENANT ||--o{ PROCEDURE : owns
     TENANT ||--o{ APPOINTMENT : owns
     TENANT ||--o{ FINANCIAL_TRANSACTION : owns
+    TENANT ||--o{ BUSINESS_HOURS : configures
+    TENANT ||--o{ SCHEDULE_BLOCK : blocks
 
     PATIENT ||--o{ APPOINTMENT : books
     APPOINTMENT ||--|{ APPOINTMENT_ITEM : contains
@@ -159,6 +161,7 @@ erDiagram
         uuid id PK
         string name
         string whatsapp
+        boolean is_active
         datetime created_at
     }
 
@@ -174,7 +177,8 @@ erDiagram
         uuid id PK
         datetime start_time
         datetime end_time
-        enum status "PENDING | CONFIRMED | RESCHEDULE_REQUESTED | COMPLETED | NO_SHOW | CANCELLED"
+        enum status "PENDING | CONFIRMED | RESCHEDULE_REQUESTED | MESSAGE_RECEIVED | COMPLETED | NO_SHOW | CANCELLED"
+        boolean is_overtime
         decimal total_price
         text notes
     }
@@ -197,6 +201,23 @@ erDiagram
         int installment_number
         int total_installments
         string category
+    }
+
+    BUSINESS_HOURS {
+        uuid id PK
+        int day_of_week
+        boolean is_open
+        time start_time
+        time end_time
+        time break_start_time
+        time break_end_time
+    }
+
+    SCHEDULE_BLOCK {
+        uuid id PK
+        string title
+        datetime start_time
+        datetime end_time
     }
 ```
 
