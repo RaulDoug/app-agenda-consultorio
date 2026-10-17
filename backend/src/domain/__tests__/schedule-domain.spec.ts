@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { calculateAppointmentDuration, validateProcedureDuration } from '../duration.js';
 import { normalizeBrazilianPhone } from '../phone.js';
 import { validateBusinessHours } from '../business-hours.js';
+import { suggestSmartReturnSlots } from '../smart-return.js';
 import type { BusinessHours } from '@odontoflow/shared';
 
 describe('Domínio de Agendamento — OdontoFlow', () => {
@@ -128,8 +129,67 @@ describe('Domínio de Agendamento — OdontoFlow', () => {
   });
 
   describe('US-004 — Sugestão Inteligente de 3 Horários Vagos no Retorno', () => {
+    const weeklyBusinessHours: BusinessHours[] = [
+      { id: '1', tenant_id: 't1', day_of_week: 1, is_open: true, start_time: '08:00', end_time: '18:00', break_start_time: '12:00', break_end_time: '13:00' },
+      { id: '2', tenant_id: 't1', day_of_week: 2, is_open: true, start_time: '08:00', end_time: '18:00', break_start_time: '12:00', break_end_time: '13:00' },
+      { id: '3', tenant_id: 't1', day_of_week: 3, is_open: true, start_time: '08:00', end_time: '18:00', break_start_time: '12:00', break_end_time: '13:00' },
+      { id: '4', tenant_id: 't1', day_of_week: 4, is_open: true, start_time: '08:00', end_time: '18:00', break_start_time: '12:00', break_end_time: '13:00' },
+      { id: '5', tenant_id: 't1', day_of_week: 5, is_open: true, start_time: '08:00', end_time: '18:00', break_start_time: '12:00', break_end_time: '13:00' },
+      { id: '6', tenant_id: 't1', day_of_week: 6, is_open: false, start_time: '08:00', end_time: '12:00' },
+      { id: '0', tenant_id: 't1', day_of_week: 0, is_open: false, start_time: '08:00', end_time: '12:00' },
+    ];
+
     it('AC-007: Sugestão de 3 slots vagos mais próximos em caso de conflito @spec:AC-007', () => {
-      throw new Error('AC-007 pendente de implementação (T-005)');
+      // Data alvo: Terça-feira (2026-10-20) às 14:00 (duração 45 min)
+      const targetDate = new Date(2026, 9, 20, 14, 0);
+
+      // Conflito: horário das 14:00 às 15:00 está ocupado por outra consulta
+      const existingAppointments = [
+        {
+          start_time: new Date(2026, 9, 20, 14, 0),
+          end_time: new Date(2026, 9, 20, 15, 0),
+        },
+      ];
+
+      // Bloqueio de agenda no mesmo dia das 16:00 às 17:00
+      const scheduleBlocks = [
+        {
+          start_time: new Date(2026, 9, 20, 16, 0),
+          end_time: new Date(2026, 9, 20, 17, 0),
+        },
+      ];
+
+      const suggestions = suggestSmartReturnSlots({
+        targetDate,
+        durationMinutes: 45,
+        businessHours: weeklyBusinessHours,
+        existingAppointments,
+        scheduleBlocks,
+        count: 3,
+      });
+
+      expect(suggestions).toHaveLength(3);
+
+      // Nenhuma das sugestões pode colidir com a consulta das 14h-15h ou o bloqueio das 16h-17h
+      for (const slot of suggestions) {
+        const slotStart = slot.getTime();
+        const slotEnd = slotStart + 45 * 60 * 1000;
+
+        const busyStart = new Date(2026, 9, 20, 14, 0).getTime();
+        const busyEnd = new Date(2026, 9, 20, 15, 0).getTime();
+
+        const overlapsBusy = slotStart < busyEnd && slotEnd > busyStart;
+        expect(overlapsBusy).toBe(false);
+
+        // Deve estar dentro do expediente (08h às 18h) e fora do almoço (12h às 13h)
+        const hours = slot.getHours();
+        expect(hours).toBeGreaterThanOrEqual(8);
+        expect(slot.getHours() * 60 + slot.getMinutes() + 45).toBeLessThanOrEqual(18 * 60);
+
+        const overlapsLunch = slotStart < new Date(2026, 9, 20, 13, 0).getTime() &&
+                              slotEnd > new Date(2026, 9, 20, 12, 0).getTime();
+        expect(overlapsLunch).toBe(false);
+      }
     });
   });
 

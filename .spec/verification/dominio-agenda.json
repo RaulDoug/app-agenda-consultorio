@@ -1,7 +1,7 @@
 {
   "feature": "dominio-agenda",
-  "timestamp": "2026-10-17T19:06:52.196Z",
-  "gitRev": "38d35b4",
+  "timestamp": "2026-10-17T19:08:38.327Z",
+  "gitRev": "6f7cd9c",
   "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
   "exitCode": 1,
@@ -38,7 +38,7 @@
       "method": "vitest-json"
     },
     "AC-007": {
-      "status": "fail",
+      "status": "pass",
       "testName": "Domínio de Agendamento — OdontoFlow US-004 — Sugestão Inteligente de 3 Horários Vagos no Retorno AC-007: Sugestão de 3 slots vagos mais próximos em caso de conflito @spec:AC-007 AC-007: Sugestão de 3 slots vagos mais próximos em caso de conflito @spec:AC-007",
       "method": "vitest-json"
     },

@@ -22,8 +22,7 @@
 - Arquivos: backend/src/domain/business-hours.ts, backend/src/domain/__tests__/schedule-domain.spec.ts
 - Notas: Identificação de conflito com intervalo de almoço e fechamento, com aprovação via flag confirm_overtime.
 
-## T-005 — Funções de Domínio: Algoritmo de Retorno Inteligente [pendente]
-
+## T-005 — Funções de Domínio: Algoritmo de Retorno Inteligente [concluida]
 - Refs: US-004, AC-007
 - Arquivos: backend/src/domain/smart-return.ts, backend/src/domain/__tests__/schedule-domain.spec.ts
 - Notas: Retorno dos 3 slots vagos mais próximos dentro do expediente em caso de colisão ou dia fechado.

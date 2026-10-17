@@ -230,28 +230,28 @@
       "codigo": "VERIFY_FALHOU",
       "feature": "dominio-agenda",
       "ref": "AC-008",
-      "ocorrencias": 3,
+      "ocorrencias": 4,
       "primeiraVez": "2026-10-17T19:03:21.987Z",
-      "ultimaVez": "2026-10-17T19:06:52.263Z",
-      "gitRev": "38d35b4"
+      "ultimaVez": "2026-10-17T19:08:38.398Z",
+      "gitRev": "6f7cd9c"
     },
     "VERIFY_FALHOU::dominio-agenda::AC-009": {
       "codigo": "VERIFY_FALHOU",
       "feature": "dominio-agenda",
       "ref": "AC-009",
-      "ocorrencias": 3,
+      "ocorrencias": 4,
       "primeiraVez": "2026-10-17T19:03:21.987Z",
-      "ultimaVez": "2026-10-17T19:06:52.263Z",
-      "gitRev": "38d35b4"
+      "ultimaVez": "2026-10-17T19:08:38.398Z",
+      "gitRev": "6f7cd9c"
     },
     "VERIFY_FALHOU::dominio-agenda::AC-010": {
       "codigo": "VERIFY_FALHOU",
       "feature": "dominio-agenda",
       "ref": "AC-010",
-      "ocorrencias": 3,
+      "ocorrencias": 4,
       "primeiraVez": "2026-10-17T19:03:21.987Z",
-      "ultimaVez": "2026-10-17T19:06:52.263Z",
-      "gitRev": "38d35b4"
+      "ultimaVez": "2026-10-17T19:08:38.398Z",
+      "gitRev": "6f7cd9c"
     }
   }
 }
