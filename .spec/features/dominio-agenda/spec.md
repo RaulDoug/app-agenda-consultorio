@@ -1,7 +1,7 @@
 # Spec: Dominio agenda
 
 > feature: dominio-agenda
-> status: implementada
+> status: auditada
 
 ## Contexto
 
