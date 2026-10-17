@@ -38,8 +38,8 @@
 
 * **Estrutura de Código:** **Monorepo TypeScript** com NPM Workspaces:
   * `shared/` (`@odontoflow/shared`): Interfaces, contratos e tipos compartilhados.
-  * `back-end/`: Node.js (v20+), Express.js, PostgreSQL (`pg` com SQL puro parametrizado), Redis 7 e BullMQ.
-  * `front-end/`: React 18+, TypeScript, Vite, Tailwind CSS, PWA e Dexie.js (IndexedDB).
+  * `backend/`: Node.js (v20+), Express.js, PostgreSQL (`pg` com SQL puro parametrizado), Redis 7 e BullMQ.
+  * `frontend/`: React 18+, TypeScript, Vite, Tailwind CSS, PWA e Dexie.js (IndexedDB).
 * **Hospedagem & Infraestrutura:** VPS Hostinger KVM 1 (Ubuntu 24.04, 4 GB RAM) rodando Docker Compose (Postgres, Redis, API, Worker, Evolution API) com **Nginx** servindo o PWA e o Site Vitrine do consultório por Virtual Hosts gastando apenas ~1.06 GB de RAM.
 * **Metodologia de Desenvolvimento:** **TDD & Spec-Driven** obrigatório, regido pela skill nativa **`onp-spec-driven`** (localizada em `.agents/skills/onp-spec-driven/`).
 
@@ -51,6 +51,6 @@ Toda a documentação gerada e validada nesta sessão está disponível em:
 * `docs/README.md` — Índice geral.
 * `docs/01_PRD_Geral_OdontoFlow.md` — PRD completo de negócio e diagrama ER.
 * `docs/backend/Arquitetura_Backend.md` — Arquitetura de servidor e SQL DDL das 8 tabelas.
-* `docs/backend/Roadmap_TDD_Backend.md` — Sprints BE-1 a BE-5 e suítes de teste TDD do Back-end.
+* `docs/backend/Roadmap_TDD_Backend.md` — Sprints BE-1 a BE-5 e suítes de teste TDD do Backend.
 * `docs/frontend/Arquitetura_e_UX_Frontend.md` — Arquitetura Local-First e 5 Wireframes Mobile.
-* `docs/frontend/Roadmap_TDD_Frontend.md` — Sprints FE-1 a FE-4 e suítes de teste TDD do Front-end.
+* `docs/frontend/Roadmap_TDD_Frontend.md` — Sprints FE-1 a FE-4 e suítes de teste TDD do Frontend.

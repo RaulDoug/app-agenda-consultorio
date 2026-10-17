@@ -1,11 +1,11 @@
-# Especificação de Arquitetura Local-First & UX Mobile — Front-end
+# Especificação de Arquitetura Local-First & UX Mobile — Frontend
 ## OdontoFlow — Aplicação PWA em React, Dexie.js (IndexedDB) e Wireframes Mobile
 
 ---
 
-### 1. Arquitetura Técnica do Front-end (PWA & Local-First)
+### 1. Arquitetura Técnica do Frontend (PWA & Local-First)
 
-O front-end do **OdontoFlow** foi desenhado como uma aplicação **Local-First (Offline por Padrão)**: todas as leituras e escritas da interface acontecem diretamente no banco local do dispositivo (`IndexedDB` via `Dexie.js`) em menos de **5 milissegundos**, garantindo fluidez instantânea mesmo em salas de atendimento sem sinal de internet.
+O frontend do **OdontoFlow** foi desenhado como uma aplicação **Local-First (Offline por Padrão)**: todas as leituras e escritas da interface acontecem diretamente no banco local do dispositivo (`IndexedDB` via `Dexie.js`) em menos de **5 milissegundos**, garantindo fluidez instantânea mesmo em salas de atendimento sem sinal de internet.
 
 ```mermaid
 flowchart LR
@@ -32,7 +32,7 @@ flowchart LR
 
 ---
 
-### 2. Stack Tecnológica do Front-end
+### 2. Stack Tecnológica do Frontend
 
 * **Framework & Build:** **React 18+ com TypeScript e Vite** (geração de bundle estático ultraleve servido pelo Nginx).
 * **Contrato Compartilhado:** Importação direta de tipos e interfaces do pacote `@odontoflow/shared`.
@@ -41,10 +41,10 @@ flowchart LR
 * **Banco de Dados Local:** **Dexie.js** sobre **IndexedDB**:
   * Tabelas locais espelhadas: `patients`, `procedures`, `appointments`, `appointment_items`, `financial_transactions`, `business_hours`, `schedule_blocks`, `sync_outbox`.
   * **Janela Ativa de Cache:** Mantém localmente o catálogo completo + últimos 90 dias de agenda + 100% dos agendamentos futuros + financeiro do ano corrente (~2,5 MB por ano).
-* **Stack de Testes do Front-end (TDD):**
+* **Stack de Testes do Frontend (TDD):**
   * **Vitest** + **React Testing Library** + **@testing-library/user-event**.
   * **fake-indexeddb:** Emulação 100% fiel do IndexedDB em memória para testar o Dexie.js e a fila offline antes de construir a interface.
-  * **MSW (Mock Service Worker):** Simulação da API do back-end e cenários de queda de internet.
+  * **MSW (Mock Service Worker):** Simulação da API do backend e cenários de queda de internet.
   * **Playwright:** Testes End-to-End (E2E) simulando viewport mobile e modo avião.
 
 ---

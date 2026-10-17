@@ -1,11 +1,11 @@
-# Roadmap de Desenvolvimento TDD — Front-end
+# Roadmap de Desenvolvimento TDD — Frontend
 ## OdontoFlow — React PWA, Banco Local Dexie.js (`fake-indexeddb`), UI Mobile e Playwright E2E
 
 ---
 
-### 1. Diretriz Metodológica do Front-end (Spec-Driven & TDD)
+### 1. Diretriz Metodológica do Frontend (Spec-Driven & TDD)
 
-O desenvolvimento do `front-end/` segue estritamente o ciclo **Red-Green-Refactor** ancorado pela skill `onp-spec-driven`:
+O desenvolvimento do `frontend/` segue estritamente o ciclo **Red-Green-Refactor** ancorado pela skill `onp-spec-driven`:
 
 1. **Todo critério de aceite visual ou local-first nasce como um teste anotado (`@spec:AC-xxx`).**
 2. **Testes da camada de dados local (`Dexie.js` via `fake-indexeddb`) vêm antes dos componentes React.**
@@ -13,14 +13,14 @@ O desenvolvimento do `front-end/` segue estritamente o ciclo **Red-Green-Refacto
 
 ---
 
-### 2. Sprints do Front-end & Especificação de Testes
+### 2. Sprints do Frontend & Especificação de Testes
 
 ---
 
 #### SPRINT FE-1: Banco Local IndexedDB (`Dexie.js`) e Fila de Sincronização Offline
 > **Objetivo:** Garantir que toda a leitura, escrita otimista e fila offline funcionem localmente antes de construir telas.
 
-##### 1.1 Testes Padrão (Happy Path) — `front-end/src/db/__tests__/local-db.spec.ts`
+##### 1.1 Testes Padrão (Happy Path) — `frontend/src/db/__tests__/local-db.spec.ts`
 * [ ] **Inicialização do Schema Dexie.js:** Validar criação das tabelas locais (`patients`, `procedures`, `appointments`, `appointment_items`, `financial_transactions`, `business_hours`, `schedule_blocks`, `sync_outbox`).
 * [ ] **Escrita Otimista + Enfileiramento Automático (`sync_outbox`):** Ao criar um paciente ou agendamento no Dexie.js, o registro deve aparecer imediatamente na tabela local E gerar um item `PENDING` na tabela `sync_outbox`.
 * [ ] **Reatividade Instantânea (`useLiveQuery`):** Ao inserir ou alterar o status de um agendamento no banco local, a query reativa do dia deve emitir a lista atualizada em menos de 10ms.
@@ -37,7 +37,7 @@ O desenvolvimento do `front-end/` segue estritamente o ciclo **Red-Green-Refacto
 #### SPRINT FE-2: Timeline da Agenda Diária e Criação Rápida (< 10 Segundos)
 > **Objetivo:** Construir e testar a experiência principal de visualização da grade e lançamento rápido de consultas.
 
-##### 2.1 Testes Padrão (Happy Path) — `front-end/src/features/agenda/__tests__/agenda-ui.spec.ts`
+##### 2.1 Testes Padrão (Happy Path) — `frontend/src/features/agenda/__tests__/agenda-ui.spec.ts`
 * [ ] **Renderização da Grade Diária (15 em 15 min):** Exibir horários abertos conforme `business_hours` do dia e destacar visualmente o bloco de intervalo de almoço.
 * [ ] **Cores e Badges de Status nos Cards:** Renderizar o card do agendamento com a cor semântica correta (`PENDING` = Amarelo, `CONFIRMED` = Verde, `RESCHEDULE_REQUESTED` = Laranja, `MESSAGE_RECEIVED` = Azul, `COMPLETED` = Cinza, `NO_SHOW` = Vermelho).
 * [ ] **Gaveta de Criação Rápida (Toque em Horário Vago):** Tocar no slot das `15:00` abre o modal já com `15:00` preenchido.
@@ -56,7 +56,7 @@ O desenvolvimento do `front-end/` segue estritamente o ciclo **Red-Green-Refacto
 #### SPRINT FE-3: Modal de Retorno Inteligente e Checkout Financeiro ("Caixa de Bolso")
 > **Objetivo:** Garantir usabilidade sem atrito na conclusão da consulta, rateio visual de descontos, parcelas e agendamento de retorno.
 
-##### 3.1 Testes Padrão (Happy Path) — `front-end/src/features/checkout/__tests__/checkout-ui.spec.ts`
+##### 3.1 Testes Padrão (Happy Path) — `frontend/src/features/checkout/__tests__/checkout-ui.spec.ts`
 * [ ] **Edição Individual e Total com Rateio em Tempo Real:**
   * Abrir checkout com 2 procedimentos (`R$ 200` + `R$ 250` = `R$ 450`).
   * Permitir editar o valor individual de qualquer item OU digitar `R$ 400` no Total Final e exibir o aviso de desconto rateado proporcionalmente.
@@ -77,11 +77,11 @@ O desenvolvimento do `front-end/` segue estritamente o ciclo **Red-Green-Refacto
 #### SPRINT FE-4: Telas de Caixa, Relatórios, Pareamento WhatsApp e Testes E2E (Playwright)
 > **Objetivo:** Validar as visões gerenciais, tela de QR Code do WhatsApp e executar os testes de ponta a ponta em navegador mobile real.
 
-##### 4.1 Testes de Componentes Gerenciais — `front-end/src/features/analytics/__tests__/analytics-ui.spec.ts`
+##### 4.1 Testes de Componentes Gerenciais — `frontend/src/features/analytics/__tests__/analytics-ui.spec.ts`
 * [ ] **Tela de Caixa & Contas a Receber:** Exibir cards de `Entrou no Caixa`, `A Receber no Mês (Parcelas)`, `Despesas Pagas` e `Lucro Líquido Real`, além do botão de dar baixa (quitar) em parcelas pendentes.
 * [ ] **Tela de Pareamento WhatsApp (QR Code):** Renderizar QR Code vindo da API, exibir status `Conectado (Verde)` e exibir banner de alerta vermelho no topo do app quando `whatsapp_connected = false`.
 * [ ] **Lista de Reativação de Pacientes Inativos (> 6 meses):** Renderizar lista com botão de atalho direto (`wa.me/55...`) que abre conversa no WhatsApp com mensagem amigável pré-preenchida.
 
-##### 4.2 Suíte End-to-End Mobile (`front-end/e2e/odontoflow-mobile.spec.ts` via Playwright)
+##### 4.2 Suíte End-to-End Mobile (`frontend/e2e/odontoflow-mobile.spec.ts` via Playwright)
 * [ ] **E2E-1 (Jornada Completa Mobile):** Em viewport mobile (`390x844` — iPhone 14), criar paciente e procedimento *on-the-fly*, agendar consulta com 2 procedimentos, concluir atendimento com entrada + 3 parcelas e agendar retorno para 15 dias resolvendo conflito de horário.
-* [ ] **E2E-2 (Resiliência Modo Avião / Offline-First):** Ativar `context.setOffline(true)` no Playwright, criar 2 agendamentos e concluir 1 atendimento no caixa, recarregar a página ainda offline (comprovando que o PWA abre e mantém os dados), ativar `context.setOffline(false)` e comprovar que a fila sincroniza `100%` com o back-end.
+* [ ] **E2E-2 (Resiliência Modo Avião / Offline-First):** Ativar `context.setOffline(true)` no Playwright, criar 2 agendamentos e concluir 1 atendimento no caixa, recarregar a página ainda offline (comprovando que o PWA abre e mantém os dados), ativar `context.setOffline(false)` e comprovar que a fila sincroniza `100%` com o backend.

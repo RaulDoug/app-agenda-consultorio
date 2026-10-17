@@ -2,14 +2,14 @@
   "testCommand": "npm test",
   "reporter": "tap",
   "testGlobs": [
-    "back-end/test/**",
-    "back-end/tests/**",
-    "back-end/src/**/*.test.*",
-    "back-end/src/**/*.spec.*",
-    "front-end/test/**",
-    "front-end/tests/**",
-    "front-end/src/**/*.test.*",
-    "front-end/src/**/*.spec.*",
+    "backend/test/**",
+    "backend/tests/**",
+    "backend/src/**/*.test.*",
+    "backend/src/**/*.spec.*",
+    "frontend/test/**",
+    "frontend/tests/**",
+    "frontend/src/**/*.test.*",
+    "frontend/src/**/*.spec.*",
     "shared/src/**/*.test.*",
     "shared/src/**/*.spec.*",
     "test/**",
@@ -19,8 +19,8 @@
     "__tests__/**"
   ],
   "srcGlobs": [
-    "back-end/src/**",
-    "front-end/src/**",
+    "backend/src/**",
+    "frontend/src/**",
     "shared/src/**",
     "src/**"
   ]

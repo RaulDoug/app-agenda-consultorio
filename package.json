@@ -6,18 +6,18 @@
   "description": "Monorepo do sistema OdontoFlow — Gestão Ágil de Agenda, Confirmações WhatsApp e Caixa para Consultórios Odontológicos",
   "workspaces": [
     "shared",
-    "back-end",
-    "front-end"
+    "backend",
+    "frontend"
   ],
   "scripts": {
-    "dev:backend": "npm run dev --workspace=back-end",
-    "dev:frontend": "npm run dev --workspace=front-end",
+    "dev:backend": "npm run dev --workspace=backend",
+    "dev:frontend": "npm run dev --workspace=frontend",
     "build": "npm run build --workspaces --if-present",
-    "build:backend": "npm run build --workspace=back-end",
-    "build:frontend": "npm run build --workspace=front-end",
+    "build:backend": "npm run build --workspace=backend",
+    "build:frontend": "npm run build --workspace=frontend",
     "test": "npm run test --workspaces --if-present",
-    "test:backend": "npm run test --workspace=back-end",
-    "test:frontend": "npm run test --workspace=front-end",
+    "test:backend": "npm run test --workspace=backend",
+    "test:frontend": "npm run test --workspace=frontend",
     "spec:status": "node .agents/skills/onp-spec-driven/scripts/onp-spec.mjs status",
     "spec:audit": "node .agents/skills/onp-spec-driven/scripts/onp-spec.mjs audit --ci"
   },

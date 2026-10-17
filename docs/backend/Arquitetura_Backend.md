@@ -1,11 +1,11 @@
-# Especificação de Arquitetura Técnica — Back-end & Infraestrutura
+# Especificação de Arquitetura Técnica — Backend & Infraestrutura
 ## OdontoFlow — Servidor API REST, Banco PostgreSQL, Filas e Gateway WhatsApp
 
 ---
 
-### 1. Visão Geral da Arquitetura do Back-end
+### 1. Visão Geral da Arquitetura do Backend
 
-O back-end do **OdontoFlow** é responsável pela persistência centralizada no PostgreSQL, isolamento multi-tenant, sincronização com os dispositivos móveis, orquestração da fila anti-ban de mensagens no Redis e comunicação com a Evolution API via Webhooks.
+O backend do **OdontoFlow** é responsável pela persistência centralizada no PostgreSQL, isolamento multi-tenant, sincronização com os dispositivos móveis, orquestração da fila anti-ban de mensagens no Redis e comunicação com a Evolution API via Webhooks.
 
 ```mermaid
 flowchart TD
@@ -36,7 +36,7 @@ flowchart TD
 
 ---
 
-### 2. Stack Tecnológica do Back-end
+### 2. Stack Tecnológica do Backend
 
 #### 2.1 Runtime, API & Banco de Dados
 * **Runtime:** Node.js (v20+ LTS) com **TypeScript**.
@@ -55,7 +55,7 @@ flowchart TD
   * Pausa automaticamente a fila caso receba evento de desconexão da sessão do WhatsApp (`CONNECTION_LOST`).
 * **Recepção de Respostas:** Webhook nativo apontando para `POST /api/webhooks/whatsapp`.
 
-#### 2.3 Stack de Testes Automatizados do Back-end (TDD)
+#### 2.3 Stack de Testes Automatizados do Backend (TDD)
 * **Test Runner:** **Vitest**.
 * **Testes de Rotas HTTP:** **Supertest** acoplado à instância do Express.js.
 * **Testes de Banco SQL (`pg`):**
@@ -69,7 +69,7 @@ flowchart TD
 
 ### 3. Dimensionamento na VPS (Hostinger KVM 1 — 4 GB RAM)
 
-Todos os serviços rodam na mesma VPS via `docker-compose.yml`, além de o **Nginx** servir os arquivos estáticos do Front-end PWA (`app.consultorio.com.br`) e do Site Vitrine (`consultorio.com.br`):
+Todos os serviços rodam na mesma VPS via `docker-compose.yml`, além de o **Nginx** servir os arquivos estáticos do Frontend PWA (`app.consultorio.com.br`) e do Site Vitrine (`consultorio.com.br`):
 
 | Serviço | Função | Consumo Médio de RAM |
 | :--- | :--- | :--- |

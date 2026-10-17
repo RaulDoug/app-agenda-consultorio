@@ -1,11 +1,11 @@
-# Roadmap de Desenvolvimento TDD — Back-end
+# Roadmap de Desenvolvimento TDD — Backend
 ## OdontoFlow — API Express.js, Persistência SQL Puro (`pg`), Filas BullMQ e Webhooks
 
 ---
 
-### 1. Diretriz Metodológica do Back-end (Spec-Driven & TDD)
+### 1. Diretriz Metodológica do Backend (Spec-Driven & TDD)
 
-O desenvolvimento do `back-end/` segue estritamente o ciclo **Red-Green-Refactor** ancorado pela skill `onp-spec-driven`:
+O desenvolvimento do `backend/` segue estritamente o ciclo **Red-Green-Refactor** ancorado pela skill `onp-spec-driven`:
 
 1. **Todo critério de aceite nasce como um teste que falha (`@spec:AC-xxx`).**
 2. **Testes Padrão (Happy Path) + Testes de Borda (Edge Cases) são criados antes da implementação.**
@@ -13,14 +13,14 @@ O desenvolvimento do `back-end/` segue estritamente o ciclo **Red-Green-Refactor
 
 ---
 
-### 2. Sprints do Back-end & Especificação de Testes
+### 2. Sprints do Backend & Especificação de Testes
 
 ---
 
 #### SPRINT BE-1: Domínio Core, Regras de Horário e Validações de Servidor
 > **Objetivo:** Implementar as funções puras de domínio e regras de negócio no servidor antes do banco de dados.
 
-##### 1.1 Testes Padrão (Happy Path) — `back-end/src/domain/__tests__/schedule-domain.spec.ts`
+##### 1.1 Testes Padrão (Happy Path) — `backend/src/domain/__tests__/schedule-domain.spec.ts`
 * [ ] **Soma de Duração de Múltiplos Procedimentos:** Validar cálculo exato de `end_time` a partir de `start_time` + lista de durações (ex: 30m + 45m = 75m).
 * [ ] **Normalização de WhatsApp Brasileiro:** Converter entradas como `(11) 99999-8888`, `+55 11 99999-8888`, `11999998888` para o formato canônico `5511999998888`.
 * [ ] **Validação de Expediente Flexível (`business_hours`):** Permitir horários estendidos customizados (ex: 08:00 às 21:00) e dias com ou sem intervalo de almoço (`break_start_time = null`).
@@ -40,7 +40,7 @@ O desenvolvimento do `back-end/` segue estritamente o ciclo **Red-Green-Refactor
 #### SPRINT BE-2: Repositórios SQL Puro (`pg`), Isolamento Multi-Tenant e Rotas Express
 > **Objetivo:** Construir a camada de persistência em SQL puro e endpoints REST blindados contra vazamento entre clínicas.
 
-##### 2.1 Testes Padrão (Happy Path) — `back-end/src/routes/__tests__/api.spec.ts`
+##### 2.1 Testes Padrão (Happy Path) — `backend/src/routes/__tests__/api.spec.ts`
 * [ ] **Middleware JWT & Tenant Context:** Extrair `tenant_id` do token JWT e rejeitar requisições sem token com `401 Unauthorized`.
 * [ ] **Isolamento Multi-Tenant Estrito:**
   * Inserir pacientes, procedimentos e agendamentos no `Tenant A`.
@@ -61,7 +61,7 @@ O desenvolvimento do `back-end/` segue estritamente o ciclo **Red-Green-Refactor
 #### SPRINT BE-3: Motor WhatsApp Anti-Ban, Filas BullMQ e Webhook Evolution API
 > **Objetivo:** Implementar o disparo cadenciado de confirmações e o processamento automático de respostas dos pacientes.
 
-##### 3.1 Testes Padrão (Happy Path) — `back-end/src/whatsapp/__tests__/whatsapp.spec.ts`
+##### 3.1 Testes Padrão (Happy Path) — `backend/src/whatsapp/__tests__/whatsapp.spec.ts`
 * [ ] **Parser Inteligente de Respostas do Paciente:**
   * Classificar como `CONFIRMED`: `"1"`, `"1."`, `"Sim"`, `"sim"`, `"confirmado"`, `"👍"`, `"ok"`.
   * Classificar como `RESCHEDULE_REQUESTED`: `"2"`, `"não posso"`, `"remarcar"`, `"cancelar"`, `"preciso trocar"`.
@@ -81,7 +81,7 @@ O desenvolvimento do `back-end/` segue estritamente o ciclo **Red-Green-Refactor
 #### SPRINT BE-4: Motor Financeiro, Rateio de Descontos e Parcelamento
 > **Objetivo:** Garantir precisão contábil absoluta em centavos inteiros para o caixa, descontos e contas a receber.
 
-##### 4.1 Testes Padrão (Happy Path) — `back-end/src/financial/__tests__/financial.spec.ts`
+##### 4.1 Testes Padrão (Happy Path) — `backend/src/financial/__tests__/financial.spec.ts`
 * [ ] **Conclusão de Consulta com Edição Individual e Desconto Global:**
   * Permitir edição direta do valor de cada procedimento realizado.
   * Quando informado um desconto no valor total, ratear proporcionalmente entre os itens em centavos inteiros.
@@ -105,7 +105,7 @@ O desenvolvimento do `back-end/` segue estritamente o ciclo **Red-Green-Refactor
 #### SPRINT BE-5: Queries Analíticas e Relatórios Gerenciais em SQL
 > **Objetivo:** Fornecer os indicadores de negócio com queries SQL otimizadas.
 
-##### 5.1 Testes Padrão (Happy Path) — `back-end/src/analytics/__tests__/analytics.spec.ts`
+##### 5.1 Testes Padrão (Happy Path) — `backend/src/analytics/__tests__/analytics.spec.ts`
 * [ ] **Taxa de No-Show:** Calcular percentual exato de agendamentos `NO_SHOW` sobre o total de agendamentos do período e soma do valor estimado perdido.
 * [ ] **DRE Simplificado e Projeção de Caixa:** Retornar `total_income_paid_cents`, `total_expense_paid_cents`, `net_profit_cents` e `pending_receivables_cents` (próximos 30/60/90 dias).
 * [ ] **Ranking de Lucratividade por Procedimento:** Query `GROUP BY procedure_id` somando `effective_price_cents` apenas de consultas `COMPLETED`.

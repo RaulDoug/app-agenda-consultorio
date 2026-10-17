@@ -1,0 +1,16 @@
+{
+  "name": "@odontoflow/backend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "API REST Backend do OdontoFlow (Node.js + Express.js + PostgreSQL via pg + BullMQ + Evolution API)",
+  "type": "module",
+  "scripts": {
+    "dev": "echo \"Backend dev script to be configured\"",
+    "build": "tsc",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@odontoflow/shared": "*"
+  }
+}
