@@ -1,7 +1,7 @@
 {
   "feature": "persistencia-api",
-  "timestamp": "2026-10-17T19:29:48.257Z",
-  "gitRev": "41c4bac",
+  "timestamp": "2026-10-17T19:33:48.609Z",
+  "gitRev": "f03e5cf",
   "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
   "exitCode": 1,
@@ -18,12 +18,12 @@
       "method": "vitest-json"
     },
     "AC-013": {
-      "status": "fail",
+      "status": "pass",
       "testName": "API REST e Persistência Multi-Tenant — OdontoFlow US-008 — Gestão Rápida de Pacientes e Procedimentos AC-013: Proteção contra injeção SQL em buscas @spec:AC-013 AC-013: Proteção contra injeção SQL em buscas @spec:AC-013",
       "method": "vitest-json"
     },
     "AC-014": {
-      "status": "fail",
+      "status": "pass",
       "testName": "API REST e Persistência Multi-Tenant — OdontoFlow US-008 — Gestão Rápida de Pacientes e Procedimentos AC-014: Soft Delete em remoção de pacientes @spec:AC-014 AC-014: Soft Delete em remoção de pacientes @spec:AC-014",
       "method": "vitest-json"
     },

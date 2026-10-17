@@ -4,6 +4,8 @@ import express from 'express';
 import { authMiddleware, generateTestToken } from '../../middlewares/auth.js';
 import { createInMemoryDatabase, setDatabase, type IDatabase } from '../../db/connection.js';
 
+import { createApp } from '../../app.js';
+
 describe('API REST e Persistência Multi-Tenant — OdontoFlow', () => {
   let db: IDatabase;
   let testApp: express.Express;
@@ -24,8 +26,7 @@ describe('API REST e Persistência Multi-Tenant — OdontoFlow', () => {
       [tenantA, 'Consultório Dr. A', tenantB, 'Consultório Dra. B']
     );
 
-    testApp = express();
-    testApp.use(express.json());
+    testApp = createApp();
 
     // Rota protegida de teste de contexto
     testApp.get('/api/protected/profile', authMiddleware, (req, res) => {
@@ -82,12 +83,91 @@ describe('API REST e Persistência Multi-Tenant — OdontoFlow', () => {
   });
 
   describe('US-008 — Gestão Rápida de Pacientes e Procedimentos', () => {
-    it('AC-013: Proteção contra injeção SQL em buscas @spec:AC-013', () => {
-      throw new Error('AC-013 pendente de implementação (T-010)');
+    it('AC-013: Proteção contra injeção SQL em buscas @spec:AC-013', async () => {
+      // 1. Cadastra pacientes para o Tenant A
+      await request(testApp)
+        .post('/api/patients')
+        .set('Authorization', `Bearer ${tokenTenantA}`)
+        .send({ name: 'Carlos Eduardo', whatsapp: '5511999991111' });
+
+      await request(testApp)
+        .post('/api/patients')
+        .set('Authorization', `Bearer ${tokenTenantA}`)
+        .send({ name: 'Mariana Silva', whatsapp: '5511988882222' });
+
+      // 2. Executa busca contendo injeção SQL clássica
+      const injectionPayload = "' OR '1'='1; --";
+      const resInjection = await request(testApp)
+        .get(`/api/patients?search=${encodeURIComponent(injectionPayload)}`)
+        .set('Authorization', `Bearer ${tokenTenantA}`);
+
+      expect(resInjection.status).toBe(200);
+      // O input deve ser tratado literalmente: nenhum paciente coincide com a string da injeção
+      expect(resInjection.body).toEqual([]);
+
+      // 3. Busca legítima por prefixo deve funcionar normalmente via query parametrizada
+      const resSearch = await request(testApp)
+        .get('/api/patients?search=Carlos')
+        .set('Authorization', `Bearer ${tokenTenantA}`);
+
+      expect(resSearch.status).toBe(200);
+      expect(resSearch.body).toHaveLength(1);
+      expect(resSearch.body[0].name).toBe('Carlos Eduardo');
     });
 
-    it('AC-014: Soft Delete em remoção de pacientes @spec:AC-014', () => {
-      throw new Error('AC-014 pendente de implementação (T-010)');
+    it('AC-014: Soft Delete em remoção de pacientes @spec:AC-014', async () => {
+      const patientId = '33333333-3333-3333-3333-333333333333';
+      const appointmentId = '44444444-4444-4444-4444-444444444444';
+
+      // 1. Cadastra paciente
+      await request(testApp)
+        .post('/api/patients')
+        .set('Authorization', `Bearer ${tokenTenantA}`)
+        .send({ id: patientId, name: 'Paciente com Histórico', whatsapp: '5511977773333' });
+
+      // 2. Cria agendamento vinculado diretamente no banco
+      await db.query(
+        `INSERT INTO appointments (id, tenant_id, patient_id, start_time, end_time, status, total_charged_cents)
+         VALUES ($1, $2, $3, '2026-10-20 09:00:00+00', '2026-10-20 09:30:00+00', 'CONFIRMED', 15000)`,
+        [appointmentId, tenantA, patientId]
+      );
+
+      // 3. Executa Soft Delete pela rota da API
+      const resDelete = await request(testApp)
+        .delete(`/api/patients/${patientId}`)
+        .set('Authorization', `Bearer ${tokenTenantA}`);
+
+      expect(resDelete.status).toBe(200);
+      expect(resDelete.body.message).toContain('Soft Delete');
+
+      // 4. Verificação no banco: registro AINDA existe (NÃO houve DELETE FROM), mas is_active = false e deleted_at preenchido
+      const rawPatient = await db.query(
+        `SELECT id, name, is_active, deleted_at FROM patients WHERE id = $1`,
+        [patientId]
+      );
+      expect(rawPatient.rows).toHaveLength(1);
+      expect(rawPatient.rows[0].is_active).toBe(false);
+      expect(rawPatient.rows[0].deleted_at).not.toBeNull();
+
+      // 5. Histórico de agendamento do paciente permanece intacto
+      const rawAppointment = await db.query(
+        `SELECT id, patient_id, status FROM appointments WHERE id = $1`,
+        [appointmentId]
+      );
+      expect(rawAppointment.rows).toHaveLength(1);
+      expect(rawAppointment.rows[0].patient_id).toBe(patientId);
+
+      // 6. Rota GET /api/patients/:id retorna 404 (ignora registros soft-deleted)
+      const resGetOne = await request(testApp)
+        .get(`/api/patients/${patientId}`)
+        .set('Authorization', `Bearer ${tokenTenantA}`);
+      expect(resGetOne.status).toBe(404);
+
+      // 7. Rota GET /api/patients não traz o paciente na listagem de ativos
+      const resList = await request(testApp)
+        .get('/api/patients')
+        .set('Authorization', `Bearer ${tokenTenantA}`);
+      expect(resList.body.some((p: any) => p.id === patientId)).toBe(false);
     });
   });
 

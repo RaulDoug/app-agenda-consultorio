@@ -12,8 +12,7 @@
 - Arquivos: backend/src/middlewares/auth.ts, backend/src/routes/__tests__/api.spec.ts
 - Notas: Extração de tenant_id a partir do Bearer Token e bloqueio 401 Unauthorized para acessos sem token.
 
-## T-010 — Repositórios SQL e Rotas de Pacientes e Procedimentos [pendente]
-
+## T-010 — Repositórios SQL e Rotas de Pacientes e Procedimentos [concluida]
 - Refs: US-008, AC-013, AC-014
 - Arquivos: backend/src/repositories/patient-repository.ts, backend/src/repositories/procedure-repository.ts, backend/src/routes/patients.ts, backend/src/routes/procedures.ts, backend/src/routes/__tests__/api.spec.ts
 - Notas: CRUD on-the-fly, queries parametrizadas ($1, $2) e soft delete obrigatório com is_active: false e deleted_at.

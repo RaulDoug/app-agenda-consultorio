@@ -392,46 +392,46 @@
       "codigo": "VERIFY_FALHOU",
       "feature": "persistencia-api",
       "ref": "AC-014",
-      "ocorrencias": 1,
+      "ocorrencias": 2,
       "primeiraVez": "2026-10-17T19:29:48.321Z",
-      "ultimaVez": "2026-10-17T19:29:48.321Z",
-      "gitRev": "41c4bac"
+      "ultimaVez": "2026-10-17T19:33:22.806Z",
+      "gitRev": "f03e5cf"
     },
     "VERIFY_FALHOU::persistencia-api::AC-015": {
       "codigo": "VERIFY_FALHOU",
       "feature": "persistencia-api",
       "ref": "AC-015",
-      "ocorrencias": 1,
+      "ocorrencias": 3,
       "primeiraVez": "2026-10-17T19:29:48.321Z",
-      "ultimaVez": "2026-10-17T19:29:48.321Z",
-      "gitRev": "41c4bac"
+      "ultimaVez": "2026-10-17T19:33:48.673Z",
+      "gitRev": "f03e5cf"
     },
     "VERIFY_FALHOU::persistencia-api::AC-016": {
       "codigo": "VERIFY_FALHOU",
       "feature": "persistencia-api",
       "ref": "AC-016",
-      "ocorrencias": 1,
+      "ocorrencias": 3,
       "primeiraVez": "2026-10-17T19:29:48.321Z",
-      "ultimaVez": "2026-10-17T19:29:48.321Z",
-      "gitRev": "41c4bac"
+      "ultimaVez": "2026-10-17T19:33:48.673Z",
+      "gitRev": "f03e5cf"
     },
     "VERIFY_FALHOU::persistencia-api::AC-017": {
       "codigo": "VERIFY_FALHOU",
       "feature": "persistencia-api",
       "ref": "AC-017",
-      "ocorrencias": 1,
+      "ocorrencias": 3,
       "primeiraVez": "2026-10-17T19:29:48.321Z",
-      "ultimaVez": "2026-10-17T19:29:48.321Z",
-      "gitRev": "41c4bac"
+      "ultimaVez": "2026-10-17T19:33:48.673Z",
+      "gitRev": "f03e5cf"
     },
     "VERIFY_FALHOU::persistencia-api::AC-018": {
       "codigo": "VERIFY_FALHOU",
       "feature": "persistencia-api",
       "ref": "AC-018",
-      "ocorrencias": 1,
+      "ocorrencias": 3,
       "primeiraVez": "2026-10-17T19:29:48.321Z",
-      "ultimaVez": "2026-10-17T19:29:48.321Z",
-      "gitRev": "41c4bac"
+      "ultimaVez": "2026-10-17T19:33:48.673Z",
+      "gitRev": "f03e5cf"
     }
   }
 }
