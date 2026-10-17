@@ -257,10 +257,10 @@
       "codigo": "VERIFY_OBSOLETO",
       "feature": "dominio-agenda",
       "ref": "—",
-      "ocorrencias": 6,
+      "ocorrencias": 7,
       "primeiraVez": "2026-10-17T19:21:57.173Z",
-      "ultimaVez": "2026-10-17T20:46:13.385Z",
-      "gitRev": "747348d"
+      "ultimaVez": "2026-10-17T20:48:29.107Z",
+      "gitRev": "b657a10"
     },
     "ARQUIVO_INEXISTENTE::persistencia-api::T-008": {
       "codigo": "ARQUIVO_INEXISTENTE",
@@ -437,10 +437,10 @@
       "codigo": "VERIFY_OBSOLETO",
       "feature": "persistencia-api",
       "ref": "—",
-      "ocorrencias": 4,
+      "ocorrencias": 5,
       "primeiraVez": "2026-10-17T19:43:11.018Z",
-      "ultimaVez": "2026-10-17T20:46:13.386Z",
-      "gitRev": "747348d"
+      "ultimaVez": "2026-10-17T20:48:29.108Z",
+      "gitRev": "b657a10"
     },
     "ARQUIVO_INEXISTENTE::whatsapp-bullmq::T-013": {
       "codigo": "ARQUIVO_INEXISTENTE",
@@ -594,6 +594,15 @@
       "primeiraVez": "2026-10-17T20:30:33.343Z",
       "ultimaVez": "2026-10-17T20:41:52.634Z",
       "gitRev": "be9e8c5"
+    },
+    "VERIFY_OBSOLETO::whatsapp-bullmq::—": {
+      "codigo": "VERIFY_OBSOLETO",
+      "feature": "whatsapp-bullmq",
+      "ref": "—",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-17T20:48:29.108Z",
+      "ultimaVez": "2026-10-17T20:48:29.108Z",
+      "gitRev": "b657a10"
     }
   }
 }
