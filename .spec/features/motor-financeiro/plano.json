@@ -1,0 +1,154 @@
+{
+  "runId": "App-Agenda-Consultório-motor-financeiro-mvcwnpin",
+  "feature": "motor-financeiro",
+  "agent": "antigravity",
+  "modo": "paralelo",
+  "paralelizar": null,
+  "modeloForcado": null,
+  "esforcoForcado": null,
+  "geradoEm": "2026-10-17 21:25",
+  "branchTrabalho": "spec/motor-financeiro",
+  "baseDir": ".spec/features/motor-financeiro",
+  "specDir": ".spec",
+  "repoName": "App-Agenda-Consultório",
+  "logsDir": "../onp-worktrees/App-Agenda-Consultório-motor-financeiro-logs",
+  "ondas": [
+    [
+      "faixa-1",
+      "faixa-2",
+      "faixa-3"
+    ],
+    [
+      "faixa-4",
+      "faixa-5"
+    ]
+  ],
+  "faixas": [
+    {
+      "id": "faixa-1",
+      "branch": "spec/motor-financeiro-faixa-1",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-motor-financeiro-faixa-1",
+      "tarefas": [
+        {
+          "id": "T-018",
+          "titulo": "Algoritmo Puro de Cálculo Financeiro: Rateio de Desconto e O Teste do Centavo",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "backend/src/financial/calculator.ts"
+          ],
+          "refs": [
+            "US-015",
+            "AC-027",
+            "AC-028"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "faixa-2",
+      "branch": "spec/motor-financeiro-faixa-2",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-motor-financeiro-faixa-2",
+      "tarefas": [
+        {
+          "id": "T-019",
+          "titulo": "Gerador de Parcelas com Regra de Virada de Mês e Validação de Entrada",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "backend/src/financial/installments.ts"
+          ],
+          "refs": [
+            "US-016",
+            "AC-029",
+            "AC-030",
+            "AC-031"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "faixa-3",
+      "branch": "spec/motor-financeiro-faixa-3",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-motor-financeiro-faixa-3",
+      "tarefas": [
+        {
+          "id": "T-020",
+          "titulo": "Repositório Financeiro e Transações Contábeis no PostgreSQL",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "backend/src/repositories/financial-repository.ts"
+          ],
+          "refs": [
+            "US-015",
+            "US-016",
+            "US-017",
+            "AC-027",
+            "AC-029",
+            "AC-034"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "faixa-4",
+      "branch": "spec/motor-financeiro-faixa-4",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-motor-financeiro-faixa-4",
+      "tarefas": [
+        {
+          "id": "T-021",
+          "titulo": "Rotas REST de Conclusão Financeira, Quitação em Lote e Despesas Rápidas",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "backend/src/routes/financial.ts",
+            "backend/src/app.ts"
+          ],
+          "refs": [
+            "US-015",
+            "US-016",
+            "US-017",
+            "AC-027",
+            "AC-029",
+            "AC-031",
+            "AC-032",
+            "AC-033"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "faixa-5",
+      "branch": "spec/motor-financeiro-faixa-5",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-motor-financeiro-faixa-5",
+      "tarefas": [
+        {
+          "id": "T-022",
+          "titulo": "Suíte Integrada de Testes Automatizados TDD do Motor Financeiro",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "backend/src/financial/__tests__/financial.spec.ts"
+          ],
+          "refs": [
+            "US-015",
+            "US-016",
+            "US-017",
+            "AC-027",
+            "AC-028",
+            "AC-029",
+            "AC-030",
+            "AC-031",
+            "AC-032",
+            "AC-033",
+            "AC-034"
+          ]
+        }
+      ]
+    }
+  ],
+  "sequenciais": [],
+  "concluidas": [],
+  "avisos": []
+}

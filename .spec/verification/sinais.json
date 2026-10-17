@@ -257,10 +257,10 @@
       "codigo": "VERIFY_OBSOLETO",
       "feature": "dominio-agenda",
       "ref": "—",
-      "ocorrencias": 7,
+      "ocorrencias": 8,
       "primeiraVez": "2026-10-17T19:21:57.173Z",
-      "ultimaVez": "2026-10-17T20:48:29.107Z",
-      "gitRev": "b657a10"
+      "ultimaVez": "2026-10-17T21:25:54.345Z",
+      "gitRev": "2ba162a"
     },
     "ARQUIVO_INEXISTENTE::persistencia-api::T-008": {
       "codigo": "ARQUIVO_INEXISTENTE",
@@ -437,10 +437,10 @@
       "codigo": "VERIFY_OBSOLETO",
       "feature": "persistencia-api",
       "ref": "—",
-      "ocorrencias": 5,
+      "ocorrencias": 6,
       "primeiraVez": "2026-10-17T19:43:11.018Z",
-      "ultimaVez": "2026-10-17T20:48:29.108Z",
-      "gitRev": "b657a10"
+      "ultimaVez": "2026-10-17T21:25:54.346Z",
+      "gitRev": "2ba162a"
     },
     "ARQUIVO_INEXISTENTE::whatsapp-bullmq::T-013": {
       "codigo": "ARQUIVO_INEXISTENTE",
@@ -599,10 +599,199 @@
       "codigo": "VERIFY_OBSOLETO",
       "feature": "whatsapp-bullmq",
       "ref": "—",
-      "ocorrencias": 1,
+      "ocorrencias": 2,
       "primeiraVez": "2026-10-17T20:48:29.108Z",
-      "ultimaVez": "2026-10-17T20:48:29.108Z",
-      "gitRev": "b657a10"
+      "ultimaVez": "2026-10-17T21:25:54.346Z",
+      "gitRev": "2ba162a"
+    },
+    "ARQUIVO_INEXISTENTE::motor-financeiro::T-018": {
+      "codigo": "ARQUIVO_INEXISTENTE",
+      "feature": "motor-financeiro",
+      "ref": "T-018",
+      "ocorrencias": 2,
+      "primeiraVez": "2026-10-17T21:25:15.400Z",
+      "ultimaVez": "2026-10-17T21:25:54.346Z",
+      "gitRev": "2ba162a"
+    },
+    "ARQUIVO_INEXISTENTE::motor-financeiro::T-019": {
+      "codigo": "ARQUIVO_INEXISTENTE",
+      "feature": "motor-financeiro",
+      "ref": "T-019",
+      "ocorrencias": 2,
+      "primeiraVez": "2026-10-17T21:25:15.400Z",
+      "ultimaVez": "2026-10-17T21:25:54.346Z",
+      "gitRev": "2ba162a"
+    },
+    "ARQUIVO_INEXISTENTE::motor-financeiro::T-020": {
+      "codigo": "ARQUIVO_INEXISTENTE",
+      "feature": "motor-financeiro",
+      "ref": "T-020",
+      "ocorrencias": 2,
+      "primeiraVez": "2026-10-17T21:25:15.401Z",
+      "ultimaVez": "2026-10-17T21:25:54.346Z",
+      "gitRev": "2ba162a"
+    },
+    "ARQUIVO_INEXISTENTE::motor-financeiro::T-021": {
+      "codigo": "ARQUIVO_INEXISTENTE",
+      "feature": "motor-financeiro",
+      "ref": "T-021",
+      "ocorrencias": 2,
+      "primeiraVez": "2026-10-17T21:25:15.401Z",
+      "ultimaVez": "2026-10-17T21:25:54.346Z",
+      "gitRev": "2ba162a"
+    },
+    "ARQUIVO_INEXISTENTE::motor-financeiro::T-022": {
+      "codigo": "ARQUIVO_INEXISTENTE",
+      "feature": "motor-financeiro",
+      "ref": "T-022",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-17T21:25:15.401Z",
+      "ultimaVez": "2026-10-17T21:25:15.401Z",
+      "gitRev": "2ba162a"
+    },
+    "AC_SEM_TESTE::motor-financeiro::AC-027": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "motor-financeiro",
+      "ref": "AC-027",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-17T21:25:15.401Z",
+      "ultimaVez": "2026-10-17T21:25:15.401Z",
+      "gitRev": "2ba162a"
+    },
+    "AC_SEM_TESTE::motor-financeiro::AC-028": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "motor-financeiro",
+      "ref": "AC-028",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-17T21:25:15.401Z",
+      "ultimaVez": "2026-10-17T21:25:15.401Z",
+      "gitRev": "2ba162a"
+    },
+    "AC_SEM_TESTE::motor-financeiro::AC-029": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "motor-financeiro",
+      "ref": "AC-029",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-17T21:25:15.401Z",
+      "ultimaVez": "2026-10-17T21:25:15.401Z",
+      "gitRev": "2ba162a"
+    },
+    "AC_SEM_TESTE::motor-financeiro::AC-030": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "motor-financeiro",
+      "ref": "AC-030",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-17T21:25:15.401Z",
+      "ultimaVez": "2026-10-17T21:25:15.401Z",
+      "gitRev": "2ba162a"
+    },
+    "AC_SEM_TESTE::motor-financeiro::AC-031": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "motor-financeiro",
+      "ref": "AC-031",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-17T21:25:15.401Z",
+      "ultimaVez": "2026-10-17T21:25:15.401Z",
+      "gitRev": "2ba162a"
+    },
+    "AC_SEM_TESTE::motor-financeiro::AC-032": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "motor-financeiro",
+      "ref": "AC-032",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-17T21:25:15.401Z",
+      "ultimaVez": "2026-10-17T21:25:15.401Z",
+      "gitRev": "2ba162a"
+    },
+    "AC_SEM_TESTE::motor-financeiro::AC-033": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "motor-financeiro",
+      "ref": "AC-033",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-17T21:25:15.401Z",
+      "ultimaVez": "2026-10-17T21:25:15.401Z",
+      "gitRev": "2ba162a"
+    },
+    "AC_SEM_TESTE::motor-financeiro::AC-034": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "motor-financeiro",
+      "ref": "AC-034",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-17T21:25:15.401Z",
+      "ultimaVez": "2026-10-17T21:25:15.401Z",
+      "gitRev": "2ba162a"
+    },
+    "AC_SEM_PROVA::motor-financeiro::AC-027": {
+      "codigo": "AC_SEM_PROVA",
+      "feature": "motor-financeiro",
+      "ref": "AC-027",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-17T21:25:54.346Z",
+      "ultimaVez": "2026-10-17T21:25:54.346Z",
+      "gitRev": "2ba162a"
+    },
+    "AC_SEM_PROVA::motor-financeiro::AC-028": {
+      "codigo": "AC_SEM_PROVA",
+      "feature": "motor-financeiro",
+      "ref": "AC-028",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-17T21:25:54.346Z",
+      "ultimaVez": "2026-10-17T21:25:54.346Z",
+      "gitRev": "2ba162a"
+    },
+    "AC_SEM_PROVA::motor-financeiro::AC-029": {
+      "codigo": "AC_SEM_PROVA",
+      "feature": "motor-financeiro",
+      "ref": "AC-029",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-17T21:25:54.346Z",
+      "ultimaVez": "2026-10-17T21:25:54.346Z",
+      "gitRev": "2ba162a"
+    },
+    "AC_SEM_PROVA::motor-financeiro::AC-030": {
+      "codigo": "AC_SEM_PROVA",
+      "feature": "motor-financeiro",
+      "ref": "AC-030",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-17T21:25:54.346Z",
+      "ultimaVez": "2026-10-17T21:25:54.346Z",
+      "gitRev": "2ba162a"
+    },
+    "AC_SEM_PROVA::motor-financeiro::AC-031": {
+      "codigo": "AC_SEM_PROVA",
+      "feature": "motor-financeiro",
+      "ref": "AC-031",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-17T21:25:54.346Z",
+      "ultimaVez": "2026-10-17T21:25:54.346Z",
+      "gitRev": "2ba162a"
+    },
+    "AC_SEM_PROVA::motor-financeiro::AC-032": {
+      "codigo": "AC_SEM_PROVA",
+      "feature": "motor-financeiro",
+      "ref": "AC-032",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-17T21:25:54.346Z",
+      "ultimaVez": "2026-10-17T21:25:54.346Z",
+      "gitRev": "2ba162a"
+    },
+    "AC_SEM_PROVA::motor-financeiro::AC-033": {
+      "codigo": "AC_SEM_PROVA",
+      "feature": "motor-financeiro",
+      "ref": "AC-033",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-17T21:25:54.346Z",
+      "ultimaVez": "2026-10-17T21:25:54.346Z",
+      "gitRev": "2ba162a"
+    },
+    "AC_SEM_PROVA::motor-financeiro::AC-034": {
+      "codigo": "AC_SEM_PROVA",
+      "feature": "motor-financeiro",
+      "ref": "AC-034",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-17T21:25:54.346Z",
+      "ultimaVez": "2026-10-17T21:25:54.346Z",
+      "gitRev": "2ba162a"
     }
   }
 }
