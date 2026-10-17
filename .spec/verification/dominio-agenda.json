@@ -1,0 +1,62 @@
+{
+  "feature": "dominio-agenda",
+  "timestamp": "2026-10-17T19:03:21.920Z",
+  "gitRev": "e299942",
+  "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
+  "reporter": "vitest-json",
+  "exitCode": 1,
+  "testsParsed": 10,
+  "results": {
+    "AC-001": {
+      "status": "pass",
+      "testName": "Domínio de Agendamento — OdontoFlow US-001 — Cálculo Dinâmico de Duração por Procedimentos AC-001: Soma de durações determina o horário final @spec:AC-001 AC-001: Soma de durações determina o horário final @spec:AC-001",
+      "method": "vitest-json"
+    },
+    "AC-002": {
+      "status": "pass",
+      "testName": "Domínio de Agendamento — OdontoFlow US-001 — Cálculo Dinâmico de Duração por Procedimentos AC-002: Rejeição de procedimentos com duração inválida @spec:AC-002 AC-002: Rejeição de procedimentos com duração inválida @spec:AC-002",
+      "method": "vitest-json"
+    },
+    "AC-003": {
+      "status": "fail",
+      "testName": "Domínio de Agendamento — OdontoFlow US-002 — Normalização Canônica de Telefones WhatsApp AC-003: Sanitização e formatação canônica de celular brasileiro @spec:AC-003 AC-003: Sanitização e formatação canônica de celular brasileiro @spec:AC-003",
+      "method": "vitest-json"
+    },
+    "AC-004": {
+      "status": "fail",
+      "testName": "Domínio de Agendamento — OdontoFlow US-002 — Normalização Canônica de Telefones WhatsApp AC-004: Rejeição de telefones inválidos @spec:AC-004 AC-004: Rejeição de telefones inválidos @spec:AC-004",
+      "method": "vitest-json"
+    },
+    "AC-005": {
+      "status": "fail",
+      "testName": "Domínio de Agendamento — OdontoFlow US-003 — Validação de Expediente e Encaixe com Soft-Warning AC-005: Alerta de agendamento fora do expediente regular @spec:AC-005 AC-005: Alerta de agendamento fora do expediente regular @spec:AC-005",
+      "method": "vitest-json"
+    },
+    "AC-006": {
+      "status": "fail",
+      "testName": "Domínio de Agendamento — OdontoFlow US-003 — Validação de Expediente e Encaixe com Soft-Warning AC-006: Confirmação de encaixe extraordinário marca flag no agendamento @spec:AC-006 AC-006: Confirmação de encaixe extraordinário marca flag no agendamento @spec:AC-006",
+      "method": "vitest-json"
+    },
+    "AC-007": {
+      "status": "fail",
+      "testName": "Domínio de Agendamento — OdontoFlow US-004 — Sugestão Inteligente de 3 Horários Vagos no Retorno AC-007: Sugestão de 3 slots vagos mais próximos em caso de conflito @spec:AC-007 AC-007: Sugestão de 3 slots vagos mais próximos em caso de conflito @spec:AC-007",
+      "method": "vitest-json"
+    },
+    "AC-008": {
+      "status": "fail",
+      "testName": "Domínio de Agendamento — OdontoFlow US-005 — Máquina de Estados e Imutabilidade de Agendamento AC-008: Validação de transições de status permitidas @spec:AC-008 AC-008: Validação de transições de status permitidas @spec:AC-008",
+      "method": "vitest-json"
+    },
+    "AC-009": {
+      "status": "fail",
+      "testName": "Domínio de Agendamento — OdontoFlow US-005 — Máquina de Estados e Imutabilidade de Agendamento AC-009: Imutabilidade de consultas concluídas ou canceladas @spec:AC-009 AC-009: Imutabilidade de consultas concluídas ou canceladas @spec:AC-009",
+      "method": "vitest-json"
+    },
+    "AC-010": {
+      "status": "fail",
+      "testName": "Domínio de Agendamento — OdontoFlow US-006 — Consistência de Fuso Horário UTC-3 AC-010: Preservação da data civil no fuso America/Sao_Paulo @spec:AC-010 AC-010: Preservação da data civil no fuso America/Sao_Paulo @spec:AC-010",
+      "method": "vitest-json"
+    }
+  },
+  "principles": {}
+}

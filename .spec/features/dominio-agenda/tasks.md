@@ -7,8 +7,7 @@
 - Arquivos: shared/src/types/appointment.ts, shared/src/types/patient.ts, shared/src/types/procedure.ts, shared/src/types/business-hours.ts, shared/src/types/financial.ts, shared/src/index.ts
 - Notas: Contratos e interfaces base para agendamentos, procedimentos, pacientes e expediente compartilhados entre backend e frontend.
 
-## T-002 — Funções de Domínio: Duração Dinâmica e Validação de Procedimentos [pendente]
-
+## T-002 — Funções de Domínio: Duração Dinâmica e Validação de Procedimentos [concluida]
 - Refs: US-001, AC-001, AC-002
 - Arquivos: backend/src/domain/duration.ts, backend/src/domain/__tests__/schedule-domain.spec.ts
 - Notas: Cálculo cumulativo de duração de múltiplos procedimentos e validação de durações positivas.

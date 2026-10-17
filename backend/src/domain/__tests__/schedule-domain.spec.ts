@@ -1,0 +1,73 @@
+import { describe, it, expect } from 'vitest';
+import { calculateAppointmentDuration, validateProcedureDuration } from '../duration.js';
+
+describe('Domínio de Agendamento — OdontoFlow', () => {
+  describe('US-001 — Cálculo Dinâmico de Duração por Procedimentos', () => {
+    it('AC-001: Soma de durações determina o horário final @spec:AC-001', () => {
+      const startTime = '2026-10-20T09:00:00.000Z';
+      const durations = [30, 45]; // Limpeza (30m) + Restauração (45m) = 75m
+
+      const result = calculateAppointmentDuration(startTime, durations);
+
+      expect(result.totalDurationMinutes).toBe(75);
+      expect(result.startTime.toISOString()).toBe('2026-10-20T09:00:00.000Z');
+      expect(result.endTime.toISOString()).toBe('2026-10-20T10:15:00.000Z');
+    });
+
+    it('AC-002: Rejeição de procedimentos com duração inválida @spec:AC-002', () => {
+      const startTime = '2026-10-20T09:00:00.000Z';
+
+      expect(() => calculateAppointmentDuration(startTime, [0])).toThrow(/Duração inválida do procedimento/);
+      expect(() => calculateAppointmentDuration(startTime, [-15])).toThrow(/Duração inválida do procedimento/);
+
+      const valZero = validateProcedureDuration(0);
+      expect(valZero.isValid).toBe(false);
+      expect(valZero.error).toBeDefined();
+
+      const valNeg = validateProcedureDuration(-30);
+      expect(valNeg.isValid).toBe(false);
+    });
+  });
+
+  describe('US-002 — Normalização Canônica de Telefones WhatsApp', () => {
+    it('AC-003: Sanitização e formatação canônica de celular brasileiro @spec:AC-003', () => {
+      throw new Error('AC-003 pendente de implementação (T-003)');
+    });
+
+    it('AC-004: Rejeição de telefones inválidos @spec:AC-004', () => {
+      throw new Error('AC-004 pendente de implementação (T-003)');
+    });
+  });
+
+  describe('US-003 — Validação de Expediente e Encaixe com Soft-Warning', () => {
+    it('AC-005: Alerta de agendamento fora do expediente regular @spec:AC-005', () => {
+      throw new Error('AC-005 pendente de implementação (T-004)');
+    });
+
+    it('AC-006: Confirmação de encaixe extraordinário marca flag no agendamento @spec:AC-006', () => {
+      throw new Error('AC-006 pendente de implementação (T-004)');
+    });
+  });
+
+  describe('US-004 — Sugestão Inteligente de 3 Horários Vagos no Retorno', () => {
+    it('AC-007: Sugestão de 3 slots vagos mais próximos em caso de conflito @spec:AC-007', () => {
+      throw new Error('AC-007 pendente de implementação (T-005)');
+    });
+  });
+
+  describe('US-005 — Máquina de Estados e Imutabilidade de Agendamento', () => {
+    it('AC-008: Validação de transições de status permitidas @spec:AC-008', () => {
+      throw new Error('AC-008 pendente de implementação (T-006)');
+    });
+
+    it('AC-009: Imutabilidade de consultas concluídas ou canceladas @spec:AC-009', () => {
+      throw new Error('AC-009 pendente de implementação (T-006)');
+    });
+  });
+
+  describe('US-006 — Consistência de Fuso Horário UTC-3', () => {
+    it('AC-010: Preservação da data civil no fuso America/Sao_Paulo @spec:AC-010', () => {
+      throw new Error('AC-010 pendente de implementação (T-007)');
+    });
+  });
+});
