@@ -4,10 +4,11 @@
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "outDir": "./dist",
+    "rootDir": "..",
     "paths": {
       "@odontoflow/shared": ["../shared/src/index.ts"],
       "@odontoflow/shared/*": ["../shared/src/*"]
     }
   },
-  "include": ["src/**/*", "test/**/*", "tests/**/*"]
+  "include": ["src/**/*", "test/**/*", "tests/**/*", "../shared/src/**/*"]
 }

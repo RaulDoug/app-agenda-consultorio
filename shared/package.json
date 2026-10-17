@@ -2,6 +2,7 @@
   "name": "@odontoflow/shared",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "description": "Tipos, interfaces e contratos compartilhados entre o backend e o frontend do OdontoFlow",
   "main": "./src/index.ts",
   "types": "./src/index.ts",

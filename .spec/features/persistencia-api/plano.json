@@ -1,0 +1,121 @@
+{
+  "runId": "App-Agenda-Consultório-persistencia-api-mvcs9lir",
+  "feature": "persistencia-api",
+  "agent": "antigravity",
+  "modo": "paralelo",
+  "paralelizar": null,
+  "modeloForcado": null,
+  "esforcoForcado": null,
+  "geradoEm": "2026-10-17 19:22",
+  "branchTrabalho": "spec/persistencia-api",
+  "baseDir": ".spec/features/persistencia-api",
+  "specDir": ".spec",
+  "repoName": "App-Agenda-Consultório",
+  "logsDir": "../onp-worktrees/App-Agenda-Consultório-persistencia-api-logs",
+  "ondas": [
+    [
+      "faixa-1",
+      "faixa-2"
+    ]
+  ],
+  "faixas": [
+    {
+      "id": "faixa-1",
+      "branch": "spec/persistencia-api-faixa-1",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-persistencia-api-faixa-1",
+      "tarefas": [
+        {
+          "id": "T-008",
+          "titulo": "Infraestrutura SQL: Schema DDL e Gerenciador de Conexão com Postgres",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "backend/src/db/schema.sql",
+            "backend/src/db/connection.ts"
+          ],
+          "refs": [
+            "US-007",
+            "US-008",
+            "US-009",
+            "US-010"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "faixa-2",
+      "branch": "spec/persistencia-api-faixa-2",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-persistencia-api-faixa-2",
+      "tarefas": [
+        {
+          "id": "T-009",
+          "titulo": "Middleware de Autenticação JWT e Contexto Multi-Tenant",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "backend/src/middlewares/auth.ts",
+            "backend/src/routes/__tests__/api.spec.ts"
+          ],
+          "refs": [
+            "US-007",
+            "AC-011",
+            "AC-012"
+          ]
+        },
+        {
+          "id": "T-010",
+          "titulo": "Repositórios SQL e Rotas de Pacientes e Procedimentos",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "backend/src/repositories/patient-repository.ts",
+            "backend/src/repositories/procedure-repository.ts",
+            "backend/src/routes/patients.ts",
+            "backend/src/routes/procedures.ts",
+            "backend/src/routes/__tests__/api.spec.ts"
+          ],
+          "refs": [
+            "US-008",
+            "AC-013",
+            "AC-014"
+          ]
+        },
+        {
+          "id": "T-011",
+          "titulo": "Repositório Transacional e Rotas de Agendamentos",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "backend/src/repositories/appointment-repository.ts",
+            "backend/src/routes/appointments.ts",
+            "backend/src/routes/__tests__/api.spec.ts"
+          ],
+          "refs": [
+            "US-009",
+            "AC-015",
+            "AC-016"
+          ]
+        },
+        {
+          "id": "T-012",
+          "titulo": "Rota de Sincronização em Lote Offline-First e Setup do App Express",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "backend/src/routes/sync.ts",
+            "backend/src/app.ts",
+            "backend/src/routes/__tests__/api.spec.ts"
+          ],
+          "refs": [
+            "US-010",
+            "AC-017",
+            "AC-018"
+          ]
+        }
+      ]
+    }
+  ],
+  "sequenciais": [],
+  "concluidas": [],
+  "avisos": []
+}
