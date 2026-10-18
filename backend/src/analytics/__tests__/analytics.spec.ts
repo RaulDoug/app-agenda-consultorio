@@ -57,7 +57,7 @@ describe('Queries Analíticas e Relatórios Gerenciais — OdontoFlow', () => {
       // 8 consultas normais (COMPLETED ou CONFIRMED)
       // 2 consultas NO_SHOW (totalizando R$ 300 = 30000 centavos)
       for (let i = 1; i <= 8; i++) {
-        const appId = `app-normal-${i}`;
+        const appId = `00000000-0000-0000-0001-${String(i).padStart(12, '0')}`;
         await db.query(
           `INSERT INTO appointments (id, tenant_id, patient_id, start_time, end_time, status)
            VALUES ($1, $2, $3, '2026-10-10 10:00:00+00', '2026-10-10 10:30:00+00', 'COMPLETED')`,
@@ -67,7 +67,7 @@ describe('Queries Analíticas e Relatórios Gerenciais — OdontoFlow', () => {
 
       // Faltas (NO_SHOW):
       // Falta 1: Limpeza (15000 centavos)
-      const appNoShow1 = 'app-noshow-1';
+      const appNoShow1 = '00000000-0000-0000-0002-000000000001';
       await db.query(
         `INSERT INTO appointments (id, tenant_id, patient_id, start_time, end_time, status)
          VALUES ($1, $2, $3, '2026-10-11 14:00:00+00', '2026-10-11 14:30:00+00', 'NO_SHOW')`,
@@ -80,7 +80,7 @@ describe('Queries Analíticas e Relatórios Gerenciais — OdontoFlow', () => {
       );
 
       // Falta 2: Limpeza (15000 centavos)
-      const appNoShow2 = 'app-noshow-2';
+      const appNoShow2 = '00000000-0000-0000-0002-000000000002';
       await db.query(
         `INSERT INTO appointments (id, tenant_id, patient_id, start_time, end_time, status)
          VALUES ($1, $2, $3, '2026-10-12 15:00:00+00', '2026-10-12 15:30:00+00', 'NO_SHOW')`,
@@ -187,7 +187,7 @@ describe('Queries Analíticas e Relatórios Gerenciais — OdontoFlow', () => {
   describe('US-020 — Inteligência Comercial e Retenção de Pacientes', () => {
     it('AC-039: Ranking de procedimentos mais rentáveis por receita efetiva @spec:AC-039', async () => {
       // 1. Consulta 1: 1 Implante (150000 centavos) -> COMPLETED
-      const app1 = 'app-proc-1';
+      const app1 = '00000000-0000-0000-0003-000000000001';
       await db.query(
         `INSERT INTO appointments (id, tenant_id, patient_id, start_time, end_time, status)
          VALUES ($1, $2, $3, '2026-10-01 09:00:00+00', '2026-10-01 10:30:00+00', 'COMPLETED')`,
@@ -200,7 +200,7 @@ describe('Queries Analíticas e Relatórios Gerenciais — OdontoFlow', () => {
       );
 
       // 2. Consulta 2: 2 Restaurações (25000 cada = 50000 total) -> COMPLETED
-      const app2 = 'app-proc-2';
+      const app2 = '00000000-0000-0000-0003-000000000002';
       await db.query(
         `INSERT INTO appointments (id, tenant_id, patient_id, start_time, end_time, status)
          VALUES ($1, $2, $3, '2026-10-02 11:00:00+00', '2026-10-02 12:00:00+00', 'COMPLETED')`,
@@ -213,7 +213,7 @@ describe('Queries Analíticas e Relatórios Gerenciais — OdontoFlow', () => {
       );
 
       // 3. Consulta 3: 1 Limpeza (15000 centavos) -> CANCELLED (NÃO deve entrar no ranking)
-      const app3 = 'app-proc-3';
+      const app3 = '00000000-0000-0000-0003-000000000003';
       await db.query(
         `INSERT INTO appointments (id, tenant_id, patient_id, start_time, end_time, status)
          VALUES ($1, $2, $3, '2026-10-03 14:00:00+00', '2026-10-03 14:30:00+00', 'CANCELLED')`,
@@ -247,14 +247,14 @@ describe('Queries Analíticas e Relatórios Gerenciais — OdontoFlow', () => {
       // Paciente 3 (Marcos): Última consulta concluída há 200 dias (2026-04-01) e SEM agendamento futuro
       await db.query(
         `INSERT INTO appointments (id, tenant_id, patient_id, start_time, end_time, status)
-         VALUES ('app-old-1', $1, $2, '2026-04-01 10:00:00+00', '2026-04-01 10:30:00+00', 'COMPLETED')`,
+         VALUES ('00000000-0000-0000-0004-000000000001', $1, $2, '2026-04-01 10:00:00+00', '2026-04-01 10:30:00+00', 'COMPLETED')`,
         [tenantId, patient3Id]
       );
 
       // Paciente 1 (Carlos): Última consulta concluída recente (2026-10-10) -> NÃO é inativo
       await db.query(
         `INSERT INTO appointments (id, tenant_id, patient_id, start_time, end_time, status)
-         VALUES ('app-recent-1', $1, $2, '2026-10-10 10:00:00+00', '2026-10-10 10:30:00+00', 'COMPLETED')`,
+         VALUES ('00000000-0000-0000-0004-000000000002', $1, $2, '2026-10-10 10:00:00+00', '2026-10-10 10:30:00+00', 'COMPLETED')`,
         [tenantId, patient1Id]
       );
 
@@ -262,8 +262,8 @@ describe('Queries Analíticas e Relatórios Gerenciais — OdontoFlow', () => {
       await db.query(
         `INSERT INTO appointments (id, tenant_id, patient_id, start_time, end_time, status)
          VALUES 
-         ('app-old-2', $1, $2, '2026-03-01 10:00:00+00', '2026-03-01 10:30:00+00', 'COMPLETED'),
-         ('app-future-2', $1, $2, '2026-11-20 10:00:00+00', '2026-11-20 10:30:00+00', 'CONFIRMED')`,
+         ('00000000-0000-0000-0004-000000000003', $1, $2, '2026-03-01 10:00:00+00', '2026-03-01 10:30:00+00', 'COMPLETED'),
+         ('00000000-0000-0000-0004-000000000004', $1, $2, '2026-11-20 10:00:00+00', '2026-11-20 10:30:00+00', 'CONFIRMED')`,
         [tenantId, patient2Id]
       );
 
