@@ -17,7 +17,7 @@
 - Arquivos: frontend/src/features/checkout/components/SmartReturnDrawer.tsx, frontend/src/features/checkout/utils/smart-return.ts
 - Notas: Sugestão de retornos rápidos com 1 toque, verificação de disponibilidade, domingo/ocupado e sugestão das 3 alternativas mais próximas.
 
-## T-048 — Modal de Lançamento Rápido de Despesa (<10s) com Categorias [pendente]
+## T-048 — Modal de Lançamento Rápido de Despesa (<10s) com Categorias [concluida]
 - Refs: US-041, AC-069
 - Arquivos: frontend/src/features/checkout/components/QuickExpenseModal.tsx
 - Notas: Registro de saídas em menos de 10s, seleção de categoria (materiais, aluguel, laboratório, outros), gravação no Dexie e enfileiramento na outbox.
