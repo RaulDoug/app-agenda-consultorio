@@ -1,0 +1,100 @@
+{
+  "runId": "App-Agenda-Consultório-checkout-financeiro-mve00td4",
+  "feature": "checkout-financeiro",
+  "agent": "antigravity",
+  "modo": "sequencial",
+  "paralelizar": null,
+  "modeloForcado": null,
+  "esforcoForcado": null,
+  "geradoEm": "2026-10-18 15:47",
+  "branchTrabalho": "spec/checkout-financeiro",
+  "baseDir": ".spec/features/checkout-financeiro",
+  "specDir": ".spec",
+  "repoName": "App-Agenda-Consultório",
+  "logsDir": "../onp-worktrees/App-Agenda-Consultório-checkout-financeiro-logs",
+  "ondas": [],
+  "faixas": [],
+  "sequenciais": [
+    {
+      "id": "T-045",
+      "titulo": "Componente de Checkout com Edição de Itens e Rateio Proporcional de Desconto",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "frontend/src/features/checkout/components/CheckoutDrawer.tsx",
+        "frontend/src/features/checkout/components/ItemPriceEditor.tsx",
+        "frontend/src/features/checkout/utils/discount-splitter.ts"
+      ],
+      "refs": [
+        "US-038",
+        "AC-065",
+        "AC-066"
+      ]
+    },
+    {
+      "id": "T-046",
+      "titulo": "Parcelamento Flexível com Entrada e Geração Automática de Parcelas",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "frontend/src/features/checkout/components/InstallmentsForm.tsx",
+        "frontend/src/db/repositories/financial-local-repository.ts"
+      ],
+      "refs": [
+        "US-038",
+        "US-039",
+        "AC-066",
+        "AC-067"
+      ]
+    },
+    {
+      "id": "T-047",
+      "titulo": "Gaveta de Retorno Inteligente (15d, 30d, 6m) e Sugestão de Horários Livres",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "frontend/src/features/checkout/components/SmartReturnDrawer.tsx",
+        "frontend/src/features/checkout/utils/smart-return.ts"
+      ],
+      "refs": [
+        "US-040",
+        "AC-068"
+      ]
+    },
+    {
+      "id": "T-048",
+      "titulo": "Modal de Lançamento Rápido de Despesa (<10s) com Categorias",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "frontend/src/features/checkout/components/QuickExpenseModal.tsx"
+      ],
+      "refs": [
+        "US-041",
+        "AC-069"
+      ]
+    },
+    {
+      "id": "T-049",
+      "titulo": "Suíte de Testes Automatizados TDD do Checkout Financeiro e Retorno",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "frontend/src/features/checkout/__tests__/checkout-ui.spec.tsx"
+      ],
+      "refs": [
+        "US-038",
+        "US-039",
+        "US-040",
+        "US-041",
+        "AC-065",
+        "AC-066",
+        "AC-067",
+        "AC-068",
+        "AC-069"
+      ]
+    }
+  ],
+  "concluidas": [],
+  "avisos": []
+}
