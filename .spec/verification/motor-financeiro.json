@@ -1,0 +1,52 @@
+{
+  "feature": "motor-financeiro",
+  "timestamp": "2026-10-18T13:07:39.868Z",
+  "gitRev": "eb358e6",
+  "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
+  "reporter": "vitest-json",
+  "exitCode": 0,
+  "testsParsed": 34,
+  "results": {
+    "AC-027": {
+      "status": "pass",
+      "testName": "Motor Financeiro, Rateio de Descontos e Parcelamento — OdontoFlow US-015 — Conclusão de Consulta, Rateio de Descontos e O Teste do Centavo AC-027: Rateio proporcional de desconto global e edição individual de itens @spec:AC-027 AC-027: Rateio proporcional de desconto global e edição individual de itens @spec:AC-027",
+      "method": "vitest-json"
+    },
+    "AC-028": {
+      "status": "pass",
+      "testName": "Motor Financeiro, Rateio de Descontos e Parcelamento — OdontoFlow US-015 — Conclusão de Consulta, Rateio de Descontos e O Teste do Centavo AC-028: Resolução da dízima periódica (O Teste do Centavo) sem perdas ou sobras @spec:AC-028 AC-028: Resolução da dízima periódica (O Teste do Centavo) sem perdas ou sobras @spec:AC-028",
+      "method": "vitest-json"
+    },
+    "AC-029": {
+      "status": "pass",
+      "testName": "Motor Financeiro, Rateio de Descontos e Parcelamento — OdontoFlow US-016 — Parcelamento Inteligente, Entrada e Projeção Mensal AC-029: Geração de parcelas com entrada diferenciada e status contábil @spec:AC-029 AC-029: Geração de parcelas com entrada diferenciada e status contábil @spec:AC-029",
+      "method": "vitest-json"
+    },
+    "AC-030": {
+      "status": "pass",
+      "testName": "Motor Financeiro, Rateio de Descontos e Parcelamento — OdontoFlow US-016 — Parcelamento Inteligente, Entrada e Projeção Mensal AC-030: Projeção mensal de parcelas com ajuste automático para virada de mês (dias 29, 30 e 31) @spec:AC-030 AC-030: Projeção mensal de parcelas com ajuste automático para virada de mês (dias 29, 30 e 31) @spec:AC-030",
+      "method": "vitest-json"
+    },
+    "AC-031": {
+      "status": "pass",
+      "testName": "Motor Financeiro, Rateio de Descontos e Parcelamento — OdontoFlow US-016 — Parcelamento Inteligente, Entrada e Projeção Mensal AC-031: Rejeição de entrada maior ou igual ao valor total em cobrança parcelada @spec:AC-031 AC-031: Rejeição de entrada maior ou igual ao valor total em cobrança parcelada @spec:AC-031",
+      "method": "vitest-json"
+    },
+    "AC-032": {
+      "status": "pass",
+      "testName": "Motor Financeiro, Rateio de Descontos e Parcelamento — OdontoFlow US-017 — Baixa de Parcelas e Gestão de Despesas Rápidas AC-032: Quitação antecipada e em lote de múltiplas parcelas pendentes @spec:AC-032 AC-032: Quitação antecipada e em lote de múltiplas parcelas pendentes @spec:AC-032",
+      "method": "vitest-json"
+    },
+    "AC-033": {
+      "status": "pass",
+      "testName": "Motor Financeiro, Rateio de Descontos e Parcelamento — OdontoFlow US-017 — Baixa de Parcelas e Gestão de Despesas Rápidas AC-033: Registro e categorização de despesas rápidas de consultório @spec:AC-033 AC-033: Registro e categorização de despesas rápidas de consultório @spec:AC-033",
+      "method": "vitest-json"
+    },
+    "AC-034": {
+      "status": "pass",
+      "testName": "Motor Financeiro, Rateio de Descontos e Parcelamento — OdontoFlow US-017 — Baixa de Parcelas e Gestão de Despesas Rápidas AC-034: Soft Delete e integridade contábil em cancelamento de transações @spec:AC-034 AC-034: Soft Delete e integridade contábil em cancelamento de transações @spec:AC-034",
+      "method": "vitest-json"
+    }
+  },
+  "principles": {}
+}

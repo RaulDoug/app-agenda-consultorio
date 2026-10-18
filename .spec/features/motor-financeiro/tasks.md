@@ -22,7 +22,7 @@
 - Arquivos: backend/src/routes/financial.ts, backend/src/app.ts
 - Notas: Endpoints POST `/api/financial/checkout` (conclusão de consulta), POST `/api/financial/settle-batch` (baixa em lote de parcelas) e POST `/api/financial/expenses` (despesas rápidas).
 
-## T-022 — Suíte Integrada de Testes Automatizados TDD do Motor Financeiro [pendente]
+## T-022 — Suíte Integrada de Testes Automatizados TDD do Motor Financeiro [concluida]
 - Refs: US-015, US-016, US-017, AC-027, AC-028, AC-029, AC-030, AC-031, AC-032, AC-033, AC-034
 - Arquivos: backend/src/financial/__tests__/financial.spec.ts
 - Notas: Testes de unidade e integração cobrindo todos os critérios AC-027 a AC-034 com pg-mem e supertest.

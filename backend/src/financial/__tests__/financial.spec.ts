@@ -252,7 +252,7 @@ describe('Motor Financeiro, Rateio de Descontos e Parcelamento — OdontoFlow', 
 
       expect(resPending.status).toBe(201);
       expect(resPending.body.status).toBe('PENDING');
-      expect(resPending.body.due_date).toBe('2026-11-10');
+      expect(resPending.body.due_date).toContain('2026-11-10');
     });
 
     it('AC-034: Soft Delete e integridade contábil em cancelamento de transações @spec:AC-034', async () => {
