@@ -1,0 +1,32 @@
+{
+  "feature": "fundacao-frontend",
+  "timestamp": "2026-10-18T15:21:43.042Z",
+  "gitRev": "c50ef24",
+  "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
+  "reporter": "vitest-json",
+  "exitCode": 0,
+  "testsParsed": 53,
+  "results": {
+    "AC-049": {
+      "status": "pass",
+      "testName": "Fundação Frontend — CliniAssist (Sprint FE-0) US-027 — Shell Adaptativo e Navegação Mobile/Desktop AC-049: Layout Mobile com Bottom Navigation em viewports estreitos @spec:AC-049 AC-049: Layout Mobile com Bottom Navigation em viewports estreitos @spec:AC-049",
+      "method": "vitest-json"
+    },
+    "AC-050": {
+      "status": "pass",
+      "testName": "Fundação Frontend — CliniAssist (Sprint FE-0) US-027 — Shell Adaptativo e Navegação Mobile/Desktop AC-050: Layout Desktop com Sidebar retrátil em viewports amplos @spec:AC-050 AC-050: Layout Desktop com Sidebar retrátil em viewports amplos @spec:AC-050",
+      "method": "vitest-json"
+    },
+    "AC-051": {
+      "status": "pass",
+      "testName": "Fundação Frontend — CliniAssist (Sprint FE-0) US-028 — Identidade Visual e Tokens de Design Semânticos AC-051: Tokens de design para status da agenda e botões acessíveis @spec:AC-051 AC-051: Tokens de design para status da agenda e botões acessíveis @spec:AC-051",
+      "method": "vitest-json"
+    },
+    "AC-052": {
+      "status": "pass",
+      "testName": "Fundação Frontend — CliniAssist (Sprint FE-0) US-029 — Configuração PWA e Infraestrutura de Testes Automatizados AC-052: Manifesto PWA e suíte de testes com fake-indexeddb e MSW @spec:AC-052 AC-052: Manifesto PWA e suíte de testes com fake-indexeddb e MSW @spec:AC-052",
+      "method": "vitest-json"
+    }
+  },
+  "principles": {}
+}

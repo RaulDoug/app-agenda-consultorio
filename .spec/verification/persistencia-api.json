@@ -1,11 +1,11 @@
 {
   "feature": "persistencia-api",
-  "timestamp": "2026-10-18T15:05:46.332Z",
-  "gitRev": "c5f82fd",
+  "timestamp": "2026-10-18T15:20:50.349Z",
+  "gitRev": "c50ef24",
   "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
   "exitCode": 0,
-  "testsParsed": 49,
+  "testsParsed": 53,
   "results": {
     "AC-011": {
       "status": "pass",

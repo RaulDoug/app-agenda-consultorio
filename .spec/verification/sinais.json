@@ -918,6 +918,33 @@
       "primeiraVez": "2026-10-18T15:05:16.610Z",
       "ultimaVez": "2026-10-18T15:05:16.611Z",
       "gitRev": "c5f82fd"
+    },
+    "ARQUIVO_ORFAO::—::frontend/src/App.tsx": {
+      "codigo": "ARQUIVO_ORFAO",
+      "feature": "—",
+      "ref": "frontend/src/App.tsx",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-18T15:21:14.707Z",
+      "ultimaVez": "2026-10-18T15:21:14.708Z",
+      "gitRev": "c50ef24"
+    },
+    "ARQUIVO_ORFAO::—::frontend/src/index.css": {
+      "codigo": "ARQUIVO_ORFAO",
+      "feature": "—",
+      "ref": "frontend/src/index.css",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-18T15:21:14.708Z",
+      "ultimaVez": "2026-10-18T15:21:14.708Z",
+      "gitRev": "c50ef24"
+    },
+    "ARQUIVO_ORFAO::—::frontend/src/main.tsx": {
+      "codigo": "ARQUIVO_ORFAO",
+      "feature": "—",
+      "ref": "frontend/src/main.tsx",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-18T15:21:14.708Z",
+      "ultimaVez": "2026-10-18T15:21:14.708Z",
+      "gitRev": "c50ef24"
     }
   }
 }

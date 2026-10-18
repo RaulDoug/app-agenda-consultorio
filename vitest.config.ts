@@ -9,18 +9,21 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'node',
+    environmentMatchGlobs: [
+      ['frontend/**', 'jsdom'],
+    ],
+    setupFiles: [
+      './frontend/src/test/setup.ts',
+    ],
     include: [
-      'backend/src/**/*.spec.ts',
-      'backend/src/**/*.test.ts',
-      'shared/src/**/*.spec.ts',
-      'shared/src/**/*.test.ts',
-      'frontend/src/**/*.spec.ts',
-      'frontend/src/**/*.test.ts',
+      'backend/src/**/*.{spec,test}.ts',
+      'shared/src/**/*.{spec,test}.ts',
+      'frontend/src/**/*.{spec,test}.{ts,tsx}',
     ],
   },
   resolve: {
     alias: {
-      '@odontoflow/shared': path.resolve(__dirname, './shared/src/index.ts'),
+      '@cliniassist/shared': path.resolve(__dirname, './shared/src/index.ts'),
     },
   },
 });

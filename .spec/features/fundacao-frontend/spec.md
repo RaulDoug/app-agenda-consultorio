@@ -1,7 +1,7 @@
 # Spec: Fundação Frontend — CliniAssist (Sprint FE-0)
 
 > feature: fundacao-frontend
-> status: pronta
+> status: auditada
 
 ## Contexto
 
