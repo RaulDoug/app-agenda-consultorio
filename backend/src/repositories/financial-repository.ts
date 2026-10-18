@@ -37,6 +37,13 @@ export interface CreateFinancialTransactionDTO {
   total_installments?: number;
 }
 
+export interface ListTransactionsFilters {
+  startDate?: string;
+  endDate?: string;
+  status?: 'PAID' | 'PENDING';
+  type?: 'INCOME' | 'EXPENSE';
+}
+
 export interface CheckoutParams {
   tenantId: string;
   appointmentId: string;
@@ -181,6 +188,46 @@ export class FinancialRepository {
     `;
     const res = await this.db.query<FinancialTransaction>(sql, [transactionId, tenantId]);
     return res.rows[0] || null;
+  }
+
+  /**
+   * Lista transações financeiras ativas com filtros opcionais (AC-047)
+   */
+  async listTransactions(
+    tenantId: string,
+    filters: ListTransactionsFilters = {}
+  ): Promise<FinancialTransaction[]> {
+    const conditions: string[] = ['tenant_id = $1', 'is_active = true', 'deleted_at IS NULL'];
+    const params: any[] = [tenantId];
+
+    if (filters.startDate) {
+      params.push(filters.startDate);
+      conditions.push(`due_date >= $${params.length}`);
+    }
+
+    if (filters.endDate) {
+      params.push(filters.endDate);
+      conditions.push(`due_date <= $${params.length}`);
+    }
+
+    if (filters.status) {
+      params.push(filters.status);
+      conditions.push(`status = $${params.length}`);
+    }
+
+    if (filters.type) {
+      params.push(filters.type);
+      conditions.push(`type = $${params.length}`);
+    }
+
+    const sql = `
+      SELECT * FROM financial_transactions
+      WHERE ${conditions.join(' AND ')}
+      ORDER BY due_date ASC, id ASC
+    `;
+
+    const res = await this.db.query<FinancialTransaction>(sql, params);
+    return res.rows;
   }
 
   /**

@@ -343,7 +343,112 @@ describe('API Complementar — CliniAssist (Sprint BE-6)', () => {
     });
   });
 
-  describe('US-025 — Listagem e Filtro de Transações Financeiras (Tarefa T-031)', () => {
-    it.skip('AC-047: Listagem filtrada de movimentações de receitas e despesas @spec:AC-047', () => {});
+  describe('US-025 — Listagem e Filtro de Transações Financeiras', () => {
+    it('AC-047: Listagem filtrada de movimentações de receitas e despesas @spec:AC-047', async () => {
+      // 1. Inserção de dados financeiros para teste
+      const tx1Id = '77777777-7777-7777-7777-777777777771';
+      const tx2Id = '77777777-7777-7777-7777-777777777772';
+      const tx3Id = '77777777-7777-7777-7777-777777777773';
+      const tx4Id = '77777777-7777-7777-7777-777777777774';
+      const txDeletedId = '77777777-7777-7777-7777-777777777775';
+      const txOtherTenantId = '77777777-7777-7777-7777-777777777776';
+
+      // tx1: INCOME PAID 2026-11-01
+      await db.query(
+        `INSERT INTO financial_transactions (id, tenant_id, type, category, amount_cents, status, due_date, payment_date, is_active)
+         VALUES ($1, $2, 'INCOME', 'Tratamento', 15000, 'PAID', '2026-11-01', '2026-11-01', true)`,
+        [tx1Id, activeTenantId]
+      );
+
+      // tx2: INCOME PENDING 2026-11-15
+      await db.query(
+        `INSERT INTO financial_transactions (id, tenant_id, type, category, amount_cents, status, due_date, is_active)
+         VALUES ($1, $2, 'INCOME', 'Tratamento', 20000, 'PENDING', '2026-11-15', true)`,
+        [tx2Id, activeTenantId]
+      );
+
+      // tx3: EXPENSE PAID 2026-11-05
+      await db.query(
+        `INSERT INTO financial_transactions (id, tenant_id, type, category, amount_cents, status, due_date, payment_date, is_active)
+         VALUES ($1, $2, 'EXPENSE', 'Material Cirúrgico', 5000, 'PAID', '2026-11-05', '2026-11-05', true)`,
+        [tx3Id, activeTenantId]
+      );
+
+      // tx4: EXPENSE PENDING 2026-12-01
+      await db.query(
+        `INSERT INTO financial_transactions (id, tenant_id, type, category, amount_cents, status, due_date, is_active)
+         VALUES ($1, $2, 'EXPENSE', 'Aluguel do Consultório', 30000, 'PENDING', '2026-12-01', true)`,
+        [tx4Id, activeTenantId]
+      );
+
+      // txDeleted: Soft deleted
+      await db.query(
+        `INSERT INTO financial_transactions (id, tenant_id, type, category, amount_cents, status, due_date, is_active, deleted_at)
+         VALUES ($1, $2, 'INCOME', 'Estornada', 10000, 'PAID', '2026-11-02', false, CURRENT_TIMESTAMP)`,
+        [txDeletedId, activeTenantId]
+      );
+
+      // txOtherTenant: Outro consultório
+      await db.query(
+        `INSERT INTO financial_transactions (id, tenant_id, type, category, amount_cents, status, due_date, is_active)
+         VALUES ($1, $2, 'INCOME', 'Outro Consultório', 99000, 'PAID', '2026-11-01', true)`,
+        [txOtherTenantId, inactiveTenantId]
+      );
+
+      // 2. Consulta geral sem filtros
+      const resAll = await request(testApp)
+        .get('/api/financial/transactions')
+        .set('x-tenant-id', activeTenantId);
+
+      expect(resAll.status).toBe(200);
+      expect(resAll.body).toHaveLength(4);
+      const allIds = resAll.body.map((t: any) => t.id);
+      expect(allIds).toContain(tx1Id);
+      expect(allIds).toContain(tx2Id);
+      expect(allIds).toContain(tx3Id);
+      expect(allIds).toContain(tx4Id);
+      expect(allIds).not.toContain(txDeletedId);
+      expect(allIds).not.toContain(txOtherTenantId);
+
+      // 3. Filtro por tipo (type = INCOME)
+      const resIncome = await request(testApp)
+        .get('/api/financial/transactions')
+        .set('x-tenant-id', activeTenantId)
+        .query({ type: 'INCOME' });
+
+      expect(resIncome.status).toBe(200);
+      expect(resIncome.body).toHaveLength(2);
+      expect(resIncome.body.map((t: any) => t.id)).toEqual([tx1Id, tx2Id]);
+
+      // 4. Filtro por status (status = PENDING)
+      const resPending = await request(testApp)
+        .get('/api/financial/transactions')
+        .set('x-tenant-id', activeTenantId)
+        .query({ status: 'PENDING' });
+
+      expect(resPending.status).toBe(200);
+      expect(resPending.body).toHaveLength(2);
+      expect(resPending.body.map((t: any) => t.id)).toEqual([tx2Id, tx4Id]);
+
+      // 5. Filtro por período (startDate e endDate)
+      const resPeriod = await request(testApp)
+        .get('/api/financial/transactions')
+        .set('x-tenant-id', activeTenantId)
+        .query({ startDate: '2026-11-01', endDate: '2026-11-10' });
+
+      expect(resPeriod.status).toBe(200);
+      expect(resPeriod.body).toHaveLength(2);
+      expect(resPeriod.body.map((t: any) => t.id)).toEqual([tx1Id, tx3Id]);
+
+      // 6. Filtro combinado (type = EXPENSE, status = PAID)
+      const resCombined = await request(testApp)
+        .get('/api/financial/transactions')
+        .set('x-tenant-id', activeTenantId)
+        .query({ type: 'EXPENSE', status: 'PAID' });
+
+      expect(resCombined.status).toBe(200);
+      expect(resCombined.body).toHaveLength(1);
+      expect(resCombined.body[0].id).toBe(tx3Id);
+    });
   });
 });

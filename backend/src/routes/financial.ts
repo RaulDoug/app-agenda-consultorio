@@ -1,8 +1,10 @@
 import { Router, type Request, type Response } from 'express';
 import { FinancialRepository } from '../repositories/financial-repository.js';
 import { validateInstallmentPlan } from '../financial/installments.js';
+import { authMiddleware } from '../middlewares/auth.js';
 
 export const financialRouter = Router();
+financialRouter.use(authMiddleware);
 const financialRepo = new FinancialRepository();
 
 // Helper para extrair tenantId via JWT ou header x-tenant-id
@@ -162,5 +164,29 @@ financialRouter.delete('/transactions/:id', async (req: Request, res: Response) 
     });
   } catch (err: any) {
     res.status(500).json({ error: err.message });
+  }
+});
+
+/**
+ * Listagem e Filtro de Transações Financeiras para o Extrato (AC-047)
+ * GET /api/financial/transactions
+ */
+financialRouter.get('/transactions', async (req: Request, res: Response) => {
+  try {
+    const tenantId = getTenantId(req, res);
+    if (!tenantId) return;
+
+    const { startDate, endDate, status, type } = req.query;
+
+    const transactions = await financialRepo.listTransactions(tenantId, {
+      startDate: typeof startDate === 'string' ? startDate : undefined,
+      endDate: typeof endDate === 'string' ? endDate : undefined,
+      status: typeof status === 'string' ? (status as any) : undefined,
+      type: typeof type === 'string' ? (type as any) : undefined,
+    });
+
+    res.status(200).json(transactions);
+  } catch (err: any) {
+    res.status(500).json({ error: 'Erro ao listar transações financeiras.', details: err.message });
   }
 });

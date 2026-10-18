@@ -27,7 +27,7 @@
 - Arquivos: backend/src/routes/business-hours.ts, backend/src/routes/schedule-blocks.ts, backend/src/app.ts
 - Notas: Endpoints REST para consulta/atualização de expediente semanal (`/api/business-hours`) e bloqueios/férias (`/api/schedule-blocks`).
 
-## T-031 — Listagem e Filtro de Transações Financeiras para o Extrato [pendente]
+## T-031 — Listagem e Filtro de Transações Financeiras para o Extrato [concluida]
 - Refs: US-025, AC-047
 - Arquivos: backend/src/routes/financial.ts, backend/src/repositories/financial-repository.ts
 - Notas: Implementar `GET /api/financial/transactions` com suporte a filtros de data (`startDate`, `endDate`), status (`PAID`, `PENDING`) e tipo (`INCOME`, `EXPENSE`), respeitando soft delete.
