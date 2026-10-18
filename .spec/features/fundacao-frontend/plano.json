@@ -1,0 +1,79 @@
+{
+  "runId": "App-Agenda-Consultório-fundacao-frontend-mvdyryku",
+  "feature": "fundacao-frontend",
+  "agent": "antigravity",
+  "modo": "sequencial",
+  "paralelizar": null,
+  "modeloForcado": null,
+  "esforcoForcado": null,
+  "geradoEm": "2026-10-18 15:12",
+  "branchTrabalho": "spec/fundacao-frontend",
+  "baseDir": ".spec/features/fundacao-frontend",
+  "specDir": ".spec",
+  "repoName": "App-Agenda-Consultório",
+  "logsDir": "../onp-worktrees/App-Agenda-Consultório-fundacao-frontend-logs",
+  "ondas": [],
+  "faixas": [],
+  "sequenciais": [
+    {
+      "id": "T-033",
+      "titulo": "Setup de Dependências, Vite, Tailwind CSS, Design Tokens e PWA Manifest",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "frontend/package.json",
+        "frontend/vite.config.ts",
+        "frontend/tailwind.config.js",
+        "frontend/public/manifest.json",
+        "frontend/index.html"
+      ],
+      "refs": [
+        "US-028",
+        "US-029",
+        "AC-051",
+        "AC-052"
+      ]
+    },
+    {
+      "id": "T-034",
+      "titulo": "Implementação do Shell Adaptativo e Componentes de Navegação",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "frontend/src/components/layout/AppShell.tsx",
+        "frontend/src/components/layout/BottomNav.tsx",
+        "frontend/src/components/layout/DesktopSidebar.tsx",
+        "frontend/src/components/layout/TopBar.tsx",
+        "frontend/src/theme/tokens.ts"
+      ],
+      "refs": [
+        "US-027",
+        "AC-049",
+        "AC-050"
+      ]
+    },
+    {
+      "id": "T-035",
+      "titulo": "Configuração da Infraestrutura de Testes e Suíte TDD Automatizada",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "frontend/vitest.config.ts",
+        "frontend/src/test/setup.ts",
+        "frontend/playwright.config.ts",
+        "frontend/src/__tests__/fundacao-frontend.spec.tsx"
+      ],
+      "refs": [
+        "US-027",
+        "US-028",
+        "US-029",
+        "AC-049",
+        "AC-050",
+        "AC-051",
+        "AC-052"
+      ]
+    }
+  ],
+  "concluidas": [],
+  "avisos": []
+}

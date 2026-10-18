@@ -5,8 +5,8 @@
     "jsx": "react-jsx",
     "noEmit": true,
     "paths": {
-      "@odontoflow/shared": ["../shared/src/index.ts"],
-      "@odontoflow/shared/*": ["../shared/src/*"]
+      "@cliniassist/shared": ["../shared/src/index.ts"],
+      "@cliniassist/shared/*": ["../shared/src/*"]
     }
   },
   "include": ["src/**/*", "test/**/*", "tests/**/*"]
