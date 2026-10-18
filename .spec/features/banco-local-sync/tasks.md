@@ -7,7 +7,7 @@
 - Arquivos: frontend/src/db/local-db.ts, frontend/src/db/types.ts
 - Notas: Implementar classe Dexie com tabelas locais indexadas: `patients`, `procedures`, `appointments`, `appointment_items`, `financial_transactions`, `business_hours`, `schedule_blocks` e `sync_outbox`.
 
-## T-037 — Escrita Otimista com Enfileiramento na Outbox [pendente]
+## T-037 — Escrita Otimista com Enfileiramento na Outbox [concluida]
 - Refs: US-031, AC-054
 - Arquivos: frontend/src/db/outbox.ts, frontend/src/db/repositories/appointment-local-repository.ts, frontend/src/db/repositories/patient-local-repository.ts
 - Notas: Implementar repositórios locais para agendamentos e pacientes que executam gravação atômica no Dexie e enfileiramento na `sync_outbox` com status `PENDING`.
