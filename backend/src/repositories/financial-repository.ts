@@ -73,19 +73,21 @@ export class FinancialRepository {
     const shouldRelease = !externalClient;
 
     try {
+      const txId = data.id || crypto.randomUUID();
       const sql = `
         INSERT INTO financial_transactions (
-          tenant_id, appointment_id, type, category, description,
+          id, tenant_id, appointment_id, type, category, description,
           amount_cents, payment_method, status, due_date, payment_date,
           installment_number, total_installments, is_active
         ) VALUES (
-          $1, $2, $3, $4, $5,
-          $6, $7, $8, $9, $10,
-          $11, $12, true
+          $1, $2, $3, $4, $5, $6,
+          $7, $8, $9, $10, $11,
+          $12, $13, true
         ) RETURNING *
       `;
 
       const params = [
+        txId,
         data.tenant_id,
         data.appointment_id || null,
         data.type,

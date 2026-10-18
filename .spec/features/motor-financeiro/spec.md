@@ -1,7 +1,7 @@
 # Spec: Motor financeiro
 
 > feature: motor-financeiro
-> status: pronta
+> status: auditada
 
 ## Contexto
 

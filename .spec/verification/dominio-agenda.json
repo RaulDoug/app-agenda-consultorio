@@ -1,11 +1,11 @@
 {
   "feature": "dominio-agenda",
-  "timestamp": "2026-10-17T20:48:52.230Z",
-  "gitRev": "b657a10",
+  "timestamp": "2026-10-18T13:08:45.155Z",
+  "gitRev": "2f5d343",
   "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
   "exitCode": 0,
-  "testsParsed": 26,
+  "testsParsed": 34,
   "results": {
     "AC-001": {
       "status": "pass",

@@ -82,23 +82,23 @@ O desenvolvimento do `backend/` segue estritamente o ciclo **Red-Green-Refactor*
 > **Objetivo:** Garantir precisão contábil absoluta em centavos inteiros para o caixa, descontos e contas a receber.
 
 ##### 4.1 Testes Padrão (Happy Path) — `backend/src/financial/__tests__/financial.spec.ts`
-* [ ] **Conclusão de Consulta com Edição Individual e Desconto Global:**
+* [x] **Conclusão de Consulta com Edição Individual e Desconto Global:**
   * Permitir edição direta do valor de cada procedimento realizado.
   * Quando informado um desconto no valor total, ratear proporcionalmente entre os itens em centavos inteiros.
-* [ ] **Geração de Parcelas com Entrada Diferenciada:**
+* [x] **Geração de Parcelas com Entrada Diferenciada:**
   * Exemplo: Total R$ 1.500 (`150000` centavos) com Entrada de R$ 300 hoje (`PAID`) + 3x de R$ 400 (`PENDING`).
   * Validar criação das 4 linhas em `financial_transactions` vinculadas ao `appointment_id`.
-* [ ] **Data Customizável da 1ª Parcela e Projeção Mensal:**
+* [x] **Data Customizável da 1ª Parcela e Projeção Mensal:**
   * Dada uma data-base escolhida pelo dentista para a 1ª parcela (ex: `15/11/2026`), calcular automaticamente as parcelas seguintes (`15/12/2026`, `15/01/2027`).
-* [ ] **Registro de Despesas Rápidas:** Inserir saídas (`EXPENSE`) com valor, categoria e data.
+* [x] **Registro de Despesas Rápidas:** Inserir saídas (`EXPENSE`) com valor, categoria e data.
 
 ##### 4.2 Testes de Edge Cases
-* [ ] **Edge Case BE-4.1 (O Teste do Centavo / Dízima Periódica):**
+* [x] **Edge Case BE-4.1 (O Teste do Centavo / Dízima Periódica):**
   * 3 procedimentos de R$ 100 (`10000` centavos cada = `30000` total) com desconto para R$ 200 (`20000` total).
   * O rateio deve gerar `6667`, `6667` e `6666` centavos, garantindo que a soma feche **exatamente em `20000` centavos** sem perder nem criar 1 centavo.
-* [ ] **Edge Case BE-4.2 (Virada de Mês em Dias 29, 30 e 31):** Se a 1ª parcela for em `31/01/2027`, a 2ª parcela deve ser ajustada automaticamente para o último dia válido de fevereiro (`28/02/2027`), sem gerar data inválida.
-* [ ] **Edge Case BE-4.3 (Quitação Antecipada de Múltiplas Parcelas):** Endpoint para dar baixa em 2 ou mais parcelas pendentes simultaneamente com atualização de `payment_date`.
-* [ ] **Edge Case BE-4.4 (Entrada Maior que o Total):** Rejeitar com `400 Bad Request` caso o valor de entrada seja maior ou igual ao total em uma cobrança marcada como parcelada.
+* [x] **Edge Case BE-4.2 (Virada de Mês em Dias 29, 30 e 31):** Se a 1ª parcela for em `31/01/2027`, a 2ª parcela deve ser ajustada automaticamente para o último dia válido de fevereiro (`28/02/2027`), sem gerar data inválida.
+* [x] **Edge Case BE-4.3 (Quitação Antecipada de Múltiplas Parcelas):** Endpoint para dar baixa em 2 ou mais parcelas pendentes simultaneamente com atualização de `payment_date`.
+* [x] **Edge Case BE-4.4 (Entrada Maior que o Total):** Rejeitar com `400 Bad Request` caso o valor de entrada seja maior ou igual ao total em uma cobrança marcada como parcelada.
 
 ---
 
