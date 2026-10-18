@@ -7,7 +7,7 @@
 - Arquivos: backend/src/financial/calculator.ts
 - Notas: Função de rateio de descontos em itens de procedimentos e distribuição exata de centavos residuais (O Teste do Centavo / dízima periódica) sem sobras nem perdas.
 
-## T-019 — Gerador de Parcelas com Regra de Virada de Mês e Validação de Entrada [pendente]
+## T-019 — Gerador de Parcelas com Regra de Virada de Mês e Validação de Entrada [concluida]
 - Refs: US-016, AC-029, AC-030, AC-031
 - Arquivos: backend/src/financial/installments.ts
 - Notas: Geração de parcelas com entrada imediata (`PAID`), cálculo de vencimentos subsequentes resiliente a meses com menos de 31 dias (ajuste para último dia válido do mês) e rejeição de entrada >= total.
