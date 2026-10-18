@@ -7,7 +7,7 @@
 - Arquivos: backend/src/repositories/analytics-repository.ts
 - Notas: Implementação de queries SQL analíticas com agregação (`COALESCE`, `NULLIF`, `CASE WHEN`, `GROUP BY`, `HAVING`) para taxa de No-Show, DRE simplificado, projeção de 30/60/90 dias, ranking de procedimentos e pacientes inativos (> 180 dias).
 
-## T-024 — Rotas REST de Relatórios e Dashboard Gerencial [pendente]
+## T-024 — Rotas REST de Relatórios e Dashboard Gerencial [concluida]
 - Refs: US-018, US-019, US-020, AC-035, AC-036, AC-037, AC-038, AC-039, AC-040
 - Arquivos: backend/src/routes/analytics.ts, backend/src/app.ts
 - Notas: Endpoints protegidos para consumo dos relatórios gerenciais com filtros de datas (`startDate`, `endDate`) e isolamento multi-tenant estrito.

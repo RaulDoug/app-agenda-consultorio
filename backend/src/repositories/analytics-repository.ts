@@ -193,8 +193,8 @@ export class AnalyticsRepository {
       SELECT 
         p.id AS procedure_id,
         p.name AS procedure_name,
-        COUNT(DISTINCT a.id)::int AS completed_count,
-        COALESCE(SUM(ai.effective_price_cents), 0)::int AS total_effective_price_cents
+        COUNT(ai.id) AS completed_count,
+        COALESCE(SUM(ai.effective_price_cents), 0) AS total_effective_price_cents
       FROM appointment_items ai
       JOIN appointments a ON a.id = ai.appointment_id
       JOIN procedures p ON p.id = ai.procedure_id
@@ -203,16 +203,21 @@ export class AnalyticsRepository {
         AND a.deleted_at IS NULL
         AND p.deleted_at IS NULL
       GROUP BY p.id, p.name
-      ORDER BY total_effective_price_cents DESC, completed_count DESC
     `;
 
-    const res = await this.db.query<ProcedureProfitabilityRankingItem>(sql, [tenantId]);
-    return res.rows.map((row) => ({
-      procedure_id: row.procedure_id,
-      procedure_name: row.procedure_name,
-      completed_count: Number(row.completed_count),
-      total_effective_price_cents: Number(row.total_effective_price_cents),
-    }));
+    const res = await this.db.query(sql, [tenantId]);
+    return res.rows
+      .map((row) => ({
+        procedure_id: row.procedure_id,
+        procedure_name: row.procedure_name,
+        completed_count: Number(row.completed_count) || 0,
+        total_effective_price_cents: Number(row.total_effective_price_cents) || 0,
+      }))
+      .sort(
+        (a, b) =>
+          b.total_effective_price_cents - a.total_effective_price_cents ||
+          b.completed_count - a.completed_count
+      );
   }
 
   /**
@@ -231,29 +236,30 @@ export class AnalyticsRepository {
     const cutoffDateIso = cutoffDate.toISOString();
 
     const sql = `
-      SELECT 
-        p.id,
-        p.name,
-        p.whatsapp,
-        MAX(a.start_time) AS last_appointment_date
-      FROM patients p
-      JOIN appointments a ON a.patient_id = p.id AND a.tenant_id = p.tenant_id
-      WHERE p.tenant_id = $1
-        AND p.is_active = true
-        AND p.deleted_at IS NULL
-        AND a.status = 'COMPLETED'
-        AND a.deleted_at IS NULL
-      GROUP BY p.id, p.name, p.whatsapp
-      HAVING MAX(a.start_time) < $2
-        AND NOT EXISTS (
-          SELECT 1 FROM appointments fut
-          WHERE fut.patient_id = p.id
-            AND fut.tenant_id = p.tenant_id
-            AND fut.deleted_at IS NULL
-            AND fut.status IN ('PENDING', 'CONFIRMED')
-            AND fut.start_time > $3
-        )
-      ORDER BY last_appointment_date ASC
+      SELECT * FROM (
+        SELECT 
+          p.id,
+          p.name,
+          p.whatsapp,
+          MAX(a.start_time) AS last_appointment_date
+        FROM patients p
+        JOIN appointments a ON a.patient_id = p.id
+        WHERE p.tenant_id = $1
+          AND p.is_active = true
+          AND p.deleted_at IS NULL
+          AND a.status = 'COMPLETED'
+          AND a.deleted_at IS NULL
+          AND p.id NOT IN (
+            SELECT DISTINCT patient_id FROM appointments 
+            WHERE tenant_id = $1 
+              AND status IN ('PENDING', 'CONFIRMED') 
+              AND start_time > $3 
+              AND deleted_at IS NULL
+          )
+        GROUP BY p.id, p.name, p.whatsapp
+      ) sub
+      WHERE sub.last_appointment_date < $2
+      ORDER BY sub.last_appointment_date ASC
     `;
 
     const res = await this.db.query(sql, [tenantId, cutoffDateIso, refDateStr]);
