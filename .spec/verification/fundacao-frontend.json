@@ -1,7 +1,7 @@
 {
   "feature": "fundacao-frontend",
-  "timestamp": "2026-10-18T15:54:54.560Z",
-  "gitRev": "fea264c",
+  "timestamp": "2026-10-18T15:56:19.518Z",
+  "gitRev": "20069aa",
   "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
   "exitCode": 0,

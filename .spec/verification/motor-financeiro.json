@@ -1,7 +1,7 @@
 {
   "feature": "motor-financeiro",
-  "timestamp": "2026-10-18T15:54:38.611Z",
-  "gitRev": "fea264c",
+  "timestamp": "2026-10-18T15:56:03.899Z",
+  "gitRev": "20069aa",
   "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
   "exitCode": 0,
