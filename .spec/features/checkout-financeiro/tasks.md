@@ -7,7 +7,7 @@
 - Arquivos: frontend/src/features/checkout/components/CheckoutDrawer.tsx, frontend/src/features/checkout/components/ItemPriceEditor.tsx, frontend/src/features/checkout/utils/discount-splitter.ts
 - Notas: Revisão de itens da consulta, remoção de itens, edição individual e aplicação de desconto total em R$ ou % com rateio proporcional sem dízimas perdidas.
 
-## T-046 — Parcelamento Flexível com Entrada e Geração Automática de Parcelas [pendente]
+## T-046 — Parcelamento Flexível com Entrada e Geração Automática de Parcelas [concluida]
 - Refs: US-038, US-039, AC-066, AC-067
 - Arquivos: frontend/src/features/checkout/components/InstallmentsForm.tsx, frontend/src/db/repositories/financial-local-repository.ts
 - Notas: Definição de entrada, validação visual de entrada > total, quantidade de parcelas sem limite rígido, datas sucessivas mensais e gravação no Dexie com outbox.
