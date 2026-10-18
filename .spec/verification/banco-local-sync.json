@@ -1,7 +1,7 @@
 {
   "feature": "banco-local-sync",
-  "timestamp": "2026-10-18T15:44:12.449Z",
-  "gitRev": "bcf0332",
+  "timestamp": "2026-10-18T15:45:37.122Z",
+  "gitRev": "156f705",
   "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
   "exitCode": 0,
