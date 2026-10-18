@@ -12,7 +12,7 @@
 - Arquivos: frontend/src/features/agenda/components/QuickAppointmentDrawer.tsx, frontend/src/features/agenda/components/InlinePatientForm.tsx, frontend/src/features/agenda/components/InlineProcedureForm.tsx
 - Notas: Abertura da gaveta rápida ao clicar no slot, autocomplete ou criação inline de paciente/procedimento, detecção de sobreposição/fora do horário com banner de "Encaixe" e prevenção contra duplo clique.
 
-## T-042 — Ações Rápidas de Status (Marcar Falta) e Modal de Remarcação com Calendário [pendente]
+## T-042 — Ações Rápidas de Status (Marcar Falta) e Modal de Remarcação com Calendário [concluida]
 - Refs: US-036, AC-061, AC-062
 - Arquivos: frontend/src/features/agenda/components/AppointmentDetailsDrawer.tsx, frontend/src/features/agenda/components/RescheduleModal.tsx
 - Notas: Ação de 1 toque para marcar falta (NO_SHOW), alteração de status com sincronização no Dexie e modal de remarcação com calendário e escolha de novos horários livres.

@@ -104,6 +104,45 @@ export class AppointmentLocalRepository {
     return updated;
   }
 
+  async rescheduleAppointment(
+    id: string,
+    newStartTime: string,
+    newEndTime: string,
+    newStatus: AppointmentStatus = 'CONFIRMED'
+  ): Promise<LocalAppointment> {
+    const existing = await this.db.appointments.get(id);
+    if (!existing) {
+      throw new Error(`Agendamento com id ${id} não encontrado no banco local.`);
+    }
+
+    const now = new Date().toISOString();
+    const updated: LocalAppointment = {
+      ...existing,
+      start_time: newStartTime,
+      end_time: newEndTime,
+      status: newStatus,
+      updated_at: now,
+    };
+
+    await this.db.transaction('rw', [this.db.appointments, this.db.sync_outbox], async () => {
+      await this.db.appointments.put(updated);
+      await enqueueMutation(this.db, {
+        entity: 'appointments',
+        recordId: id,
+        operation: 'UPDATE',
+        payload: {
+          id,
+          start_time: newStartTime,
+          end_time: newEndTime,
+          status: newStatus,
+          updated_at: now,
+        },
+      });
+    });
+
+    return updated;
+  }
+
   async getAppointmentById(id: string): Promise<{
     appointment: LocalAppointment;
     items: LocalAppointmentItem[];
