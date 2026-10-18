@@ -1,0 +1,108 @@
+{
+  "runId": "App-Agenda-Consultório-agenda-pacientes-mvdziziw",
+  "feature": "agenda-pacientes",
+  "agent": "antigravity",
+  "modo": "sequencial",
+  "paralelizar": null,
+  "modeloForcado": null,
+  "esforcoForcado": null,
+  "geradoEm": "2026-10-18 15:33",
+  "branchTrabalho": "spec/agenda-pacientes",
+  "baseDir": ".spec/features/agenda-pacientes",
+  "specDir": ".spec",
+  "repoName": "App-Agenda-Consultório",
+  "logsDir": "../onp-worktrees/App-Agenda-Consultório-agenda-pacientes-logs",
+  "ondas": [],
+  "faixas": [],
+  "sequenciais": [
+    {
+      "id": "T-040",
+      "titulo": "Componentes da Grade de Horários (Dia/Semana/Mês) em slots de 30m e Cards com Cores Semânticas",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "frontend/src/features/agenda/components/ScheduleGrid.tsx",
+        "frontend/src/features/agenda/components/AppointmentCard.tsx",
+        "frontend/src/features/agenda/components/ViewModeSelector.tsx"
+      ],
+      "refs": [
+        "US-034",
+        "AC-057",
+        "AC-058"
+      ]
+    },
+    {
+      "id": "T-041",
+      "titulo": "Gaveta de Criação Rápida (<10s) com Cadastro On-the-Fly e Alerta de Encaixe",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "frontend/src/features/agenda/components/QuickAppointmentDrawer.tsx",
+        "frontend/src/features/agenda/components/InlinePatientForm.tsx",
+        "frontend/src/features/agenda/components/InlineProcedureForm.tsx"
+      ],
+      "refs": [
+        "US-035",
+        "AC-059",
+        "AC-060"
+      ]
+    },
+    {
+      "id": "T-042",
+      "titulo": "Ações Rápidas de Status (Marcar Falta) e Modal de Remarcação com Calendário",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "frontend/src/features/agenda/components/AppointmentDetailsDrawer.tsx",
+        "frontend/src/features/agenda/components/RescheduleModal.tsx"
+      ],
+      "refs": [
+        "US-036",
+        "AC-061",
+        "AC-062"
+      ]
+    },
+    {
+      "id": "T-043",
+      "titulo": "Carteira de Clientes com Indicadores de Retorno/Cancelamento e Procedimentos Padrão",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "frontend/src/features/patients/components/PatientList.tsx",
+        "frontend/src/features/patients/components/PatientCard.tsx",
+        "frontend/src/features/agenda/hooks/useAgendaProcedures.ts"
+      ],
+      "refs": [
+        "US-037",
+        "AC-063",
+        "AC-064"
+      ]
+    },
+    {
+      "id": "T-044",
+      "titulo": "Suíte de Testes Automatizados TDD da Agenda e Pacientes no Frontend",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "frontend/src/features/agenda/__tests__/agenda-ui.spec.ts",
+        "frontend/src/features/patients/__tests__/patients-ui.spec.ts"
+      ],
+      "refs": [
+        "US-034",
+        "US-035",
+        "US-036",
+        "US-037",
+        "AC-057",
+        "AC-058",
+        "AC-059",
+        "AC-060",
+        "AC-061",
+        "AC-062",
+        "AC-063",
+        "AC-064"
+      ]
+    }
+  ],
+  "concluidas": [],
+  "avisos": []
+}
