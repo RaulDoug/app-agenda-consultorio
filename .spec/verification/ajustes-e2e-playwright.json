@@ -1,7 +1,7 @@
 {
   "feature": "ajustes-e2e-playwright",
-  "timestamp": "2026-10-18T16:24:15.097Z",
-  "gitRev": "da36d01",
+  "timestamp": "2026-10-18T17:10:38.543Z",
+  "gitRev": "1f8dead",
   "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
   "exitCode": 0,

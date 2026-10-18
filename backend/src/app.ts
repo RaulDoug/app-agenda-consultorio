@@ -36,3 +36,14 @@ export function createApp(): Express {
 }
 
 export const app = createApp();
+
+// Inicialização automática quando executado diretamente como servidor
+if (process.env.NODE_ENV !== 'test' && !process.env.VITEST) {
+  const isDirectRun = process.argv[1]?.includes('app.ts') || process.argv[1]?.includes('app.js');
+  if (isDirectRun) {
+    const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
+    app.listen(PORT, () => {
+      console.log(`[CliniAssist Backend] Servidor rodando na porta ${PORT} (http://localhost:${PORT})`);
+    });
+  }
+}

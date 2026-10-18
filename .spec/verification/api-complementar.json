@@ -1,7 +1,7 @@
 {
   "feature": "api-complementar",
-  "timestamp": "2026-10-18T16:23:40.778Z",
-  "gitRev": "da36d01",
+  "timestamp": "2026-10-18T17:10:03.764Z",
+  "gitRev": "1f8dead",
   "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
   "exitCode": 0,

@@ -10,8 +10,11 @@
     "frontend"
   ],
   "scripts": {
+    "dev": "concurrently -n \"BACKEND,FRONTEND\" -c \"blue,cyan\" \"npm run dev:backend\" \"npm run dev:frontend\"",
     "dev:backend": "npm run dev --workspace=backend",
     "dev:frontend": "npm run dev --workspace=frontend",
+    "docker:up": "docker compose up -d",
+    "docker:down": "docker compose down",
     "build": "npm run build --workspaces --if-present",
     "build:backend": "npm run build --workspace=backend",
     "build:frontend": "npm run build --workspace=frontend",
@@ -26,6 +29,7 @@
   },
   "devDependencies": {
     "@types/node": "^26.6.5",
+    "concurrently": "^10.0.6",
     "typescript": "^7.0.2",
     "vitest": "^5.0.5"
   }

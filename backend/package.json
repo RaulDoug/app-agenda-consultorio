@@ -5,7 +5,8 @@
   "description": "API REST Backend do CliniAssist (Node.js + Express.js + PostgreSQL via pg + BullMQ + Evolution API)",
   "type": "module",
   "scripts": {
-    "dev": "echo \"Backend dev script to be configured\"",
+    "dev": "npx tsx watch src/app.ts",
+    "start": "npx tsx src/app.ts",
     "build": "tsc",
     "test": "vitest run",
     "test:watch": "vitest"
