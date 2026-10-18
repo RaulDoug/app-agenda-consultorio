@@ -74,3 +74,11 @@ Toda a documentação gerada e validada nesta sessão está disponível em:
 * **Sugestão de Retorno Inteligente (BE-1):** Quando a data de retorno cair em domingo ou feriado fechado, o algoritmo deve pesquisar e sugerir opções vagas tanto do **último dia útil anterior** quanto do **próximo dia útil posterior**, dando mais flexibilidade de escolha ao profissional.
 * **Soft Delete de Paciente com Consultas Futuras (BE-2):** Se um paciente com consultas futuras agendadas for excluído, o sistema deve **alertar o operador** com aviso visual no modal/endpoint, oferecendo a opção de cancelar as consultas futuras para liberar a vaga na grade ou manter ambos os registros intactos.
 
+#### Sprint BE-4 — Motor Financeiro, Rateio de Descontos e Parcelamento
+* **Tratamento de Virada de Ano e Meses Curtos:** A projeção mensal de parcelamentos deve tratar explicitamente a virada de ano civil (ex: 31/12/2026 para 31/01/2027) e ajustar meses com menos de 31 dias para o último dia válido do mês (Fevereiro para dia 28 em anos comuns ou dia 29 em anos bissextos; Abril/Junho/Setembro/Novembro para dia 30), preservando o dia base original (dia 31) para os meses que possuem 31 dias.
+* **Lançamento de Despesas Rápidas:** Suporte flexível tanto para despesas já quitadas à vista (`status: 'PAID'` com `payment_date`), quanto para despesas a vencer no futuro (`status: 'PENDING'` com `due_date` para controle de contas a pagar).
+* **Edição e Remoção de Procedimentos no Atendimento:** Na conclusão do atendimento (checkout), o profissional pode editar valores individuais ou remover procedimentos inicialmente previstos que não foram executados, cobrando e rateando apenas sobre os itens confirmados.
+* **Formatos de Desconto:** Aceita desconto tanto em valor fixo em reais (centavos inteiros) quanto em percentual (%), com conversão precisa e sem geração de centavos órfãos.
+
+
+

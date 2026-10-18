@@ -14,9 +14,9 @@ Implementação do motor financeiro contábil da clínica odontológica com prec
 Como dentista ou secretária, quero concluir atendimentos com flexibilidade de edição nos procedimentos realizados e concessão de descontos totais rateados proporcionalmente, para que o fechamento financeiro reflita com exatidão matemática o valor cobrado sem perder nenhum centavo.
 
 #### AC-027 — Rateio proporcional de desconto global e edição individual de itens
-- **Dado** uma consulta com múltiplos procedimentos cujos valores individuais podem ser editados em centavos inteiros
-- **Quando** o profissional aplicar um desconto no valor total da consulta
-- **Então** o sistema deve ratear o desconto proporcionalmente entre os itens em centavos inteiros, salvando em `appointment_items` os valores efetivos (`effective_price_cents`) cuja soma é idêntica ao total com desconto.
+- **Dado** uma consulta com procedimentos cujos valores individuais podem ser editados ou itens não realizados removidos
+- **Quando** o profissional aplicar um desconto no valor total (em valor fixo de centavos ou em percentual %)
+- **Então** o sistema deve ratear o desconto proporcionalmente entre os itens confirmados em centavos inteiros, salvando em `appointment_items` os valores efetivos (`effective_price_cents`) cuja soma é idêntica ao total com desconto.
 
 #### AC-028 — Resolução da dízima periódica (O Teste do Centavo) sem perdas ou sobras
 - **Dado** 3 procedimentos de R$ 100 (10.000 centavos cada, totalizando 30.000 centavos) com desconto total negociado para R$ 200 (20.000 centavos)
@@ -35,9 +35,9 @@ Como dentista, quero gerar planos de pagamento com entrada imediata e parcelamen
 - **Então** o sistema deve criar 4 registros em `financial_transactions`: a entrada com status `PAID`, `installment_number = 1`, `total_installments = 4` e data de pagamento atual; e 3 parcelas com status `PENDING`, `installment_number = 2, 3, 4`, `total_installments = 4` com seus respectivos vencimentos futuros.
 
 #### AC-030 — Projeção mensal de parcelas com ajuste automático para virada de mês (dias 29, 30 e 31)
-- **Dado** uma primeira parcela com data de vencimento fixada em 31 de janeiro (ex: 31/01/2027)
+- **Dado** uma primeira parcela com data de vencimento fixada em 31 de janeiro ou 31 de dezembro (ex: 31/12/2026)
 - **Quando** o motor financeiro calcular os vencimentos das parcelas subsequentes
-- **Então** o vencimento de fevereiro deve ser automaticamente ajustado para o último dia válido do mês (28/02/2027 ou 29/02/2027 em ano bissexto), e de abril para 30/04/2027, sem gerar datas inválidas ou transbordar para o mês seguinte.
+- **Então** o vencimento deve transicionar com segurança entre anos civis, ajustando fevereiro para o último dia válido do mês (28/02 em ano comum ou 29/02 em ano bissexto) e abril para 30/04, restaurando o dia base 31 nos meses que possuem 31 dias, sem gerar datas inválidas ou transbordar para o mês seguinte.
 
 #### AC-031 — Rejeição de entrada maior ou igual ao valor total em cobrança parcelada
 - **Dado** uma requisição de parcelamento com mais de 1 parcela
@@ -56,9 +56,9 @@ Como operador financeiro do consultório, quero dar baixa em parcelas pagas no b
 - **Então** o sistema deve atualizar atômica e simultaneamente todas as parcelas selecionadas para status `PAID`, registrando `payment_method` e `payment_date`.
 
 #### AC-033 — Registro e categorização de despesas rápidas de consultório
-- **Dado** um pagamento de despesa operacional (ex: taxa de laboratório de prótese, material descartável ou aluguel)
-- **Quando** o operador registrar a saída no sistema
-- **Então** deve ser inserida uma transação com `type = 'EXPENSE'`, valor em centavos inteiros (`amount_cents > 0`), categoria informada, status `PAID` e data de pagamento.
+- **Dado** um pagamento de despesa operacional (já quitada à vista ou a vencer no futuro para controle de contas a pagar)
+- **Quando** o operador registrar a saída no sistema com status `PAID` ou `PENDING`
+- **Então** deve ser inserida uma transação com `type = 'EXPENSE'`, valor em centavos inteiros (`amount_cents > 0`), categoria informada, status correspondente e data de vencimento/pagamento.
 
 #### AC-034 — Soft Delete e integridade contábil em cancelamento de transações
 - **Dado** uma transação financeira ativa vinculada ou não a um agendamento
@@ -91,3 +91,6 @@ Como operador financeiro do consultório, quero dar baixa em parcelas pagas no b
 |---|---|---|---|
 | Q-007 | Como proceder caso o desconto concedido pelo profissional seja superior ao valor total somado dos procedimentos? | respondida | O desconto deve ser limitado ao valor total da consulta (desconto máximo = 100%, totalizando 0 centavos a pagar). Valores negativos devem ser rejeitados com HTTP 400. |
 | Q-008 | Em caso de cancelamento de uma consulta que já possuía transações pagas (ex: entrada já recebida), o que ocorre com o financeiro? | respondida | A entrada permanece registrada no caixa com Soft Delete ou flag de estorno contábil auditável; as parcelas futuras pendentes são canceladas automaticamente para não inflar o contas a receber. |
+| Q-009 | As despesas rápidas devem ser registradas apenas como já quitadas ou podem ser agendadas para o futuro? | respondida | Opção B: Permite lançamento tanto com status PAID (já paga com data) quanto com PENDING (a pagar com vencimento futuro). |
+| Q-010 | É permitido remover procedimentos durante o checkout caso não tenham sido executados? | respondida | Sim. O checkout permite editar preços e remover itens não executados, calculando o financeiro apenas sobre os itens confirmados. |
+| Q-011 | Quais formatos de desconto são aceitos na conclusão de atendimento? | respondida | Ambos: valor fixo em centavos (discountCents) ou percentual (discountPercent), com conversão exata sem centavos órfãos. |
