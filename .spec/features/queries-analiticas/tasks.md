@@ -2,7 +2,7 @@
 
 > feature: queries-analiticas
 
-## T-023 — Repositório de Queries Analíticas SQL Otimizadas [pendente]
+## T-023 — Repositório de Queries Analíticas SQL Otimizadas [concluida]
 - Refs: US-018, US-019, US-020, AC-035, AC-036, AC-037, AC-038, AC-039, AC-040
 - Arquivos: backend/src/repositories/analytics-repository.ts
 - Notas: Implementação de queries SQL analíticas com agregação (`COALESCE`, `NULLIF`, `CASE WHEN`, `GROUP BY`, `HAVING`) para taxa de No-Show, DRE simplificado, projeção de 30/60/90 dias, ranking de procedimentos e pacientes inativos (> 180 dias).
