@@ -148,6 +148,42 @@ export class FinancialLocalRepository {
       .filter((t) => t.is_active && !t.deleted_at)
       .sortBy('due_date');
   }
+
+  async markAsPaid(id: string): Promise<LocalFinancialTransaction> {
+    const existing = await this.db.financial_transactions.get(id);
+    if (!existing) {
+      throw new Error(`Transação financeira com id ${id} não encontrada no banco local.`);
+    }
+
+    const now = new Date().toISOString();
+    const updated: LocalFinancialTransaction = {
+      ...existing,
+      status: 'PAID',
+      payment_date: now,
+      updated_at: now,
+    };
+
+    await this.db.transaction(
+      'rw',
+      [this.db.financial_transactions, this.db.sync_outbox],
+      async () => {
+        await this.db.financial_transactions.put(updated);
+        await enqueueMutation(this.db, {
+          entity: 'financial_transactions',
+          recordId: id,
+          operation: 'UPDATE',
+          payload: {
+            id,
+            status: 'PAID',
+            payment_date: now,
+            updated_at: now,
+          },
+        });
+      }
+    );
+
+    return updated;
+  }
 }
 
 export const financialLocalRepo = new FinancialLocalRepository();

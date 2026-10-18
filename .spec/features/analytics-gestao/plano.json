@@ -1,0 +1,83 @@
+{
+  "runId": "App-Agenda-Consultório-analytics-gestao-mve0ebip",
+  "feature": "analytics-gestao",
+  "agent": "antigravity",
+  "modo": "sequencial",
+  "paralelizar": null,
+  "modeloForcado": null,
+  "esforcoForcado": null,
+  "geradoEm": "2026-10-18 15:57",
+  "branchTrabalho": "spec/analytics-gestao",
+  "baseDir": ".spec/features/analytics-gestao",
+  "specDir": ".spec",
+  "repoName": "App-Agenda-Consultório",
+  "logsDir": "../onp-worktrees/App-Agenda-Consultório-analytics-gestao-logs",
+  "ondas": [],
+  "faixas": [],
+  "sequenciais": [
+    {
+      "id": "T-050",
+      "titulo": "Dashboard de Caixa, DRE Rápido e Quitação de Parcelas Pendentes",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "frontend/src/features/analytics/components/CashFlowDashboard.tsx",
+        "frontend/src/features/analytics/components/ReceivablesList.tsx",
+        "frontend/src/features/analytics/utils/cash-calculator.ts"
+      ],
+      "refs": [
+        "US-042",
+        "AC-070",
+        "AC-071"
+      ]
+    },
+    {
+      "id": "T-051",
+      "titulo": "Monitoramento de Conexão WhatsApp e Tela de QR Code",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "frontend/src/features/analytics/components/WhatsAppPairingView.tsx",
+        "frontend/src/features/analytics/components/WhatsAppAlertBanner.tsx"
+      ],
+      "refs": [
+        "US-043",
+        "AC-072"
+      ]
+    },
+    {
+      "id": "T-052",
+      "titulo": "Lista de Reativação de Clientes Inativos (>180 dias) com Atalho de WhatsApp",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "frontend/src/features/analytics/components/InactivePatientsList.tsx",
+        "frontend/src/features/analytics/utils/inactive-finder.ts"
+      ],
+      "refs": [
+        "US-044",
+        "AC-073"
+      ]
+    },
+    {
+      "id": "T-053",
+      "titulo": "Suíte de Testes Automatizados TDD de Caixa, WhatsApp e Reativação de Clientes",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "frontend/src/features/analytics/__tests__/analytics-ui.spec.tsx"
+      ],
+      "refs": [
+        "US-042",
+        "US-043",
+        "US-044",
+        "AC-070",
+        "AC-071",
+        "AC-072",
+        "AC-073"
+      ]
+    }
+  ],
+  "concluidas": [],
+  "avisos": []
+}
