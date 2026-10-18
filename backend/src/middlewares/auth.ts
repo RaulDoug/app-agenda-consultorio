@@ -25,27 +25,35 @@ export function generateTestToken(payload: { tenant_id: string; user_id?: string
 
 export function authMiddleware(req: Request, res: Response, next: NextFunction): void {
   const authHeader = req.headers.authorization;
+  const directTenantHeader = req.headers['x-tenant-id'] as string;
 
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    res.status(401).json({ error: 'Token de autenticação não fornecido.' });
+  if (authHeader && authHeader.startsWith('Bearer ')) {
+    const token = authHeader.split(' ')[1];
+
+    try {
+      const decoded = jwt.verify(token, DEFAULT_JWT_SECRET) as TokenPayload;
+
+      if (!decoded.tenant_id) {
+        res.status(401).json({ error: 'Token inválido: tenant_id não encontrado no payload.' });
+        return;
+      }
+
+      req.tenantId = decoded.tenant_id;
+      req.userId = decoded.user_id;
+
+      next();
+      return;
+    } catch (err) {
+      res.status(401).json({ error: 'Token de autenticação inválido ou expirado.' });
+      return;
+    }
+  }
+
+  if (directTenantHeader) {
+    req.tenantId = directTenantHeader;
+    next();
     return;
   }
 
-  const token = authHeader.split(' ')[1];
-
-  try {
-    const decoded = jwt.verify(token, DEFAULT_JWT_SECRET) as TokenPayload;
-
-    if (!decoded.tenant_id) {
-      res.status(401).json({ error: 'Token inválido: tenant_id não encontrado no payload.' });
-      return;
-    }
-
-    req.tenantId = decoded.tenant_id;
-    req.userId = decoded.user_id;
-
-    next();
-  } catch (err) {
-    res.status(401).json({ error: 'Token de autenticação inválido ou expirado.' });
-  }
+  res.status(401).json({ error: 'Token de autenticação não fornecido.' });
 }

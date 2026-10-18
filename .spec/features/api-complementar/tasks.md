@@ -12,7 +12,7 @@
 - Arquivos: backend/src/routes/auth.ts, backend/src/services/auth-service.ts, backend/src/app.ts
 - Notas: Implementar rota `POST /api/auth/login` com validação de senha (ou credencial padrão do tenant), emissão de JWT com `tenant_id` e retorno dos dados cadastrais do consultório.
 
-## T-028 — Sincronização Delta (Pull Sync) do Servidor para o Dispositivo [pendente]
+## T-028 — Sincronização Delta (Pull Sync) do Servidor para o Dispositivo [concluida]
 - Refs: US-022, AC-043
 - Arquivos: backend/src/routes/sync.ts, backend/src/repositories/sync-repository.ts
 - Notas: Implementar endpoint `GET /api/sync/pull?since=<iso_timestamp>` retornando deltas de alterações ocorridas no servidor para `appointments`, `patients`, `procedures`, `financial_transactions` e `schedule_blocks`.

@@ -39,7 +39,8 @@ CREATE TABLE IF NOT EXISTS procedures (
     default_price_cents INT NOT NULL DEFAULT 0 CHECK (default_price_cents >= 0),
     is_active BOOLEAN DEFAULT TRUE,
     deleted_at TIMESTAMP WITH TIME ZONE DEFAULT NULL,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 CREATE INDEX IF NOT EXISTS idx_procedures_tenant ON procedures(tenant_id);
 
@@ -108,7 +109,8 @@ CREATE TABLE IF NOT EXISTS financial_transactions (
     total_installments INT DEFAULT 1,
     is_active BOOLEAN DEFAULT TRUE,
     deleted_at TIMESTAMP WITH TIME ZONE DEFAULT NULL,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 CREATE INDEX IF NOT EXISTS idx_transactions_tenant_dates ON financial_transactions(tenant_id, due_date, status);
 
@@ -123,6 +125,7 @@ CREATE TABLE IF NOT EXISTS business_hours (
     break_start_time TIME DEFAULT '12:00',
     break_end_time TIME DEFAULT '13:30',
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT uq_tenant_day UNIQUE (tenant_id, day_of_week)
 );
 CREATE INDEX IF NOT EXISTS idx_business_hours_tenant ON business_hours(tenant_id);
@@ -135,6 +138,7 @@ CREATE TABLE IF NOT EXISTS schedule_blocks (
     start_time TIMESTAMP WITH TIME ZONE NOT NULL,
     end_time TIMESTAMP WITH TIME ZONE NOT NULL,
     deleted_at TIMESTAMP WITH TIME ZONE DEFAULT NULL,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 CREATE INDEX IF NOT EXISTS idx_blocks_tenant_dates ON schedule_blocks(tenant_id, start_time, end_time);

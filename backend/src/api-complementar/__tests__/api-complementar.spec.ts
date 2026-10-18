@@ -115,9 +115,82 @@ describe('API Complementar — CliniAssist (Sprint BE-6)', () => {
     });
   });
 
-  // Testes a serem implementados nas tarefas T-028 a T-031
-  describe('US-022 a US-025 (Tarefas T-028 a T-031)', () => {
-    it.skip('AC-043: Retorno delta incremental de mutações do servidor @spec:AC-043', () => {});
+  describe('US-022 — Sincronização Delta (Pull Sync) para Dispositivos Offline-First', () => {
+    it('AC-043: Retorno delta incremental de mutações do servidor @spec:AC-043', async () => {
+      const patientRecentId = '33333333-3333-3333-3333-333333333331';
+      const patientOldId = '33333333-3333-3333-3333-333333333332';
+      const patientTenantBId = '33333333-3333-3333-3333-333333333333';
+
+      // 1. Paciente recente (atualizado em 12:00)
+      await db.query(
+        `INSERT INTO patients (id, tenant_id, name, whatsapp, created_at, updated_at)
+         VALUES ($1, $2, 'Maria Recente', '5511999990001', '2026-10-18 10:00:00+00', '2026-10-18 12:00:00+00')`,
+        [patientRecentId, activeTenantId]
+      );
+
+      // 2. Paciente antigo (atualizado em 09:00, anterior ao since)
+      await db.query(
+        `INSERT INTO patients (id, tenant_id, name, whatsapp, created_at, updated_at)
+         VALUES ($1, $2, 'José Antigo', '5511999990002', '2026-10-18 09:00:00+00', '2026-10-18 09:00:00+00')`,
+        [patientOldId, activeTenantId]
+      );
+
+      // 3. Paciente de outro tenant
+      await db.query(
+        `INSERT INTO patients (id, tenant_id, name, whatsapp, created_at, updated_at)
+         VALUES ($1, $2, 'Outro Tenant', '5511999990003', '2026-10-18 12:00:00+00', '2026-10-18 12:00:00+00')`,
+        [patientTenantBId, inactiveTenantId]
+      );
+
+      // 4. Procedimento recente
+      const procId = '44444444-4444-4444-4444-444444444441';
+      await db.query(
+        `INSERT INTO procedures (id, tenant_id, name, default_duration_minutes, default_price_cents, created_at, updated_at)
+         VALUES ($1, $2, 'Consulta Odontológica', 30, 15000, '2026-10-18 11:30:00+00', '2026-10-18 11:30:00+00')`,
+        [procId, activeTenantId]
+      );
+
+      // 5. Agendamento recente com item
+      const appId = '55555555-5555-5555-5555-555555555551';
+      await db.query(
+        `INSERT INTO appointments (id, tenant_id, patient_id, start_time, end_time, status, created_at, updated_at)
+         VALUES ($1, $2, $3, '2026-10-19 14:00:00+00', '2026-10-19 14:30:00+00', 'CONFIRMED', '2026-10-18 10:00:00+00', '2026-10-18 12:15:00+00')`,
+        [appId, activeTenantId, patientRecentId]
+      );
+      await db.query(
+        `INSERT INTO appointment_items (id, appointment_id, procedure_id, effective_price_cents, duration_minutes)
+         VALUES ('66666666-6666-6666-6666-666666666661', $1, $2, 15000, 30)`,
+        [appId, procId]
+      );
+
+      const res = await request(testApp)
+        .get('/api/sync/pull')
+        .set('x-tenant-id', activeTenantId)
+        .query({ since: '2026-10-18T11:00:00.000Z' });
+
+      expect(res.status).toBe(200);
+      expect(res.body).toHaveProperty('server_timestamp');
+
+      // Verifica isolamento e delta de pacientes
+      const patientIds = res.body.patients.map((p: any) => p.id);
+      expect(patientIds).toContain(patientRecentId);
+      expect(patientIds).not.toContain(patientOldId);
+      expect(patientIds).not.toContain(patientTenantBId);
+
+      // Verifica appointments e itens acoplados
+      expect(res.body.appointments).toHaveLength(1);
+      expect(res.body.appointments[0].id).toBe(appId);
+      expect(res.body.appointments[0].items).toHaveLength(1);
+      expect(res.body.appointments[0].items[0].procedure_id).toBe(procId);
+
+      // Verifica procedures delta
+      const procIds = res.body.procedures.map((p: any) => p.id);
+      expect(procIds).toContain(procId);
+    });
+  });
+
+  // Testes a serem implementados nas tarefas T-029 a T-031
+  describe('US-023 a US-025 (Tarefas T-029 a T-031)', () => {
     it.skip('AC-044: Consulta de status da sessão WhatsApp e obtenção de QR Code @spec:AC-044', () => {});
     it.skip('AC-045: Consulta e atualização do expediente semanal de trabalho @spec:AC-045', () => {});
     it.skip('AC-046: Cadastro, listagem e remoção de bloqueios de agenda @spec:AC-046', () => {});

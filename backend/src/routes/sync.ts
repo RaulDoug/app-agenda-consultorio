@@ -160,3 +160,95 @@ syncRouter.post('/batch', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
+// Sincronização Delta (Pull Sync): Retorna dados criados/atualizados no servidor desde `since`
+syncRouter.get('/pull', async (req, res): Promise<void> => {
+  try {
+    const tenantId = req.tenantId!;
+    const db = (req as any).db || getDatabase();
+    const sinceParam = req.query.since as string;
+    const sinceIso = sinceParam ? new Date(sinceParam).toISOString() : new Date(0).toISOString();
+
+    // 1. Appointments
+    const appointmentsRes = await db.query(
+      `SELECT * FROM appointments
+       WHERE tenant_id = $1 AND (updated_at > $2 OR (updated_at IS NULL AND created_at > $2))
+       ORDER BY updated_at ASC`,
+      [tenantId, sinceIso]
+    );
+
+    // Itens dos appointments
+    const itemsRes = await db.query(
+      `SELECT ai.* FROM appointment_items ai
+       JOIN appointments a ON a.id = ai.appointment_id
+       WHERE a.tenant_id = $1 AND (a.updated_at > $2 OR (a.updated_at IS NULL AND a.created_at > $2))`,
+      [tenantId, sinceIso]
+    );
+
+    const itemsMap: Record<string, any[]> = {};
+    for (const item of itemsRes.rows) {
+      if (!itemsMap[item.appointment_id]) {
+        itemsMap[item.appointment_id] = [];
+      }
+      itemsMap[item.appointment_id].push(item);
+    }
+
+    const appointmentsWithItems = appointmentsRes.rows.map((a: any) => ({
+      ...a,
+      items: itemsMap[a.id] || [],
+    }));
+
+    // 2. Patients
+    const patientsRes = await db.query(
+      `SELECT * FROM patients
+       WHERE tenant_id = $1 AND (updated_at > $2 OR (updated_at IS NULL AND created_at > $2))
+       ORDER BY updated_at ASC`,
+      [tenantId, sinceIso]
+    );
+
+    // 3. Procedures
+    const proceduresRes = await db.query(
+      `SELECT * FROM procedures
+       WHERE tenant_id = $1 AND (updated_at > $2 OR (updated_at IS NULL AND created_at > $2))
+       ORDER BY updated_at ASC`,
+      [tenantId, sinceIso]
+    );
+
+    // 4. Financial Transactions
+    const transactionsRes = await db.query(
+      `SELECT * FROM financial_transactions
+       WHERE tenant_id = $1 AND (updated_at > $2 OR (updated_at IS NULL AND created_at > $2))
+       ORDER BY updated_at ASC`,
+      [tenantId, sinceIso]
+    );
+
+    // 5. Schedule Blocks
+    const scheduleBlocksRes = await db.query(
+      `SELECT * FROM schedule_blocks
+       WHERE tenant_id = $1 AND (updated_at > $2 OR (updated_at IS NULL AND created_at > $2))
+       ORDER BY updated_at ASC`,
+      [tenantId, sinceIso]
+    );
+
+    // 6. Business Hours
+    const businessHoursRes = await db.query(
+      `SELECT * FROM business_hours
+       WHERE tenant_id = $1 AND (updated_at > $2 OR (updated_at IS NULL AND created_at > $2))
+       ORDER BY day_of_week ASC`,
+      [tenantId, sinceIso]
+    );
+
+    res.status(200).json({
+      server_timestamp: new Date().toISOString(),
+      appointments: appointmentsWithItems,
+      patients: patientsRes.rows,
+      procedures: proceduresRes.rows,
+      financial_transactions: transactionsRes.rows,
+      schedule_blocks: scheduleBlocksRes.rows,
+      business_hours: businessHoursRes.rows,
+    });
+  } catch (err: any) {
+    res.status(500).json({ error: 'Erro ao executar pull sync.', details: err.message });
+  }
+});
+
