@@ -1,7 +1,7 @@
-if (typeof window !== 'undefined') {
-  await import('@testing-library/jest-dom');
-  await import('fake-indexeddb/auto');
+import '@testing-library/jest-dom/vitest';
+import 'fake-indexeddb/auto';
 
+if (typeof window !== 'undefined') {
   // Polyfill para matchMedia em ambiente de teste jsdom
   Object.defineProperty(window, 'matchMedia', {
     writable: true,

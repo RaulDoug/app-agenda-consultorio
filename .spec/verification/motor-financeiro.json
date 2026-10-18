@@ -1,11 +1,11 @@
 {
   "feature": "motor-financeiro",
-  "timestamp": "2026-10-18T16:05:21.940Z",
-  "gitRev": "6bdfa68",
+  "timestamp": "2026-10-18T16:21:33.896Z",
+  "gitRev": "14ab29d",
   "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
   "exitCode": 0,
-  "testsParsed": 74,
+  "testsParsed": 79,
   "results": {
     "AC-027": {
       "status": "pass",
