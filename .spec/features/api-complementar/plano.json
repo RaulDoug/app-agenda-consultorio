@@ -1,0 +1,138 @@
+{
+  "runId": "App-Agenda-Consultório-api-complementar-mvdxjs3f",
+  "feature": "api-complementar",
+  "agent": "antigravity",
+  "modo": "sequencial",
+  "paralelizar": null,
+  "modeloForcado": null,
+  "esforcoForcado": null,
+  "geradoEm": "2026-10-18 14:37",
+  "branchTrabalho": "spec/api-complementar",
+  "baseDir": ".spec/features/api-complementar",
+  "specDir": ".spec",
+  "repoName": "App-Agenda-Consultório",
+  "logsDir": "../onp-worktrees/App-Agenda-Consultório-api-complementar-logs",
+  "ondas": [],
+  "faixas": [],
+  "sequenciais": [
+    {
+      "id": "T-026",
+      "titulo": "Migração dos Algoritmos de Domínio Puro para `@cliniassist/shared`",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "shared/src/domain/business-hours.ts",
+        "shared/src/domain/smart-return.ts",
+        "shared/src/financial/calculator.ts",
+        "shared/src/financial/installments.ts",
+        "shared/src/index.ts"
+      ],
+      "refs": [
+        "US-026",
+        "AC-048"
+      ]
+    },
+    {
+      "id": "T-027",
+      "titulo": "Módulo de Autenticação e Emissão de Token JWT Multi-Tenant",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "backend/src/routes/auth.ts",
+        "backend/src/services/auth-service.ts",
+        "backend/src/app.ts"
+      ],
+      "refs": [
+        "US-021",
+        "AC-041",
+        "AC-042"
+      ]
+    },
+    {
+      "id": "T-028",
+      "titulo": "Sincronização Delta (Pull Sync) do Servidor para o Dispositivo",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "backend/src/routes/sync.ts",
+        "backend/src/repositories/sync-repository.ts"
+      ],
+      "refs": [
+        "US-022",
+        "AC-043"
+      ]
+    },
+    {
+      "id": "T-029",
+      "titulo": "Gerenciamento de Sessão e Status do WhatsApp com QR Code",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "backend/src/routes/whatsapp.ts",
+        "backend/src/whatsapp/session.ts",
+        "backend/src/app.ts"
+      ],
+      "refs": [
+        "US-023",
+        "AC-044"
+      ]
+    },
+    {
+      "id": "T-030",
+      "titulo": "Gestão de Expediente e Bloqueios de Agenda",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "backend/src/routes/business-hours.ts",
+        "backend/src/routes/schedule-blocks.ts",
+        "backend/src/app.ts"
+      ],
+      "refs": [
+        "US-024",
+        "AC-045",
+        "AC-046"
+      ]
+    },
+    {
+      "id": "T-031",
+      "titulo": "Listagem e Filtro de Transações Financeiras para o Extrato",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "backend/src/routes/financial.ts",
+        "backend/src/repositories/financial-repository.ts"
+      ],
+      "refs": [
+        "US-025",
+        "AC-047"
+      ]
+    },
+    {
+      "id": "T-032",
+      "titulo": "Suíte Integrada de Testes Automatizados TDD da API Complementar",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "backend/src/api-complementar/__tests__/api-complementar.spec.ts"
+      ],
+      "refs": [
+        "US-021",
+        "US-022",
+        "US-023",
+        "US-024",
+        "US-025",
+        "US-026",
+        "AC-041",
+        "AC-042",
+        "AC-043",
+        "AC-044",
+        "AC-045",
+        "AC-046",
+        "AC-047",
+        "AC-048"
+      ]
+    }
+  ],
+  "concluidas": [],
+  "avisos": []
+}
