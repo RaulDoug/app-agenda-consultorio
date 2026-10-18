@@ -1,11 +1,11 @@
 {
   "feature": "fundacao-frontend",
-  "timestamp": "2026-10-18T15:56:19.518Z",
-  "gitRev": "20069aa",
+  "timestamp": "2026-10-18T16:03:48.654Z",
+  "gitRev": "b7b5303",
   "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
   "exitCode": 0,
-  "testsParsed": 70,
+  "testsParsed": 74,
   "results": {
     "AC-049": {
       "status": "pass",

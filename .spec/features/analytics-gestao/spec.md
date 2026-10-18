@@ -35,7 +35,8 @@ Como profissional, quero saber imediatamente se o meu WhatsApp está conectado e
 
 #### AC-072 — Tela de QR Code e Banner de Alerta de Desconexão
 - **Dado** o serviço de integração com a Evolution API
-- **Quando** a sessão estiver desconectada, a interface deve exibir um banner de alerta no topo e tela para escanear QR Code; quando a sessão estiver conectada, deve exibir status visual verde "WhatsApp Conectado".
+- **Quando** o profissional consulta o status de conexão da sessão
+- **Então** se a sessão estiver desconectada, a interface deve exibir um banner de alerta no topo e tela para escanear QR Code; quando a sessão estiver conectada, deve exibir status visual verde "WhatsApp Conectado".
 
 ---
 

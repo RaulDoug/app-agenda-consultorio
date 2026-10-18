@@ -17,7 +17,7 @@
 - Arquivos: frontend/src/features/analytics/components/InactivePatientsList.tsx, frontend/src/features/analytics/utils/inactive-finder.ts
 - Notas: Identificação de pacientes sem consulta há >180 dias e sem agendamentos futuros, com botão direto de conversa no WhatsApp.
 
-## T-053 — Suíte de Testes Automatizados TDD de Caixa, WhatsApp e Reativação de Clientes [pendente]
+## T-053 — Suíte de Testes Automatizados TDD de Caixa, WhatsApp e Reativação de Clientes [concluida]
 - Refs: US-042, US-043, US-044, AC-070, AC-071, AC-072, AC-073
 - Arquivos: frontend/src/features/analytics/__tests__/analytics-ui.spec.tsx
 - Notas: Suíte completa com React Testing Library e fake-indexeddb com anotações @spec:AC-070 a @spec:AC-073 para prova mecânica.

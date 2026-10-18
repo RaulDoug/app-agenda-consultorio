@@ -1,11 +1,11 @@
 {
   "feature": "agenda-pacientes",
-  "timestamp": "2026-10-18T15:56:29.969Z",
-  "gitRev": "20069aa",
+  "timestamp": "2026-10-18T16:03:59.676Z",
+  "gitRev": "b7b5303",
   "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
   "exitCode": 0,
-  "testsParsed": 70,
+  "testsParsed": 74,
   "results": {
     "AC-057": {
       "status": "pass",

@@ -1,0 +1,32 @@
+{
+  "feature": "analytics-gestao",
+  "timestamp": "2026-10-18T16:04:10.394Z",
+  "gitRev": "b7b5303",
+  "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
+  "reporter": "vitest-json",
+  "exitCode": 0,
+  "testsParsed": 74,
+  "results": {
+    "AC-070": {
+      "status": "pass",
+      "testName": "Sprint FE-4: Gestão Financeira de Caixa, Conexão WhatsApp e Reativação de Clientes AC-070: Dashboard de Indicadores Financeiros (Entrou no Caixa, A Receber, Despesas e Lucro) @spec:AC-070 AC-070: Dashboard de Indicadores Financeiros (Entrou no Caixa, A Receber, Despesas e Lucro) @spec:AC-070",
+      "method": "vitest-json"
+    },
+    "AC-071": {
+      "status": "pass",
+      "testName": "Sprint FE-4: Gestão Financeira de Caixa, Conexão WhatsApp e Reativação de Clientes AC-071: Baixa Rápida de Parcelas Pendentes com Atualização Local e Outbox @spec:AC-071 AC-071: Baixa Rápida de Parcelas Pendentes com Atualização Local e Outbox @spec:AC-071",
+      "method": "vitest-json"
+    },
+    "AC-072": {
+      "status": "pass",
+      "testName": "Sprint FE-4: Gestão Financeira de Caixa, Conexão WhatsApp e Reativação de Clientes AC-072: Tela de QR Code e Banner de Alerta de Desconexão @spec:AC-072 AC-072: Tela de QR Code e Banner de Alerta de Desconexão @spec:AC-072",
+      "method": "vitest-json"
+    },
+    "AC-073": {
+      "status": "pass",
+      "testName": "Sprint FE-4: Gestão Financeira de Caixa, Conexão WhatsApp e Reativação de Clientes AC-073: Lista de Pacientes Inativos (>180 dias) com Atalho Direto de WhatsApp @spec:AC-073 AC-073: Lista de Pacientes Inativos (>180 dias) com Atalho Direto de WhatsApp @spec:AC-073",
+      "method": "vitest-json"
+    }
+  },
+  "principles": {}
+}
