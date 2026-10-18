@@ -2,7 +2,7 @@
 
 > feature: banco-local-sync
 
-## T-036 — Definição do Schema Dexie.js e Inicialização do Banco Local [pendente]
+## T-036 — Definição do Schema Dexie.js e Inicialização do Banco Local [concluida]
 - Refs: US-030, AC-053
 - Arquivos: frontend/src/db/local-db.ts, frontend/src/db/types.ts
 - Notas: Implementar classe Dexie com tabelas locais indexadas: `patients`, `procedures`, `appointments`, `appointment_items`, `financial_transactions`, `business_hours`, `schedule_blocks` e `sync_outbox`.
