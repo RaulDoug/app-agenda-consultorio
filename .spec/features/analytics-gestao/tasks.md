@@ -7,7 +7,7 @@
 - Arquivos: frontend/src/features/analytics/components/CashFlowDashboard.tsx, frontend/src/features/analytics/components/ReceivablesList.tsx, frontend/src/features/analytics/utils/cash-calculator.ts
 - Notas: Cards de receitas pagas, despesas, saldo líquido, parcelas a receber no mês e ação de 1 toque para dar baixa (quitar) parcela com outbox.
 
-## T-051 — Monitoramento de Conexão WhatsApp e Tela de QR Code [pendente]
+## T-051 — Monitoramento de Conexão WhatsApp e Tela de QR Code [concluida]
 - Refs: US-043, AC-072
 - Arquivos: frontend/src/features/analytics/components/WhatsAppPairingView.tsx, frontend/src/features/analytics/components/WhatsAppAlertBanner.tsx
 - Notas: Exibição de QR Code da Evolution API, status verde de conectado e banner de alerta no topo quando desconectado.
