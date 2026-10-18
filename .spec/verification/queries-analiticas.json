@@ -1,7 +1,7 @@
 {
   "feature": "queries-analiticas",
-  "timestamp": "2026-10-18T14:02:19.947Z",
-  "gitRev": "ba73653",
+  "timestamp": "2026-10-18T14:02:51.276Z",
+  "gitRev": "d6bb50a",
   "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
   "exitCode": 0,
