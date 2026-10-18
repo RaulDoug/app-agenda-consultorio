@@ -7,6 +7,7 @@ import { syncRouter } from './routes/sync.js';
 import { webhooksRouter } from './routes/webhooks.js';
 import { financialRouter } from './routes/financial.js';
 import { analyticsRouter } from './routes/analytics.js';
+import { authRouter } from './routes/auth.js';
 
 export function createApp(): Express {
   const app = express();
@@ -16,6 +17,7 @@ export function createApp(): Express {
     res.json({ status: 'ok', timestamp: new Date().toISOString() });
   });
 
+  app.use('/api/auth', authRouter);
   app.use('/api/patients', patientsRouter);
   app.use('/api/procedures', proceduresRouter);
   app.use('/api/appointments', appointmentsRouter);

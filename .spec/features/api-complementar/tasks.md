@@ -7,7 +7,7 @@
 - Arquivos: shared/src/domain/business-hours.ts, shared/src/domain/smart-return.ts, shared/src/financial/calculator.ts, shared/src/financial/installments.ts, shared/src/index.ts
 - Notas: Mover funções puras para o pacote compartilhado com testes unitários em `shared/`, mantendo reexportação no backend para preservar 100% de compatibilidade.
 
-## T-027 — Módulo de Autenticação e Emissão de Token JWT Multi-Tenant [pendente]
+## T-027 — Módulo de Autenticação e Emissão de Token JWT Multi-Tenant [concluida]
 - Refs: US-021, AC-041, AC-042
 - Arquivos: backend/src/routes/auth.ts, backend/src/services/auth-service.ts, backend/src/app.ts
 - Notas: Implementar rota `POST /api/auth/login` com validação de senha (ou credencial padrão do tenant), emissão de JWT com `tenant_id` e retorno dos dados cadastrais do consultório.

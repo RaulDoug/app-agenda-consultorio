@@ -17,7 +17,7 @@ declare global {
   }
 }
 
-const DEFAULT_JWT_SECRET = process.env.JWT_SECRET || 'odontoflow_dev_jwt_secret_key_12345';
+export const DEFAULT_JWT_SECRET = process.env.JWT_SECRET || 'cliniassist_dev_jwt_secret_key_12345';
 
 export function generateTestToken(payload: { tenant_id: string; user_id?: string }, secret = DEFAULT_JWT_SECRET): string {
   return jwt.sign(payload, secret, { expiresIn: '7d' });

@@ -7,6 +7,8 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 CREATE TABLE IF NOT EXISTS tenants (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) UNIQUE,
+    password_hash VARCHAR(255),
     whatsapp_instance_name VARCHAR(100),
     whatsapp_connected BOOLEAN DEFAULT FALSE,
     is_active BOOLEAN DEFAULT TRUE,
