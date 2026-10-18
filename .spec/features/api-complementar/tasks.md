@@ -22,7 +22,7 @@
 - Arquivos: backend/src/routes/whatsapp.ts, backend/src/whatsapp/session.ts, backend/src/app.ts
 - Notas: Endpoint `GET /api/whatsapp/session` e `POST /api/whatsapp/connect` para verificar conexão e retornar QR Code (base64) em instâncias desconectadas.
 
-## T-030 — Gestão de Expediente e Bloqueios de Agenda [pendente]
+## T-030 — Gestão de Expediente e Bloqueios de Agenda [concluida]
 - Refs: US-024, AC-045, AC-046
 - Arquivos: backend/src/routes/business-hours.ts, backend/src/routes/schedule-blocks.ts, backend/src/app.ts
 - Notas: Endpoints REST para consulta/atualização de expediente semanal (`/api/business-hours`) e bloqueios/férias (`/api/schedule-blocks`).

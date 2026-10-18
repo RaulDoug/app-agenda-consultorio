@@ -9,6 +9,8 @@ import { financialRouter } from './routes/financial.js';
 import { analyticsRouter } from './routes/analytics.js';
 import { authRouter } from './routes/auth.js';
 import { whatsappSessionRouter } from './routes/whatsapp.js';
+import { businessHoursRouter } from './routes/business-hours.js';
+import { scheduleBlocksRouter } from './routes/schedule-blocks.js';
 
 export function createApp(): Express {
   const app = express();
@@ -20,6 +22,8 @@ export function createApp(): Express {
 
   app.use('/api/auth', authRouter);
   app.use('/api/whatsapp', whatsappSessionRouter);
+  app.use('/api/business-hours', businessHoursRouter);
+  app.use('/api/schedule-blocks', scheduleBlocksRouter);
   app.use('/api/patients', patientsRouter);
   app.use('/api/procedures', proceduresRouter);
   app.use('/api/appointments', appointmentsRouter);

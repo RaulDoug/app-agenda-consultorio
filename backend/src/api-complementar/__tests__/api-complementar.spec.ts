@@ -223,9 +223,127 @@ describe('API Complementar — CliniAssist (Sprint BE-6)', () => {
   });
 
   // Testes a serem implementados nas tarefas T-030 a T-031
-  describe('US-024 a US-025 (Tarefas T-030 a T-031)', () => {
-    it.skip('AC-045: Consulta e atualização do expediente semanal de trabalho @spec:AC-045', () => {});
-    it.skip('AC-046: Cadastro, listagem e remoção de bloqueios de agenda @spec:AC-046', () => {});
+  describe('US-024 — Gestão de Expediente e Bloqueios de Agenda', () => {
+    it('AC-045: Consulta e atualização do expediente semanal de trabalho @spec:AC-045', async () => {
+      // 1. Configuração inicial de expediente (Segunda a Sexta aberto, Sábado meio período, Domingo fechado)
+      const businessDays = [
+        { day_of_week: 0, is_open: false },
+        { day_of_week: 1, is_open: true, start_time: '08:00', end_time: '18:00', break_start_time: '12:00', break_end_time: '13:00' },
+        { day_of_week: 2, is_open: true, start_time: '08:00', end_time: '18:00', break_start_time: '12:00', break_end_time: '13:00' },
+      ];
+
+      const putRes = await request(testApp)
+        .put('/api/business-hours')
+        .set('x-tenant-id', activeTenantId)
+        .send(businessDays);
+
+      expect(putRes.status).toBe(200);
+      expect(putRes.body).toHaveLength(3);
+      expect(putRes.body[0].day_of_week).toBe(0);
+      expect(putRes.body[0].is_open).toBe(false);
+      expect(putRes.body[1].day_of_week).toBe(1);
+      expect(putRes.body[1].is_open).toBe(true);
+      expect(putRes.body[1].start_time).toMatch(/^08:00/);
+      expect(putRes.body[1].end_time).toMatch(/^18:00/);
+
+      // 2. Consulta via GET
+      const getRes = await request(testApp)
+        .get('/api/business-hours')
+        .set('x-tenant-id', activeTenantId);
+
+      expect(getRes.status).toBe(200);
+      expect(getRes.body).toHaveLength(3);
+
+      // 3. Validação de consistência: horário de término anterior ou igual ao início
+      const invalidTimeRes = await request(testApp)
+        .put('/api/business-hours')
+        .set('x-tenant-id', activeTenantId)
+        .send([
+          { day_of_week: 3, is_open: true, start_time: '18:00', end_time: '08:00' }
+        ]);
+      expect(invalidTimeRes.status).toBe(400);
+      expect(invalidTimeRes.body.error).toContain('término deve ser posterior');
+
+      // 4. Validação de intervalo de almoço fora da jornada
+      const invalidBreakRes = await request(testApp)
+        .put('/api/business-hours')
+        .set('x-tenant-id', activeTenantId)
+        .send([
+          { day_of_week: 3, is_open: true, start_time: '08:00', end_time: '18:00', break_start_time: '12:00', break_end_time: '19:00' }
+        ]);
+      expect(invalidBreakRes.status).toBe(400);
+      expect(invalidBreakRes.body.error).toContain('intervalo de almoço deve estar contido');
+
+      // 5. Isolamento multi-tenant
+      const tenantBRes = await request(testApp)
+        .get('/api/business-hours')
+        .set('x-tenant-id', inactiveTenantId);
+      expect(tenantBRes.status).toBe(200);
+      expect(tenantBRes.body).toHaveLength(0);
+    });
+
+    it('AC-046: Cadastro, listagem e remoção de bloqueios de agenda @spec:AC-046', async () => {
+      // 1. Criação de novo bloqueio
+      const postRes = await request(testApp)
+        .post('/api/schedule-blocks')
+        .set('x-tenant-id', activeTenantId)
+        .send({
+          title: 'Congresso de Saúde Integrada',
+          start_time: '2026-11-10T08:00:00.000Z',
+          end_time: '2026-11-12T18:00:00.000Z',
+        });
+
+      expect(postRes.status).toBe(201);
+      expect(postRes.body).toHaveProperty('id');
+      expect(postRes.body.title).toBe('Congresso de Saúde Integrada');
+      expect(new Date(postRes.body.start_time).toISOString()).toBe('2026-11-10T08:00:00.000Z');
+      expect(new Date(postRes.body.end_time).toISOString()).toBe('2026-11-12T18:00:00.000Z');
+
+      const blockId = postRes.body.id;
+
+      // 2. Validação: datas inconsistentes (término anterior ao início)
+      const invalidBlockRes = await request(testApp)
+        .post('/api/schedule-blocks')
+        .set('x-tenant-id', activeTenantId)
+        .send({
+          title: 'Bloqueio Inválido',
+          start_time: '2026-11-12T18:00:00.000Z',
+          end_time: '2026-11-10T08:00:00.000Z',
+        });
+      expect(invalidBlockRes.status).toBe(400);
+      expect(invalidBlockRes.body.error).toContain('término do bloqueio deve ser posterior');
+
+      // 3. Listagem de bloqueios ativos
+      const listRes = await request(testApp)
+        .get('/api/schedule-blocks')
+        .set('x-tenant-id', activeTenantId);
+      expect(listRes.status).toBe(200);
+      expect(listRes.body).toHaveLength(1);
+      expect(listRes.body[0].id).toBe(blockId);
+
+      // 4. Soft delete do bloqueio
+      const deleteRes = await request(testApp)
+        .delete(`/api/schedule-blocks/${blockId}`)
+        .set('x-tenant-id', activeTenantId);
+      expect(deleteRes.status).toBe(200);
+
+      // 5. Listagem não deve mais exibir o bloqueio
+      const listAfterDelete = await request(testApp)
+        .get('/api/schedule-blocks')
+        .set('x-tenant-id', activeTenantId);
+      expect(listAfterDelete.status).toBe(200);
+      expect(listAfterDelete.body).toHaveLength(0);
+
+      // 6. Verificação de soft delete no banco
+      const rawDbRes = await db.query(
+        `SELECT id, deleted_at FROM schedule_blocks WHERE id = $1`,
+        [blockId]
+      );
+      expect(rawDbRes.rows[0].deleted_at).not.toBeNull();
+    });
+  });
+
+  describe('US-025 — Listagem e Filtro de Transações Financeiras (Tarefa T-031)', () => {
     it.skip('AC-047: Listagem filtrada de movimentações de receitas e despesas @spec:AC-047', () => {});
   });
 });
