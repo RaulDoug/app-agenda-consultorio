@@ -1,0 +1,109 @@
+{
+  "runId": "App-Agenda-Consultório-queries-analiticas-mvdvk97m",
+  "feature": "queries-analiticas",
+  "agent": "antigravity",
+  "modo": "paralelo",
+  "paralelizar": null,
+  "modeloForcado": null,
+  "esforcoForcado": null,
+  "geradoEm": "2026-10-18 13:42",
+  "branchTrabalho": "spec/queries-analiticas",
+  "baseDir": ".spec/features/queries-analiticas",
+  "specDir": ".spec",
+  "repoName": "App-Agenda-Consultório",
+  "logsDir": "../onp-worktrees/App-Agenda-Consultório-queries-analiticas-logs",
+  "ondas": [
+    [
+      "faixa-1",
+      "faixa-2",
+      "faixa-3"
+    ]
+  ],
+  "faixas": [
+    {
+      "id": "faixa-1",
+      "branch": "spec/queries-analiticas-faixa-1",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-queries-analiticas-faixa-1",
+      "tarefas": [
+        {
+          "id": "T-023",
+          "titulo": "Repositório de Queries Analíticas SQL Otimizadas",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "backend/src/repositories/analytics-repository.ts"
+          ],
+          "refs": [
+            "US-018",
+            "US-019",
+            "US-020",
+            "AC-035",
+            "AC-036",
+            "AC-037",
+            "AC-038",
+            "AC-039",
+            "AC-040"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "faixa-2",
+      "branch": "spec/queries-analiticas-faixa-2",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-queries-analiticas-faixa-2",
+      "tarefas": [
+        {
+          "id": "T-024",
+          "titulo": "Rotas REST de Relatórios e Dashboard Gerencial",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "backend/src/routes/analytics.ts",
+            "backend/src/app.ts"
+          ],
+          "refs": [
+            "US-018",
+            "US-019",
+            "US-020",
+            "AC-035",
+            "AC-036",
+            "AC-037",
+            "AC-038",
+            "AC-039",
+            "AC-040"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "faixa-3",
+      "branch": "spec/queries-analiticas-faixa-3",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-queries-analiticas-faixa-3",
+      "tarefas": [
+        {
+          "id": "T-025",
+          "titulo": "Suíte Integrada de Testes Automatizados TDD de Analytics",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "backend/src/analytics/__tests__/analytics.spec.ts"
+          ],
+          "refs": [
+            "US-018",
+            "US-019",
+            "US-020",
+            "AC-035",
+            "AC-036",
+            "AC-037",
+            "AC-038",
+            "AC-039",
+            "AC-040"
+          ]
+        }
+      ]
+    }
+  ],
+  "sequenciais": [],
+  "concluidas": [],
+  "avisos": []
+}

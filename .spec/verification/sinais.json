@@ -257,10 +257,10 @@
       "codigo": "VERIFY_OBSOLETO",
       "feature": "dominio-agenda",
       "ref": "—",
-      "ocorrencias": 8,
+      "ocorrencias": 9,
       "primeiraVez": "2026-10-17T19:21:57.173Z",
-      "ultimaVez": "2026-10-17T21:25:54.345Z",
-      "gitRev": "2ba162a"
+      "ultimaVez": "2026-10-18T13:43:01.743Z",
+      "gitRev": "c74cbf5"
     },
     "ARQUIVO_INEXISTENTE::persistencia-api::T-008": {
       "codigo": "ARQUIVO_INEXISTENTE",
@@ -437,10 +437,10 @@
       "codigo": "VERIFY_OBSOLETO",
       "feature": "persistencia-api",
       "ref": "—",
-      "ocorrencias": 6,
+      "ocorrencias": 7,
       "primeiraVez": "2026-10-17T19:43:11.018Z",
-      "ultimaVez": "2026-10-17T21:25:54.346Z",
-      "gitRev": "2ba162a"
+      "ultimaVez": "2026-10-18T13:43:01.743Z",
+      "gitRev": "c74cbf5"
     },
     "ARQUIVO_INEXISTENTE::whatsapp-bullmq::T-013": {
       "codigo": "ARQUIVO_INEXISTENTE",
@@ -599,10 +599,10 @@
       "codigo": "VERIFY_OBSOLETO",
       "feature": "whatsapp-bullmq",
       "ref": "—",
-      "ocorrencias": 2,
+      "ocorrencias": 3,
       "primeiraVez": "2026-10-17T20:48:29.108Z",
-      "ultimaVez": "2026-10-17T21:25:54.346Z",
-      "gitRev": "2ba162a"
+      "ultimaVez": "2026-10-18T13:43:01.744Z",
+      "gitRev": "c74cbf5"
     },
     "ARQUIVO_INEXISTENTE::motor-financeiro::T-018": {
       "codigo": "ARQUIVO_INEXISTENTE",
@@ -792,6 +792,87 @@
       "primeiraVez": "2026-10-17T21:25:54.346Z",
       "ultimaVez": "2026-10-17T21:25:54.346Z",
       "gitRev": "2ba162a"
+    },
+    "VERIFY_OBSOLETO::motor-financeiro::—": {
+      "codigo": "VERIFY_OBSOLETO",
+      "feature": "motor-financeiro",
+      "ref": "—",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-18T13:43:01.743Z",
+      "ultimaVez": "2026-10-18T13:43:01.743Z",
+      "gitRev": "c74cbf5"
+    },
+    "ARQUIVO_INEXISTENTE::queries-analiticas::T-023": {
+      "codigo": "ARQUIVO_INEXISTENTE",
+      "feature": "queries-analiticas",
+      "ref": "T-023",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-18T13:43:01.743Z",
+      "ultimaVez": "2026-10-18T13:43:01.743Z",
+      "gitRev": "c74cbf5"
+    },
+    "ARQUIVO_INEXISTENTE::queries-analiticas::T-024": {
+      "codigo": "ARQUIVO_INEXISTENTE",
+      "feature": "queries-analiticas",
+      "ref": "T-024",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-18T13:43:01.743Z",
+      "ultimaVez": "2026-10-18T13:43:01.743Z",
+      "gitRev": "c74cbf5"
+    },
+    "AC_SEM_PROVA::queries-analiticas::AC-035": {
+      "codigo": "AC_SEM_PROVA",
+      "feature": "queries-analiticas",
+      "ref": "AC-035",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-18T13:43:01.743Z",
+      "ultimaVez": "2026-10-18T13:43:01.743Z",
+      "gitRev": "c74cbf5"
+    },
+    "AC_SEM_PROVA::queries-analiticas::AC-036": {
+      "codigo": "AC_SEM_PROVA",
+      "feature": "queries-analiticas",
+      "ref": "AC-036",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-18T13:43:01.743Z",
+      "ultimaVez": "2026-10-18T13:43:01.743Z",
+      "gitRev": "c74cbf5"
+    },
+    "AC_SEM_PROVA::queries-analiticas::AC-037": {
+      "codigo": "AC_SEM_PROVA",
+      "feature": "queries-analiticas",
+      "ref": "AC-037",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-18T13:43:01.743Z",
+      "ultimaVez": "2026-10-18T13:43:01.743Z",
+      "gitRev": "c74cbf5"
+    },
+    "AC_SEM_PROVA::queries-analiticas::AC-038": {
+      "codigo": "AC_SEM_PROVA",
+      "feature": "queries-analiticas",
+      "ref": "AC-038",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-18T13:43:01.743Z",
+      "ultimaVez": "2026-10-18T13:43:01.743Z",
+      "gitRev": "c74cbf5"
+    },
+    "AC_SEM_PROVA::queries-analiticas::AC-039": {
+      "codigo": "AC_SEM_PROVA",
+      "feature": "queries-analiticas",
+      "ref": "AC-039",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-18T13:43:01.744Z",
+      "ultimaVez": "2026-10-18T13:43:01.744Z",
+      "gitRev": "c74cbf5"
+    },
+    "AC_SEM_PROVA::queries-analiticas::AC-040": {
+      "codigo": "AC_SEM_PROVA",
+      "feature": "queries-analiticas",
+      "ref": "AC-040",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-18T13:43:01.744Z",
+      "ultimaVez": "2026-10-18T13:43:01.744Z",
+      "gitRev": "c74cbf5"
     }
   }
 }
