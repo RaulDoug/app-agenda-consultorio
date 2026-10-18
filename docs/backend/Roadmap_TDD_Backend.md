@@ -106,10 +106,10 @@ O desenvolvimento do `backend/` segue estritamente o ciclo **Red-Green-Refactor*
 > **Objetivo:** Fornecer os indicadores de negócio com queries SQL otimizadas.
 
 ##### 5.1 Testes Padrão (Happy Path) — `backend/src/analytics/__tests__/analytics.spec.ts`
-* [ ] **Taxa de No-Show:** Calcular percentual exato de agendamentos `NO_SHOW` sobre o total de agendamentos do período e soma do valor estimado perdido.
-* [ ] **DRE Simplificado e Projeção de Caixa:** Retornar `total_income_paid_cents`, `total_expense_paid_cents`, `net_profit_cents` e `pending_receivables_cents` (próximos 30/60/90 dias).
-* [ ] **Ranking de Lucratividade por Procedimento:** Query `GROUP BY procedure_id` somando `effective_price_cents` apenas de consultas `COMPLETED`.
-* [ ] **Lista de Pacientes Inativos (> 6 meses):** Query retornando pacientes ativos cujo `MAX(start_time)` de consulta concluída seja anterior a 180 dias e que não possuam agendamento futuro.
+* [x] **Taxa de No-Show:** Calcular percentual exato de agendamentos `NO_SHOW` sobre o total de agendamentos do período e soma do valor estimado perdido.
+* [x] **DRE Simplificado e Projeção de Caixa:** Retornar `total_income_paid_cents`, `total_expense_paid_cents`, `net_profit_cents` e `pending_receivables_cents` (próximos 30/60/90 dias).
+* [x] **Ranking de Lucratividade por Procedimento:** Query `GROUP BY procedure_id` somando `effective_price_cents` apenas de consultas `COMPLETED`.
+* [x] **Lista de Pacientes Inativos (> 6 meses):** Query retornando pacientes ativos cujo `MAX(start_time)` de consulta concluída seja anterior a 180 dias e que não possuam agendamento futuro.
 
 ##### 5.2 Testes de Edge Cases
-* [ ] **Edge Case BE-5.1 (Divisão por Zero em Clínica Nova):** Quando o consultório possui 0 agendamentos ou 0 transações no período, todas as métricas devem retornar `0` de forma limpa, sem `NaN`, `null` inesperado ou erro SQL de divisão por zero.
+* [x] **Edge Case BE-5.1 (Divisão por Zero em Clínica Nova):** Quando o consultório possui 0 agendamentos ou 0 transações no período, todas as métricas devem retornar `0` de forma limpa, sem `NaN`, `null` inesperado ou erro SQL de divisão por zero.

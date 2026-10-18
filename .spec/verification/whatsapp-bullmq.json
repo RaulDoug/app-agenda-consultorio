@@ -1,11 +1,11 @@
 {
   "feature": "whatsapp-bullmq",
-  "timestamp": "2026-10-18T13:09:50.764Z",
-  "gitRev": "96a6f4a",
+  "timestamp": "2026-10-18T13:50:45.253Z",
+  "gitRev": "059d58f",
   "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
   "exitCode": 0,
-  "testsParsed": 34,
+  "testsParsed": 40,
   "results": {
     "AC-019": {
       "status": "pass",

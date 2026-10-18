@@ -1,7 +1,7 @@
 # Spec: Queries analiticas
 
 > feature: queries-analiticas
-> status: pronta
+> status: auditada
 
 ## Contexto
 
