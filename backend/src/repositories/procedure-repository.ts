@@ -1,4 +1,4 @@
-import type { Procedure, CreateProcedureDTO, UpdateProcedureDTO } from '@odontoflow/shared';
+import type { Procedure, CreateProcedureDTO, UpdateProcedureDTO } from '@cliniassist/shared';
 import { getDatabase, type IDatabase } from '../db/connection.js';
 
 export class ProcedureRepository {

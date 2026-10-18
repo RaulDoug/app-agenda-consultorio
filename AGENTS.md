@@ -51,7 +51,7 @@ Comandos principais: `status`, `new <feature>`, `scaffold <feature>`, `verify <f
 
 Este repositório está estruturado como um **Monorepo TypeScript (NPM Workspaces)**:
 
-- `shared/` (`@odontoflow/shared`): Contratos, interfaces TypeScript, Enums e tipos compartilhados entre Frontend e Backend.
+- `shared/` (`@cliniassist/shared`): Contratos, interfaces TypeScript, Enums e tipos compartilhados entre Frontend e Backend.
 - `backend/`: API REST em Node.js + TypeScript + Express.js + PostgreSQL (`pg` com SQL puro) + BullMQ/Redis + Evolution API.
 - `frontend/`: Aplicação Web Mobile-First (PWA) em React + TypeScript + Vite + Tailwind CSS + Dexie.js (IndexedDB Offline-First).
 - `docs/`: Documentação completa de produto, arquitetura e roadmaps de TDD:

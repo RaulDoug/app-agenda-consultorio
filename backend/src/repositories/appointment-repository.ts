@@ -1,4 +1,4 @@
-import type { Appointment, AppointmentItem, CreateAppointmentDTO, UpdateAppointmentDTO } from '@odontoflow/shared';
+import type { Appointment, AppointmentItem, CreateAppointmentDTO, UpdateAppointmentDTO } from '@cliniassist/shared';
 import { getDatabase, type IDatabase } from '../db/connection.js';
 
 export class DoubleBookingConflictError extends Error {

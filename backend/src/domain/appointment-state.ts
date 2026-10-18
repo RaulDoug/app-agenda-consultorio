@@ -1,4 +1,4 @@
-import type { AppointmentStatus } from '@odontoflow/shared';
+import type { AppointmentStatus } from '@cliniassist/shared';
 
 const TERMINAL_STATUSES: Set<AppointmentStatus> = new Set(['COMPLETED', 'CANCELLED']);
 

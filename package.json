@@ -1,9 +1,9 @@
 {
-  "name": "odontoflow-monorepo",
+  "name": "cliniassist-monorepo",
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "Monorepo do sistema OdontoFlow — Gestão Ágil de Agenda, Confirmações WhatsApp e Caixa para Consultórios Odontológicos",
+  "description": "Monorepo do sistema CliniAssist — Gestão Ágil de Agenda, Confirmações WhatsApp e Caixa para Profissionais Autônomos e Clínicas",
   "workspaces": [
     "shared",
     "backend",

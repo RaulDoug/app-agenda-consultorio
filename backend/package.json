@@ -1,8 +1,8 @@
 {
-  "name": "@odontoflow/backend",
+  "name": "@cliniassist/backend",
   "version": "1.0.0",
   "private": true,
-  "description": "API REST Backend do OdontoFlow (Node.js + Express.js + PostgreSQL via pg + BullMQ + Evolution API)",
+  "description": "API REST Backend do CliniAssist (Node.js + Express.js + PostgreSQL via pg + BullMQ + Evolution API)",
   "type": "module",
   "scripts": {
     "dev": "echo \"Backend dev script to be configured\"",
@@ -11,7 +11,7 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "@odontoflow/shared": "*",
+    "@cliniassist/shared": "*",
     "bullmq": "^6.3.16",
     "express": "^5.3.0",
     "ioredis": "^5.11.1",

@@ -1,4 +1,4 @@
-import type { BusinessHours } from '@odontoflow/shared';
+import type { BusinessHours } from '@cliniassist/shared';
 
 export interface BusinessHoursValidationResult {
   allowed: boolean;

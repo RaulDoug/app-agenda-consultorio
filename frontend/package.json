@@ -1,8 +1,8 @@
 {
-  "name": "@odontoflow/frontend",
+  "name": "@cliniassist/frontend",
   "version": "1.0.0",
   "private": true,
-  "description": "Aplicação Frontend PWA Mobile-First do OdontoFlow (React + Vite + Tailwind + Dexie.js Offline-First)",
+  "description": "Aplicação Frontend PWA Mobile-First do CliniAssist (React + Vite + Tailwind + Dexie.js Offline-First)",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -12,6 +12,6 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "@odontoflow/shared": "*"
+    "@cliniassist/shared": "*"
   }
 }

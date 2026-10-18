@@ -1,4 +1,4 @@
-import type { Patient, CreatePatientDTO, UpdatePatientDTO } from '@odontoflow/shared';
+import type { Patient, CreatePatientDTO, UpdatePatientDTO } from '@cliniassist/shared';
 import { getDatabase, type IDatabase } from '../db/connection.js';
 
 export class PatientRepository {

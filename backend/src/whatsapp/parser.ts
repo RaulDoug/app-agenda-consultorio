@@ -1,4 +1,4 @@
-import type { AppointmentStatus } from '@odontoflow/shared';
+import type { AppointmentStatus } from '@cliniassist/shared';
 
 export type ParsedMessageClassification =
   | 'CONFIRMED'
