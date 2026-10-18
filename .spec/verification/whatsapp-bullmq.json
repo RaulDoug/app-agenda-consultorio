@@ -1,7 +1,7 @@
 {
   "feature": "whatsapp-bullmq",
-  "timestamp": "2026-10-18T15:04:49.774Z",
-  "gitRev": "88a3237",
+  "timestamp": "2026-10-18T15:05:52.608Z",
+  "gitRev": "c5f82fd",
   "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
   "exitCode": 0,
