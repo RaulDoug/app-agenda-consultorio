@@ -22,7 +22,7 @@
 - Arquivos: frontend/src/features/checkout/components/QuickExpenseModal.tsx
 - Notas: Registro de saídas em menos de 10s, seleção de categoria (materiais, aluguel, laboratório, outros), gravação no Dexie e enfileiramento na outbox.
 
-## T-049 — Suíte de Testes Automatizados TDD do Checkout Financeiro e Retorno [pendente]
+## T-049 — Suíte de Testes Automatizados TDD do Checkout Financeiro e Retorno [concluida]
 - Refs: US-038, US-039, US-040, US-041, AC-065, AC-066, AC-067, AC-068, AC-069
 - Arquivos: frontend/src/features/checkout/__tests__/checkout-ui.spec.tsx
 - Notas: Suíte completa com React Testing Library e fake-indexeddb com anotações @spec:AC-065 a @spec:AC-069 para prova mecânica.

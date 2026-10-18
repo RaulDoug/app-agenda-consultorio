@@ -1,0 +1,37 @@
+{
+  "feature": "checkout-financeiro",
+  "timestamp": "2026-10-18T15:55:10.218Z",
+  "gitRev": "fea264c",
+  "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
+  "reporter": "vitest-json",
+  "exitCode": 0,
+  "testsParsed": 70,
+  "results": {
+    "AC-065": {
+      "status": "pass",
+      "testName": "Sprint FE-3: Checkout Financeiro, Rateio de Descontos e Retorno Inteligente AC-065: Edição Individual de Procedimentos e Rateio Automático de Desconto Geral (R$ e %) @spec:AC-065 AC-065: Edição Individual de Procedimentos e Rateio Automático de Desconto Geral (R$ e %) @spec:AC-065",
+      "method": "vitest-json"
+    },
+    "AC-066": {
+      "status": "pass",
+      "testName": "Sprint FE-3: Checkout Financeiro, Rateio de Descontos e Retorno Inteligente AC-066: Validação Visual de Entrada e Formatação Monetária Fluida @spec:AC-066 AC-066: Validação Visual de Entrada e Formatação Monetária Fluida @spec:AC-066",
+      "method": "vitest-json"
+    },
+    "AC-067": {
+      "status": "pass",
+      "testName": "Sprint FE-3: Checkout Financeiro, Rateio de Descontos e Retorno Inteligente AC-067: Configuração de Parcelamento com Entrada e Calendário de Vencimentos @spec:AC-067 AC-067: Configuração de Parcelamento com Entrada e Calendário de Vencimentos @spec:AC-067",
+      "method": "vitest-json"
+    },
+    "AC-068": {
+      "status": "pass",
+      "testName": "Sprint FE-3: Checkout Financeiro, Rateio de Descontos e Retorno Inteligente AC-068: Sugestão de Retorno Rápido (15 dias, 30 dias, 6 meses) com Resolução de Conflitos @spec:AC-068 AC-068: Sugestão de Retorno Rápido (15 dias, 30 dias, 6 meses) com Resolução de Conflitos @spec:AC-068",
+      "method": "vitest-json"
+    },
+    "AC-069": {
+      "status": "pass",
+      "testName": "Sprint FE-3: Checkout Financeiro, Rateio de Descontos e Retorno Inteligente AC-069: Modal de Lançamento Rápido de Despesa (< 10 segundos) @spec:AC-069 AC-069: Modal de Lançamento Rápido de Despesa (< 10 segundos) @spec:AC-069",
+      "method": "vitest-json"
+    }
+  },
+  "principles": {}
+}
