@@ -7,7 +7,7 @@
 - Arquivos: frontend/src/features/agenda/components/ScheduleGrid.tsx, frontend/src/features/agenda/components/AppointmentCard.tsx, frontend/src/features/agenda/components/ViewModeSelector.tsx
 - Notas: Renderização dos slots de 30 minutos, intervalo de almoço visual, seletor de visão (Dia, Semana, Mês), e cards com cores semânticas e acessíveis dos status.
 
-## T-041 — Gaveta de Criação Rápida (<10s) com Cadastro On-the-Fly e Alerta de Encaixe [pendente]
+## T-041 — Gaveta de Criação Rápida (<10s) com Cadastro On-the-Fly e Alerta de Encaixe [concluida]
 - Refs: US-035, AC-059, AC-060
 - Arquivos: frontend/src/features/agenda/components/QuickAppointmentDrawer.tsx, frontend/src/features/agenda/components/InlinePatientForm.tsx, frontend/src/features/agenda/components/InlineProcedureForm.tsx
 - Notas: Abertura da gaveta rápida ao clicar no slot, autocomplete ou criação inline de paciente/procedimento, detecção de sobreposição/fora do horário com banner de "Encaixe" e prevenção contra duplo clique.
