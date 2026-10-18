@@ -2,7 +2,7 @@
 
 > feature: motor-financeiro
 
-## T-018 — Algoritmo Puro de Cálculo Financeiro: Rateio de Desconto e O Teste do Centavo [pendente]
+## T-018 — Algoritmo Puro de Cálculo Financeiro: Rateio de Desconto e O Teste do Centavo [concluida]
 - Refs: US-015, AC-027, AC-028
 - Arquivos: backend/src/financial/calculator.ts
 - Notas: Função de rateio de descontos em itens de procedimentos e distribuição exata de centavos residuais (O Teste do Centavo / dízima periódica) sem sobras nem perdas.
