@@ -267,15 +267,43 @@ describe('Queries Analíticas e Relatórios Gerenciais — OdontoFlow', () => {
         [tenantId, patient2Id]
       );
 
+      // Paciente 4 (Juliana): Cadastrada há mais de 180 dias (2026-01-10) e NUNCA se consultou
+      const patient4Id = '00000000-0000-0000-0002-000000000004';
+      await db.query(
+        `INSERT INTO patients (id, tenant_id, name, whatsapp, created_at)
+         VALUES ($1, $2, 'Juliana Sem Consulta', '5511999994444', '2026-01-10 10:00:00+00')`,
+        [patient4Id, tenantId]
+      );
+
+      // Paciente 5 (Pedro): Cadastrado recentemente (2026-10-15) sem consultas -> NÃO é inativo
+      const patient5Id = '00000000-0000-0000-0002-000000000005';
+      await db.query(
+        `INSERT INTO patients (id, tenant_id, name, whatsapp, created_at)
+         VALUES ($1, $2, 'Pedro Recém Cadastrado', '5511999995555', '2026-10-15 10:00:00+00')`,
+        [patient5Id, tenantId]
+      );
+
       const res = await request(testApp)
         .get('/api/analytics/inactive-patients')
         .set('x-tenant-id', tenantId)
         .query({ referenceDate: '2026-10-18', inactiveDays: 180 });
 
       expect(res.status).toBe(200);
-      expect(res.body).toHaveLength(1);
-      expect(res.body[0].id).toBe(patient3Id);
-      expect(res.body[0].name).toBe('Marcos Paciente Inativo');
+      expect(res.body).toHaveLength(2);
+
+      // Paciente com consulta anterior há mais de 180 dias
+      const marcos = res.body.find((p: any) => p.id === patient3Id);
+      expect(marcos).toBeDefined();
+      expect(marcos.name).toBe('Marcos Paciente Inativo');
+      expect(marcos.never_consulted).toBe(false);
+      expect(marcos.last_appointment_date).toBeDefined();
+
+      // Paciente que nunca se consultou cadastrado há mais de 180 dias
+      const juliana = res.body.find((p: any) => p.id === patient4Id);
+      expect(juliana).toBeDefined();
+      expect(juliana.name).toBe('Juliana Sem Consulta');
+      expect(juliana.never_consulted).toBe(true);
+      expect(juliana.last_appointment_date).toBeNull();
     });
   });
 });

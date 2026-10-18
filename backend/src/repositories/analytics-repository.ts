@@ -31,7 +31,8 @@ export interface InactivePatientItem {
   id: string;
   name: string;
   whatsapp: string;
-  last_appointment_date: string;
+  last_appointment_date: string | null;
+  never_consulted: boolean;
 }
 
 export class AnalyticsRepository {
@@ -222,6 +223,7 @@ export class AnalyticsRepository {
 
   /**
    * AC-040: Lista de Pacientes Inativos (> 180 dias sem retorno e sem consulta futura marcada)
+   * Inclui pacientes que nunca se consultaram (cadastrados há mais de inactiveDays) com never_consulted: true.
    */
   async getInactivePatients(
     tenantId: string,
@@ -241,14 +243,15 @@ export class AnalyticsRepository {
           p.id,
           p.name,
           p.whatsapp,
+          p.created_at,
           MAX(a.start_time) AS last_appointment_date
         FROM patients p
-        JOIN appointments a ON a.patient_id = p.id
+        LEFT JOIN appointments a ON a.patient_id = p.id 
+          AND a.status = 'COMPLETED' 
+          AND a.deleted_at IS NULL
         WHERE p.tenant_id = $1
           AND p.is_active = true
           AND p.deleted_at IS NULL
-          AND a.status = 'COMPLETED'
-          AND a.deleted_at IS NULL
           AND p.id NOT IN (
             SELECT DISTINCT patient_id FROM appointments 
             WHERE tenant_id = $1 
@@ -256,18 +259,29 @@ export class AnalyticsRepository {
               AND start_time > $3 
               AND deleted_at IS NULL
           )
-        GROUP BY p.id, p.name, p.whatsapp
+        GROUP BY p.id, p.name, p.whatsapp, p.created_at
       ) sub
-      WHERE sub.last_appointment_date < $2
-      ORDER BY sub.last_appointment_date ASC
+      WHERE (sub.last_appointment_date IS NOT NULL AND sub.last_appointment_date < $2)
+         OR (sub.last_appointment_date IS NULL AND sub.created_at < $2)
+      ORDER BY sub.last_appointment_date ASC, sub.name ASC
     `;
 
     const res = await this.db.query(sql, [tenantId, cutoffDateIso, refDateStr]);
-    return res.rows.map((r) => ({
+    const mapped: InactivePatientItem[] = res.rows.map((r) => ({
       id: r.id,
       name: r.name,
       whatsapp: r.whatsapp,
-      last_appointment_date: String(r.last_appointment_date),
+      last_appointment_date: r.last_appointment_date ? String(r.last_appointment_date) : null,
+      never_consulted: !r.last_appointment_date,
     }));
+
+    return mapped.sort((a, b) => {
+      if (a.never_consulted && !b.never_consulted) return 1;
+      if (!a.never_consulted && b.never_consulted) return -1;
+      if (a.last_appointment_date && b.last_appointment_date) {
+        return a.last_appointment_date.localeCompare(b.last_appointment_date);
+      }
+      return a.name.localeCompare(b.name);
+    });
   }
 }

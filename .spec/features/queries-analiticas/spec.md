@@ -51,9 +51,9 @@ Como profissional de saúde, quero saber quais procedimentos geram maior retorno
 - **Então** o sistema deve retornar a lista de procedimentos ordenada decrescentemente pela receita total efetivamente realizada (`total_effective_price_cents`), desconsiderando consultas canceladas ou faltas.
 
 #### AC-040 — Identificação de pacientes inativos há mais de 180 dias sem agendamento futuro
-- **Dado** pacientes ativos do consultório com histórico de atendimentos
+- **Dado** pacientes ativos do consultório cadastrados
 - **Quando** a busca de pacientes inativos para reengajamento for executada
-- **Então** o sistema deve retornar apenas os pacientes cuja última consulta concluída (`MAX(start_time)`) ocorreu há mais de 180 dias e que **não possuam** agendamentos futuros marcados (`start_time > CURRENT_TIMESTAMP`).
+- **Então** o sistema deve retornar pacientes cuja última consulta concluída (`MAX(start_time)`) ocorreu há mais de 180 dias (com `never_consulted: false`) e também pacientes cadastrados há mais de 180 dias que nunca concluíram uma consulta (com `never_consulted: true` e `last_appointment_date: null`), desde que **não possuam** agendamentos futuros marcados (`start_time > referenceDate`).
 
 ---
 
@@ -71,7 +71,7 @@ Como profissional de saúde, quero saber quais procedimentos geram maior retorno
 |---|---|---|---|
 | ASM-011 | Todas as queries analíticas respeitam estritamente o isolamento multi-tenant (`WHERE tenant_id = $1`) e filtram registros com Soft Delete (`deleted_at IS NULL` e `is_active = true`). | confirmada | Princípio fundamental P-001 e P-003 da arquitetura do OdontoFlow. |
 | ASM-012 | O montante financeiro perdido em faltas (`lost_estimated_cents`) é calculado pela soma dos preços dos procedimentos associados à consulta em `appointment_items` ou `procedures`. | confirmada | Permite estimar com exatidão o prejuízo de ociosidade da cadeira. |
-| ASM-013 | A projeção de 30/60/90 dias calcula janelas cumulativas a partir da data de referência UTC atual. | confirmada | Padrão contábil e de tesouraria para previsão de capital de giro. |
+| ASM-013 | A projeção de 30/60/90 dias calcula janelas cumulativas a partir da data de referência UTC atual. | confirmada | Padrão contábil e de tesouraria para previsão de capital de giro alinhado com o PO. |
 
 ---
 
@@ -79,5 +79,6 @@ Como profissional de saúde, quero saber quais procedimentos geram maior retorno
 
 | ID | Pergunta | Status | Resposta |
 |---|---|---|---|
-| Q-012 | As consultas remarcadas (`RESCHEDULE_REQUESTED`) entram no cálculo de taxa de No-Show? | respondida | Não. Apenas agendamentos com status final `NO_SHOW` representam ausência sem aviso. Consultas reagendadas ou canceladas com antecedência não são faltas. |
+| Q-012 | As consultas remarcadas (`RESCHEDULE_REQUESTED`) entram no cálculo de taxa de No-Show? | respondida | Não. Apenas agendamentos com status final `NO_SHOW` representam ausência sem aviso. Consultas reagendadas ou canceladas com antecedência não são faltas. Alinhado com o PO. |
 | Q-013 | No DRE simplificado, transações deletadas (Soft Delete) devem ser incluídas no cálculo? | respondida | Não. Transações canceladas ou estornadas (`deleted_at IS NOT NULL` ou `is_active = false`) são desconsideradas nos totalizadores de receita e despesa do DRE. |
+| Q-014 | Pacientes que se cadastraram mas nunca concluíram nenhuma consulta devem aparecer na lista de inativos? | respondida | Sim, desde que cadastrados há mais de `inactiveDays` e sem consultas futuras, devendo retornar com indicativo explícito (`never_consulted: true` e `last_appointment_date: null`). Alinhado com o PO. |
