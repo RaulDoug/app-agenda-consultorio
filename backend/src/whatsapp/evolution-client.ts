@@ -35,9 +35,17 @@ export interface InstanceConnectionState {
   state: 'open' | 'close' | 'connecting';
 }
 
+export interface QrCodeResponse {
+  instanceName: string;
+  pairingCode?: string;
+  code?: string;
+  base64?: string;
+}
+
 export interface IEvolutionClient {
   sendTextMessage(options: SendTextMessageOptions): Promise<SendMessageResponse>;
   getConnectionState(instanceName: string): Promise<InstanceConnectionState>;
+  getQrCode?(instanceName: string): Promise<QrCodeResponse>;
 }
 
 export class EvolutionHttpClient implements IEvolutionClient {
@@ -112,6 +120,31 @@ export class EvolutionHttpClient implements IEvolutionClient {
     return {
       instanceName,
       state: data?.instance?.state || 'close',
+    };
+  }
+
+  async getQrCode(instanceName: string): Promise<QrCodeResponse> {
+    const url = `${this.baseUrl}/instance/connect/${instanceName}`;
+    let res: Response;
+    try {
+      res = await fetch(url, {
+        method: 'GET',
+        headers: { apikey: this.apiKey },
+      });
+    } catch (err: any) {
+      throw new EvolutionTransientError(`Falha ao obter QR code: ${err.message}`, 503);
+    }
+
+    if (!res.ok) {
+      throw new EvolutionError(`Falha ao gerar QR code: HTTP ${res.status}`, res.status);
+    }
+
+    const data: any = await res.json();
+    return {
+      instanceName,
+      pairingCode: data?.pairingCode,
+      code: data?.code,
+      base64: data?.base64,
     };
   }
 }

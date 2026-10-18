@@ -17,7 +17,7 @@
 - Arquivos: backend/src/routes/sync.ts, backend/src/repositories/sync-repository.ts
 - Notas: Implementar endpoint `GET /api/sync/pull?since=<iso_timestamp>` retornando deltas de alterações ocorridas no servidor para `appointments`, `patients`, `procedures`, `financial_transactions` e `schedule_blocks`.
 
-## T-029 — Gerenciamento de Sessão e Status do WhatsApp com QR Code [pendente]
+## T-029 — Gerenciamento de Sessão e Status do WhatsApp com QR Code [concluida]
 - Refs: US-023, AC-044
 - Arquivos: backend/src/routes/whatsapp.ts, backend/src/whatsapp/session.ts, backend/src/app.ts
 - Notas: Endpoint `GET /api/whatsapp/session` e `POST /api/whatsapp/connect` para verificar conexão e retornar QR Code (base64) em instâncias desconectadas.

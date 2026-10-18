@@ -189,9 +189,41 @@ describe('API Complementar — CliniAssist (Sprint BE-6)', () => {
     });
   });
 
-  // Testes a serem implementados nas tarefas T-029 a T-031
-  describe('US-023 a US-025 (Tarefas T-029 a T-031)', () => {
-    it.skip('AC-044: Consulta de status da sessão WhatsApp e obtenção de QR Code @spec:AC-044', () => {});
+  describe('US-023 — Gerenciamento da Sessão e Status do WhatsApp', () => {
+    it('AC-044: Consulta de status da sessão WhatsApp e obtenção de QR Code @spec:AC-044', async () => {
+      // 1. Instância conectada
+      const resConnected = await request(testApp)
+        .get('/api/whatsapp/session')
+        .set('x-tenant-id', activeTenantId);
+
+      expect(resConnected.status).toBe(200);
+      expect(resConnected.body.connected).toBe(true);
+      expect(resConnected.body.instanceName).toBe('instancia_sorriso');
+      expect(resConnected.body.state).toBe('open');
+
+      // 2. Instância desconectada (deve emitir QR Code)
+      const resDisconnected = await request(testApp)
+        .get('/api/whatsapp/session')
+        .set('x-tenant-id', inactiveTenantId);
+
+      expect(resDisconnected.status).toBe(200);
+      expect(resDisconnected.body.connected).toBe(false);
+      expect(resDisconnected.body.state).toBe('close');
+      expect(resDisconnected.body.qrcode).toMatch(/^data:image\/png;base64,/);
+
+      // 3. Solicitação de nova conexão / QR Code
+      const resConnect = await request(testApp)
+        .post('/api/whatsapp/connect')
+        .set('x-tenant-id', inactiveTenantId);
+
+      expect(resConnect.status).toBe(200);
+      expect(resConnect.body.state).toBe('connecting');
+      expect(resConnect.body.qrcode).toBeDefined();
+    });
+  });
+
+  // Testes a serem implementados nas tarefas T-030 a T-031
+  describe('US-024 a US-025 (Tarefas T-030 a T-031)', () => {
     it.skip('AC-045: Consulta e atualização do expediente semanal de trabalho @spec:AC-045', () => {});
     it.skip('AC-046: Cadastro, listagem e remoção de bloqueios de agenda @spec:AC-046', () => {});
     it.skip('AC-047: Listagem filtrada de movimentações de receitas e despesas @spec:AC-047', () => {});

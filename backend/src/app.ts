@@ -8,6 +8,7 @@ import { webhooksRouter } from './routes/webhooks.js';
 import { financialRouter } from './routes/financial.js';
 import { analyticsRouter } from './routes/analytics.js';
 import { authRouter } from './routes/auth.js';
+import { whatsappSessionRouter } from './routes/whatsapp.js';
 
 export function createApp(): Express {
   const app = express();
@@ -18,6 +19,7 @@ export function createApp(): Express {
   });
 
   app.use('/api/auth', authRouter);
+  app.use('/api/whatsapp', whatsappSessionRouter);
   app.use('/api/patients', patientsRouter);
   app.use('/api/procedures', proceduresRouter);
   app.use('/api/appointments', appointmentsRouter);
