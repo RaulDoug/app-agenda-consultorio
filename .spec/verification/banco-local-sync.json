@@ -1,0 +1,32 @@
+{
+  "feature": "banco-local-sync",
+  "timestamp": "2026-10-18T15:29:35.193Z",
+  "gitRev": "c4c14fc",
+  "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
+  "reporter": "vitest-json",
+  "exitCode": 0,
+  "testsParsed": 57,
+  "results": {
+    "AC-053": {
+      "status": "pass",
+      "testName": "Banco Local IndexedDB e Sincronização Offline-First (Sprint FE-1) US-030 — Schema Local IndexedDB e Tabelas do Dispositivo AC-053: Inicialização do schema Dexie.js e tabelas locais @spec:AC-053 AC-053: Inicialização do schema Dexie.js e tabelas locais @spec:AC-053",
+      "method": "vitest-json"
+    },
+    "AC-054": {
+      "status": "pass",
+      "testName": "Banco Local IndexedDB e Sincronização Offline-First (Sprint FE-1) US-031 — Escrita Otimista e Fila de Mutações (sync_outbox) AC-054: Escrita otimista no banco local e enfileiramento na outbox @spec:AC-054 AC-054: Escrita otimista no banco local e enfileiramento na outbox @spec:AC-054",
+      "method": "vitest-json"
+    },
+    "AC-055": {
+      "status": "pass",
+      "testName": "Banco Local IndexedDB e Sincronização Offline-First (Sprint FE-1) US-032 — Sincronizador Bidirecional e Resiliência de Rede AC-055: Sincronização bidirecional (Push e Pull Delta) com resiliência a falhas @spec:AC-055 AC-055: Sincronização bidirecional (Push e Pull Delta) com resiliência a falhas @spec:AC-055",
+      "method": "vitest-json"
+    },
+    "AC-056": {
+      "status": "pass",
+      "testName": "Banco Local IndexedDB e Sincronização Offline-First (Sprint FE-1) US-033 — Poda de Histórico e Monitor de Conexão AC-056: Poda automática de histórico antigo e hook de conexão reativo @spec:AC-056 AC-056: Poda automática de histórico antigo e hook de conexão reativo @spec:AC-056",
+      "method": "vitest-json"
+    }
+  },
+  "principles": {}
+}

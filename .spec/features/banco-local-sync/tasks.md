@@ -17,7 +17,7 @@
 - Arquivos: frontend/src/sync/sync-manager.ts, frontend/src/sync/pruning.ts, frontend/src/hooks/useConnectionStatus.ts
 - Notas: Implementar `SyncManager` para push e pull delta com resiliência a falhas de rede, rotina de poda para registros concluídos com mais de 90 dias, e hook reativo `useConnectionStatus`.
 
-## T-039 — Suíte de Testes Automatizados TDD do Banco Local e Sincronização [pendente]
+## T-039 — Suíte de Testes Automatizados TDD do Banco Local e Sincronização [concluida]
 - Refs: US-030, US-031, US-032, US-033, AC-053, AC-054, AC-055, AC-056
 - Arquivos: frontend/src/db/__tests__/local-db.spec.ts
 - Notas: Suíte de testes com fake-indexeddb cobrindo AC-053 a AC-056 com prova mecânica completa.

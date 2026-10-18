@@ -1,7 +1,7 @@
 # Spec: Banco Local IndexedDB (Dexie.js) e Sincronização Offline-First — CliniAssist (Sprint FE-1)
 
 > feature: banco-local-sync
-> status: pronta
+> status: auditada
 
 ## Contexto
 
