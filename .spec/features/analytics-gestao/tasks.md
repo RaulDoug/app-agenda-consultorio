@@ -12,7 +12,7 @@
 - Arquivos: frontend/src/features/analytics/components/WhatsAppPairingView.tsx, frontend/src/features/analytics/components/WhatsAppAlertBanner.tsx
 - Notas: Exibição de QR Code da Evolution API, status verde de conectado e banner de alerta no topo quando desconectado.
 
-## T-052 — Lista de Reativação de Clientes Inativos (>180 dias) com Atalho de WhatsApp [pendente]
+## T-052 — Lista de Reativação de Clientes Inativos (>180 dias) com Atalho de WhatsApp [concluida]
 - Refs: US-044, AC-073
 - Arquivos: frontend/src/features/analytics/components/InactivePatientsList.tsx, frontend/src/features/analytics/utils/inactive-finder.ts
 - Notas: Identificação de pacientes sem consulta há >180 dias e sem agendamentos futuros, com botão direto de conversa no WhatsApp.
