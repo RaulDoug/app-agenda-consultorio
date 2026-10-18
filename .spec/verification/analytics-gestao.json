@@ -1,7 +1,7 @@
 {
   "feature": "analytics-gestao",
-  "timestamp": "2026-10-18T16:22:13.135Z",
-  "gitRev": "14ab29d",
+  "timestamp": "2026-10-18T16:24:09.402Z",
+  "gitRev": "da36d01",
   "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
   "exitCode": 0,
