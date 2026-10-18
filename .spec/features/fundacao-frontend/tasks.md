@@ -2,7 +2,7 @@
 
 > feature: fundacao-frontend
 
-## T-033 — Setup de Dependências, Vite, Tailwind CSS, Design Tokens e PWA Manifest [pendente]
+## T-033 — Setup de Dependências, Vite, Tailwind CSS, Design Tokens e PWA Manifest [concluida]
 - Refs: US-028, US-029, AC-051, AC-052
 - Arquivos: frontend/package.json, frontend/vite.config.ts, frontend/tailwind.config.js, frontend/public/manifest.json, frontend/index.html
 - Notas: Configurar React 18, Vite, Tailwind CSS v3 com paleta de tokens clínicos (#0D9488, #0284C7, cores semânticas de status), Lucide React para ícones, manifesto PWA com tema e suporte standalone.
