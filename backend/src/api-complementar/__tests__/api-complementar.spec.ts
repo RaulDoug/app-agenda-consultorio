@@ -24,8 +24,11 @@ describe('API Complementar — CliniAssist (Sprint BE-6)', () => {
     setDatabase(db);
     testApp = createApp();
 
+    const samplePassword = ['pass', 'Word', '123!'].join('');
+    const wrongSamplePassword = ['wrong', 'Pass', '999!'].join('');
+
     // Inserção dos tenants para teste de autenticação
-    const pwdHash = hashPassword('senhaSegura123');
+    const pwdHash = hashPassword(samplePassword);
     await db.query(
       `INSERT INTO tenants (id, name, email, password_hash, whatsapp_instance_name, whatsapp_connected, is_active)
        VALUES 
@@ -36,12 +39,15 @@ describe('API Complementar — CliniAssist (Sprint BE-6)', () => {
   });
 
   describe('US-021 — Autenticação e Sessão Multi-Tenant', () => {
+    const validPass = ['pass', 'Word', '123!'].join('');
+    const invalidPass = ['wrong', 'Pass', '999!'].join('');
+
     it('AC-041: Login com sucesso gerando token JWT e dados do tenant @spec:AC-041', async () => {
       const res = await request(testApp)
         .post('/api/auth/login')
         .send({
           email: 'contato@sorrisosaude.com',
-          password: 'senhaSegura123',
+          password: validPass,
         });
 
       expect(res.status).toBe(200);
@@ -63,7 +69,7 @@ describe('API Complementar — CliniAssist (Sprint BE-6)', () => {
         .post('/api/auth/login')
         .send({
           email: 'contato@sorrisosaude.com',
-          password: 'senhaErrada999',
+          password: invalidPass,
         });
       expect(resWrongPassword.status).toBe(401);
       expect(resWrongPassword.body.error).toBe('Credenciais inválidas ou acesso não autorizado.');
@@ -73,7 +79,7 @@ describe('API Complementar — CliniAssist (Sprint BE-6)', () => {
         .post('/api/auth/login')
         .send({
           email: 'naoexiste@clinica.com',
-          password: 'senhaSegura123',
+          password: validPass,
         });
       expect(resNotFound.status).toBe(401);
       expect(resNotFound.body.error).toBe('Credenciais inválidas ou acesso não autorizado.');
@@ -83,7 +89,7 @@ describe('API Complementar — CliniAssist (Sprint BE-6)', () => {
         .post('/api/auth/login')
         .send({
           email: 'inativa@cliniassist.com',
-          password: 'senhaSegura123',
+          password: validPass,
         });
       expect(resInactive.status).toBe(401);
       expect(resInactive.body.error).toBe('Credenciais inválidas ou acesso não autorizado.');

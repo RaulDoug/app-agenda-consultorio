@@ -1,0 +1,52 @@
+{
+  "feature": "api-complementar",
+  "timestamp": "2026-10-18T15:04:16.503Z",
+  "gitRev": "88a3237",
+  "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
+  "reporter": "vitest-json",
+  "exitCode": 0,
+  "testsParsed": 49,
+  "results": {
+    "AC-041": {
+      "status": "pass",
+      "testName": "API Complementar — CliniAssist (Sprint BE-6) US-021 — Autenticação e Sessão Multi-Tenant AC-041: Login com sucesso gerando token JWT e dados do tenant @spec:AC-041 AC-041: Login com sucesso gerando token JWT e dados do tenant @spec:AC-041",
+      "method": "vitest-json"
+    },
+    "AC-042": {
+      "status": "pass",
+      "testName": "API Complementar — CliniAssist (Sprint BE-6) US-021 — Autenticação e Sessão Multi-Tenant AC-042: Rejeição de login com credenciais incorretas ou tenant inativo @spec:AC-042 AC-042: Rejeição de login com credenciais incorretas ou tenant inativo @spec:AC-042",
+      "method": "vitest-json"
+    },
+    "AC-043": {
+      "status": "pass",
+      "testName": "API Complementar — CliniAssist (Sprint BE-6) US-022 — Sincronização Delta (Pull Sync) para Dispositivos Offline-First AC-043: Retorno delta incremental de mutações do servidor @spec:AC-043 AC-043: Retorno delta incremental de mutações do servidor @spec:AC-043",
+      "method": "vitest-json"
+    },
+    "AC-044": {
+      "status": "pass",
+      "testName": "API Complementar — CliniAssist (Sprint BE-6) US-023 — Gerenciamento da Sessão e Status do WhatsApp AC-044: Consulta de status da sessão WhatsApp e obtenção de QR Code @spec:AC-044 AC-044: Consulta de status da sessão WhatsApp e obtenção de QR Code @spec:AC-044",
+      "method": "vitest-json"
+    },
+    "AC-045": {
+      "status": "pass",
+      "testName": "API Complementar — CliniAssist (Sprint BE-6) US-024 — Gestão de Expediente e Bloqueios de Agenda AC-045: Consulta e atualização do expediente semanal de trabalho @spec:AC-045 AC-045: Consulta e atualização do expediente semanal de trabalho @spec:AC-045",
+      "method": "vitest-json"
+    },
+    "AC-046": {
+      "status": "pass",
+      "testName": "API Complementar — CliniAssist (Sprint BE-6) US-024 — Gestão de Expediente e Bloqueios de Agenda AC-046: Cadastro, listagem e remoção de bloqueios de agenda @spec:AC-046 AC-046: Cadastro, listagem e remoção de bloqueios de agenda @spec:AC-046",
+      "method": "vitest-json"
+    },
+    "AC-047": {
+      "status": "pass",
+      "testName": "API Complementar — CliniAssist (Sprint BE-6) US-025 — Listagem e Filtro de Transações Financeiras AC-047: Listagem filtrada de movimentações de receitas e despesas @spec:AC-047 AC-047: Listagem filtrada de movimentações de receitas e despesas @spec:AC-047",
+      "method": "vitest-json"
+    },
+    "AC-048": {
+      "status": "pass",
+      "testName": "US-026 — Domínio Compartilhado em @cliniassist/shared para Execução Offline AC-048: Disponibilização e validação das regras de negócio em @cliniassist/shared @spec:AC-048 AC-048: Disponibilização e validação das regras de negócio em @cliniassist/shared @spec:AC-048",
+      "method": "vitest-json"
+    }
+  },
+  "principles": {}
+}

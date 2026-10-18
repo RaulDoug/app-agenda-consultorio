@@ -1,7 +1,7 @@
 # Spec: Api complementar
 
 > feature: api-complementar
-> status: pronta
+> status: auditada
 
 ## Contexto
 

@@ -14,12 +14,12 @@
 
 ## T-028 — Sincronização Delta (Pull Sync) do Servidor para o Dispositivo [concluida]
 - Refs: US-022, AC-043
-- Arquivos: backend/src/routes/sync.ts, backend/src/repositories/sync-repository.ts
+- Arquivos: backend/src/routes/sync.ts, backend/src/db/schema.sql
 - Notas: Implementar endpoint `GET /api/sync/pull?since=<iso_timestamp>` retornando deltas de alterações ocorridas no servidor para `appointments`, `patients`, `procedures`, `financial_transactions` e `schedule_blocks`.
 
 ## T-029 — Gerenciamento de Sessão e Status do WhatsApp com QR Code [concluida]
 - Refs: US-023, AC-044
-- Arquivos: backend/src/routes/whatsapp.ts, backend/src/whatsapp/session.ts, backend/src/app.ts
+- Arquivos: backend/src/routes/whatsapp.ts, backend/src/whatsapp/evolution-client.ts, backend/src/app.ts
 - Notas: Endpoint `GET /api/whatsapp/session` e `POST /api/whatsapp/connect` para verificar conexão e retornar QR Code (base64) em instâncias desconectadas.
 
 ## T-030 — Gestão de Expediente e Bloqueios de Agenda [concluida]
@@ -32,7 +32,7 @@
 - Arquivos: backend/src/routes/financial.ts, backend/src/repositories/financial-repository.ts
 - Notas: Implementar `GET /api/financial/transactions` com suporte a filtros de data (`startDate`, `endDate`), status (`PAID`, `PENDING`) e tipo (`INCOME`, `EXPENSE`), respeitando soft delete.
 
-## T-032 — Suíte Integrada de Testes Automatizados TDD da API Complementar [pendente]
+## T-032 — Suíte Integrada de Testes Automatizados TDD da API Complementar [concluida]
 - Refs: US-021, US-022, US-023, US-024, US-025, US-026, AC-041, AC-042, AC-043, AC-044, AC-045, AC-046, AC-047, AC-048
 - Arquivos: backend/src/api-complementar/__tests__/api-complementar.spec.ts
 - Notas: Testes de integração de ponta a ponta com pg-mem cobrindo todos os critérios de aceite AC-041 a AC-048 com prova mecânica.
