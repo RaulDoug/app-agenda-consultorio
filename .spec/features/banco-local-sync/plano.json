@@ -1,0 +1,86 @@
+{
+  "runId": "App-Agenda-Consultório-banco-local-sync-mvdz7el0",
+  "feature": "banco-local-sync",
+  "agent": "antigravity",
+  "modo": "sequencial",
+  "paralelizar": null,
+  "modeloForcado": null,
+  "esforcoForcado": null,
+  "geradoEm": "2026-10-18 15:24",
+  "branchTrabalho": "spec/banco-local-sync",
+  "baseDir": ".spec/features/banco-local-sync",
+  "specDir": ".spec",
+  "repoName": "App-Agenda-Consultório",
+  "logsDir": "../onp-worktrees/App-Agenda-Consultório-banco-local-sync-logs",
+  "ondas": [],
+  "faixas": [],
+  "sequenciais": [
+    {
+      "id": "T-036",
+      "titulo": "Definição do Schema Dexie.js e Inicialização do Banco Local",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "frontend/src/db/local-db.ts",
+        "frontend/src/db/types.ts"
+      ],
+      "refs": [
+        "US-030",
+        "AC-053"
+      ]
+    },
+    {
+      "id": "T-037",
+      "titulo": "Escrita Otimista com Enfileiramento na Outbox",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "frontend/src/db/outbox.ts",
+        "frontend/src/db/repositories/appointment-local-repository.ts",
+        "frontend/src/db/repositories/patient-local-repository.ts"
+      ],
+      "refs": [
+        "US-031",
+        "AC-054"
+      ]
+    },
+    {
+      "id": "T-038",
+      "titulo": "Sincronizador Bidirecional, Poda de Cache e Hook de Conexão",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "frontend/src/sync/sync-manager.ts",
+        "frontend/src/sync/pruning.ts",
+        "frontend/src/hooks/useConnectionStatus.ts"
+      ],
+      "refs": [
+        "US-032",
+        "US-033",
+        "AC-055",
+        "AC-056"
+      ]
+    },
+    {
+      "id": "T-039",
+      "titulo": "Suíte de Testes Automatizados TDD do Banco Local e Sincronização",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "frontend/src/db/__tests__/local-db.spec.ts"
+      ],
+      "refs": [
+        "US-030",
+        "US-031",
+        "US-032",
+        "US-033",
+        "AC-053",
+        "AC-054",
+        "AC-055",
+        "AC-056"
+      ]
+    }
+  ],
+  "concluidas": [],
+  "avisos": []
+}
