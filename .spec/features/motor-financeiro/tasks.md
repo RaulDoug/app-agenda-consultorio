@@ -12,7 +12,7 @@
 - Arquivos: backend/src/financial/installments.ts
 - Notas: Geração de parcelas com entrada imediata (`PAID`), cálculo de vencimentos subsequentes resiliente a meses com menos de 31 dias (ajuste para último dia válido do mês) e rejeição de entrada >= total.
 
-## T-020 — Repositório Financeiro e Transações Contábeis no PostgreSQL [pendente]
+## T-020 — Repositório Financeiro e Transações Contábeis no PostgreSQL [concluida]
 - Refs: US-015, US-016, US-017, AC-027, AC-029, AC-034
 - Arquivos: backend/src/repositories/financial-repository.ts
 - Notas: Operações atômicas de criação de transações financeiras (INCOME e EXPENSE), atualização de valores efetivos em `appointment_items` e Soft Delete de transações para auditoria contábil.
