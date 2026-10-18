@@ -17,7 +17,7 @@
 - Arquivos: frontend/src/features/agenda/components/AppointmentDetailsDrawer.tsx, frontend/src/features/agenda/components/RescheduleModal.tsx
 - Notas: Ação de 1 toque para marcar falta (NO_SHOW), alteração de status com sincronização no Dexie e modal de remarcação com calendário e escolha de novos horários livres.
 
-## T-043 — Carteira de Clientes com Indicadores de Retorno/Cancelamento e Procedimentos Padrão [pendente]
+## T-043 — Carteira de Clientes com Indicadores de Retorno/Cancelamento e Procedimentos Padrão [concluida]
 - Refs: US-037, AC-063, AC-064
 - Arquivos: frontend/src/features/patients/components/PatientList.tsx, frontend/src/features/patients/components/PatientCard.tsx, frontend/src/features/agenda/hooks/useAgendaProcedures.ts
 - Notas: Listagem com busca de clientes, badges ("Novo / Sem consultas anteriores", "Próxima consulta: DD/MM", "Consulta cancelada sem reagendamento") e procedimentos padrão genéricos com multisseleção e cálculo de duração/valor total.
