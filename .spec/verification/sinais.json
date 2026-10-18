@@ -257,10 +257,10 @@
       "codigo": "VERIFY_OBSOLETO",
       "feature": "dominio-agenda",
       "ref": "—",
-      "ocorrencias": 9,
+      "ocorrencias": 10,
       "primeiraVez": "2026-10-17T19:21:57.173Z",
-      "ultimaVez": "2026-10-18T13:43:01.743Z",
-      "gitRev": "c74cbf5"
+      "ultimaVez": "2026-10-18T13:51:15.784Z",
+      "gitRev": "f6d7794"
     },
     "ARQUIVO_INEXISTENTE::persistencia-api::T-008": {
       "codigo": "ARQUIVO_INEXISTENTE",
@@ -437,10 +437,10 @@
       "codigo": "VERIFY_OBSOLETO",
       "feature": "persistencia-api",
       "ref": "—",
-      "ocorrencias": 7,
+      "ocorrencias": 8,
       "primeiraVez": "2026-10-17T19:43:11.018Z",
-      "ultimaVez": "2026-10-18T13:43:01.743Z",
-      "gitRev": "c74cbf5"
+      "ultimaVez": "2026-10-18T13:51:15.785Z",
+      "gitRev": "f6d7794"
     },
     "ARQUIVO_INEXISTENTE::whatsapp-bullmq::T-013": {
       "codigo": "ARQUIVO_INEXISTENTE",
@@ -599,10 +599,10 @@
       "codigo": "VERIFY_OBSOLETO",
       "feature": "whatsapp-bullmq",
       "ref": "—",
-      "ocorrencias": 3,
+      "ocorrencias": 4,
       "primeiraVez": "2026-10-17T20:48:29.108Z",
-      "ultimaVez": "2026-10-18T13:43:01.744Z",
-      "gitRev": "c74cbf5"
+      "ultimaVez": "2026-10-18T13:51:15.785Z",
+      "gitRev": "f6d7794"
     },
     "ARQUIVO_INEXISTENTE::motor-financeiro::T-018": {
       "codigo": "ARQUIVO_INEXISTENTE",
@@ -797,10 +797,10 @@
       "codigo": "VERIFY_OBSOLETO",
       "feature": "motor-financeiro",
       "ref": "—",
-      "ocorrencias": 1,
+      "ocorrencias": 2,
       "primeiraVez": "2026-10-18T13:43:01.743Z",
-      "ultimaVez": "2026-10-18T13:43:01.743Z",
-      "gitRev": "c74cbf5"
+      "ultimaVez": "2026-10-18T13:51:15.785Z",
+      "gitRev": "f6d7794"
     },
     "ARQUIVO_INEXISTENTE::queries-analiticas::T-023": {
       "codigo": "ARQUIVO_INEXISTENTE",
@@ -873,6 +873,15 @@
       "primeiraVez": "2026-10-18T13:43:01.744Z",
       "ultimaVez": "2026-10-18T13:43:01.744Z",
       "gitRev": "c74cbf5"
+    },
+    "VERIFY_OBSOLETO::queries-analiticas::—": {
+      "codigo": "VERIFY_OBSOLETO",
+      "feature": "queries-analiticas",
+      "ref": "—",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-18T13:51:15.785Z",
+      "ultimaVez": "2026-10-18T13:51:15.785Z",
+      "gitRev": "f6d7794"
     }
   }
 }
