@@ -1,0 +1,37 @@
+{
+  "feature": "ajustes-e2e-playwright",
+  "timestamp": "2026-10-18T16:22:18.734Z",
+  "gitRev": "14ab29d",
+  "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
+  "reporter": "vitest-json",
+  "exitCode": 0,
+  "testsParsed": 79,
+  "results": {
+    "AC-074": {
+      "status": "pass",
+      "testName": "Sprint FE-5: Ajustes do Consultório, Integração do Shell e Suíte E2E Playwright AC-074: Configuração de horário de expediente e intervalo de almoço @spec:AC-074 AC-074: Configuração de horário de expediente e intervalo de almoço @spec:AC-074",
+      "method": "vitest-json"
+    },
+    "AC-075": {
+      "status": "pass",
+      "testName": "Sprint FE-5: Ajustes do Consultório, Integração do Shell e Suíte E2E Playwright AC-075: Criação e remoção de bloqueios pontuais de agenda @spec:AC-075 AC-075: Criação e remoção de bloqueios pontuais de agenda @spec:AC-075",
+      "method": "vitest-json"
+    },
+    "AC-076": {
+      "status": "pass",
+      "testName": "Sprint FE-5: Ajustes do Consultório, Integração do Shell e Suíte E2E Playwright AC-076: Alternância fluida entre as abas principais com dados reativos @spec:AC-076 AC-076: Alternância fluida entre as abas principais com dados reativos @spec:AC-076",
+      "method": "vitest-json"
+    },
+    "AC-077": {
+      "status": "pass",
+      "testName": "Sprint FE-5: Ajustes do Consultório, Integração do Shell e Suíte E2E Playwright AC-077: Jornada completa de atendimento mobile no Playwright @spec:AC-077 AC-077: Jornada completa de atendimento mobile no Playwright @spec:AC-077",
+      "method": "vitest-json"
+    },
+    "AC-078": {
+      "status": "pass",
+      "testName": "Sprint FE-5: Ajustes do Consultório, Integração do Shell e Suíte E2E Playwright AC-078: Resiliência offline em modo avião e sincronização ao reconectar @spec:AC-078 AC-078: Resiliência offline em modo avião e sincronização ao reconectar @spec:AC-078",
+      "method": "vitest-json"
+    }
+  },
+  "principles": {}
+}

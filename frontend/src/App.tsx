@@ -1,74 +1,388 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
+import { useLiveQuery } from 'dexie-react-hooks';
 import { AppShell } from './components/layout/AppShell.js';
 import { type NavTabId } from './components/layout/BottomNav.js';
-import { STATUS_TOKENS } from './theme/tokens.js';
-import { Calendar, Users, Wallet, Settings } from 'lucide-react';
+import { CliniAssistLocalDB, localDb } from './db/local-db.js';
+import { AppointmentLocalRepository } from './db/repositories/appointment-local-repository.js';
+import { PatientLocalRepository } from './db/repositories/patient-local-repository.js';
+import { ProcedureLocalRepository } from './db/repositories/procedure-local-repository.js';
+import { FinancialLocalRepository } from './db/repositories/financial-local-repository.js';
+import { SettingsLocalRepository } from './db/repositories/settings-local-repository.js';
+import { useConnectionStatus } from './hooks/useConnectionStatus.js';
 
-export const App: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<NavTabId>('agenda');
+// Features
+import { ScheduleGrid } from './features/agenda/components/ScheduleGrid.js';
+import { ViewModeSelector } from './features/agenda/components/ViewModeSelector.js';
+import { QuickAppointmentDrawer } from './features/agenda/components/QuickAppointmentDrawer.js';
+import { AppointmentDetailsDrawer } from './features/agenda/components/AppointmentDetailsDrawer.js';
+import { RescheduleModal } from './features/agenda/components/RescheduleModal.js';
+import { type ViewMode, type LocalAppointmentWithDetails } from './features/agenda/types.js';
+
+import { PatientList } from './features/patients/components/PatientList.js';
+
+import { CashFlowDashboard } from './features/analytics/components/CashFlowDashboard.js';
+import { InactivePatientsList } from './features/analytics/components/InactivePatientsList.js';
+import { QuickExpenseModal } from './features/checkout/components/QuickExpenseModal.js';
+import { CheckoutDrawer, type CheckoutResult } from './features/checkout/components/CheckoutDrawer.js';
+import { InstallmentsForm } from './features/checkout/components/InstallmentsForm.js';
+import { SmartReturnDrawer } from './features/checkout/components/SmartReturnDrawer.js';
+
+import { SettingsView } from './features/settings/components/SettingsView.js';
+import { Plus } from 'lucide-react';
+
+export interface AppProps {
+  initialTab?: NavTabId;
+  db?: CliniAssistLocalDB;
+  tenantId?: string;
+  initialWhatsappConnected?: boolean;
+}
+
+export const App: React.FC<AppProps> = ({
+  initialTab = 'agenda',
+  db = localDb,
+  tenantId = 'tenant-default',
+  initialWhatsappConnected = true,
+}) => {
+  const [activeTab, setActiveTab] = useState<NavTabId>(initialTab);
+  const [whatsappConnected, setWhatsappConnected] = useState<boolean>(initialWhatsappConnected);
+
+  // Repositórios com banco injetado
+  const appointmentRepo = useMemo(() => new AppointmentLocalRepository(db), [db]);
+  const patientRepo = useMemo(() => new PatientLocalRepository(db), [db]);
+  const procedureRepo = useMemo(() => new ProcedureLocalRepository(db), [db]);
+  const financialRepo = useMemo(() => new FinancialLocalRepository(db), [db]);
+  const settingsRepo = useMemo(() => new SettingsLocalRepository(db), [db]);
+
+  // Status de conexão
+  const { connectionStatus } = useConnectionStatus();
+
+  // Dados reativos do Dexie
+  const patients = useLiveQuery(() => db.patients.toArray(), [db]) || [];
+  const appointments = useLiveQuery(() => db.appointments.toArray(), [db]) || [];
+  const procedures = useLiveQuery(() => db.procedures.toArray(), [db]) || [];
+  const transactions = useLiveQuery(() => db.financial_transactions.toArray(), [db]) || [];
+
+  // Estado da Agenda
+  const [currentDate, setCurrentDate] = useState<Date>(() => new Date());
+  const [viewMode, setViewMode] = useState<ViewMode>('day');
+
+  // Modais e Drawers da Agenda
+  const [isQuickOpen, setIsQuickOpen] = useState(false);
+  const [quickSlotTime, setQuickSlotTime] = useState('08:00');
+  const [selectedAppointment, setSelectedAppointment] = useState<LocalAppointmentWithDetails | null>(null);
+  const [rescheduleAppointment, setRescheduleAppointment] = useState<LocalAppointmentWithDetails | null>(null);
+
+  // Modais de Caixa / Checkout / Retorno
+  const [checkoutAppointment, setCheckoutAppointment] = useState<LocalAppointmentWithDetails | null>(null);
+  const [isExpenseModalOpen, setIsExpenseModalOpen] = useState(false);
+  const [smartReturnData, setSmartReturnData] = useState<{
+    patientId: string;
+    patientName: string;
+    baseDate: Date;
+    preferredTimeStr: string;
+  } | null>(null);
+
+  // Agendamentos enriquecidos para exibição na grade
+  const detailedAppointments: LocalAppointmentWithDetails[] = useMemo(() => {
+    const patientMap = new Map(patients.map((p) => [p.id, p]));
+    return appointments.map((app) => {
+      const patient = patientMap.get(app.patient_id);
+      return {
+        id: app.id,
+        tenant_id: app.tenant_id,
+        patient_id: app.patient_id,
+        patient_name: patient?.name || 'Paciente sem nome',
+        patient_whatsapp: patient?.whatsapp,
+        start_time: app.start_time,
+        end_time: app.end_time,
+        status: app.status,
+        is_extra_fit: app.is_extra_fit,
+        notes: app.notes,
+        procedures: [],
+      };
+    });
+  }, [appointments, patients]);
+
+  // Manipuladores de Slot e Agendamento
+  const handleSlotClick = (date: Date, timeStr: string) => {
+    setCurrentDate(date);
+    setQuickSlotTime(timeStr);
+    setIsQuickOpen(true);
+  };
+
+  const handlePrevDate = () => {
+    setCurrentDate((prev) => new Date(prev.getTime() - 24 * 60 * 60 * 1000));
+  };
+
+  const handleNextDate = () => {
+    setCurrentDate((prev) => new Date(prev.getTime() + 24 * 60 * 60 * 1000));
+  };
+
+  const handleToday = () => {
+    setCurrentDate(new Date());
+  };
+
+  // Concluir Checkout e gerar transações
+  const handleCompleteCheckout = async (result: CheckoutResult) => {
+    if (result.paymentMethod === 'PARCELADO' && result.installmentsCount) {
+      const count = result.installmentsCount;
+      const entry = result.entryCents || 0;
+      const remaining = result.totalCents - entry;
+      const installmentValue = Math.floor(remaining / count);
+      const remainder = remaining % count;
+
+      const installmentsList = [];
+      if (entry > 0) {
+        installmentsList.push({
+          installmentNumber: 0,
+          totalInstallments: count,
+          dueDate: new Date().toISOString().split('T')[0],
+          amountCents: entry,
+          status: 'PAID' as const,
+          paymentDate: new Date().toISOString(),
+          description: 'Entrada Checkout',
+        });
+      }
+
+      for (let i = 1; i <= count; i++) {
+        const d = new Date();
+        d.setMonth(d.getMonth() + i);
+        installmentsList.push({
+          installmentNumber: i,
+          totalInstallments: count,
+          dueDate: d.toISOString().split('T')[0],
+          amountCents: i === 1 ? installmentValue + remainder : installmentValue,
+          status: 'PENDING' as const,
+          paymentDate: null,
+          description: `Parcela ${i}/${count}`,
+        });
+      }
+
+      await financialRepo.recordCheckout({
+        tenantId,
+        appointmentId: result.appointmentId,
+        totalCents: result.totalCents,
+        paymentMethod: 'PARCELADO',
+        installments: installmentsList,
+      });
+    } else {
+      await financialRepo.recordCheckout({
+        tenantId,
+        appointmentId: result.appointmentId,
+        totalCents: result.totalCents,
+        paymentMethod: result.paymentMethod,
+        installments: [
+          {
+            installmentNumber: 1,
+            totalInstallments: 1,
+            dueDate: new Date().toISOString().split('T')[0],
+            amountCents: result.totalCents,
+            status: 'PAID' as const,
+            paymentDate: new Date().toISOString(),
+            description: 'Atendimento Concluído',
+          },
+        ],
+      });
+    }
+
+    setCheckoutAppointment(null);
+  };
 
   return (
-    <AppShell activeTab={activeTab} onTabChange={setActiveTab}>
+    <AppShell
+      activeTab={activeTab}
+      onTabChange={setActiveTab}
+      connectionStatus={connectionStatus}
+      whatsappConnected={whatsappConnected}
+    >
+      {/* ABA 1: AGENDA */}
       {activeTab === 'agenda' && (
-        <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <h2 className="text-xl font-bold text-slate-800">Timeline da Agenda</h2>
-            <span className="text-xs font-semibold px-2.5 py-1 bg-teal-50 text-teal-700 rounded-full border border-teal-200">
-              Grade de 30m
-            </span>
+        <div data-testid="agenda-tab-content" className="space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <h2 className="text-xl font-bold text-slate-800">Agenda de Atendimentos</h2>
+              <p className="text-xs text-slate-500">Visualização diária, semanal e mensal com agendamento rápido.</p>
+            </div>
+            <button
+              type="button"
+              data-testid="btn-new-appointment-top"
+              onClick={() => {
+                setQuickSlotTime('08:00');
+                setIsQuickOpen(true);
+              }}
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-white bg-teal-700 hover:bg-teal-800 rounded-lg shadow-xs transition-colors self-start sm:self-auto"
+            >
+              <Plus className="w-4 h-4" />
+              + Novo Agendamento
+            </button>
           </div>
 
-          {/* Cards de Exemplo com Cores Semânticas dos Tokens */}
-          <div className="grid gap-3">
-            <div className={`p-4 rounded-xl border border-slate-200 bg-white border-l-4 ${STATUS_TOKENS.CONFIRMED.borderClass} shadow-xs`}>
-              <div className="flex items-center justify-between">
-                <div>
-                  <span className="text-xs font-bold text-teal-700">09:00 - 09:30</span>
-                  <h3 className="font-semibold text-slate-900">Maria Silva</h3>
-                  <p className="text-xs text-slate-500">Consulta Odontológica / Procedimento</p>
-                </div>
-                <span className={`text-xs px-2.5 py-1 rounded-full font-semibold ${STATUS_TOKENS.CONFIRMED.badgeBg} ${STATUS_TOKENS.CONFIRMED.badgeText}`}>
-                  {STATUS_TOKENS.CONFIRMED.label}
-                </span>
-              </div>
-            </div>
+          <ViewModeSelector
+            currentDate={currentDate}
+            viewMode={viewMode}
+            onViewModeChange={setViewMode}
+            onPrevDate={handlePrevDate}
+            onNextDate={handleNextDate}
+            onToday={handleToday}
+          />
 
-            <div className={`p-4 rounded-xl border border-slate-200 bg-white border-l-4 ${STATUS_TOKENS.PENDING.borderClass} shadow-xs`}>
-              <div className="flex items-center justify-between">
-                <div>
-                  <span className="text-xs font-bold text-amber-700">10:30 - 11:00</span>
-                  <h3 className="font-semibold text-slate-900">Carlos Eduardo</h3>
-                  <p className="text-xs text-slate-500">Avaliação Geral</p>
-                </div>
-                <span className={`text-xs px-2.5 py-1 rounded-full font-semibold ${STATUS_TOKENS.PENDING.badgeBg} ${STATUS_TOKENS.PENDING.badgeText}`}>
-                  {STATUS_TOKENS.PENDING.label}
-                </span>
-              </div>
-            </div>
-          </div>
+          <ScheduleGrid
+            currentDate={currentDate}
+            viewMode={viewMode}
+            appointments={detailedAppointments}
+            onSlotClick={handleSlotClick}
+            onAppointmentClick={(app) => setSelectedAppointment(app)}
+            onMarkNoShow={(appId) => appointmentRepo.updateStatus(appId, 'NO_SHOW')}
+            onReschedule={(app) => setRescheduleAppointment(app)}
+          />
         </div>
       )}
 
+      {/* ABA 2: CLIENTES */}
       {activeTab === 'clientes' && (
-        <div className="p-4 bg-white rounded-xl border border-slate-200 shadow-xs">
-          <h2 className="text-lg font-bold text-slate-800 mb-2">Clientes e Pacientes</h2>
-          <p className="text-sm text-slate-600">Base unificada de clientes com histórico de consultas e dados de contato.</p>
+        <div data-testid="clientes-tab-content" className="space-y-4">
+          <div>
+            <h2 className="text-xl font-bold text-slate-800">Clientes & Pacientes</h2>
+            <p className="text-xs text-slate-500">Base integrada com histórico de atendimentos e atalhos rápidos.</p>
+          </div>
+
+          <PatientList
+            tenantId={tenantId}
+            patients={patients}
+            appointments={appointments}
+            onSchedule={(pw) => {
+              setActiveTab('agenda');
+              setQuickSlotTime('09:00');
+              setIsQuickOpen(true);
+            }}
+          />
         </div>
       )}
 
+      {/* ABA 3: CAIXA & FINANCEIRO */}
       {activeTab === 'caixa' && (
-        <div className="p-4 bg-white rounded-xl border border-slate-200 shadow-xs">
-          <h2 className="text-lg font-bold text-slate-800 mb-2">Caixa e Relatórios</h2>
-          <p className="text-sm text-slate-600">Fluxo de recebimentos, DRE simplificado e controle de parcelas.</p>
+        <div data-testid="caixa-tab-content" className="space-y-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <h2 className="text-xl font-bold text-slate-800">Fluxo de Caixa & Finanças</h2>
+              <p className="text-xs text-slate-500">Controle diário, DRE simples cumulativo, baixas e despesas.</p>
+            </div>
+            <button
+              type="button"
+              data-testid="btn-open-expense-modal"
+              onClick={() => setIsExpenseModalOpen(true)}
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-rose-700 bg-rose-50 border border-rose-200 hover:bg-rose-100 rounded-lg shadow-xs transition-colors self-start sm:self-auto"
+            >
+              <Plus className="w-4 h-4" />
+              + Nova Despesa
+            </button>
+          </div>
+
+          <CashFlowDashboard
+            transactions={transactions}
+            financialRepo={financialRepo}
+          />
+
+          <InactivePatientsList
+            patients={patients}
+            appointments={appointments}
+          />
         </div>
       )}
 
+      {/* ABA 4: AJUSTES */}
       {activeTab === 'ajustes' && (
-        <div className="p-4 bg-white rounded-xl border border-slate-200 shadow-xs">
-          <h2 className="text-lg font-bold text-slate-800 mb-2">Ajustes do Consultório</h2>
-          <p className="text-sm text-slate-600">Expediente semanal, bloqueios de agenda e pareamento WhatsApp.</p>
+        <div data-testid="ajustes-tab-content">
+          <SettingsView
+            tenantId={tenantId}
+            repo={settingsRepo}
+            whatsappConnected={whatsappConnected}
+            onRefreshWhatsApp={async () => setWhatsappConnected(true)}
+            onDisconnectWhatsApp={async () => setWhatsappConnected(false)}
+          />
         </div>
       )}
+
+      {/* Gaveta de Criação Rápida */}
+      <QuickAppointmentDrawer
+        isOpen={isQuickOpen}
+        onClose={() => setIsQuickOpen(false)}
+        tenantId={tenantId}
+        initialDate={currentDate}
+        initialTimeStr={quickSlotTime}
+        existingAppointments={detailedAppointments}
+        appointmentRepo={appointmentRepo}
+        patientRepo={patientRepo}
+        procedureRepo={procedureRepo}
+        onAppointmentCreated={() => setIsQuickOpen(false)}
+      />
+
+      {/* Gaveta de Detalhes do Agendamento */}
+      <AppointmentDetailsDrawer
+        isOpen={Boolean(selectedAppointment)}
+        appointment={selectedAppointment}
+        onClose={() => setSelectedAppointment(null)}
+        appointmentRepo={appointmentRepo}
+        onStatusChanged={(updated) => {
+          setSelectedAppointment(null);
+        }}
+        onOpenReschedule={(app) => {
+          setSelectedAppointment(null);
+          setRescheduleAppointment(app);
+        }}
+      />
+
+      {/* Modal de Remarcação */}
+      <RescheduleModal
+        isOpen={Boolean(rescheduleAppointment)}
+        appointment={rescheduleAppointment}
+        onClose={() => setRescheduleAppointment(null)}
+        appointmentRepo={appointmentRepo}
+        onRescheduled={() => setRescheduleAppointment(null)}
+      />
+
+      {/* Gaveta de Checkout Financeiro */}
+      <CheckoutDrawer
+        isOpen={Boolean(checkoutAppointment)}
+        appointment={checkoutAppointment}
+        onClose={() => setCheckoutAppointment(null)}
+        onCompleteCheckout={handleCompleteCheckout}
+        onOpenReturnDrawer={() => {
+          if (checkoutAppointment) {
+            setSmartReturnData({
+              patientId: checkoutAppointment.patient_id,
+              patientName: checkoutAppointment.patient_name,
+              baseDate: new Date(checkoutAppointment.start_time),
+              preferredTimeStr: '09:00',
+            });
+          }
+        }}
+      />
+
+      {/* Gaveta de Retorno Inteligente */}
+      {smartReturnData && (
+        <SmartReturnDrawer
+          isOpen={Boolean(smartReturnData)}
+          onClose={() => setSmartReturnData(null)}
+          tenantId={tenantId}
+          patientId={smartReturnData.patientId}
+          patientName={smartReturnData.patientName}
+          baseDate={smartReturnData.baseDate}
+          preferredTimeStr={smartReturnData.preferredTimeStr}
+          existingAppointments={detailedAppointments}
+          appointmentRepo={appointmentRepo}
+          onReturnScheduled={() => setSmartReturnData(null)}
+        />
+      )}
+
+      {/* Modal de Despesa Rápida */}
+      <QuickExpenseModal
+        isOpen={isExpenseModalOpen}
+        tenantId={tenantId}
+        onClose={() => setIsExpenseModalOpen(false)}
+        financialRepo={financialRepo}
+        onExpenseSaved={() => setIsExpenseModalOpen(false)}
+      />
     </AppShell>
   );
 };

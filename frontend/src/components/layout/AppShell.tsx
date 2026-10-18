@@ -2,6 +2,7 @@ import React from 'react';
 import { DesktopSidebar } from './DesktopSidebar.js';
 import { BottomNav, type NavTabId } from './BottomNav.js';
 import { TopBar, type ConnectionState } from './TopBar.js';
+import { WhatsAppAlertBanner } from '../../features/analytics/components/WhatsAppAlertBanner.js';
 
 export interface AppShellProps {
   children?: React.ReactNode;
@@ -16,7 +17,7 @@ export const AppShell: React.FC<AppShellProps> = ({
   children,
   activeTab = 'agenda',
   onTabChange = () => {},
-  clinicName = 'Clínica Sorriso & Saúde',
+  clinicName = 'CliniAssist',
   connectionStatus = 'ONLINE',
   whatsappConnected = true,
 }) => {
@@ -36,6 +37,13 @@ export const AppShell: React.FC<AppShellProps> = ({
           clinicName={clinicName}
           connectionStatus={connectionStatus}
         />
+
+        {!whatsappConnected && (
+          <WhatsAppAlertBanner
+            isConnected={false}
+            onConnectClick={() => onTabChange('ajustes')}
+          />
+        )}
 
         <main className="flex-1 p-4 md:p-6 pb-24 md:pb-6 max-w-7xl w-full mx-auto overflow-y-auto">
           {children}

@@ -1,0 +1,94 @@
+{
+  "runId": "App-Agenda-Consultório-ajustes-e2e-playwright-mve0t58m",
+  "feature": "ajustes-e2e-playwright",
+  "agent": "antigravity",
+  "modo": "sequencial",
+  "paralelizar": null,
+  "modeloForcado": null,
+  "esforcoForcado": null,
+  "geradoEm": "2026-10-18 16:09",
+  "branchTrabalho": "spec/ajustes-e2e-playwright",
+  "baseDir": ".spec/features/ajustes-e2e-playwright",
+  "specDir": ".spec",
+  "repoName": "App-Agenda-Consultório",
+  "logsDir": "../onp-worktrees/App-Agenda-Consultório-ajustes-e2e-playwright-logs",
+  "ondas": [],
+  "faixas": [],
+  "sequenciais": [
+    {
+      "id": "T-054",
+      "titulo": "Repositório Local de Ajustes e Bloqueios com Outbox",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "frontend/src/db/repositories/settings-local-repository.ts"
+      ],
+      "refs": [
+        "US-045",
+        "AC-074",
+        "AC-075"
+      ]
+    },
+    {
+      "id": "T-055",
+      "titulo": "Componente de Ajustes do Consultório e Bloqueios de Agenda",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "frontend/src/features/settings/components/SettingsView.tsx",
+        "frontend/src/features/settings/components/ScheduleBlocksManager.tsx"
+      ],
+      "refs": [
+        "US-045",
+        "AC-074",
+        "AC-075"
+      ]
+    },
+    {
+      "id": "T-056",
+      "titulo": "Integração Completa do AppShell com Todas as Abas e Status",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/layout/AppShell.tsx"
+      ],
+      "refs": [
+        "US-046",
+        "AC-076"
+      ]
+    },
+    {
+      "id": "T-057",
+      "titulo": "Suíte de Testes Unitários e Componentes TDD de Ajustes e Integração",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "frontend/src/features/settings/__tests__/settings-ui.spec.tsx"
+      ],
+      "refs": [
+        "US-045",
+        "US-046",
+        "AC-074",
+        "AC-075",
+        "AC-076"
+      ]
+    },
+    {
+      "id": "T-058",
+      "titulo": "Suíte End-to-End Mobile e Resiliência Modo Avião (Playwright)",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "frontend/e2e/cliniassist-mobile.spec.ts"
+      ],
+      "refs": [
+        "US-047",
+        "AC-077",
+        "AC-078"
+      ]
+    }
+  ],
+  "concluidas": [],
+  "avisos": []
+}
