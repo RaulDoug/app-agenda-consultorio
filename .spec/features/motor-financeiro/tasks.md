@@ -17,7 +17,7 @@
 - Arquivos: backend/src/repositories/financial-repository.ts
 - Notas: Operações atômicas de criação de transações financeiras (INCOME e EXPENSE), atualização de valores efetivos em `appointment_items` e Soft Delete de transações para auditoria contábil.
 
-## T-021 — Rotas REST de Conclusão Financeira, Quitação em Lote e Despesas Rápidas [pendente]
+## T-021 — Rotas REST de Conclusão Financeira, Quitação em Lote e Despesas Rápidas [concluida]
 - Refs: US-015, US-016, US-017, AC-027, AC-029, AC-031, AC-032, AC-033
 - Arquivos: backend/src/routes/financial.ts, backend/src/app.ts
 - Notas: Endpoints POST `/api/financial/checkout` (conclusão de consulta), POST `/api/financial/settle-batch` (baixa em lote de parcelas) e POST `/api/financial/expenses` (despesas rápidas).

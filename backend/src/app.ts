@@ -5,6 +5,7 @@ import { proceduresRouter } from './routes/procedures.js';
 import { appointmentsRouter } from './routes/appointments.js';
 import { syncRouter } from './routes/sync.js';
 import { webhooksRouter } from './routes/webhooks.js';
+import { financialRouter } from './routes/financial.js';
 
 export function createApp(): Express {
   const app = express();
@@ -19,6 +20,7 @@ export function createApp(): Express {
   app.use('/api/appointments', appointmentsRouter);
   app.use('/api/sync', syncRouter);
   app.use('/api/webhooks', webhooksRouter);
+  app.use('/api/financial', financialRouter);
 
   return app;
 }

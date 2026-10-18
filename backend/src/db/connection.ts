@@ -69,12 +69,14 @@ export function createInMemoryDatabase(): IDatabase {
   memDb.public.registerFunction({
     name: 'uuid_generate_v4',
     returns: DataType.uuid,
+    impure: true,
     implementation: () => crypto.randomUUID(),
   });
 
   memDb.public.registerFunction({
     name: 'current_timestamp',
     returns: DataType.timestamptz,
+    impure: true,
     implementation: () => new Date(),
   });
 
