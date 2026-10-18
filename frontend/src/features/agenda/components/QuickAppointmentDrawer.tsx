@@ -2,10 +2,10 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { LocalPatient, LocalProcedure } from '../../../db/types';
 import { InlinePatientForm } from './InlinePatientForm';
 import { InlineProcedureForm } from './InlineProcedureForm';
-import { appointmentLocalRepo } from '../../../db/repositories/appointment-local-repository';
-import { patientLocalRepo } from '../../../db/repositories/patient-local-repository';
-import { procedureLocalRepo } from '../../../db/repositories/procedure-local-repository';
 import { LocalAppointmentWithDetails, BusinessHoursConfig, DEFAULT_BUSINESS_HOURS } from '../types';
+import { AppointmentLocalRepository, appointmentLocalRepo } from '../../../db/repositories/appointment-local-repository';
+import { PatientLocalRepository, patientLocalRepo } from '../../../db/repositories/patient-local-repository';
+import { ProcedureLocalRepository, procedureLocalRepo } from '../../../db/repositories/procedure-local-repository';
 
 interface QuickAppointmentDrawerProps {
   isOpen: boolean;
@@ -15,6 +15,9 @@ interface QuickAppointmentDrawerProps {
   initialTimeStr: string;
   existingAppointments: LocalAppointmentWithDetails[];
   businessHours?: BusinessHoursConfig;
+  appointmentRepo?: AppointmentLocalRepository;
+  patientRepo?: PatientLocalRepository;
+  procedureRepo?: ProcedureLocalRepository;
   onAppointmentCreated: (result: any) => void;
 }
 
@@ -26,6 +29,9 @@ export const QuickAppointmentDrawer: React.FC<QuickAppointmentDrawerProps> = ({
   initialTimeStr,
   existingAppointments,
   businessHours = DEFAULT_BUSINESS_HOURS,
+  appointmentRepo = appointmentLocalRepo,
+  patientRepo = patientLocalRepo,
+  procedureRepo = procedureLocalRepo,
   onAppointmentCreated,
 }) => {
   const [selectedPatient, setSelectedPatient] = useState<LocalPatient | null>(null);
@@ -126,7 +132,7 @@ export const QuickAppointmentDrawer: React.FC<QuickAppointmentDrawerProps> = ({
               },
             ];
 
-      const created = await appointmentLocalRepo.createAppointment({
+      const created = await appointmentRepo.createAppointment({
         tenant_id: tenantId,
         patient_id: selectedPatient.id,
         start_time: startIso,
@@ -239,7 +245,7 @@ export const QuickAppointmentDrawer: React.FC<QuickAppointmentDrawerProps> = ({
           {/* Paciente com Cadastro Inline */}
           <InlinePatientForm
             tenantId={tenantId}
-            patientRepo={patientLocalRepo}
+            patientRepo={patientRepo}
             selectedPatient={selectedPatient}
             onSelectPatient={setSelectedPatient}
           />
@@ -247,7 +253,7 @@ export const QuickAppointmentDrawer: React.FC<QuickAppointmentDrawerProps> = ({
           {/* Procedimentos com Multisseleção e Cadastro Inline */}
           <InlineProcedureForm
             tenantId={tenantId}
-            procedureRepo={procedureLocalRepo}
+            procedureRepo={procedureRepo}
             selectedProcedureIds={selectedProcedures.map((p) => p.id)}
             onChangeSelection={setSelectedProcedures}
           />

@@ -1,0 +1,52 @@
+{
+  "feature": "agenda-pacientes",
+  "timestamp": "2026-10-18T15:44:17.619Z",
+  "gitRev": "bcf0332",
+  "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
+  "reporter": "vitest-json",
+  "exitCode": 0,
+  "testsParsed": 65,
+  "results": {
+    "AC-057": {
+      "status": "pass",
+      "testName": "Sprint FE-2: Agenda de Atendimentos e Gestão de Clientes AC-057: Renderização da Grade Diária com Slots de 30min e Alternância Dia/Semana/Mês @spec:AC-057 AC-057: Renderização da Grade Diária com Slots de 30min e Alternância Dia/Semana/Mês @spec:AC-057",
+      "method": "vitest-json"
+    },
+    "AC-058": {
+      "status": "pass",
+      "testName": "Sprint FE-2: Agenda de Atendimentos e Gestão de Clientes AC-058: Identidade Visual e Badges Semânticos dos Cards de Consulta @spec:AC-058 AC-058: Identidade Visual e Badges Semânticos dos Cards de Consulta @spec:AC-058",
+      "method": "vitest-json"
+    },
+    "AC-059": {
+      "status": "pass",
+      "testName": "Sprint FE-2: Agenda de Atendimentos e Gestão de Clientes AC-059: Gaveta de Criação Rápida ao Tocar em Slot Vago com Cadastro On-the-Fly @spec:AC-059 AC-059: Gaveta de Criação Rápida ao Tocar em Slot Vago com Cadastro On-the-Fly @spec:AC-059",
+      "method": "vitest-json"
+    },
+    "AC-060": {
+      "status": "pass",
+      "testName": "Sprint FE-2: Agenda de Atendimentos e Gestão de Clientes AC-060: Aviso de Sobreposição (Encaixe) e Proteção Contra Duplo Clique @spec:AC-060 AC-060: Aviso de Sobreposição (Encaixe) e Proteção Contra Duplo Clique @spec:AC-060",
+      "method": "vitest-json"
+    },
+    "AC-061": {
+      "status": "pass",
+      "testName": "Sprint FE-2: Agenda de Atendimentos e Gestão de Clientes AC-061: Ação de 1 Toque para Marcar Falta (NO_SHOW) e Atualização de Status @spec:AC-061 AC-061: Ação de 1 Toque para Marcar Falta (NO_SHOW) e Atualização de Status @spec:AC-061",
+      "method": "vitest-json"
+    },
+    "AC-062": {
+      "status": "pass",
+      "testName": "Sprint FE-2: Agenda de Atendimentos e Gestão de Clientes AC-062: Modal de Remarcação de Consulta com Calendário e Novos Horários @spec:AC-062 AC-062: Modal de Remarcação de Consulta com Calendário e Novos Horários @spec:AC-062",
+      "method": "vitest-json"
+    },
+    "AC-063": {
+      "status": "pass",
+      "testName": "Sprint FE-2: Agenda de Atendimentos e Gestão de Clientes AC-063: Lista de Clientes com Indicadores de Histórico e Consultas Futuras @spec:AC-063 AC-063: Lista de Clientes com Indicadores de Histórico e Consultas Futuras @spec:AC-063",
+      "method": "vitest-json"
+    },
+    "AC-064": {
+      "status": "pass",
+      "testName": "Sprint FE-2: Agenda de Atendimentos e Gestão de Clientes AC-064: Procedimentos Padrão Genéricos e Múltiplos Procedimentos por Atendimento @spec:AC-064 AC-064: Procedimentos Padrão Genéricos e Múltiplos Procedimentos por Atendimento @spec:AC-064",
+      "method": "vitest-json"
+    }
+  },
+  "principles": {}
+}

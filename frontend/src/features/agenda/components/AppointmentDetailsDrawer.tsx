@@ -1,12 +1,13 @@
 import React from 'react';
 import { LocalAppointmentWithDetails } from '../types';
 import { STATUS_TOKENS } from '../../../theme/tokens';
-import { appointmentLocalRepo } from '../../../db/repositories/appointment-local-repository';
+import { AppointmentLocalRepository, appointmentLocalRepo } from '../../../db/repositories/appointment-local-repository';
 
 interface AppointmentDetailsDrawerProps {
   isOpen: boolean;
   appointment: LocalAppointmentWithDetails | null;
   onClose: () => void;
+  appointmentRepo?: AppointmentLocalRepository;
   onStatusChanged: (updated: LocalAppointmentWithDetails) => void;
   onOpenReschedule: (appointment: LocalAppointmentWithDetails) => void;
 }
@@ -15,6 +16,7 @@ export const AppointmentDetailsDrawer: React.FC<AppointmentDetailsDrawerProps> =
   isOpen,
   appointment,
   onClose,
+  appointmentRepo = appointmentLocalRepo,
   onStatusChanged,
   onOpenReschedule,
 }) => {
@@ -38,7 +40,7 @@ export const AppointmentDetailsDrawer: React.FC<AppointmentDetailsDrawerProps> =
 
   const handleUpdateStatus = async (newStatus: any) => {
     try {
-      const updated = await appointmentLocalRepo.updateStatus(appointment.id, newStatus);
+      const updated = await appointmentRepo.updateStatus(appointment.id, newStatus);
       onStatusChanged({
         ...appointment,
         status: updated.status,

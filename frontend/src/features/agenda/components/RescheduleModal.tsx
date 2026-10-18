@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { LocalAppointmentWithDetails } from '../types';
-import { appointmentLocalRepo } from '../../../db/repositories/appointment-local-repository';
+import { AppointmentLocalRepository, appointmentLocalRepo } from '../../../db/repositories/appointment-local-repository';
 
 interface RescheduleModalProps {
   isOpen: boolean;
   appointment: LocalAppointmentWithDetails | null;
   onClose: () => void;
+  appointmentRepo?: AppointmentLocalRepository;
   onRescheduled: (updatedAppointment: any) => void;
 }
 
@@ -13,6 +14,7 @@ export const RescheduleModal: React.FC<RescheduleModalProps> = ({
   isOpen,
   appointment,
   onClose,
+  appointmentRepo = appointmentLocalRepo,
   onRescheduled,
 }) => {
   const [selectedDate, setSelectedDate] = useState<Date>(() => new Date());
@@ -51,7 +53,7 @@ export const RescheduleModal: React.FC<RescheduleModalProps> = ({
 
       const newEnd = new Date(newStart.getTime() + durationMs);
 
-      const updated = await appointmentLocalRepo.rescheduleAppointment(
+      const updated = await appointmentRepo.rescheduleAppointment(
         appointment.id,
         newStart.toISOString(),
         newEnd.toISOString(),

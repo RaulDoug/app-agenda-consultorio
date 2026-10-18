@@ -257,10 +257,10 @@
       "codigo": "VERIFY_OBSOLETO",
       "feature": "dominio-agenda",
       "ref": "—",
-      "ocorrencias": 16,
+      "ocorrencias": 17,
       "primeiraVez": "2026-10-17T19:21:57.173Z",
-      "ultimaVez": "2026-10-18T15:30:59.499Z",
-      "gitRev": "ddb67bb"
+      "ultimaVez": "2026-10-18T15:43:08.878Z",
+      "gitRev": "bcf0332"
     },
     "ARQUIVO_INEXISTENTE::persistencia-api::T-008": {
       "codigo": "ARQUIVO_INEXISTENTE",
@@ -437,10 +437,10 @@
       "codigo": "VERIFY_OBSOLETO",
       "feature": "persistencia-api",
       "ref": "—",
-      "ocorrencias": 14,
+      "ocorrencias": 15,
       "primeiraVez": "2026-10-17T19:43:11.018Z",
-      "ultimaVez": "2026-10-18T15:30:59.499Z",
-      "gitRev": "ddb67bb"
+      "ultimaVez": "2026-10-18T15:43:08.878Z",
+      "gitRev": "bcf0332"
     },
     "ARQUIVO_INEXISTENTE::whatsapp-bullmq::T-013": {
       "codigo": "ARQUIVO_INEXISTENTE",
@@ -599,10 +599,10 @@
       "codigo": "VERIFY_OBSOLETO",
       "feature": "whatsapp-bullmq",
       "ref": "—",
-      "ocorrencias": 10,
+      "ocorrencias": 11,
       "primeiraVez": "2026-10-17T20:48:29.108Z",
-      "ultimaVez": "2026-10-18T15:30:59.499Z",
-      "gitRev": "ddb67bb"
+      "ultimaVez": "2026-10-18T15:43:08.878Z",
+      "gitRev": "bcf0332"
     },
     "ARQUIVO_INEXISTENTE::motor-financeiro::T-018": {
       "codigo": "ARQUIVO_INEXISTENTE",
@@ -797,10 +797,10 @@
       "codigo": "VERIFY_OBSOLETO",
       "feature": "motor-financeiro",
       "ref": "—",
-      "ocorrencias": 8,
+      "ocorrencias": 9,
       "primeiraVez": "2026-10-18T13:43:01.743Z",
-      "ultimaVez": "2026-10-18T15:30:59.499Z",
-      "gitRev": "ddb67bb"
+      "ultimaVez": "2026-10-18T15:43:08.878Z",
+      "gitRev": "bcf0332"
     },
     "ARQUIVO_INEXISTENTE::queries-analiticas::T-023": {
       "codigo": "ARQUIVO_INEXISTENTE",
@@ -878,10 +878,10 @@
       "codigo": "VERIFY_OBSOLETO",
       "feature": "queries-analiticas",
       "ref": "—",
-      "ocorrencias": 7,
+      "ocorrencias": 8,
       "primeiraVez": "2026-10-18T13:51:15.785Z",
-      "ultimaVez": "2026-10-18T15:30:59.499Z",
-      "gitRev": "ddb67bb"
+      "ultimaVez": "2026-10-18T15:43:08.878Z",
+      "gitRev": "bcf0332"
     },
     "ARQUIVO_INEXISTENTE::api-complementar::T-028": {
       "codigo": "ARQUIVO_INEXISTENTE",
@@ -914,10 +914,10 @@
       "codigo": "VERIFY_OBSOLETO",
       "feature": "api-complementar",
       "ref": "—",
-      "ocorrencias": 3,
+      "ocorrencias": 4,
       "primeiraVez": "2026-10-18T15:05:16.610Z",
-      "ultimaVez": "2026-10-18T15:30:59.498Z",
-      "gitRev": "ddb67bb"
+      "ultimaVez": "2026-10-18T15:43:08.878Z",
+      "gitRev": "bcf0332"
     },
     "ARQUIVO_ORFAO::—::frontend/src/App.tsx": {
       "codigo": "ARQUIVO_ORFAO",
@@ -950,19 +950,55 @@
       "codigo": "VERIFY_OBSOLETO",
       "feature": "fundacao-frontend",
       "ref": "—",
-      "ocorrencias": 2,
+      "ocorrencias": 3,
       "primeiraVez": "2026-10-18T15:22:18.302Z",
-      "ultimaVez": "2026-10-18T15:30:59.499Z",
-      "gitRev": "ddb67bb"
+      "ultimaVez": "2026-10-18T15:43:08.878Z",
+      "gitRev": "bcf0332"
     },
     "VERIFY_OBSOLETO::banco-local-sync::—": {
       "codigo": "VERIFY_OBSOLETO",
       "feature": "banco-local-sync",
       "ref": "—",
-      "ocorrencias": 1,
+      "ocorrencias": 2,
       "primeiraVez": "2026-10-18T15:30:59.499Z",
-      "ultimaVez": "2026-10-18T15:30:59.499Z",
-      "gitRev": "ddb67bb"
+      "ultimaVez": "2026-10-18T15:43:08.878Z",
+      "gitRev": "bcf0332"
+    },
+    "ARQUIVO_INEXISTENTE::agenda-pacientes::T-044": {
+      "codigo": "ARQUIVO_INEXISTENTE",
+      "feature": "agenda-pacientes",
+      "ref": "T-044",
+      "ocorrencias": 2,
+      "primeiraVez": "2026-10-18T15:43:08.877Z",
+      "ultimaVez": "2026-10-18T15:43:08.878Z",
+      "gitRev": "bcf0332"
+    },
+    "ARQUIVO_ORFAO::—::frontend/src/db/repositories/procedure-local-repository.ts": {
+      "codigo": "ARQUIVO_ORFAO",
+      "feature": "—",
+      "ref": "frontend/src/db/repositories/procedure-local-repository.ts",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-18T15:43:08.878Z",
+      "ultimaVez": "2026-10-18T15:43:08.878Z",
+      "gitRev": "bcf0332"
+    },
+    "ARQUIVO_ORFAO::—::frontend/src/features/agenda/types.ts": {
+      "codigo": "ARQUIVO_ORFAO",
+      "feature": "—",
+      "ref": "frontend/src/features/agenda/types.ts",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-18T15:43:08.878Z",
+      "ultimaVez": "2026-10-18T15:43:08.878Z",
+      "gitRev": "bcf0332"
+    },
+    "ARQUIVO_ORFAO::—::frontend/src/features/patients/types.ts": {
+      "codigo": "ARQUIVO_ORFAO",
+      "feature": "—",
+      "ref": "frontend/src/features/patients/types.ts",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-18T15:43:08.878Z",
+      "ultimaVez": "2026-10-18T15:43:08.878Z",
+      "gitRev": "bcf0332"
     }
   }
 }

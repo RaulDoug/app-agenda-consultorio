@@ -1,11 +1,11 @@
 {
   "feature": "queries-analiticas",
-  "timestamp": "2026-10-18T15:31:30.332Z",
-  "gitRev": "ddb67bb",
+  "timestamp": "2026-10-18T15:43:57.284Z",
+  "gitRev": "bcf0332",
   "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
   "exitCode": 0,
-  "testsParsed": 57,
+  "testsParsed": 65,
   "results": {
     "AC-035": {
       "status": "pass",
