@@ -12,7 +12,7 @@
 - Arquivos: frontend/src/features/checkout/components/InstallmentsForm.tsx, frontend/src/db/repositories/financial-local-repository.ts
 - Notas: Definição de entrada, validação visual de entrada > total, quantidade de parcelas sem limite rígido, datas sucessivas mensais e gravação no Dexie com outbox.
 
-## T-047 — Gaveta de Retorno Inteligente (15d, 30d, 6m) e Sugestão de Horários Livres [pendente]
+## T-047 — Gaveta de Retorno Inteligente (15d, 30d, 6m) e Sugestão de Horários Livres [concluida]
 - Refs: US-040, AC-068
 - Arquivos: frontend/src/features/checkout/components/SmartReturnDrawer.tsx, frontend/src/features/checkout/utils/smart-return.ts
 - Notas: Sugestão de retornos rápidos com 1 toque, verificação de disponibilidade, domingo/ocupado e sugestão das 3 alternativas mais próximas.
