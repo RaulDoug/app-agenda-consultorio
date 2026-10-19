@@ -1,7 +1,7 @@
 {
   "feature": "exclusao-cadastro-paciente",
-  "timestamp": "2026-10-19T20:48:29.934Z",
-  "gitRev": "af66003",
+  "timestamp": "2026-10-19T20:51:32.247Z",
+  "gitRev": "8f0eb3b409d5a18f9d1e5d9a6c1f95c12c6487ec",
   "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
   "exitCode": 0,
