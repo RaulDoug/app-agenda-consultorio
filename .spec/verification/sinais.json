@@ -257,10 +257,10 @@
       "codigo": "VERIFY_OBSOLETO",
       "feature": "dominio-agenda",
       "ref": "—",
-      "ocorrencias": 37,
+      "ocorrencias": 39,
       "primeiraVez": "2026-10-17T19:21:57.173Z",
-      "ultimaVez": "2026-10-19T19:19:13.278Z",
-      "gitRev": "fd9fbc3"
+      "ultimaVez": "2026-10-19T19:49:42.351Z",
+      "gitRev": "5a8ea6a"
     },
     "ARQUIVO_INEXISTENTE::persistencia-api::T-008": {
       "codigo": "ARQUIVO_INEXISTENTE",
@@ -437,10 +437,10 @@
       "codigo": "VERIFY_OBSOLETO",
       "feature": "persistencia-api",
       "ref": "—",
-      "ocorrencias": 35,
+      "ocorrencias": 37,
       "primeiraVez": "2026-10-17T19:43:11.018Z",
-      "ultimaVez": "2026-10-19T19:19:13.278Z",
-      "gitRev": "fd9fbc3"
+      "ultimaVez": "2026-10-19T19:49:42.351Z",
+      "gitRev": "5a8ea6a"
     },
     "ARQUIVO_INEXISTENTE::whatsapp-bullmq::T-013": {
       "codigo": "ARQUIVO_INEXISTENTE",
@@ -599,10 +599,10 @@
       "codigo": "VERIFY_OBSOLETO",
       "feature": "whatsapp-bullmq",
       "ref": "—",
-      "ocorrencias": 31,
+      "ocorrencias": 33,
       "primeiraVez": "2026-10-17T20:48:29.108Z",
-      "ultimaVez": "2026-10-19T19:19:13.278Z",
-      "gitRev": "fd9fbc3"
+      "ultimaVez": "2026-10-19T19:49:42.351Z",
+      "gitRev": "5a8ea6a"
     },
     "ARQUIVO_INEXISTENTE::motor-financeiro::T-018": {
       "codigo": "ARQUIVO_INEXISTENTE",
@@ -797,10 +797,10 @@
       "codigo": "VERIFY_OBSOLETO",
       "feature": "motor-financeiro",
       "ref": "—",
-      "ocorrencias": 29,
+      "ocorrencias": 31,
       "primeiraVez": "2026-10-18T13:43:01.743Z",
-      "ultimaVez": "2026-10-19T19:19:13.278Z",
-      "gitRev": "fd9fbc3"
+      "ultimaVez": "2026-10-19T19:49:42.351Z",
+      "gitRev": "5a8ea6a"
     },
     "ARQUIVO_INEXISTENTE::queries-analiticas::T-023": {
       "codigo": "ARQUIVO_INEXISTENTE",
@@ -878,10 +878,10 @@
       "codigo": "VERIFY_OBSOLETO",
       "feature": "queries-analiticas",
       "ref": "—",
-      "ocorrencias": 28,
+      "ocorrencias": 30,
       "primeiraVez": "2026-10-18T13:51:15.785Z",
-      "ultimaVez": "2026-10-19T19:19:13.278Z",
-      "gitRev": "fd9fbc3"
+      "ultimaVez": "2026-10-19T19:49:42.351Z",
+      "gitRev": "5a8ea6a"
     },
     "ARQUIVO_INEXISTENTE::api-complementar::T-028": {
       "codigo": "ARQUIVO_INEXISTENTE",
@@ -914,10 +914,10 @@
       "codigo": "VERIFY_OBSOLETO",
       "feature": "api-complementar",
       "ref": "—",
-      "ocorrencias": 24,
+      "ocorrencias": 26,
       "primeiraVez": "2026-10-18T15:05:16.610Z",
-      "ultimaVez": "2026-10-19T19:19:13.278Z",
-      "gitRev": "fd9fbc3"
+      "ultimaVez": "2026-10-19T19:49:42.351Z",
+      "gitRev": "5a8ea6a"
     },
     "ARQUIVO_ORFAO::—::frontend/src/App.tsx": {
       "codigo": "ARQUIVO_ORFAO",
@@ -950,19 +950,19 @@
       "codigo": "VERIFY_OBSOLETO",
       "feature": "fundacao-frontend",
       "ref": "—",
-      "ocorrencias": 23,
+      "ocorrencias": 25,
       "primeiraVez": "2026-10-18T15:22:18.302Z",
-      "ultimaVez": "2026-10-19T19:19:13.278Z",
-      "gitRev": "fd9fbc3"
+      "ultimaVez": "2026-10-19T19:49:42.351Z",
+      "gitRev": "5a8ea6a"
     },
     "VERIFY_OBSOLETO::banco-local-sync::—": {
       "codigo": "VERIFY_OBSOLETO",
       "feature": "banco-local-sync",
       "ref": "—",
-      "ocorrencias": 22,
+      "ocorrencias": 24,
       "primeiraVez": "2026-10-18T15:30:59.499Z",
-      "ultimaVez": "2026-10-19T19:19:13.278Z",
-      "gitRev": "fd9fbc3"
+      "ultimaVez": "2026-10-19T19:49:42.351Z",
+      "gitRev": "5a8ea6a"
     },
     "ARQUIVO_INEXISTENTE::agenda-pacientes::T-044": {
       "codigo": "ARQUIVO_INEXISTENTE",
@@ -1004,10 +1004,10 @@
       "codigo": "VERIFY_OBSOLETO",
       "feature": "agenda-pacientes",
       "ref": "—",
-      "ocorrencias": 20,
+      "ocorrencias": 22,
       "primeiraVez": "2026-10-18T15:44:50.299Z",
-      "ultimaVez": "2026-10-19T19:19:13.277Z",
-      "gitRev": "fd9fbc3"
+      "ultimaVez": "2026-10-19T19:49:42.350Z",
+      "gitRev": "5a8ea6a"
     },
     "AC_INCOMPLETO::analytics-gestao::AC-072": {
       "codigo": "AC_INCOMPLETO",
@@ -1022,19 +1022,19 @@
       "codigo": "VERIFY_OBSOLETO",
       "feature": "checkout-financeiro",
       "ref": "—",
-      "ocorrencias": 18,
+      "ocorrencias": 20,
       "primeiraVez": "2026-10-18T16:02:48.379Z",
-      "ultimaVez": "2026-10-19T19:19:13.278Z",
-      "gitRev": "fd9fbc3"
+      "ultimaVez": "2026-10-19T19:49:42.351Z",
+      "gitRev": "5a8ea6a"
     },
     "VERIFY_OBSOLETO::analytics-gestao::—": {
       "codigo": "VERIFY_OBSOLETO",
       "feature": "analytics-gestao",
       "ref": "—",
-      "ocorrencias": 17,
+      "ocorrencias": 19,
       "primeiraVez": "2026-10-18T16:18:19.849Z",
-      "ultimaVez": "2026-10-19T19:19:13.278Z",
-      "gitRev": "fd9fbc3"
+      "ultimaVez": "2026-10-19T19:49:42.351Z",
+      "gitRev": "5a8ea6a"
     },
     "VERIFY_FALHOU::ajustes-e2e-playwright::AC-074": {
       "codigo": "VERIFY_FALHOU",
@@ -1049,10 +1049,10 @@
       "codigo": "VERIFY_OBSOLETO",
       "feature": "ajustes-e2e-playwright",
       "ref": "—",
-      "ocorrencias": 16,
+      "ocorrencias": 18,
       "primeiraVez": "2026-10-18T16:22:55.038Z",
-      "ultimaVez": "2026-10-19T19:19:13.278Z",
-      "gitRev": "fd9fbc3"
+      "ultimaVez": "2026-10-19T19:49:42.351Z",
+      "gitRev": "5a8ea6a"
     },
     "ARQUIVO_ORFAO::—::backend/src/server.ts": {
       "codigo": "ARQUIVO_ORFAO",
@@ -1085,19 +1085,19 @@
       "codigo": "VERIFY_OBSOLETO",
       "feature": "pareamento-whatsapp-live",
       "ref": "—",
-      "ocorrencias": 11,
+      "ocorrencias": 13,
       "primeiraVez": "2026-10-19T13:36:09.881Z",
-      "ultimaVez": "2026-10-19T19:19:13.278Z",
-      "gitRev": "fd9fbc3"
+      "ultimaVez": "2026-10-19T19:49:42.351Z",
+      "gitRev": "5a8ea6a"
     },
     "VERIFY_OBSOLETO::correcao-qrcode-evolution::—": {
       "codigo": "VERIFY_OBSOLETO",
       "feature": "correcao-qrcode-evolution",
       "ref": "—",
-      "ocorrencias": 10,
+      "ocorrencias": 12,
       "primeiraVez": "2026-10-19T13:46:52.568Z",
-      "ultimaVez": "2026-10-19T19:19:13.278Z",
-      "gitRev": "fd9fbc3"
+      "ultimaVez": "2026-10-19T19:49:42.351Z",
+      "gitRev": "5a8ea6a"
     },
     "ARQUIVO_ORFAO::—::backend/src/scripts/test-confirmation-flow.ts": {
       "codigo": "ARQUIVO_ORFAO",
@@ -1202,46 +1202,55 @@
       "codigo": "VERIFY_OBSOLETO",
       "feature": "replica-confirmacao-whatsapp",
       "ref": "—",
-      "ocorrencias": 7,
+      "ocorrencias": 9,
       "primeiraVez": "2026-10-19T17:33:25.806Z",
-      "ultimaVez": "2026-10-19T19:19:13.278Z",
-      "gitRev": "fd9fbc3"
+      "ultimaVez": "2026-10-19T19:49:42.351Z",
+      "gitRev": "5a8ea6a"
     },
     "VERIFY_OBSOLETO::correcoes-agenda-procedimentos::—": {
       "codigo": "VERIFY_OBSOLETO",
       "feature": "correcoes-agenda-procedimentos",
       "ref": "—",
-      "ocorrencias": 5,
+      "ocorrencias": 7,
       "primeiraVez": "2026-10-19T18:07:25.990Z",
-      "ultimaVez": "2026-10-19T19:19:13.278Z",
-      "gitRev": "fd9fbc3"
+      "ultimaVez": "2026-10-19T19:49:42.351Z",
+      "gitRev": "5a8ea6a"
     },
     "VERIFY_OBSOLETO::card-procedimentos-agenda::—": {
       "codigo": "VERIFY_OBSOLETO",
       "feature": "card-procedimentos-agenda",
       "ref": "—",
-      "ocorrencias": 4,
+      "ocorrencias": 6,
       "primeiraVez": "2026-10-19T18:52:05.002Z",
-      "ultimaVez": "2026-10-19T19:19:13.278Z",
-      "gitRev": "fd9fbc3"
+      "ultimaVez": "2026-10-19T19:49:42.351Z",
+      "gitRev": "5a8ea6a"
     },
     "VERIFY_OBSOLETO::correcoes-agenda-ux-reschedule::—": {
       "codigo": "VERIFY_OBSOLETO",
       "feature": "correcoes-agenda-ux-reschedule",
       "ref": "—",
-      "ocorrencias": 4,
+      "ocorrencias": 6,
       "primeiraVez": "2026-10-19T18:52:05.002Z",
-      "ultimaVez": "2026-10-19T19:19:13.278Z",
-      "gitRev": "fd9fbc3"
+      "ultimaVez": "2026-10-19T19:49:42.351Z",
+      "gitRev": "5a8ea6a"
     },
     "VERIFY_OBSOLETO::checkout-conclusao-agenda::—": {
       "codigo": "VERIFY_OBSOLETO",
       "feature": "checkout-conclusao-agenda",
       "ref": "—",
-      "ocorrencias": 3,
+      "ocorrencias": 5,
       "primeiraVez": "2026-10-19T19:18:17.434Z",
-      "ultimaVez": "2026-10-19T19:19:13.278Z",
-      "gitRev": "fd9fbc3"
+      "ultimaVez": "2026-10-19T19:49:42.351Z",
+      "gitRev": "5a8ea6a"
+    },
+    "VERIFY_OBSOLETO::bloqueio-recorrencia-parcelamento-checkout::—": {
+      "codigo": "VERIFY_OBSOLETO",
+      "feature": "bloqueio-recorrencia-parcelamento-checkout",
+      "ref": "—",
+      "ocorrencias": 2,
+      "primeiraVez": "2026-10-19T19:49:37.786Z",
+      "ultimaVez": "2026-10-19T19:49:42.351Z",
+      "gitRev": "5a8ea6a"
     }
   },
   "gitRev": "fd9fbc3",

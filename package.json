@@ -21,6 +21,7 @@
     "test": "npm run test --workspaces --if-present",
     "test:backend": "npm run test --workspace=backend",
     "test:frontend": "npm run test --workspace=frontend",
+    "test:confirmation": "npm run test:confirmation --workspace=backend",
     "spec:status": "node .agents/skills/onp-spec-driven/scripts/onp-spec.mjs status",
     "spec:audit": "node .agents/skills/onp-spec-driven/scripts/onp-spec.mjs audit --ci"
   },

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 interface WhatsAppPairingViewProps {
   isConnected: boolean;
@@ -15,6 +15,11 @@ export const WhatsAppPairingView: React.FC<WhatsAppPairingViewProps> = ({
   onRefreshQrCode,
   onDisconnect,
 }) => {
+  const [imageError, setImageError] = useState(false);
+
+  useEffect(() => {
+    setImageError(false);
+  }, [qrCodeBase64]);
   return (
     <div
       className="p-4 bg-white border border-slate-200 rounded-2xl shadow-2xs space-y-4 max-w-md mx-auto"
@@ -70,21 +75,23 @@ export const WhatsAppPairingView: React.FC<WhatsAppPairingViewProps> = ({
         /* Sessão Desconectada - Exibe QR Code */
         <div className="space-y-4 text-center">
           <div className="p-4 bg-slate-50 border border-slate-200 rounded-xl inline-block mx-auto">
-            {qrCodeBase64 ? (
+            {qrCodeBase64 && !imageError ? (
               <img
                 src={qrCodeBase64.startsWith('data:') ? qrCodeBase64 : `data:image/png;base64,${qrCodeBase64}`}
                 alt="QR Code WhatsApp"
                 className="w-48 h-48 mx-auto rounded-lg shadow-2xs"
                 data-testid="whatsapp-qrcode-image"
+                onError={() => setImageError(true)}
               />
             ) : (
               <div
                 data-testid="whatsapp-qrcode-placeholder"
-                className="w-48 h-48 bg-slate-200 rounded-lg flex flex-col items-center justify-center p-3 text-slate-500 text-xs"
+                className="w-48 h-48 bg-slate-100 border-2 border-dashed border-slate-300 rounded-lg flex flex-col items-center justify-center p-3 text-slate-500 text-xs text-center"
               >
-                <span>[ QR Code da Sessão ]</span>
+                <div className="w-8 h-8 mb-2 border-3 border-teal-600 border-t-transparent rounded-full animate-spin" />
+                <span className="font-semibold text-slate-700">Aguardando QR Code</span>
                 <span className="text-[10px] text-slate-400 mt-1">
-                  Aguardando geração pela Evolution API
+                  Gerando sessão com a Evolution API...
                 </span>
               </div>
             )}

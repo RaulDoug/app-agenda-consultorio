@@ -1,0 +1,65 @@
+{
+  "runId": "App-Agenda-Consultório-replica-confirmacao-whatsapp-mvfcmmb2",
+  "feature": "replica-confirmacao-whatsapp",
+  "agent": "antigravity",
+  "modo": "sequencial",
+  "paralelizar": null,
+  "modeloForcado": null,
+  "esforcoForcado": null,
+  "geradoEm": "2026-10-19 14:27",
+  "branchTrabalho": "spec/replica-confirmacao-whatsapp",
+  "baseDir": ".spec/features/replica-confirmacao-whatsapp",
+  "specDir": ".spec",
+  "repoName": "App-Agenda-Consultório",
+  "logsDir": "../onp-worktrees/App-Agenda-Consultório-replica-confirmacao-whatsapp-logs",
+  "ondas": [],
+  "faixas": [],
+  "sequenciais": [
+    {
+      "id": "T-067",
+      "titulo": "Backend: Mapeamento e Disparo de Mensagens de Réplica no Webhook",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "backend/src/routes/webhooks.ts"
+      ],
+      "refs": [
+        "US-052",
+        "AC-086",
+        "AC-087",
+        "AC-088"
+      ]
+    },
+    {
+      "id": "T-068",
+      "titulo": "Backend: Templates de Mensagens Humanizadas com Variação",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "backend/src/whatsapp/reply-templates.ts"
+      ],
+      "refs": [
+        "US-052",
+        "AC-086",
+        "AC-087"
+      ]
+    },
+    {
+      "id": "T-069",
+      "titulo": "Testes Automatizados com Prova Mecânica e Auditoria CI",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "backend/src/whatsapp/__tests__/whatsapp-auto-reply.spec.ts"
+      ],
+      "refs": [
+        "US-052",
+        "AC-086",
+        "AC-087",
+        "AC-088"
+      ]
+    }
+  ],
+  "concluidas": [],
+  "avisos": []
+}

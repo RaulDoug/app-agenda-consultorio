@@ -19,6 +19,8 @@ interface SettingsViewProps {
   tenantId?: string;
   repo?: SettingsLocalRepository;
   whatsappConnected?: boolean;
+  qrCodeBase64?: string | null;
+  connectedNumber?: string | null;
   onRefreshWhatsApp?: () => Promise<void>;
   onDisconnectWhatsApp?: () => Promise<void>;
 }
@@ -27,6 +29,8 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
   tenantId = 'tenant-default',
   repo = defaultRepo,
   whatsappConnected = true,
+  qrCodeBase64,
+  connectedNumber,
   onRefreshWhatsApp,
   onDisconnectWhatsApp,
 }) => {
@@ -221,6 +225,8 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
         <h3 className="font-bold text-slate-800 text-base">Comunicação e Notificações</h3>
         <WhatsAppPairingView
           isConnected={whatsappConnected}
+          qrCodeBase64={qrCodeBase64}
+          connectedNumber={connectedNumber}
           onRefreshQrCode={onRefreshWhatsApp}
           onDisconnect={onDisconnectWhatsApp}
         />

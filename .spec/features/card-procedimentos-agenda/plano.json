@@ -1,0 +1,88 @@
+{
+  "runId": "App-Agenda-Consultório-card-procedimentos-agenda-mvfkwl2y",
+  "feature": "card-procedimentos-agenda",
+  "agent": "antigravity",
+  "modo": "paralelo",
+  "paralelizar": null,
+  "modeloForcado": null,
+  "esforcoForcado": null,
+  "geradoEm": "2026-10-19 18:19",
+  "branchTrabalho": "spec/card-procedimentos-agenda",
+  "baseDir": ".spec/features/card-procedimentos-agenda",
+  "specDir": ".spec",
+  "repoName": "App-Agenda-Consultório",
+  "logsDir": "../onp-worktrees/App-Agenda-Consultório-card-procedimentos-agenda-logs",
+  "ondas": [
+    [
+      "faixa-1",
+      "faixa-2",
+      "faixa-3"
+    ]
+  ],
+  "faixas": [
+    {
+      "id": "faixa-1",
+      "branch": "spec/card-procedimentos-agenda-faixa-1",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-card-procedimentos-agenda-faixa-1",
+      "tarefas": [
+        {
+          "id": "T-079",
+          "titulo": "Frontend: Layout Empilhado e Truncamento a 2 Itens em AppointmentCard",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "frontend/src/features/agenda/components/AppointmentCard.tsx"
+          ],
+          "refs": [
+            "US-058",
+            "AC-096"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "faixa-2",
+      "branch": "spec/card-procedimentos-agenda-faixa-2",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-card-procedimentos-agenda-faixa-2",
+      "tarefas": [
+        {
+          "id": "T-080",
+          "titulo": "Frontend: Garantia de Listagem Completa na Gaveta de Detalhes",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "frontend/src/features/agenda/components/AppointmentDetailsDrawer.tsx"
+          ],
+          "refs": [
+            "US-058",
+            "AC-097"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "faixa-3",
+      "branch": "spec/card-procedimentos-agenda-faixa-3",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-card-procedimentos-agenda-faixa-3",
+      "tarefas": [
+        {
+          "id": "T-081",
+          "titulo": "Testes Automatizados com Prova Mecânica e Auditoria CI",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "frontend/src/features/agenda/__tests__/card-procedures-layout.spec.tsx"
+          ],
+          "refs": [
+            "US-058",
+            "AC-096",
+            "AC-097"
+          ]
+        }
+      ]
+    }
+  ],
+  "sequenciais": [],
+  "concluidas": [],
+  "avisos": []
+}

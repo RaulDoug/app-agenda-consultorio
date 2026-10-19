@@ -25,9 +25,14 @@ export const ScheduleGrid: React.FC<ScheduleGridProps> = ({
   onReschedule,
   onSelectDate,
 }) => {
-  // Geração de slots de 30 minutos para o dia
+  // Geração de slots de 30 minutos para o dia com suporte a consultas contínuas (AC-091)
   const generateDaySlots = () => {
-    const slots: { timeStr: string; isLunch: boolean; appointments: LocalAppointmentWithDetails[] }[] = [];
+    const slots: {
+      timeStr: string;
+      isLunch: boolean;
+      appointments: LocalAppointmentWithDetails[];
+      spanningAppointments: LocalAppointmentWithDetails[];
+    }[] = [];
     const { startHour, endHour, lunchStartHour, lunchEndHour, slotDurationMinutes } = businessHours;
 
     const startTotalMinutes = startHour * 60;
@@ -40,9 +45,12 @@ export const ScheduleGrid: React.FC<ScheduleGridProps> = ({
       const min = m % 60;
       const timeStr = `${String(h).padStart(2, '0')}:${String(min).padStart(2, '0')}`;
       const isLunch = h >= lunchStartHour && h < lunchEndHour;
+      const slotStartMin = m;
+      const slotEndMin = m + slotDurationMinutes;
 
-      // Filtrar agendamentos que caem neste slot no dia atual
+      // Agendamentos que INICIAM neste slot
       const slotAppointments = appointments.filter((app) => {
+        if (app.status === 'CANCELLED') return false;
         try {
           const appDate = new Date(app.start_time);
           const appDateStr = appDate.toISOString().split('T')[0];
@@ -52,8 +60,25 @@ export const ScheduleGrid: React.FC<ScheduleGridProps> = ({
           const appMinutes = appDate.getMinutes();
           const appTotalMinutes = appHours * 60 + appMinutes;
 
-          // Agendamento pertence ao slot se começar no slot ou se estiver dentro dele
-          return appTotalMinutes >= m && appTotalMinutes < m + slotDurationMinutes;
+          return appTotalMinutes >= slotStartMin && appTotalMinutes < slotEndMin;
+        } catch {
+          return false;
+        }
+      });
+
+      // Agendamentos que começaram ANTES e CONTINUAM durante este slot (consultas com duração > 30m)
+      const spanningAppointments = appointments.filter((app) => {
+        if (app.status === 'CANCELLED') return false;
+        try {
+          const appStart = new Date(app.start_time);
+          const appEnd = new Date(app.end_time);
+          const appDateStr = appStart.toISOString().split('T')[0];
+          if (appDateStr !== currentDateStr) return false;
+
+          const appStartMin = appStart.getHours() * 60 + appStart.getMinutes();
+          const appEndMin = appEnd.getHours() * 60 + appEnd.getMinutes();
+
+          return appStartMin < slotStartMin && appEndMin > slotStartMin;
         } catch {
           return false;
         }
@@ -63,6 +88,7 @@ export const ScheduleGrid: React.FC<ScheduleGridProps> = ({
         timeStr,
         isLunch,
         appointments: slotAppointments,
+        spanningAppointments,
       });
     }
 
@@ -76,9 +102,11 @@ export const ScheduleGrid: React.FC<ScheduleGridProps> = ({
     return (
       <div className="space-y-2 mt-4" data-testid="schedule-day-view">
         {slots.map((slot) => {
-          const hasAppointments = slot.appointments.length > 0;
+          const hasStarting = slot.appointments.length > 0;
+          const hasSpanning = slot.spanningAppointments.length > 0;
+          const isOccupied = hasStarting || hasSpanning;
 
-          if (slot.isLunch && !hasAppointments) {
+          if (slot.isLunch && !isOccupied) {
             return (
               <div
                 key={slot.timeStr}
@@ -107,7 +135,7 @@ export const ScheduleGrid: React.FC<ScheduleGridProps> = ({
               </div>
 
               <div className="flex-1 min-h-[44px] flex flex-col justify-center gap-2">
-                {hasAppointments ? (
+                {hasStarting &&
                   slot.appointments.map((app) => (
                     <AppointmentCard
                       key={app.id}
@@ -116,8 +144,29 @@ export const ScheduleGrid: React.FC<ScheduleGridProps> = ({
                       onMarkNoShow={onMarkNoShow}
                       onReschedule={onReschedule}
                     />
-                  ))
-                ) : (
+                  ))}
+
+                {hasSpanning &&
+                  slot.spanningAppointments.map((app) => (
+                    <div
+                      key={`spanning-${app.id}-${slot.timeStr}`}
+                      onClick={() => onAppointmentClick?.(app)}
+                      className="flex items-center justify-between p-2.5 rounded-lg border border-teal-200 bg-teal-50/70 text-teal-900 cursor-pointer hover:bg-teal-100/70 transition"
+                      title={`Em atendimento contínuo: ${app.patient_name}`}
+                    >
+                      <div className="flex items-center gap-2 truncate">
+                        <span className="w-2 h-2 rounded-full bg-teal-500 shrink-0"></span>
+                        <span className="text-xs font-medium truncate">
+                          Em atendimento: <strong className="font-bold">{app.patient_name}</strong>
+                        </span>
+                      </div>
+                      <span className="text-[11px] font-mono text-teal-700 shrink-0 ml-2">
+                        até {new Date(app.end_time).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
+                      </span>
+                    </div>
+                  ))}
+
+                {!isOccupied && (
                   <button
                     type="button"
                     onClick={() => onSlotClick?.(currentDate, slot.timeStr)}

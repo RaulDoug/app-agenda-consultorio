@@ -1,0 +1,82 @@
+{
+  "runId": "App-Agenda-Consultório-pareamento-whatsapp-live-mvf8tgwc",
+  "feature": "pareamento-whatsapp-live",
+  "agent": "antigravity",
+  "modo": "sequencial",
+  "paralelizar": null,
+  "modeloForcado": null,
+  "esforcoForcado": null,
+  "geradoEm": "2026-10-19 12:41",
+  "branchTrabalho": "spec/pareamento-whatsapp-live",
+  "baseDir": ".spec/features/pareamento-whatsapp-live",
+  "specDir": ".spec",
+  "repoName": "App-Agenda-Consultório",
+  "logsDir": "../onp-worktrees/App-Agenda-Consultório-pareamento-whatsapp-live-logs",
+  "ondas": [],
+  "faixas": [],
+  "sequenciais": [
+    {
+      "id": "T-059",
+      "titulo": "Ajuste de Inicialização do Backend com TypeScript Watch",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "backend/package.json"
+      ],
+      "refs": [
+        "US-048",
+        "AC-079"
+      ]
+    },
+    {
+      "id": "T-060",
+      "titulo": "Ciclo de Vida da Sessão e Auto-Criação de Instância na Evolution API",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "backend/src/whatsapp/evolution-client.ts",
+        "backend/src/routes/whatsapp.ts"
+      ],
+      "refs": [
+        "US-049",
+        "AC-080",
+        "AC-081"
+      ]
+    },
+    {
+      "id": "T-061",
+      "titulo": "Conexão do Frontend com QR Code Real e Polling Reativo nos Ajustes",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "frontend/src/features/settings/components/SettingsView.tsx",
+        "frontend/src/App.tsx"
+      ],
+      "refs": [
+        "US-050",
+        "AC-082"
+      ]
+    },
+    {
+      "id": "T-062",
+      "titulo": "Suíte de Testes com Prova Mecânica e Auditoria CI",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "backend/src/whatsapp/__tests__/whatsapp-live-pairing.spec.ts",
+        "frontend/src/features/settings/__tests__/whatsapp-live-pairing-ui.spec.tsx"
+      ],
+      "refs": [
+        "US-048",
+        "US-049",
+        "US-050",
+        "AC-079",
+        "AC-080",
+        "AC-081",
+        "AC-082"
+      ]
+    }
+  ],
+  "concluidas": [],
+  "avisos": []
+}

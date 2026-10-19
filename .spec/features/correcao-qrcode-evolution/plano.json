@@ -1,0 +1,77 @@
+{
+  "runId": "App-Agenda-Consultório-correcao-qrcode-evolution-mvfadjrn",
+  "feature": "correcao-qrcode-evolution",
+  "agent": "antigravity",
+  "modo": "sequencial",
+  "paralelizar": null,
+  "modeloForcado": null,
+  "esforcoForcado": null,
+  "geradoEm": "2026-10-19 13:24",
+  "branchTrabalho": "spec/correcao-qrcode-evolution",
+  "baseDir": ".spec/features/correcao-qrcode-evolution",
+  "specDir": ".spec",
+  "repoName": "App-Agenda-Consultório",
+  "logsDir": "../onp-worktrees/App-Agenda-Consultório-correcao-qrcode-evolution-logs",
+  "ondas": [],
+  "faixas": [],
+  "sequenciais": [
+    {
+      "id": "T-063",
+      "titulo": "Backend: Tratamento Resiliente de QR Code sem Base64 Corrompido",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "backend/src/routes/whatsapp.ts"
+      ],
+      "refs": [
+        "US-051",
+        "AC-083"
+      ]
+    },
+    {
+      "id": "T-064",
+      "titulo": "Frontend: Placeholder com Spinner e Fallback Visual onError",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "frontend/src/features/analytics/components/WhatsAppPairingView.tsx"
+      ],
+      "refs": [
+        "US-051",
+        "AC-084"
+      ]
+    },
+    {
+      "id": "T-065",
+      "titulo": "Infraestrutura: Limpeza de Instâncias Órfãs na Evolution API",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "backend/src/scripts/clean-evolution-instances.ts",
+        "backend/src/whatsapp/evolution-client.ts"
+      ],
+      "refs": [
+        "US-051",
+        "AC-085"
+      ]
+    },
+    {
+      "id": "T-066",
+      "titulo": "Testes Automatizados com Prova Mecânica e Auditoria CI",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "backend/src/whatsapp/__tests__/whatsapp-qrcode-resilience.spec.ts",
+        "frontend/src/features/settings/__tests__/whatsapp-qrcode-resilience-ui.spec.tsx"
+      ],
+      "refs": [
+        "US-051",
+        "AC-083",
+        "AC-084",
+        "AC-085"
+      ]
+    }
+  ],
+  "concluidas": [],
+  "avisos": []
+}

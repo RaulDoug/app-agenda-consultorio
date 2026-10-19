@@ -1,0 +1,138 @@
+{
+  "runId": "App-Agenda-Consultório-correcoes-agenda-procedimentos-mvfj9k4u",
+  "feature": "correcoes-agenda-procedimentos",
+  "agent": "antigravity",
+  "modo": "paralelo",
+  "paralelizar": null,
+  "modeloForcado": null,
+  "esforcoForcado": null,
+  "geradoEm": "2026-10-19 17:33",
+  "branchTrabalho": "spec/correcoes-agenda-procedimentos",
+  "baseDir": ".spec/features/correcoes-agenda-procedimentos",
+  "specDir": ".spec",
+  "repoName": "App-Agenda-Consultório",
+  "logsDir": "../onp-worktrees/App-Agenda-Consultório-correcoes-agenda-procedimentos-logs",
+  "ondas": [
+    [
+      "faixa-1",
+      "faixa-2",
+      "faixa-3"
+    ],
+    [
+      "faixa-4",
+      "faixa-5"
+    ]
+  ],
+  "faixas": [
+    {
+      "id": "faixa-1",
+      "branch": "spec/correcoes-agenda-procedimentos-faixa-1",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-correcoes-agenda-procedimentos-faixa-1",
+      "tarefas": [
+        {
+          "id": "T-070",
+          "titulo": "Frontend: Reset de Ciclo de Vida da Gaveta de Criação Rápida",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "frontend/src/features/agenda/components/QuickAppointmentDrawer.tsx"
+          ],
+          "refs": [
+            "US-053",
+            "AC-089"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "faixa-2",
+      "branch": "spec/correcoes-agenda-procedimentos-faixa-2",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-correcoes-agenda-procedimentos-faixa-2",
+      "tarefas": [
+        {
+          "id": "T-071",
+          "titulo": "Frontend: Deduplicação e Seeds Determinísticos de Procedimentos",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "frontend/src/db/repositories/procedure-local-repository.ts",
+            "frontend/src/features/agenda/components/InlineProcedureForm.tsx"
+          ],
+          "refs": [
+            "US-053",
+            "AC-090"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "faixa-3",
+      "branch": "spec/correcoes-agenda-procedimentos-faixa-3",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-correcoes-agenda-procedimentos-faixa-3",
+      "tarefas": [
+        {
+          "id": "T-072",
+          "titulo": "Frontend: Ocupação Contínua de Horários em Consultas Longas no ScheduleGrid",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "frontend/src/features/agenda/components/ScheduleGrid.tsx"
+          ],
+          "refs": [
+            "US-054",
+            "AC-091"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "faixa-4",
+      "branch": "spec/correcoes-agenda-procedimentos-faixa-4",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-correcoes-agenda-procedimentos-faixa-4",
+      "tarefas": [
+        {
+          "id": "T-073",
+          "titulo": "Frontend: Edição Interativa de Procedimentos na Gaveta de Detalhes",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "frontend/src/features/agenda/components/AppointmentDetailsDrawer.tsx",
+            "frontend/src/App.tsx",
+            "frontend/src/db/repositories/appointment-local-repository.ts"
+          ],
+          "refs": [
+            "US-054",
+            "AC-092"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "faixa-5",
+      "branch": "spec/correcoes-agenda-procedimentos-faixa-5",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-correcoes-agenda-procedimentos-faixa-5",
+      "tarefas": [
+        {
+          "id": "T-074",
+          "titulo": "Testes Automatizados com Prova Mecânica e Auditoria CI",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "frontend/src/features/agenda/__tests__/agenda-fixes-ui.spec.tsx"
+          ],
+          "refs": [
+            "US-053",
+            "US-054",
+            "AC-089",
+            "AC-090",
+            "AC-091",
+            "AC-092"
+          ]
+        }
+      ]
+    }
+  ],
+  "sequenciais": [],
+  "concluidas": [],
+  "avisos": []
+}

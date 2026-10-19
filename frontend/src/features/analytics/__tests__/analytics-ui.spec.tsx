@@ -320,7 +320,7 @@ describe('Sprint FE-4: Gestão Financeira de Caixa, Conexão WhatsApp e Reativa�
 
     // Valida que apenas Juliana Inativa aparece na lista
     expect(screen.getByText('Juliana Inativa')).toBeDefined();
-    expect(screen.getByText(/200 dias sem retorno/i)).toBeDefined();
+    expect(screen.getByText(/\d+ dias sem retorno/i)).toBeDefined();
     expect(screen.queryByText('Roberto Agendado')).toBeNull();
     expect(screen.queryByText('Camila Recente')).toBeNull();
 

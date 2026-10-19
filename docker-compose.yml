@@ -8,7 +8,7 @@ services:
       POSTGRES_PASSWORD: odontoflow_password
       POSTGRES_DB: odontoflow_dev
     ports:
-      - "5432:5432"
+      - "5434:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./backend/src/db/schema.sql:/docker-entrypoint-initdb.d/01_schema.sql
@@ -33,7 +33,7 @@ services:
       retries: 5
 
   evolution-api:
-    image: evoapicloud/evolution-api:v2.1.1
+    image: evoapicloud/evolution-api:v2.3.7
     container_name: cliniassist-evolution-api
     restart: unless-stopped
     ports:
@@ -42,14 +42,21 @@ services:
       - SERVER_URL=http://localhost:8080
       - DOCKER_ENV=true
       - AUTHENTICATION_API_KEY=odontoflow_key
-      - DATABASE_ENABLED=false
+      - DATABASE_PROVIDER=postgresql
+      - DATABASE_CONNECTION_URI=postgresql://odontoflow:odontoflow_password@postgres:5432/odontoflow_dev?schema=evolution
+      - DATABASE_CONNECTION_CLIENT_NAME=evolution_exchange
+      - DATABASE_SAVE_DATA_INSTANCE=true
+      - DATABASE_SAVE_DATA_NEW_MESSAGE=true
+      - DATABASE_SAVE_MESSAGE_UPDATE=true
+      - DATABASE_SAVE_DATA_CONTACTS=true
+      - DATABASE_SAVE_DATA_CHATS=true
       - CACHE_REDIS_ENABLED=true
       - CACHE_REDIS_URI=redis://redis:6379/1
       - CACHE_REDIS_PREFIX_KEY=evolution
-      - DEL_INSTANCE=false
+      - DEL_INSTANCE=true
       - WEBHOOK_GLOBAL_ENABLED=true
       - WEBHOOK_GLOBAL_URL=http://host.docker.internal:3000/api/webhooks/whatsapp
-      - WEBHOOK_GLOBAL_WEBHOOK_BY_EVENTS=true
+      - WEBHOOK_GLOBAL_WEBHOOK_BY_EVENTS=false
       - WEBHOOK_EVENTS_MESSAGES_UPSERT=true
       - WEBHOOK_EVENTS_CONNECTION_UPDATE=true
     extra_hosts:
@@ -58,6 +65,8 @@ services:
       - evolution_instances:/evolution/instances
     depends_on:
       redis:
+        condition: service_healthy
+      postgres:
         condition: service_healthy
 
 volumes:

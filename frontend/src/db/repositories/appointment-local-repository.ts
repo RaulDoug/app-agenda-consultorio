@@ -154,6 +154,61 @@ export class AppointmentLocalRepository {
     return { appointment, items };
   }
 
+  async updateProcedures(
+    id: string,
+    items: CreateAppointmentItemInput[]
+  ): Promise<{ appointment: LocalAppointment; items: LocalAppointmentItem[] }> {
+    const existing = await this.db.appointments.get(id);
+    if (!existing) {
+      throw new Error(`Agendamento com id ${id} não encontrado no banco local.`);
+    }
+
+    const totalDurationMinutes = items.length > 0
+      ? items.reduce((acc, it) => acc + (it.duration_minutes || 30), 0)
+      : 30;
+
+    const startDate = new Date(existing.start_time);
+    const newEndIso = new Date(startDate.getTime() + totalDurationMinutes * 60000).toISOString();
+    const now = new Date().toISOString();
+
+    const updated: LocalAppointment = {
+      ...existing,
+      end_time: newEndIso,
+      updated_at: now,
+    };
+
+    const newItems: LocalAppointmentItem[] = items.map((it) => ({
+      id: crypto.randomUUID(),
+      appointment_id: id,
+      procedure_id: it.procedure_id,
+      effective_price_cents: it.effective_price_cents,
+      duration_minutes: it.duration_minutes,
+    }));
+
+    await this.db.transaction(
+      'rw',
+      [this.db.appointments, this.db.appointment_items, this.db.sync_outbox],
+      async () => {
+        await this.db.appointments.put(updated);
+        await this.db.appointment_items.where('appointment_id').equals(id).delete();
+        for (const item of newItems) {
+          await this.db.appointment_items.add(item);
+        }
+        await enqueueMutation(this.db, {
+          entity: 'appointments',
+          recordId: id,
+          operation: 'UPDATE',
+          payload: {
+            ...updated,
+            items: newItems,
+          },
+        });
+      }
+    );
+
+    return { appointment: updated, items: newItems };
+  }
+
   async listAppointmentsByDate(tenantId: string, dateStr: string): Promise<LocalAppointment[]> {
     // dateStr format: YYYY-MM-DD
     const startOfDay = `${dateStr}T00:00:00.000Z`;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { NAV_ITEMS, type NavTabId } from './BottomNav.js';
+import { DESKTOP_NAV_ITEMS, type NavTabId } from './BottomNav.js';
 import { MessageSquare, RefreshCw, Activity } from 'lucide-react';
 
 interface DesktopSidebarProps {
@@ -39,7 +39,7 @@ export const DesktopSidebar: React.FC<DesktopSidebarProps> = ({
 
       {/* Navigation List */}
       <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
-        {NAV_ITEMS.map((item) => {
+        {DESKTOP_NAV_ITEMS.map((item) => {
           const Icon = item.icon;
           const isActive = activeTab === item.id;
 

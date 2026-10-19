@@ -1,0 +1,98 @@
+{
+  "runId": "App-Agenda-Consultório-correcoes-agenda-ux-reschedule-mvfk4fd2",
+  "feature": "correcoes-agenda-ux-reschedule",
+  "agent": "antigravity",
+  "modo": "paralelo",
+  "paralelizar": null,
+  "modeloForcado": null,
+  "esforcoForcado": null,
+  "geradoEm": "2026-10-19 17:57",
+  "branchTrabalho": "spec/correcoes-agenda-ux-reschedule",
+  "baseDir": ".spec/features/correcoes-agenda-ux-reschedule",
+  "specDir": ".spec",
+  "repoName": "App-Agenda-Consultório",
+  "logsDir": "../onp-worktrees/App-Agenda-Consultório-correcoes-agenda-ux-reschedule-logs",
+  "ondas": [
+    [
+      "faixa-1",
+      "faixa-2"
+    ]
+  ],
+  "faixas": [
+    {
+      "id": "faixa-1",
+      "branch": "spec/correcoes-agenda-ux-reschedule-faixa-1",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-correcoes-agenda-ux-reschedule-faixa-1",
+      "tarefas": [
+        {
+          "id": "T-075",
+          "titulo": "Frontend: Checkbox Explícito de Encaixe e Prevenção de Conflito em QuickAppointmentDrawer",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "frontend/src/features/agenda/components/QuickAppointmentDrawer.tsx"
+          ],
+          "refs": [
+            "US-055",
+            "AC-093"
+          ]
+        },
+        {
+          "id": "T-076",
+          "titulo": "Frontend: Bloqueio de Scroll de Fundo e Backdrop Click nos Modais e Gavetas",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "frontend/src/features/agenda/components/QuickAppointmentDrawer.tsx",
+            "frontend/src/features/agenda/components/AppointmentDetailsDrawer.tsx",
+            "frontend/src/features/agenda/components/RescheduleModal.tsx"
+          ],
+          "refs": [
+            "US-056",
+            "AC-094"
+          ]
+        },
+        {
+          "id": "T-077",
+          "titulo": "Frontend: Resiliência de Ciclo de Vida e Sincronização de Data em RescheduleModal",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "frontend/src/features/agenda/components/RescheduleModal.tsx"
+          ],
+          "refs": [
+            "US-057",
+            "AC-095"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "faixa-2",
+      "branch": "spec/correcoes-agenda-ux-reschedule-faixa-2",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-correcoes-agenda-ux-reschedule-faixa-2",
+      "tarefas": [
+        {
+          "id": "T-078",
+          "titulo": "Testes Automatizados com Prova Mecânica e Auditoria CI",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "frontend/src/features/agenda/__tests__/agenda-ux-reschedule.spec.tsx"
+          ],
+          "refs": [
+            "US-055",
+            "US-056",
+            "US-057",
+            "AC-093",
+            "AC-094",
+            "AC-095"
+          ]
+        }
+      ]
+    }
+  ],
+  "sequenciais": [],
+  "concluidas": [],
+  "avisos": []
+}

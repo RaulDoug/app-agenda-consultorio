@@ -4,6 +4,8 @@ import type { Express } from 'express';
 import { createApp } from '../../app.js';
 import { createInMemoryDatabase, setDatabase, type IDatabase } from '../../db/connection.js';
 import { hashPassword } from '../../services/auth-service.js';
+import { setEvolutionClient } from '../../whatsapp/evolution-client.js';
+import { MockEvolutionClient } from '../../whatsapp/__tests__/mock-evolution.js';
 import {
   calculateDiscountDistribution,
   generateInstallmentSchedule,
@@ -22,6 +24,7 @@ describe('API Complementar — CliniAssist (Sprint BE-6)', () => {
   beforeEach(async () => {
     db = createInMemoryDatabase();
     setDatabase(db);
+    setEvolutionClient(new MockEvolutionClient());
     testApp = createApp();
 
     const samplePassword = ['pass', 'Word', '123!'].join('');

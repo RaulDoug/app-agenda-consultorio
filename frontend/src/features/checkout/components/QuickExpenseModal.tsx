@@ -35,6 +35,17 @@ export const QuickExpenseModal: React.FC<QuickExpenseModalProps> = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
+  // Bloqueio de scroll do plano de fundo enquanto o modal estiver aberto (AC-094)
+  React.useEffect(() => {
+    if (isOpen) {
+      const originalOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      return () => {
+        document.body.style.overflow = originalOverflow;
+      };
+    }
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -67,6 +78,7 @@ export const QuickExpenseModal: React.FC<QuickExpenseModalProps> = ({
       onClose();
     } catch (err: any) {
       setErrorMsg(err.message || 'Erro ao registrar despesa');
+    } finally {
       setIsSubmitting(false);
     }
   };
@@ -77,8 +89,12 @@ export const QuickExpenseModal: React.FC<QuickExpenseModalProps> = ({
       role="dialog"
       aria-modal="true"
       aria-labelledby="expense-modal-title"
+      onClick={onClose}
     >
-      <div className="bg-white w-full max-w-sm rounded-2xl shadow-xl overflow-hidden animate-fade-in flex flex-col">
+      <div
+        className="bg-white w-full max-w-sm rounded-2xl shadow-xl overflow-hidden animate-fade-in flex flex-col"
+        onClick={(e) => e.stopPropagation()}
+      >
         {/* Cabeçalho */}
         <div className="flex items-center justify-between p-4 border-b border-slate-100 bg-rose-50/50">
           <div>

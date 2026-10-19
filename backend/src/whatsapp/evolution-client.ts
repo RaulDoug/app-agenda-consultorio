@@ -46,6 +46,9 @@ export interface IEvolutionClient {
   sendTextMessage(options: SendTextMessageOptions): Promise<SendMessageResponse>;
   getConnectionState(instanceName: string): Promise<InstanceConnectionState>;
   getQrCode?(instanceName: string): Promise<QrCodeResponse>;
+  createInstance?(instanceName: string): Promise<any>;
+  logoutInstance?(instanceName: string): Promise<void>;
+  deleteInstance?(instanceName: string): Promise<void>;
 }
 
 export class EvolutionHttpClient implements IEvolutionClient {
@@ -55,6 +58,75 @@ export class EvolutionHttpClient implements IEvolutionClient {
   constructor(baseUrl?: string, apiKey?: string) {
     this.baseUrl = baseUrl || process.env.EVOLUTION_API_URL || 'http://localhost:8080';
     this.apiKey = apiKey || process.env.EVOLUTION_API_KEY || 'odontoflow_key';
+  }
+
+  async createInstance(instanceName: string): Promise<any> {
+    const url = `${this.baseUrl}/instance/create`;
+    const payload = {
+      instanceName,
+      qrcode: true,
+      integration: 'WHATSAPP-BAILEYS',
+    };
+
+    let res: Response;
+    try {
+      res = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          apikey: this.apiKey,
+        },
+        body: JSON.stringify(payload),
+      });
+    } catch (err: any) {
+      throw new EvolutionTransientError(`Falha ao criar instância na Evolution API: ${err.message}`, 503);
+    }
+
+    if (!res.ok) {
+      const errorText = await res.text().catch(() => 'Erro desconhecido');
+      if (res.status !== 403 && !errorText.includes('already exists')) {
+        throw new EvolutionError(`Falha ao criar instância: HTTP ${res.status} - ${errorText}`, res.status);
+      }
+    }
+
+    // Configura webhook da instância apontando para o backend
+    const webhookUrl = `${this.baseUrl}/webhook/set/${encodeURIComponent(instanceName)}`;
+    const backendWebhookUrl = process.env.WEBHOOK_GLOBAL_URL || 'http://host.docker.internal:3000/api/webhooks/whatsapp';
+    await fetch(webhookUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        apikey: this.apiKey,
+      },
+      body: JSON.stringify({
+        webhook: {
+          enabled: true,
+          url: backendWebhookUrl,
+          byEvents: false,
+          base64: false,
+          events: ['MESSAGES_UPSERT', 'CONNECTION_UPDATE'],
+        },
+      }),
+    }).catch(() => {});
+
+    return await res.json().catch(() => ({}));
+  }
+
+  async logoutInstance(instanceName: string): Promise<void> {
+    const url = `${this.baseUrl}/instance/logout/${instanceName}`;
+    let res: Response;
+    try {
+      res = await fetch(url, {
+        method: 'DELETE',
+        headers: { apikey: this.apiKey },
+      });
+    } catch (err: any) {
+      throw new EvolutionTransientError(`Falha ao desconectar instância: ${err.message}`, 503);
+    }
+
+    if (!res.ok && res.status !== 404 && res.status !== 400) {
+      throw new EvolutionError(`Falha ao desconectar instância: HTTP ${res.status}`, res.status);
+    }
   }
 
   async sendTextMessage(options: SendTextMessageOptions): Promise<SendMessageResponse> {
@@ -69,7 +141,7 @@ export class EvolutionHttpClient implements IEvolutionClient {
       res = await fetch(url, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json; charset=utf-8',
           apikey: this.apiKey,
         },
         body: JSON.stringify(payload),
@@ -112,6 +184,10 @@ export class EvolutionHttpClient implements IEvolutionClient {
       throw new EvolutionTransientError(`Evolution API indisponível ao checar status: HTTP ${res.status}`, res.status);
     }
 
+    if (res.status === 404) {
+      return { instanceName, state: 'close' };
+    }
+
     if (!res.ok) {
       throw new EvolutionError(`Falha ao obter status da instância: HTTP ${res.status}`, res.status);
     }
@@ -135,6 +211,19 @@ export class EvolutionHttpClient implements IEvolutionClient {
       throw new EvolutionTransientError(`Falha ao obter QR code: ${err.message}`, 503);
     }
 
+    if (res.status === 404) {
+      // Instância não existe: cria automaticamente e tenta conectar novamente
+      await this.createInstance(instanceName).catch(() => {});
+      try {
+        res = await fetch(url, {
+          method: 'GET',
+          headers: { apikey: this.apiKey },
+        });
+      } catch (err: any) {
+        throw new EvolutionTransientError(`Falha ao obter QR code após criação: ${err.message}`, 503);
+      }
+    }
+
     if (!res.ok) {
       throw new EvolutionError(`Falha ao gerar QR code: HTTP ${res.status}`, res.status);
     }
@@ -142,10 +231,22 @@ export class EvolutionHttpClient implements IEvolutionClient {
     const data: any = await res.json();
     return {
       instanceName,
-      pairingCode: data?.pairingCode,
-      code: data?.code,
-      base64: data?.base64,
+      pairingCode: data?.pairingCode || data?.qrcode?.pairingCode,
+      code: data?.code || data?.qrcode?.code,
+      base64: data?.base64 || data?.qrcode?.base64,
     };
+  }
+
+  async deleteInstance(instanceName: string): Promise<void> {
+    const url = `${this.baseUrl}/instance/delete/${encodeURIComponent(instanceName)}`;
+    try {
+      await fetch(url, {
+        method: 'DELETE',
+        headers: { apikey: this.apiKey },
+      });
+    } catch {
+      // Ignora falha de exclusão
+    }
   }
 }
 

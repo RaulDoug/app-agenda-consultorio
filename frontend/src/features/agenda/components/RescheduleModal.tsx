@@ -22,6 +22,32 @@ export const RescheduleModal: React.FC<RescheduleModalProps> = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
+  // Reset de envio, erros e inicialização da data do agendamento (AC-095)
+  React.useEffect(() => {
+    if (isOpen) {
+      setIsSubmitting(false);
+      setErrorMsg('');
+      if (appointment?.start_time) {
+        const appDate = new Date(appointment.start_time);
+        setSelectedDate(appDate);
+        const h = String(appDate.getHours()).padStart(2, '0');
+        const m = String(appDate.getMinutes()).padStart(2, '0');
+        setSelectedTimeStr(`${h}:${m}`);
+      }
+    }
+  }, [isOpen, appointment?.id]);
+
+  // Bloqueio de scroll do plano de fundo enquanto o modal estiver aberto (AC-094)
+  React.useEffect(() => {
+    if (isOpen) {
+      const originalOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      return () => {
+        document.body.style.overflow = originalOverflow;
+      };
+    }
+  }, [isOpen]);
+
   if (!isOpen || !appointment) return null;
 
   // Gerar opções de horários de 30m das 08:00 às 18:00
@@ -70,6 +96,7 @@ export const RescheduleModal: React.FC<RescheduleModalProps> = ({
       onClose();
     } catch (err: any) {
       setErrorMsg(err.message || 'Erro ao remarcar consulta');
+    } finally {
       setIsSubmitting(false);
     }
   };
@@ -86,8 +113,12 @@ export const RescheduleModal: React.FC<RescheduleModalProps> = ({
       role="dialog"
       aria-modal="true"
       aria-labelledby="reschedule-modal-title"
+      onClick={onClose}
     >
-      <div className="bg-white w-full max-w-md rounded-2xl shadow-xl overflow-hidden animate-fade-in flex flex-col max-h-[90vh]">
+      <div
+        className="bg-white w-full max-w-md rounded-2xl shadow-xl overflow-hidden animate-fade-in flex flex-col max-h-[90vh]"
+        onClick={(e) => e.stopPropagation()}
+      >
         {/* Cabeçalho */}
         <div className="flex items-center justify-between p-4 border-b border-slate-100 bg-slate-50">
           <div>

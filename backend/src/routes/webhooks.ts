@@ -3,6 +3,8 @@ import { getDatabase } from '../db/connection.js';
 import { getConfirmationQueue } from '../whatsapp/queue.js';
 import { handleConnectionRestored } from '../whatsapp/scheduler.js';
 import { parsePatientMessage, resolveStatusTransition } from '../whatsapp/parser.js';
+import { getEvolutionClient } from '../whatsapp/evolution-client.js';
+import { buildConfirmationReply, buildRescheduleReply } from '../whatsapp/reply-templates.js';
 
 export const webhooksRouter = Router();
 
@@ -10,13 +12,15 @@ export const webhooksRouter = Router();
  * Endpoint de Webhook da Evolution API para recepção de mensagens e eventos de instância
  * POST /api/webhooks/whatsapp
  */
-webhooksRouter.post('/whatsapp', async (req, res) => {
+webhooksRouter.post(['/whatsapp', '/whatsapp/:event', '/whatsapp/:event/:sub'], async (req, res) => {
   try {
     const payload = req.body;
     const db = getDatabase();
     const queue = getConfirmationQueue();
 
-    const event = payload?.event || payload?.type;
+    const rawUrlEvent = (req.params as any)?.event;
+    const normalizedUrlEvent = rawUrlEvent ? rawUrlEvent.replace(/-/g, '_').toUpperCase() : null;
+    const event = payload?.event || payload?.type || normalizedUrlEvent;
     const instanceName = payload?.instance || payload?.instanceName || payload?.sender;
 
     // 1. Eventos de Conexão e Sessão da Instância
@@ -178,6 +182,31 @@ webhooksRouter.post('/whatsapp', async (req, res) => {
         [transition.newStatus, appointment.id, activeTenantId]
       );
 
+      // Dispara réplica humanizada de feedback ao paciente (AC-086, AC-087, AC-088)
+      let replyText: string | null = null;
+      if (parseResult.classification === 'CONFIRMED') {
+        replyText = buildConfirmationReply(patient.name, appointment.start_time);
+      } else if (parseResult.classification === 'RESCHEDULE_REQUESTED') {
+        replyText = buildRescheduleReply(patient.name);
+      }
+
+      let replySent = false;
+      if (replyText) {
+        try {
+          const client = getEvolutionClient();
+          const targetInstance = instanceName || 'cliniassist_default';
+          await client.sendTextMessage({
+            instanceName: targetInstance,
+            number: rawNumber,
+            text: replyText,
+          });
+          replySent = true;
+        } catch (err: any) {
+          // AC-088: Falhas no envio da réplica não prejudicam a persistência da consulta
+          console.warn('[Webhook] Falha ao enviar réplica automática ao paciente:', err.message);
+        }
+      }
+
       res.status(200).json({
         status: 'processed',
         appointment_id: appointment.id,
@@ -186,6 +215,7 @@ webhooksRouter.post('/whatsapp', async (req, res) => {
         changed_mind: transition.changedMind,
         requires_attention: transition.requiresAttention,
         classification: parseResult.classification,
+        reply_sent: replySent,
       });
       return;
     }

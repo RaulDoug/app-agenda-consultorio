@@ -28,6 +28,9 @@ import { InstallmentsForm } from './features/checkout/components/InstallmentsFor
 import { SmartReturnDrawer } from './features/checkout/components/SmartReturnDrawer.js';
 
 import { SettingsView } from './features/settings/components/SettingsView.js';
+import { ReportsView } from './features/analytics/components/ReportsView.js';
+import { MoreMenuHub } from './components/layout/MoreMenuHub.js';
+import { CreatePatientModal } from './features/patients/components/CreatePatientModal.js';
 import { SyncManager } from './sync/sync-manager.js';
 import { Plus } from 'lucide-react';
 
@@ -164,6 +167,7 @@ export const App: React.FC<AppProps> = ({
   // Modais de Caixa / Checkout / Retorno
   const [checkoutAppointment, setCheckoutAppointment] = useState<LocalAppointmentWithDetails | null>(null);
   const [isExpenseModalOpen, setIsExpenseModalOpen] = useState(false);
+  const [isCreatePatientOpen, setIsCreatePatientOpen] = useState(false);
   const [smartReturnData, setSmartReturnData] = useState<{
     patientId: string;
     patientName: string;
@@ -299,6 +303,10 @@ export const App: React.FC<AppProps> = ({
     <AppShell
       activeTab={activeTab}
       onTabChange={setActiveTab}
+      onQuickAppointment={() => {
+        setQuickSlotTime('08:00');
+        setIsQuickOpen(true);
+      }}
       connectionStatus={connectionStatus}
       whatsappConnected={whatsappConnected}
     >
@@ -357,6 +365,7 @@ export const App: React.FC<AppProps> = ({
             tenantId={tenantId}
             patients={patients}
             appointments={appointments}
+            onOpenCreateModal={() => setIsCreatePatientOpen(true)}
             onSchedule={(pw) => {
               setActiveTab('agenda');
               setQuickSlotTime('09:00');
@@ -408,6 +417,29 @@ export const App: React.FC<AppProps> = ({
             connectedNumber={connectedNumber}
             onRefreshWhatsApp={handleRefreshWhatsapp}
             onDisconnectWhatsApp={handleDisconnectWhatsapp}
+          />
+        </div>
+      )}
+
+      {/* ABA 5: RELATÓRIOS & MÉTRICAS */}
+      {activeTab === 'relatorios' && (
+        <div data-testid="relatorios-tab-content">
+          <ReportsView
+            appointments={appointments}
+            appointmentItems={appointmentItems}
+            procedures={procedures}
+            transactions={transactions}
+            patients={patients}
+          />
+        </div>
+      )}
+
+      {/* ABA 6: MAIS (HUB MOBILE) */}
+      {activeTab === 'mais' && (
+        <div data-testid="mais-tab-content">
+          <MoreMenuHub
+            onSelectSection={(tab) => setActiveTab(tab)}
+            patientCount={patients.length}
           />
         </div>
       )}
@@ -504,6 +536,15 @@ export const App: React.FC<AppProps> = ({
         onClose={() => setIsExpenseModalOpen(false)}
         financialRepo={financialRepo}
         onExpenseSaved={() => setIsExpenseModalOpen(false)}
+      />
+
+      {/* Modal de Cadastro Rápido de Paciente */}
+      <CreatePatientModal
+        isOpen={isCreatePatientOpen}
+        tenantId={tenantId}
+        patientRepo={patientRepo}
+        onClose={() => setIsCreatePatientOpen(false)}
+        onPatientCreated={() => setIsCreatePatientOpen(false)}
       />
     </AppShell>
   );

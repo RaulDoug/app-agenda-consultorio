@@ -5,8 +5,9 @@
   "description": "API REST Backend do CliniAssist (Node.js + Express.js + PostgreSQL via pg + BullMQ + Evolution API)",
   "type": "module",
   "scripts": {
-    "dev": "npx tsx --env-file=.env watch src/app.ts",
+    "dev": "npx tsx watch --env-file=.env src/app.ts",
     "start": "npx tsx --env-file=.env src/app.ts",
+    "test:confirmation": "npx tsx --env-file=.env scripts/test-confirmation-flow.ts",
     "build": "tsc",
     "test": "vitest run",
     "test:watch": "vitest"

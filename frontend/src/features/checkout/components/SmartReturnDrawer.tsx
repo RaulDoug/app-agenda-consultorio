@@ -35,6 +35,17 @@ export const SmartReturnDrawer: React.FC<SmartReturnDrawerProps> = ({
     return evaluateSmartReturn(baseDate, period, preferredTimeStr, existingAppointments, 30);
   }, [baseDate, period, preferredTimeStr, existingAppointments]);
 
+  // Bloqueio de scroll do plano de fundo enquanto a gaveta estiver aberta (AC-094)
+  React.useEffect(() => {
+    if (isOpen) {
+      const originalOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      return () => {
+        document.body.style.overflow = originalOverflow;
+      };
+    }
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   const handleConfirmSchedule = async (targetDate: Date, timeStr: string) => {
@@ -69,6 +80,7 @@ export const SmartReturnDrawer: React.FC<SmartReturnDrawerProps> = ({
       onClose();
     } catch (err: any) {
       setErrorMsg(err.message || 'Erro ao agendar retorno');
+    } finally {
       setIsSubmitting(false);
     }
   };
@@ -85,8 +97,12 @@ export const SmartReturnDrawer: React.FC<SmartReturnDrawerProps> = ({
       role="dialog"
       aria-modal="true"
       aria-labelledby="smart-return-title"
+      onClick={onClose}
     >
-      <div className="bg-white w-full sm:max-w-md rounded-t-2xl sm:rounded-2xl shadow-xl flex flex-col max-h-[90vh] overflow-hidden animate-slide-up sm:animate-fade-in">
+      <div
+        className="bg-white w-full sm:max-w-md rounded-t-2xl sm:rounded-2xl shadow-xl flex flex-col max-h-[90vh] overflow-hidden animate-slide-up sm:animate-fade-in"
+        onClick={(e) => e.stopPropagation()}
+      >
         {/* Cabeçalho */}
         <div className="flex items-center justify-between p-4 border-b border-slate-100 bg-teal-50/50">
           <div>

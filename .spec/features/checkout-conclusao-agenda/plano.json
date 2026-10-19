@@ -1,0 +1,82 @@
+{
+  "runId": "App-Agenda-Consultório-checkout-conclusao-agenda-mvflj2j0",
+  "feature": "checkout-conclusao-agenda",
+  "agent": "antigravity",
+  "modo": "paralelo",
+  "paralelizar": null,
+  "modeloForcado": null,
+  "esforcoForcado": null,
+  "geradoEm": "2026-10-19 18:36",
+  "branchTrabalho": "spec/checkout-conclusao-agenda",
+  "baseDir": ".spec/features/checkout-conclusao-agenda",
+  "specDir": ".spec",
+  "repoName": "App-Agenda-Consultório",
+  "logsDir": "../onp-worktrees/App-Agenda-Consultório-checkout-conclusao-agenda-logs",
+  "ondas": [
+    [
+      "faixa-1",
+      "faixa-2"
+    ]
+  ],
+  "faixas": [
+    {
+      "id": "faixa-1",
+      "branch": "spec/checkout-conclusao-agenda-faixa-1",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-checkout-conclusao-agenda-faixa-1",
+      "tarefas": [
+        {
+          "id": "T-082",
+          "titulo": "Frontend: Conexão do Botão de Conclusão com Abertura do CheckoutDrawer",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "frontend/src/features/agenda/components/AppointmentDetailsDrawer.tsx",
+            "frontend/src/App.tsx"
+          ],
+          "refs": [
+            "US-059",
+            "AC-098"
+          ]
+        },
+        {
+          "id": "T-083",
+          "titulo": "Frontend: Atualização do Agendamento para COMPLETED após Checkout",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "frontend/src/App.tsx"
+          ],
+          "refs": [
+            "US-059",
+            "AC-098",
+            "AC-099"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "faixa-2",
+      "branch": "spec/checkout-conclusao-agenda-faixa-2",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-checkout-conclusao-agenda-faixa-2",
+      "tarefas": [
+        {
+          "id": "T-084",
+          "titulo": "Testes Automatizados com Prova Mecânica e Auditoria CI",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "frontend/src/features/agenda/__tests__/concluir-atendimento-checkout.spec.tsx"
+          ],
+          "refs": [
+            "US-059",
+            "AC-098",
+            "AC-099"
+          ]
+        }
+      ]
+    }
+  ],
+  "sequenciais": [],
+  "concluidas": [],
+  "avisos": []
+}

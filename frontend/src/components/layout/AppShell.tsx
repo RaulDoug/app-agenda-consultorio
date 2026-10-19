@@ -8,6 +8,7 @@ export interface AppShellProps {
   children?: React.ReactNode;
   activeTab?: NavTabId;
   onTabChange?: (tab: NavTabId) => void;
+  onQuickAppointment?: () => void;
   clinicName?: string;
   connectionStatus?: ConnectionState;
   whatsappConnected?: boolean;
@@ -17,6 +18,7 @@ export const AppShell: React.FC<AppShellProps> = ({
   children,
   activeTab = 'agenda',
   onTabChange = () => {},
+  onQuickAppointment,
   clinicName = 'CliniAssist',
   connectionStatus = 'ONLINE',
   whatsappConnected = true,
@@ -50,7 +52,11 @@ export const AppShell: React.FC<AppShellProps> = ({
         </main>
 
         {/* Mobile Bottom Navigation (visível apenas em telas menores que md) */}
-        <BottomNav activeTab={activeTab} onTabChange={onTabChange} />
+        <BottomNav
+          activeTab={activeTab}
+          onTabChange={onTabChange}
+          onQuickAppointment={onQuickAppointment}
+        />
       </div>
     </div>
   );

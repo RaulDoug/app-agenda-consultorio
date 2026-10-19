@@ -9,6 +9,7 @@ interface PatientListProps {
   appointments: LocalAppointment[];
   onSelectPatient?: (patient: PatientWithHistoryStatus) => void;
   onSchedule?: (patient: PatientWithHistoryStatus) => void;
+  onOpenCreateModal?: () => void;
 }
 
 export const PatientList: React.FC<PatientListProps> = ({
@@ -16,6 +17,7 @@ export const PatientList: React.FC<PatientListProps> = ({
   appointments,
   onSelectPatient,
   onSchedule,
+  onOpenCreateModal,
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -64,23 +66,36 @@ export const PatientList: React.FC<PatientListProps> = ({
 
   return (
     <div className="space-y-4" data-testid="patient-list-container">
-      {/* Barra de Busca */}
-      <div className="relative">
-        <input
-          type="text"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          placeholder="Pesquisar cliente por nome ou WhatsApp..."
-          className="w-full px-3.5 py-2.5 text-sm bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 shadow-xs"
-          aria-label="Buscar clientes"
-        />
-        {searchTerm && (
+      {/* Barra de Busca e Botão Novo Paciente */}
+      <div className="flex flex-col sm:flex-row gap-2.5">
+        <div className="relative flex-1">
+          <input
+            type="text"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder="Pesquisar cliente por nome ou WhatsApp..."
+            className="w-full px-3.5 py-2.5 text-sm bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 shadow-xs"
+            aria-label="Buscar clientes"
+          />
+          {searchTerm && (
+            <button
+              type="button"
+              onClick={() => setSearchTerm('')}
+              className="absolute right-3 top-2.5 text-slate-400 hover:text-slate-600 text-sm"
+            >
+              ✕
+            </button>
+          )}
+        </div>
+
+        {onOpenCreateModal && (
           <button
             type="button"
-            onClick={() => setSearchTerm('')}
-            className="absolute right-3 top-2.5 text-slate-400 hover:text-slate-600 text-sm"
+            data-testid="btn-new-patient"
+            onClick={onOpenCreateModal}
+            className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 bg-teal-700 hover:bg-teal-800 text-white font-semibold text-xs rounded-xl shadow-xs transition-colors shrink-0"
           >
-            ✕
+            + Novo Paciente
           </button>
         )}
       </div>

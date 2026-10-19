@@ -30,9 +30,9 @@ export const AppointmentCard: React.FC<AppointmentCardProps> = ({
   const startTimeStr = formatTime(appointment.start_time);
   const endTimeStr = formatTime(appointment.end_time);
 
-  const proceduresText = appointment.procedures?.length
-    ? appointment.procedures.map((p) => p.name).join(', ')
-    : appointment.notes || 'Atendimento Geral';
+  const procedures = appointment.procedures || [];
+  const visibleProcedures = procedures.slice(0, 2);
+  const remainingCount = procedures.length - visibleProcedures.length;
 
   return (
     <div
@@ -49,7 +49,7 @@ export const AppointmentCard: React.FC<AppointmentCardProps> = ({
       data-status={appointment.status}
     >
       <div className="flex items-start justify-between gap-2">
-        <div className="min-w-0">
+        <div className="min-w-0 flex-1">
           <div className="flex items-center gap-1.5 flex-wrap">
             <span className="text-xs font-semibold text-slate-500 font-mono">
               {startTimeStr} - {endTimeStr}
@@ -66,9 +66,33 @@ export const AppointmentCard: React.FC<AppointmentCardProps> = ({
           <h4 className="text-sm font-bold text-slate-900 truncate mt-0.5">
             {appointment.patient_name}
           </h4>
-          <p className="text-xs text-slate-600 truncate mt-0.5">
-            {proceduresText}
-          </p>
+
+          {/* Procedimentos em visualização compacta empilhada (máximo 2 itens) */}
+          <div className="mt-1 space-y-0.5" data-testid="card-procedures-list">
+            {procedures.length > 0 ? (
+              <>
+                {visibleProcedures.map((proc, idx) => (
+                  <div
+                    key={proc.id || idx}
+                    className="text-xs text-slate-600 truncate flex items-center gap-1.5"
+                    title={proc.name}
+                  >
+                    <span className="w-1 h-1 rounded-full bg-slate-400 shrink-0" />
+                    <span className="truncate">{proc.name}</span>
+                  </div>
+                ))}
+                {remainingCount > 0 && (
+                  <div className="text-[11px] text-slate-400 font-medium pl-2.5">
+                    ... (+{remainingCount} mais)
+                  </div>
+                )}
+              </>
+            ) : (
+              <p className="text-xs text-slate-500 truncate italic">
+                {appointment.notes || 'Atendimento Geral'}
+              </p>
+            )}
+          </div>
         </div>
 
         {/* Badge do Status */}

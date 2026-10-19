@@ -65,10 +65,42 @@ export class MockEvolutionClient implements IEvolutionClient {
   }
 
   async getConnectionState(instanceName: string): Promise<InstanceConnectionState> {
-    const state = this.connectionStates.get(instanceName) || 'open';
+    const state = this.connectionStates.get(instanceName) || 'close';
     return {
       instanceName,
       state,
+    };
+  }
+
+  public deletedInstances: string[] = [];
+  public customQrCodes: Map<string, any> = new Map();
+
+  async createInstance(instanceName: string): Promise<any> {
+    this.connectionStates.set(instanceName, 'close');
+    return { instance: { instanceName, state: 'close' } };
+  }
+
+  async logoutInstance(instanceName: string): Promise<void> {
+    this.connectionStates.set(instanceName, 'close');
+  }
+
+  async deleteInstance(instanceName: string): Promise<void> {
+    this.deletedInstances.push(instanceName);
+    this.connectionStates.delete(instanceName);
+  }
+
+  setQrCodeResponse(instanceName: string, response: any): void {
+    this.customQrCodes.set(instanceName, response);
+  }
+
+  async getQrCode(instanceName: string) {
+    if (this.customQrCodes.has(instanceName)) {
+      return this.customQrCodes.get(instanceName);
+    }
+    return {
+      instanceName,
+      base64: 'data:image/png;base64,mockQrCodeLiveValidBase64String12345',
+      code: 'mock-pairing-code-live',
     };
   }
 }

@@ -250,6 +250,10 @@ describe('Sprint FE-2: Agenda de Atendimentos e Gestão de Clientes', () => {
       expect(screen.getByText('Paciente Sobreposto')).toBeDefined();
     });
 
+    // Marca o checkbox de autorização de encaixe
+    const encaixeCheckbox = screen.getByLabelText(/Permitir Encaixe/i);
+    fireEvent.click(encaixeCheckbox);
+
     const submitBtn = screen.getByRole('button', { name: 'Salvar Agendamento' });
 
     // Testa prevenção de duplo clique: clicar 2 vezes rapidamente

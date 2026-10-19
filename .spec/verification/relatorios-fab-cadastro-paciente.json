@@ -1,0 +1,32 @@
+{
+  "feature": "relatorios-fab-cadastro-paciente",
+  "timestamp": "2026-10-19T19:49:18.276Z",
+  "gitRev": "5a8ea6a",
+  "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
+  "reporter": "vitest-json",
+  "exitCode": 0,
+  "testsParsed": 108,
+  "results": {
+    "AC-104": {
+      "status": "pass",
+      "testName": "Feature: relatorios-fab-cadastro-paciente AC-104: Botão central + flutuante na barra inferior para acionamento direto do agendamento rápido @spec:AC-104 AC-104: Botão central + flutuante na barra inferior para acionamento direto do agendamento rápido @spec:AC-104",
+      "method": "vitest-json"
+    },
+    "AC-105": {
+      "status": "pass",
+      "testName": "Feature: relatorios-fab-cadastro-paciente AC-105: Distribuição de navegação mobile (Agenda, Caixa, [+], Relatórios, Mais) com acesso a Clientes e Ajustes @spec:AC-105 AC-105: Distribuição de navegação mobile (Agenda, Caixa, [+], Relatórios, Mais) com acesso a Clientes e Ajustes @spec:AC-105",
+      "method": "vitest-json"
+    },
+    "AC-106": {
+      "status": "pass",
+      "testName": "Feature: relatorios-fab-cadastro-paciente AC-106: Tela de Relatórios com indicadores de No-Show, DRE simplificado, projeção futura e ranking de procedimentos @spec:AC-106 AC-106: Tela de Relatórios com indicadores de No-Show, DRE simplificado, projeção futura e ranking de procedimentos @spec:AC-106",
+      "method": "vitest-json"
+    },
+    "AC-107": {
+      "status": "pass",
+      "testName": "Feature: relatorios-fab-cadastro-paciente AC-107: Cadastro direto de novo paciente com validação de dados a partir da tela de Clientes @spec:AC-107 AC-107: Cadastro direto de novo paciente com validação de dados a partir da tela de Clientes @spec:AC-107",
+      "method": "vitest-json"
+    }
+  },
+  "principles": {}
+}

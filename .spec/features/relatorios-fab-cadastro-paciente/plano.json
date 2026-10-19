@@ -1,0 +1,142 @@
+{
+  "runId": "App-Agenda-Consultório-relatorios-fab-cadastro-paciente-mvfnr4oc",
+  "feature": "relatorios-fab-cadastro-paciente",
+  "agent": "antigravity",
+  "modo": "paralelo",
+  "paralelizar": null,
+  "modeloForcado": null,
+  "esforcoForcado": null,
+  "geradoEm": "2026-10-19 19:39",
+  "branchTrabalho": "spec/relatorios-fab-cadastro-paciente",
+  "baseDir": ".spec/features/relatorios-fab-cadastro-paciente",
+  "specDir": ".spec",
+  "repoName": "App-Agenda-Consultório",
+  "logsDir": "../onp-worktrees/App-Agenda-Consultório-relatorios-fab-cadastro-paciente-logs",
+  "ondas": [
+    [
+      "faixa-1",
+      "faixa-2",
+      "faixa-3"
+    ],
+    [
+      "faixa-4",
+      "faixa-5"
+    ]
+  ],
+  "faixas": [
+    {
+      "id": "faixa-1",
+      "branch": "spec/relatorios-fab-cadastro-paciente-faixa-1",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-relatorios-fab-cadastro-paciente-faixa-1",
+      "tarefas": [
+        {
+          "id": "T-090",
+          "titulo": "Motor de Cálculo Offline-First de Relatórios e Métricas",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "frontend/src/features/analytics/utils/reports-calculator.ts"
+          ],
+          "refs": [
+            "US-064",
+            "AC-106"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "faixa-2",
+      "branch": "spec/relatorios-fab-cadastro-paciente-faixa-2",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-relatorios-fab-cadastro-paciente-faixa-2",
+      "tarefas": [
+        {
+          "id": "T-091",
+          "titulo": "Frontend: Componente de Tela de Relatórios & Métricas Gerenciais",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "frontend/src/features/analytics/components/ReportsView.tsx"
+          ],
+          "refs": [
+            "US-064",
+            "AC-106"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "faixa-3",
+      "branch": "spec/relatorios-fab-cadastro-paciente-faixa-3",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-relatorios-fab-cadastro-paciente-faixa-3",
+      "tarefas": [
+        {
+          "id": "T-092",
+          "titulo": "Frontend: Modal e Ação de Cadastro Direto de Pacientes",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "frontend/src/features/patients/components/CreatePatientModal.tsx",
+            "frontend/src/features/patients/components/PatientList.tsx"
+          ],
+          "refs": [
+            "US-065",
+            "AC-107"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "faixa-4",
+      "branch": "spec/relatorios-fab-cadastro-paciente-faixa-4",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-relatorios-fab-cadastro-paciente-faixa-4",
+      "tarefas": [
+        {
+          "id": "T-093",
+          "titulo": "Frontend: Layout Mobile com Botão Central '+' Elevado e Hub 'Mais'",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "frontend/src/components/layout/BottomNav.tsx",
+            "frontend/src/components/layout/MoreMenuHub.tsx",
+            "frontend/src/components/layout/DesktopSidebar.tsx",
+            "frontend/src/components/layout/AppShell.tsx",
+            "frontend/src/App.tsx"
+          ],
+          "refs": [
+            "US-063",
+            "AC-104",
+            "AC-105"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "faixa-5",
+      "branch": "spec/relatorios-fab-cadastro-paciente-faixa-5",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-relatorios-fab-cadastro-paciente-faixa-5",
+      "tarefas": [
+        {
+          "id": "T-094",
+          "titulo": "Testes Automatizados TDD com Prova Mecânica e Auditoria CI",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "frontend/src/features/analytics/__tests__/relatorios-fab-paciente.spec.tsx"
+          ],
+          "refs": [
+            "US-063",
+            "US-064",
+            "US-065",
+            "AC-104",
+            "AC-105",
+            "AC-106",
+            "AC-107"
+          ]
+        }
+      ]
+    }
+  ],
+  "sequenciais": [],
+  "concluidas": [],
+  "avisos": []
+}
