@@ -1,7 +1,7 @@
 {
   "feature": "relatorios-fab-cadastro-paciente",
-  "timestamp": "2026-10-19T19:49:18.276Z",
-  "gitRev": "5a8ea6a",
+  "timestamp": "2026-10-19T19:52:07.974Z",
+  "gitRev": "166b72c",
   "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
   "exitCode": 0,
