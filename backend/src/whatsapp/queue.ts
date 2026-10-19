@@ -99,6 +99,7 @@ export class InMemoryConfirmationQueue implements IConfirmationQueue {
  */
 export class BullMQConfirmationQueue implements IConfirmationQueue {
   private queue: Queue<ConfirmationJobData>;
+  private worker?: Worker<ConfirmationJobData>;
 
   constructor(redisUrl?: string) {
     const connection = {
@@ -113,6 +114,37 @@ export class BullMQConfirmationQueue implements IConfirmationQueue {
         removeOnFail: false,
       },
     });
+
+    if (process.env.NODE_ENV !== 'test') {
+      try {
+        const evolutionClient = getEvolutionClient();
+        this.worker = new Worker<ConfirmationJobData>(
+          'whatsapp-confirmations',
+          async (job: Job<ConfirmationJobData>) => {
+            const { instanceName, phone, patientName, appointmentStartTime, messageTemplate } = job.data;
+            const cleanPhone = phone.replace(/\D/g, '');
+            const formattedPhone = cleanPhone.startsWith('55') ? cleanPhone : `55${cleanPhone}`;
+
+            const rawMessage = messageTemplate || `Olá {nome}, confirmamos seu agendamento para {horario}? Responda 1 para Sim ou 2 para Remarcar.`;
+            const text = processSpintax(rawMessage)
+              .replace('{nome}', patientName)
+              .replace('{horario}', new Date(appointmentStartTime).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }));
+
+            console.log(`[BullMQ Worker] Enviando confirmação para ${patientName} (${formattedPhone})...`);
+            const res = await evolutionClient.sendTextMessage({
+              instanceName,
+              number: formattedPhone,
+              text,
+            });
+            console.log(`[BullMQ Worker] Mensagem enviada com sucesso! ID: ${res.id}`);
+            return res;
+          },
+          { connection: connection as any }
+        );
+      } catch (err: any) {
+        console.warn('[BullMQ Worker] Não foi possível iniciar o worker:', err.message);
+      }
+    }
   }
 
   async addJob(
@@ -156,6 +188,7 @@ export class BullMQConfirmationQueue implements IConfirmationQueue {
   }
 
   async close(): Promise<void> {
+    if (this.worker) await this.worker.close();
     await this.queue.close();
   }
 }

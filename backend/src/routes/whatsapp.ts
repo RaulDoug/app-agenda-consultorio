@@ -104,3 +104,33 @@ whatsappSessionRouter.post('/connect', async (req: Request, res: Response): Prom
     res.status(500).json({ error: 'Erro ao solicitar conexão WhatsApp.', details: err.message });
   }
 });
+
+whatsappSessionRouter.post('/send', async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { number, text, instanceName } = req.body;
+    if (!number || !text) {
+      res.status(400).json({ error: 'Os campos number e text são obrigatórios.' });
+      return;
+    }
+
+    const client = getEvolutionClient();
+    const inst = instanceName || 'cliniassist_instance';
+
+    const cleanNumber = String(number).replace(/\D/g, '');
+    const formattedNumber = cleanNumber.startsWith('55') ? cleanNumber : `55${cleanNumber}`;
+
+    const sendRes = await client.sendTextMessage({
+      instanceName: inst,
+      number: formattedNumber,
+      text: String(text),
+    });
+
+    res.status(200).json({
+      success: true,
+      result: sendRes,
+    });
+  } catch (err: any) {
+    res.status(500).json({ error: 'Erro ao enviar mensagem WhatsApp.', details: err.message });
+  }
+});
+
