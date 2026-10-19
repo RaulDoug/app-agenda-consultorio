@@ -2,6 +2,8 @@ import React, { useState, useMemo } from 'react';
 import { LocalAppointmentWithDetails } from '../../agenda/types';
 import { ItemForDiscount, splitDiscountProportionally, calculateDiscountFromPercentage } from '../utils/discount-splitter';
 import { ItemPriceEditor } from './ItemPriceEditor';
+import { InstallmentsForm } from './InstallmentsForm';
+import type { InstallmentPlanItem } from '../../../db/repositories/financial-local-repository';
 
 export type PaymentMethod =
   | 'PIX'
@@ -18,6 +20,7 @@ export interface CheckoutResult {
   paymentMethod: PaymentMethod;
   entryCents?: number;
   installmentsCount?: number;
+  installments?: InstallmentPlanItem[];
   items: Array<{
     id: string;
     effectivePriceCents: number;
@@ -41,31 +44,71 @@ export const CheckoutDrawer: React.FC<CheckoutDrawerProps> = ({
   onOpenReturnDrawer,
   childrenInstallments,
 }) => {
-  if (!isOpen || !appointment) return null;
+  // Bloqueio de scroll do plano de fundo enquanto a gaveta estiver aberta (AC-094)
+  React.useEffect(() => {
+    if (isOpen) {
+      const originalOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      return () => {
+        document.body.style.overflow = originalOverflow;
+      };
+    }
+  }, [isOpen]);
 
   // Lista local de itens editáveis
   const [items, setItems] = useState<ItemForDiscount[]>(() => {
-    if (appointment.procedures && appointment.procedures.length > 0) {
+    if (appointment?.procedures && appointment.procedures.length > 0) {
       return appointment.procedures.map((p) => ({
         id: p.id,
         name: p.name,
         basePriceCents: p.default_price_cents,
       }));
     }
-    return [
-      {
-        id: crypto.randomUUID(),
-        name: appointment.notes || 'Atendimento Geral',
-        basePriceCents: 15000, // R$ 150,00
-      },
-    ];
+    if (appointment) {
+      return [
+        {
+          id: crypto.randomUUID(),
+          name: appointment.notes || 'Atendimento Geral',
+          basePriceCents: 15000, // R$ 150,00
+        },
+      ];
+    }
+    return [];
   });
 
   const [discountType, setDiscountType] = useState<'reais' | 'percentual'>('reais');
   const [discountValueInput, setDiscountValueInput] = useState<string>('0');
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('PIX');
+  const [installmentPlan, setInstallmentPlan] = useState<InstallmentPlanItem[]>([]);
+  const [isInstallmentsValid, setIsInstallmentsValid] = useState<boolean>(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+
+  // Sincroniza itens quando appointment mudar
+  React.useEffect(() => {
+    if (appointment?.procedures && appointment.procedures.length > 0) {
+      setItems(
+        appointment.procedures.map((p) => ({
+          id: p.id,
+          name: p.name,
+          basePriceCents: p.default_price_cents,
+        }))
+      );
+    } else if (appointment) {
+      setItems([
+        {
+          id: crypto.randomUUID(),
+          name: appointment.notes || 'Atendimento Geral',
+          basePriceCents: 15000,
+        },
+      ]);
+    } else {
+      setItems([]);
+    }
+    setDiscountValueInput('0');
+    setPaymentMethod('PIX');
+    setErrorMsg('');
+  }, [appointment?.id]);
 
   // Subtotal base
   const subtotalCents = useMemo(() => {
@@ -108,11 +151,18 @@ export const CheckoutDrawer: React.FC<CheckoutDrawerProps> = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (isSubmitting) return;
+    if (isSubmitting || !appointment) return;
 
     if (items.length === 0) {
       setErrorMsg('Não é possível concluir checkout sem procedimentos.');
       return;
+    }
+
+    if (paymentMethod === 'PARCELADO') {
+      if (!isInstallmentsValid || installmentPlan.length === 0) {
+        setErrorMsg('Por favor, configure o parcelamento corretamente.');
+        return;
+      }
     }
 
     setIsSubmitting(true);
@@ -125,6 +175,7 @@ export const CheckoutDrawer: React.FC<CheckoutDrawerProps> = ({
         discountCents: splitResult.discountCents,
         totalCents: splitResult.totalCents,
         paymentMethod,
+        installments: paymentMethod === 'PARCELADO' ? installmentPlan : undefined,
         items: splitResult.items.map((it) => ({
           id: it.id,
           effectivePriceCents: it.effectivePriceCents,
@@ -141,14 +192,20 @@ export const CheckoutDrawer: React.FC<CheckoutDrawerProps> = ({
     }
   };
 
+  if (!isOpen || !appointment) return null;
+
   return (
     <div
       className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/40 backdrop-blur-xs p-0 sm:p-4"
       role="dialog"
       aria-modal="true"
       aria-labelledby="checkout-title"
+      onClick={onClose}
     >
-      <div className="bg-white w-full sm:max-w-lg rounded-t-2xl sm:rounded-2xl shadow-xl flex flex-col max-h-[90vh] overflow-hidden animate-slide-up sm:animate-fade-in">
+      <div
+        className="bg-white w-full sm:max-w-lg rounded-t-2xl sm:rounded-2xl shadow-xl flex flex-col max-h-[90vh] overflow-hidden animate-slide-up sm:animate-fade-in"
+        onClick={(e) => e.stopPropagation()}
+      >
         {/* Cabeçalho */}
         <div className="flex items-center justify-between p-4 border-b border-slate-100 bg-slate-50/50">
           <div>
@@ -278,7 +335,17 @@ export const CheckoutDrawer: React.FC<CheckoutDrawerProps> = ({
           </div>
 
           {/* Seletor ou Formulário de Parcelamento Injetado */}
-          {paymentMethod === 'PARCELADO' && childrenInstallments}
+          {paymentMethod === 'PARCELADO' && (
+            childrenInstallments || (
+              <InstallmentsForm
+                totalCents={splitResult.totalCents}
+                onChangePlan={(plan, isValid) => {
+                  setInstallmentPlan(plan);
+                  setIsInstallmentsValid(isValid);
+                }}
+              />
+            )
+          )}
 
           {/* Botões do Rodapé */}
           <div className="pt-2 border-t border-slate-100 flex items-center justify-end gap-2">
@@ -292,7 +359,11 @@ export const CheckoutDrawer: React.FC<CheckoutDrawerProps> = ({
             </button>
             <button
               type="submit"
-              disabled={isSubmitting || items.length === 0}
+              disabled={
+                isSubmitting ||
+                items.length === 0 ||
+                (paymentMethod === 'PARCELADO' && (!isInstallmentsValid || installmentPlan.length === 0))
+              }
               className="px-5 py-2.5 bg-teal-600 hover:bg-teal-700 text-white text-xs font-bold rounded-lg shadow-sm transition active:scale-95 disabled:opacity-50 min-h-[44px]"
             >
               {isSubmitting ? 'Concluindo...' : 'Concluir Atendimento & Receber'}

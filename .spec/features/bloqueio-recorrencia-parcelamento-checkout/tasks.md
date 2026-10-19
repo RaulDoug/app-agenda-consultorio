@@ -12,7 +12,7 @@
 - Arquivos: frontend/src/features/agenda/components/AppointmentDetailsDrawer.tsx
 - Notas: Quando `appointment.status === 'COMPLETED'`, ocultar edição de procedimentos e botões normais de status. Exibir banner verde de atendimento faturado e botão secundário com caixa de confirmação em 2 passos para acionar `revertCheckout`.
 
-## T-087 — Frontend: Integração Nativa de `InstallmentsForm` e Validação no `CheckoutDrawer` [pendente]
+## T-087 — Frontend: Integração Nativa de `InstallmentsForm` e Validação no `CheckoutDrawer` [concluida]
 - Refs: US-061, AC-102
 - Arquivos: frontend/src/features/checkout/components/CheckoutDrawer.tsx
 - Notas: Renderizar `InstallmentsForm` nativamente ao escolher 'PARCELADO', gerenciar o estado do plano de parcelas e repassá-lo no `CheckoutResult` com bloqueio do botão se inválido.
