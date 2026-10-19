@@ -1,0 +1,22 @@
+{
+  "feature": "card-procedimentos-agenda",
+  "timestamp": "2026-10-19T19:19:57.753Z",
+  "gitRev": "fd9fbc3",
+  "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
+  "reporter": "vitest-json",
+  "exitCode": 0,
+  "testsParsed": 100,
+  "results": {
+    "AC-096": {
+      "status": "pass",
+      "testName": "Feature: Visualização Compacta de Procedimentos no Card da Agenda US-058 — Visualização Compacta e Empilhada de Procedimentos no Card da Agenda AC-096: Renderização vertical limitada a no máximo 2 procedimentos com reticências no card fechado @spec:AC-096 AC-096: Renderização vertical limitada a no máximo 2 procedimentos com reticências no card fechado @spec:AC-096",
+      "method": "vitest-json"
+    },
+    "AC-097": {
+      "status": "pass",
+      "testName": "Feature: Visualização Compacta de Procedimentos no Card da Agenda US-058 — Visualização Compacta e Empilhada de Procedimentos no Card da Agenda AC-097: Exibição completa de todos os procedimentos na abertura da gaveta de detalhes @spec:AC-097 AC-097: Exibição completa de todos os procedimentos na abertura da gaveta de detalhes @spec:AC-097",
+      "method": "vitest-json"
+    }
+  },
+  "principles": {}
+}

@@ -1,0 +1,22 @@
+{
+  "feature": "checkout-conclusao-agenda",
+  "timestamp": "2026-10-19T19:19:57.753Z",
+  "gitRev": "fd9fbc3",
+  "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
+  "reporter": "vitest-json",
+  "exitCode": 0,
+  "testsParsed": 100,
+  "results": {
+    "AC-098": {
+      "status": "pass",
+      "testName": "Feature: checkout-conclusao-agenda (TM-AGE-04 / TM-FIN-01) AC-098: Abertura da gaveta de checkout e baixa financeira com atualização de status ao concluir atendimento @spec:AC-098 AC-098: Abertura da gaveta de checkout e baixa financeira com atualização de status ao concluir atendimento @spec:AC-098",
+      "method": "vitest-json"
+    },
+    "AC-099": {
+      "status": "pass",
+      "testName": "Feature: checkout-conclusao-agenda (TM-AGE-04 / TM-FIN-01) AC-099: Edição de valores de procedimentos e seleção de forma de pagamento no fluxo de encerramento da consulta @spec:AC-099 AC-099: Edição de valores de procedimentos e seleção de forma de pagamento no fluxo de encerramento da consulta @spec:AC-099",
+      "method": "vitest-json"
+    }
+  },
+  "principles": {}
+}

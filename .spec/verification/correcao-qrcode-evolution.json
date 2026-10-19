@@ -1,0 +1,27 @@
+{
+  "feature": "correcao-qrcode-evolution",
+  "timestamp": "2026-10-19T19:19:57.753Z",
+  "gitRev": "fd9fbc3",
+  "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
+  "reporter": "vitest-json",
+  "exitCode": 0,
+  "testsParsed": 100,
+  "results": {
+    "AC-083": {
+      "status": "pass",
+      "testName": "Feature: Correção do QR Code e Resiliência na Evolution API — Backend US-051 — Resiliência na Emissão e Renderização do QR Code WhatsApp AC-083: Backend não emite base64 corrompido e retorna qrcode nulo em caso de sessão em processamento @spec:AC-083 AC-083: Backend não emite base64 corrompido e retorna qrcode nulo em caso de sessão em processamento @spec:AC-083",
+      "method": "vitest-json"
+    },
+    "AC-084": {
+      "status": "pass",
+      "testName": "Feature: Correção do QR Code e Resiliência na Evolution API — Frontend UI US-051 — Resiliência na Emissão e Renderização do QR Code WhatsApp AC-084: Frontend exibe placeholder amigável com spinner e proteção contra falha de imagem @spec:AC-084 AC-084: Frontend exibe placeholder amigável com spinner e proteção contra falha de imagem @spec:AC-084",
+      "method": "vitest-json"
+    },
+    "AC-085": {
+      "status": "pass",
+      "testName": "Feature: Correção do QR Code e Resiliência na Evolution API — Backend US-051 — Resiliência na Emissão e Renderização do QR Code WhatsApp AC-085: Limpeza de instâncias órfãs e isolamento de sessão única na Evolution API @spec:AC-085 AC-085: Limpeza de instâncias órfãs e isolamento de sessão única na Evolution API @spec:AC-085",
+      "method": "vitest-json"
+    }
+  },
+  "principles": {}
+}

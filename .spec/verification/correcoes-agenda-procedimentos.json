@@ -1,0 +1,32 @@
+{
+  "feature": "correcoes-agenda-procedimentos",
+  "timestamp": "2026-10-19T19:19:57.753Z",
+  "gitRev": "fd9fbc3",
+  "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
+  "reporter": "vitest-json",
+  "exitCode": 0,
+  "testsParsed": 100,
+  "results": {
+    "AC-089": {
+      "status": "pass",
+      "testName": "Feature: Correções e Edição de Procedimentos na Agenda US-053 — Estabilidade e Limpeza do Ciclo de Vida da Gaveta de Agendamento Rápido AC-089: Reset completo de formulário e reativação do botão ao reabrir a gaveta @spec:AC-089 AC-089: Reset completo de formulário e reativação do botão ao reabrir a gaveta @spec:AC-089",
+      "method": "vitest-json"
+    },
+    "AC-090": {
+      "status": "pass",
+      "testName": "Feature: Correções e Edição de Procedimentos na Agenda US-053 — Estabilidade e Limpeza do Ciclo de Vida da Gaveta de Agendamento Rápido AC-090: Deduplicação idempotente e IDs determinísticos na lista de procedimentos @spec:AC-090 AC-090: Deduplicação idempotente e IDs determinísticos na lista de procedimentos @spec:AC-090",
+      "method": "vitest-json"
+    },
+    "AC-091": {
+      "status": "pass",
+      "testName": "Feature: Correções e Edição de Procedimentos na Agenda US-054 — Ocupação Contínua de Horários e Edição de Procedimentos em Consulta Existente AC-091: Bloqueio e cobertura visual contínua de slots intermediários em consultas longas @spec:AC-091 AC-091: Bloqueio e cobertura visual contínua de slots intermediários em consultas longas @spec:AC-091",
+      "method": "vitest-json"
+    },
+    "AC-092": {
+      "status": "pass",
+      "testName": "Feature: Correções e Edição de Procedimentos na Agenda US-054 — Ocupação Contínua de Horários e Edição de Procedimentos em Consulta Existente AC-092: Edição interativa de procedimentos vinculados na consulta com recálculo de duração @spec:AC-092 AC-092: Edição interativa de procedimentos vinculados na consulta com recálculo de duração @spec:AC-092",
+      "method": "vitest-json"
+    }
+  },
+  "principles": {}
+}

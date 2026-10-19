@@ -1,0 +1,27 @@
+{
+  "feature": "replica-confirmacao-whatsapp",
+  "timestamp": "2026-10-19T19:19:57.753Z",
+  "gitRev": "fd9fbc3",
+  "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
+  "reporter": "vitest-json",
+  "exitCode": 0,
+  "testsParsed": 100,
+  "results": {
+    "AC-086": {
+      "status": "pass",
+      "testName": "Feature: Réplica Automática de Confirmação e Remarcação no WhatsApp — Backend US-052 — Réplica Automática de Confirmação e Remarcação para o Paciente AC-086: Envio de réplica humanizada de confirmação ao receber resposta positiva @spec:AC-086 AC-086: Envio de réplica humanizada de confirmação ao receber resposta positiva @spec:AC-086",
+      "method": "vitest-json"
+    },
+    "AC-087": {
+      "status": "pass",
+      "testName": "Feature: Réplica Automática de Confirmação e Remarcação no WhatsApp — Backend US-052 — Réplica Automática de Confirmação e Remarcação para o Paciente AC-087: Envio de réplica humanizada de remarcação ao receber resposta negativa @spec:AC-087 AC-087: Envio de réplica humanizada de remarcação ao receber resposta negativa @spec:AC-087",
+      "method": "vitest-json"
+    },
+    "AC-088": {
+      "status": "pass",
+      "testName": "Feature: Réplica Automática de Confirmação e Remarcação no WhatsApp — Backend US-052 — Réplica Automática de Confirmação e Remarcação para o Paciente AC-088: Resiliência no envio da réplica sem impactar a gravação no banco de dados @spec:AC-088 AC-088: Resiliência no envio da réplica sem impactar a gravação no banco de dados @spec:AC-088",
+      "method": "vitest-json"
+    }
+  },
+  "principles": {}
+}

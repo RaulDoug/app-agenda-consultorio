@@ -1,0 +1,27 @@
+{
+  "feature": "correcoes-agenda-ux-reschedule",
+  "timestamp": "2026-10-19T19:19:57.753Z",
+  "gitRev": "fd9fbc3",
+  "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
+  "reporter": "vitest-json",
+  "exitCode": 0,
+  "testsParsed": 100,
+  "results": {
+    "AC-093": {
+      "status": "pass",
+      "testName": "Feature: Controle de Encaixe, UX de Modais e Resiliência na Remarcação US-055 — Controle Explícito de Encaixe e Prevenção de Conflito de Horário AC-093: Checkbox explícito de autorização de encaixe em caso de sobreposição @spec:AC-093 AC-093: Checkbox explícito de autorização de encaixe em caso de sobreposição @spec:AC-093",
+      "method": "vitest-json"
+    },
+    "AC-094": {
+      "status": "pass",
+      "testName": "Feature: Controle de Encaixe, UX de Modais e Resiliência na Remarcação US-056 — Bloqueio de Scroll de Fundo e Fechamento por Clique no Backdrop AC-094: Scroll lock no body e fechamento ao clicar fora do card @spec:AC-094 AC-094: Scroll lock no body e fechamento ao clicar fora do card @spec:AC-094",
+      "method": "vitest-json"
+    },
+    "AC-095": {
+      "status": "pass",
+      "testName": "Feature: Controle de Encaixe, UX de Modais e Resiliência na Remarcação US-057 — Ciclo de Vida e Resiliência do Modal de Remarcação AC-095: Destravamento garantido e persistência de remarcação sem bloqueio de botão @spec:AC-095 AC-095: Destravamento garantido e persistência de remarcação sem bloqueio de botão @spec:AC-095",
+      "method": "vitest-json"
+    }
+  },
+  "principles": {}
+}
