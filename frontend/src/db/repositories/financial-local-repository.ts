@@ -41,6 +41,17 @@ export class FinancialLocalRepository {
       'rw',
       [this.db.financial_transactions, this.db.appointments, this.db.sync_outbox],
       async () => {
+        // Verifica se já existem transações ativas para este agendamento (AC-101)
+        const existingTxs = await this.db.financial_transactions
+          .where('appointment_id')
+          .equals(input.appointmentId)
+          .filter((tx) => tx.is_active && !tx.deleted_at)
+          .toArray();
+
+        if (existingTxs.length > 0) {
+          throw new Error(`O agendamento ${input.appointmentId} já possui faturamento registrado.`);
+        }
+
         // Atualiza status do agendamento para COMPLETED
         const app = await this.db.appointments.get(input.appointmentId);
         if (app) {
@@ -183,6 +194,64 @@ export class FinancialLocalRepository {
     );
 
     return updated;
+  }
+
+  async revertCheckout(appointmentId: string): Promise<void> {
+    const now = new Date().toISOString();
+    await this.db.transaction(
+      'rw',
+      [this.db.financial_transactions, this.db.appointments, this.db.sync_outbox],
+      async () => {
+        // 1. Reverte o status do agendamento para CONFIRMED
+        const app = await this.db.appointments.get(appointmentId);
+        if (app) {
+          const updatedApp = {
+            ...app,
+            status: 'CONFIRMED' as const,
+            updated_at: now,
+          };
+          await this.db.appointments.put(updatedApp);
+          await enqueueMutation(this.db, {
+            entity: 'appointments',
+            recordId: app.id,
+            operation: 'UPDATE',
+            payload: {
+              id: app.id,
+              status: 'CONFIRMED',
+              updated_at: now,
+            },
+          });
+        }
+
+        // 2. Soft-delete em todas as transações ativas associadas a este agendamento
+        const txs = await this.db.financial_transactions
+          .where('appointment_id')
+          .equals(appointmentId)
+          .filter((tx) => tx.is_active && !tx.deleted_at)
+          .toArray();
+
+        for (const tx of txs) {
+          const revertedTx: LocalFinancialTransaction = {
+            ...tx,
+            is_active: false,
+            deleted_at: now,
+            updated_at: now,
+          };
+          await this.db.financial_transactions.put(revertedTx);
+          await enqueueMutation(this.db, {
+            entity: 'financial_transactions',
+            recordId: tx.id,
+            operation: 'UPDATE',
+            payload: {
+              id: tx.id,
+              is_active: false,
+              deleted_at: now,
+              updated_at: now,
+            },
+          });
+        }
+      }
+    );
   }
 }
 
