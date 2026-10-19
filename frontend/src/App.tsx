@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { AppShell } from './components/layout/AppShell.js';
 import { type NavTabId } from './components/layout/BottomNav.js';
@@ -28,6 +28,7 @@ import { InstallmentsForm } from './features/checkout/components/InstallmentsFor
 import { SmartReturnDrawer } from './features/checkout/components/SmartReturnDrawer.js';
 
 import { SettingsView } from './features/settings/components/SettingsView.js';
+import { SyncManager } from './sync/sync-manager.js';
 import { Plus } from 'lucide-react';
 
 export interface AppProps {
@@ -40,11 +41,98 @@ export interface AppProps {
 export const App: React.FC<AppProps> = ({
   initialTab = 'agenda',
   db = localDb,
-  tenantId = 'tenant-default',
+  tenantId = '11111111-1111-1111-1111-111111111111',
   initialWhatsappConnected = true,
 }) => {
   const [activeTab, setActiveTab] = useState<NavTabId>(initialTab);
   const [whatsappConnected, setWhatsappConnected] = useState<boolean>(initialWhatsappConnected);
+  const [whatsappQrCode, setWhatsappQrCode] = useState<string | null>(null);
+  const [connectedNumber, setConnectedNumber] = useState<string | null>(null);
+
+  // Efeito de busca do status da sessão WhatsApp e polling quando desconectado
+  const fetchWhatsappSession = useCallback(async () => {
+    try {
+      const res = await fetch('/api/whatsapp/session', {
+        headers: { 'x-tenant-id': tenantId },
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setWhatsappConnected(Boolean(data.connected));
+        if (data.connected) {
+          setWhatsappQrCode(null);
+          if (data.number) setConnectedNumber(data.number);
+        } else if (data.qrcode) {
+          setWhatsappQrCode(data.qrcode);
+        }
+      }
+    } catch {
+      // Offline ou ambiente de testes
+    }
+  }, [tenantId]);
+
+  useEffect(() => {
+    fetchWhatsappSession();
+  }, [fetchWhatsappSession]);
+
+  // Polling leve a cada 3s quando na aba Ajustes e desconectado
+  useEffect(() => {
+    if (activeTab !== 'ajustes' || whatsappConnected) return;
+
+    const interval = setInterval(() => {
+      fetchWhatsappSession();
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [activeTab, whatsappConnected, fetchWhatsappSession]);
+
+  // Sincronização delta periódica em segundo plano (atualiza agendamentos confirmados via WhatsApp)
+  const syncManager = useMemo(
+    () => new SyncManager({ tenantId, db }),
+    [tenantId, db]
+  );
+
+  const runSync = useCallback(async () => {
+    try {
+      await syncManager.sync();
+    } catch {
+      // Offline ou ambiente de testes
+    }
+  }, [syncManager]);
+
+  useEffect(() => {
+    runSync();
+    const syncInterval = setInterval(runSync, 4000);
+    return () => clearInterval(syncInterval);
+  }, [runSync]);
+
+  const handleRefreshWhatsapp = async () => {
+    try {
+      const res = await fetch('/api/whatsapp/connect', {
+        method: 'POST',
+        headers: { 'x-tenant-id': tenantId },
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.qrcode) setWhatsappQrCode(data.qrcode);
+      }
+    } catch {
+      // Fallback
+    }
+    await fetchWhatsappSession();
+  };
+
+  const handleDisconnectWhatsapp = async () => {
+    try {
+      await fetch('/api/whatsapp/disconnect', {
+        method: 'POST',
+        headers: { 'x-tenant-id': tenantId },
+      });
+    } catch {
+      // Fallback
+    }
+    setWhatsappConnected(false);
+    await fetchWhatsappSession();
+  };
 
   // Repositórios com banco injetado
   const appointmentRepo = useMemo(() => new AppointmentLocalRepository(db), [db]);
@@ -60,6 +148,7 @@ export const App: React.FC<AppProps> = ({
   const patients = useLiveQuery(() => db.patients.toArray(), [db]) || [];
   const appointments = useLiveQuery(() => db.appointments.toArray(), [db]) || [];
   const procedures = useLiveQuery(() => db.procedures.toArray(), [db]) || [];
+  const appointmentItems = useLiveQuery(() => db.appointment_items.toArray(), [db]) || [];
   const transactions = useLiveQuery(() => db.financial_transactions.toArray(), [db]) || [];
 
   // Estado da Agenda
@@ -85,8 +174,21 @@ export const App: React.FC<AppProps> = ({
   // Agendamentos enriquecidos para exibição na grade
   const detailedAppointments: LocalAppointmentWithDetails[] = useMemo(() => {
     const patientMap = new Map(patients.map((p) => [p.id, p]));
+    const procedureMap = new Map(procedures.map((pr) => [pr.id, pr]));
+
+    const itemsByApp = new Map<string, typeof procedures>();
+    for (const item of appointmentItems) {
+      const proc = procedureMap.get(item.procedure_id);
+      if (proc) {
+        const current = itemsByApp.get(item.appointment_id) || [];
+        current.push(proc);
+        itemsByApp.set(item.appointment_id, current);
+      }
+    }
+
     return appointments.map((app) => {
       const patient = patientMap.get(app.patient_id);
+      const appProcedures = itemsByApp.get(app.id) || [];
       return {
         id: app.id,
         tenant_id: app.tenant_id,
@@ -98,10 +200,10 @@ export const App: React.FC<AppProps> = ({
         status: app.status,
         is_extra_fit: app.is_extra_fit,
         notes: app.notes,
-        procedures: [],
+        procedures: appProcedures,
       };
     });
-  }, [appointments, patients]);
+  }, [appointments, patients, procedures, appointmentItems]);
 
   // Manipuladores de Slot e Agendamento
   const handleSlotClick = (date: Date, timeStr: string) => {
@@ -124,38 +226,42 @@ export const App: React.FC<AppProps> = ({
 
   // Concluir Checkout e gerar transações
   const handleCompleteCheckout = async (result: CheckoutResult) => {
-    if (result.paymentMethod === 'PARCELADO' && result.installmentsCount) {
-      const count = result.installmentsCount;
-      const entry = result.entryCents || 0;
-      const remaining = result.totalCents - entry;
-      const installmentValue = Math.floor(remaining / count);
-      const remainder = remaining % count;
+    if (result.paymentMethod === 'PARCELADO') {
+      let installmentsList = result.installments;
 
-      const installmentsList = [];
-      if (entry > 0) {
-        installmentsList.push({
-          installmentNumber: 0,
-          totalInstallments: count,
-          dueDate: new Date().toISOString().split('T')[0],
-          amountCents: entry,
-          status: 'PAID' as const,
-          paymentDate: new Date().toISOString(),
-          description: 'Entrada Checkout',
-        });
-      }
+      if (!installmentsList || installmentsList.length === 0) {
+        const count = result.installmentsCount || 1;
+        const entry = result.entryCents || 0;
+        const remaining = result.totalCents - entry;
+        const installmentValue = Math.floor(remaining / count);
+        const remainder = remaining % count;
 
-      for (let i = 1; i <= count; i++) {
-        const d = new Date();
-        d.setMonth(d.getMonth() + i);
-        installmentsList.push({
-          installmentNumber: i,
-          totalInstallments: count,
-          dueDate: d.toISOString().split('T')[0],
-          amountCents: i === 1 ? installmentValue + remainder : installmentValue,
-          status: 'PENDING' as const,
-          paymentDate: null,
-          description: `Parcela ${i}/${count}`,
-        });
+        installmentsList = [];
+        if (entry > 0) {
+          installmentsList.push({
+            installmentNumber: 0,
+            totalInstallments: count,
+            dueDate: new Date().toISOString().split('T')[0],
+            amountCents: entry,
+            status: 'PAID' as const,
+            paymentDate: new Date().toISOString(),
+            description: 'Entrada Checkout',
+          });
+        }
+
+        for (let i = 1; i <= count; i++) {
+          const d = new Date();
+          d.setMonth(d.getMonth() + i);
+          installmentsList.push({
+            installmentNumber: i,
+            totalInstallments: count,
+            dueDate: d.toISOString().split('T')[0],
+            amountCents: i === 1 ? installmentValue + remainder : installmentValue,
+            status: 'PENDING' as const,
+            paymentDate: null,
+            description: `Parcela ${i}/${count}`,
+          });
+        }
       }
 
       await financialRepo.recordCheckout({
@@ -185,6 +291,7 @@ export const App: React.FC<AppProps> = ({
       });
     }
 
+    await appointmentRepo.updateStatus(result.appointmentId, 'COMPLETED');
     setCheckoutAppointment(null);
   };
 
@@ -297,8 +404,10 @@ export const App: React.FC<AppProps> = ({
             tenantId={tenantId}
             repo={settingsRepo}
             whatsappConnected={whatsappConnected}
-            onRefreshWhatsApp={async () => setWhatsappConnected(true)}
-            onDisconnectWhatsApp={async () => setWhatsappConnected(false)}
+            qrCodeBase64={whatsappQrCode}
+            connectedNumber={connectedNumber}
+            onRefreshWhatsApp={handleRefreshWhatsapp}
+            onDisconnectWhatsApp={handleDisconnectWhatsapp}
           />
         </div>
       )}
@@ -323,12 +432,19 @@ export const App: React.FC<AppProps> = ({
         appointment={selectedAppointment}
         onClose={() => setSelectedAppointment(null)}
         appointmentRepo={appointmentRepo}
+        procedureRepo={procedureRepo}
+        financialRepo={financialRepo}
+        tenantId={tenantId}
         onStatusChanged={(updated) => {
           setSelectedAppointment(null);
         }}
         onOpenReschedule={(app) => {
           setSelectedAppointment(null);
           setRescheduleAppointment(app);
+        }}
+        onOpenCheckout={(app) => {
+          setSelectedAppointment(null);
+          setCheckoutAppointment(app);
         }}
       />
 
@@ -337,27 +453,33 @@ export const App: React.FC<AppProps> = ({
         isOpen={Boolean(rescheduleAppointment)}
         appointment={rescheduleAppointment}
         onClose={() => setRescheduleAppointment(null)}
-        appointmentRepo={appointmentRepo}
-        onRescheduled={() => setRescheduleAppointment(null)}
+        onRescheduled={(updated) => {
+          if (updated?.start_time) {
+            setCurrentDate(new Date(updated.start_time));
+          }
+          setRescheduleAppointment(null);
+        }}
       />
 
       {/* Gaveta de Checkout Financeiro */}
-      <CheckoutDrawer
-        isOpen={Boolean(checkoutAppointment)}
-        appointment={checkoutAppointment}
-        onClose={() => setCheckoutAppointment(null)}
-        onCompleteCheckout={handleCompleteCheckout}
-        onOpenReturnDrawer={() => {
-          if (checkoutAppointment) {
-            setSmartReturnData({
-              patientId: checkoutAppointment.patient_id,
-              patientName: checkoutAppointment.patient_name,
-              baseDate: new Date(checkoutAppointment.start_time),
-              preferredTimeStr: '09:00',
-            });
-          }
-        }}
-      />
+      {checkoutAppointment && (
+        <CheckoutDrawer
+          isOpen={Boolean(checkoutAppointment)}
+          appointment={checkoutAppointment}
+          onClose={() => setCheckoutAppointment(null)}
+          onCompleteCheckout={handleCompleteCheckout}
+          onOpenReturnDrawer={() => {
+            if (checkoutAppointment) {
+              setSmartReturnData({
+                patientId: checkoutAppointment.patient_id,
+                patientName: checkoutAppointment.patient_name,
+                baseDate: new Date(checkoutAppointment.start_time),
+                preferredTimeStr: '09:00',
+              });
+            }
+          }}
+        />
+      )}
 
       {/* Gaveta de Retorno Inteligente */}
       {smartReturnData && (

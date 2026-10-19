@@ -17,7 +17,7 @@
 - Arquivos: frontend/src/features/checkout/components/CheckoutDrawer.tsx
 - Notas: Renderizar `InstallmentsForm` nativamente ao escolher 'PARCELADO', gerenciar o estado do plano de parcelas e repassá-lo no `CheckoutResult` com bloqueio do botão se inválido.
 
-## T-088 — Frontend: Conexão do Repositório Financeiro e Suporte a Parcelas no `App.tsx` [pendente]
+## T-088 — Frontend: Conexão do Repositório Financeiro e Suporte a Parcelas no `App.tsx` [concluida]
 - Refs: US-061, US-062, AC-102, AC-103
 - Arquivos: frontend/src/App.tsx
 - Notas: Repassar as parcelas configuradas no checkout para `financialRepo.recordCheckout` e repassar a instância `financialRepo` para o `AppointmentDetailsDrawer`.
