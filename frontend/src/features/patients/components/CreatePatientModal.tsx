@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { LocalPatient } from '../../../db/types';
 import { PatientLocalRepository, patientLocalRepo } from '../../../db/repositories/patient-local-repository';
-import { User, Phone, FileText, X } from 'lucide-react';
+import { User, Phone, FileText, X, Trash2 } from 'lucide-react';
 
 export interface CreatePatientModalProps {
   isOpen: boolean;
@@ -11,6 +11,7 @@ export interface CreatePatientModalProps {
   patientToEdit?: LocalPatient | null;
   onPatientCreated?: (patient: LocalPatient) => void;
   onPatientSaved?: (patient: LocalPatient) => void;
+  onDeletePatient?: (patient: LocalPatient) => void;
 }
 
 export const CreatePatientModal: React.FC<CreatePatientModalProps> = ({
@@ -21,6 +22,7 @@ export const CreatePatientModal: React.FC<CreatePatientModalProps> = ({
   patientToEdit,
   onPatientCreated,
   onPatientSaved,
+  onDeletePatient,
 }) => {
   const [name, setName] = useState('');
   const [whatsapp, setWhatsapp] = useState('');
@@ -205,29 +207,46 @@ export const CreatePatientModal: React.FC<CreatePatientModalProps> = ({
           </div>
 
           {/* Rodapé com Botões */}
-          <div className="pt-2 border-t border-slate-100 flex items-center justify-end gap-2">
-            <button
-              type="button"
-              onClick={onClose}
-              disabled={isSubmitting}
-              className="px-4 py-2 text-xs font-semibold text-slate-600 hover:text-slate-800"
-            >
-              Cancelar
-            </button>
-            <button
-              type="submit"
-              data-testid={isEditing ? 'btn-save-patient' : 'btn-submit-patient'}
-              disabled={isSubmitting}
-              className="px-5 py-2.5 bg-teal-600 hover:bg-teal-700 text-white text-xs font-bold rounded-xl shadow-xs transition active:scale-95 disabled:opacity-50 min-h-[44px]"
-            >
-              {isSubmitting
-                ? isEditing
-                  ? 'Salvando...'
-                  : 'Cadastrando...'
-                : isEditing
-                ? 'Salvar Alterações'
-                : 'Cadastrar Paciente'}
-            </button>
+          <div className="pt-2 border-t border-slate-100 flex items-center justify-between gap-2">
+            <div>
+              {isEditing && patientToEdit && onDeletePatient && (
+                <button
+                  type="button"
+                  data-testid="btn-delete-patient-modal"
+                  onClick={() => {
+                    onDeletePatient(patientToEdit);
+                  }}
+                  className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-rose-700 bg-rose-50 hover:bg-rose-100 rounded-xl transition"
+                >
+                  <Trash2 className="w-3.5 h-3.5 text-rose-600" />
+                  Excluir Paciente
+                </button>
+              )}
+            </div>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={onClose}
+                disabled={isSubmitting}
+                className="px-4 py-2 text-xs font-semibold text-slate-600 hover:text-slate-800"
+              >
+                Cancelar
+              </button>
+              <button
+                type="submit"
+                data-testid={isEditing ? 'btn-save-patient' : 'btn-submit-patient'}
+                disabled={isSubmitting}
+                className="px-5 py-2.5 bg-teal-600 hover:bg-teal-700 text-white text-xs font-bold rounded-xl shadow-xs transition active:scale-95 disabled:opacity-50 min-h-[44px]"
+              >
+                {isSubmitting
+                  ? isEditing
+                    ? 'Salvando...'
+                    : 'Cadastrando...'
+                  : isEditing
+                  ? 'Salvar Alterações'
+                  : 'Cadastrar Paciente'}
+              </button>
+            </div>
           </div>
         </form>
       </div>

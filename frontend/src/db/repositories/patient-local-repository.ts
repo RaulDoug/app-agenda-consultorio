@@ -87,6 +87,33 @@ export class PatientLocalRepository {
       .filter((p) => p.is_active && (p.name.toLowerCase().includes(q) || p.whatsapp.includes(q)))
       .toArray();
   }
+
+  /**
+   * Realiza a exclusão lógica (soft-delete) do paciente, desativando-o e enfileirando mutação DELETE na outbox.
+   */
+  async deletePatient(id: string): Promise<void> {
+    const existing = await this.db.patients.get(id);
+    if (!existing) {
+      throw new Error(`Paciente com id ${id} não encontrado no banco local.`);
+    }
+
+    const now = new Date().toISOString();
+    const updated: LocalPatient = {
+      ...existing,
+      is_active: false,
+      updated_at: now,
+    };
+
+    await this.db.transaction('rw', [this.db.patients, this.db.sync_outbox], async () => {
+      await this.db.patients.put(updated);
+      await enqueueMutation(this.db, {
+        entity: 'patients',
+        recordId: id,
+        operation: 'DELETE',
+        payload: { id, is_active: false, updated_at: now },
+      });
+    });
+  }
 }
 
 export const patientLocalRepo = new PatientLocalRepository();

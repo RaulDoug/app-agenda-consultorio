@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { LocalPatient } from '../../../db/types';
 import { PatientWithHistoryStatus } from '../types';
-import { FileText, ChevronDown, ChevronUp, Pencil } from 'lucide-react';
+import { FileText, ChevronDown, ChevronUp, Pencil, Trash2 } from 'lucide-react';
 
 interface PatientCardProps {
   item: PatientWithHistoryStatus;
   onSchedule?: (patient: PatientWithHistoryStatus) => void;
   onEdit?: (patient: LocalPatient) => void;
+  onDelete?: (patient: LocalPatient) => void;
   onClick?: (patient: PatientWithHistoryStatus) => void;
 }
 
@@ -14,6 +15,7 @@ export const PatientCard: React.FC<PatientCardProps> = ({
   item,
   onSchedule,
   onEdit,
+  onDelete,
   onClick,
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -147,8 +149,21 @@ export const PatientCard: React.FC<PatientCardProps> = ({
             </div>
           </div>
 
-          {/* Botão de Edição */}
-          <div className="flex items-center justify-end pt-1">
+          {/* Botões de Ação: Excluir e Editar */}
+          <div className="flex items-center justify-between pt-1">
+            <button
+              type="button"
+              data-testid={`btn-delete-patient-${patient.id}`}
+              onClick={(e) => {
+                e.stopPropagation();
+                onDelete?.(patient);
+              }}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-rose-700 bg-rose-50 hover:bg-rose-100 hover:text-rose-800 rounded-lg transition"
+            >
+              <Trash2 className="w-3.5 h-3.5 text-rose-600" />
+              Excluir
+            </button>
+
             <button
               type="button"
               data-testid={`btn-edit-patient-${patient.id}`}

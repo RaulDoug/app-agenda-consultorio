@@ -1,0 +1,92 @@
+{
+  "runId": "App-Agenda-Consultório-exclusao-cadastro-paciente-mvfpzg6g",
+  "feature": "exclusao-cadastro-paciente",
+  "agent": "antigravity",
+  "modo": "paralelo",
+  "paralelizar": null,
+  "modeloForcado": null,
+  "esforcoForcado": null,
+  "geradoEm": "2026-10-19 20:41",
+  "branchTrabalho": "spec/exclusao-cadastro-paciente",
+  "baseDir": ".spec/features/exclusao-cadastro-paciente",
+  "specDir": ".spec",
+  "repoName": "App-Agenda-Consultório",
+  "logsDir": "../onp-worktrees/App-Agenda-Consultório-exclusao-cadastro-paciente-logs",
+  "ondas": [
+    [
+      "faixa-1",
+      "faixa-2",
+      "faixa-3"
+    ]
+  ],
+  "faixas": [
+    {
+      "id": "faixa-1",
+      "branch": "spec/exclusao-cadastro-paciente-faixa-1",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-exclusao-cadastro-paciente-faixa-1",
+      "tarefas": [
+        {
+          "id": "T-103",
+          "titulo": "Método deletePatient com soft-delete e mutação na outbox em PatientLocalRepository",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "frontend/src/db/repositories/patient-local-repository.ts"
+          ],
+          "refs": [
+            "US-071",
+            "AC-116"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "faixa-2",
+      "branch": "spec/exclusao-cadastro-paciente-faixa-2",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-exclusao-cadastro-paciente-faixa-2",
+      "tarefas": [
+        {
+          "id": "T-104",
+          "titulo": "Ação de exclusão no PatientCard, modal de confirmação e integração reativa no App",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "frontend/src/features/patients/components/PatientCard.tsx",
+            "frontend/src/features/patients/components/ConfirmDeletePatientModal.tsx",
+            "frontend/src/features/patients/components/PatientList.tsx",
+            "frontend/src/features/patients/components/CreatePatientModal.tsx",
+            "frontend/src/App.tsx"
+          ],
+          "refs": [
+            "US-071",
+            "AC-117"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "faixa-3",
+      "branch": "spec/exclusao-cadastro-paciente-faixa-3",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-exclusao-cadastro-paciente-faixa-3",
+      "tarefas": [
+        {
+          "id": "T-105",
+          "titulo": "Testes automatizados TDD com prova mecânica e auditoria CI",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "frontend/src/features/patients/__tests__/exclusao-paciente.spec.tsx"
+          ],
+          "refs": [
+            "US-071",
+            "AC-116",
+            "AC-117"
+          ]
+        }
+      ]
+    }
+  ],
+  "sequenciais": [],
+  "concluidas": [],
+  "avisos": []
+}

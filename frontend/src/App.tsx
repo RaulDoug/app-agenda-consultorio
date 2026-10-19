@@ -32,6 +32,7 @@ import { SettingsView } from './features/settings/components/SettingsView.js';
 import { ReportsView } from './features/analytics/components/ReportsView.js';
 import { MoreMenuHub } from './components/layout/MoreMenuHub.js';
 import { CreatePatientModal } from './features/patients/components/CreatePatientModal.js';
+import { ConfirmDeletePatientModal } from './features/patients/components/ConfirmDeletePatientModal.js';
 import { SyncManager } from './sync/sync-manager.js';
 import { Plus } from 'lucide-react';
 
@@ -149,7 +150,8 @@ export const App: React.FC<AppProps> = ({
   const { connectionStatus } = useConnectionStatus();
 
   // Dados reativos do Dexie
-  const patients = useLiveQuery(() => db.patients.toArray(), [db]) || [];
+  const allPatients = useLiveQuery(() => db.patients.toArray(), [db]) || [];
+  const activePatients = useMemo(() => allPatients.filter((p) => p.is_active), [allPatients]);
   const appointments = useLiveQuery(() => db.appointments.toArray(), [db]) || [];
   const procedures = useLiveQuery(() => db.procedures.toArray(), [db]) || [];
   const appointmentItems = useLiveQuery(() => db.appointment_items.toArray(), [db]) || [];
@@ -171,6 +173,8 @@ export const App: React.FC<AppProps> = ({
   const [isExpenseModalOpen, setIsExpenseModalOpen] = useState(false);
   const [isCreatePatientOpen, setIsCreatePatientOpen] = useState(false);
   const [editingPatient, setEditingPatient] = useState<LocalPatient | null>(null);
+  const [patientToDelete, setPatientToDelete] = useState<LocalPatient | null>(null);
+  const [isDeletePatientOpen, setIsDeletePatientOpen] = useState(false);
   const [smartReturnData, setSmartReturnData] = useState<{
     patientId: string;
     patientName: string;
@@ -178,9 +182,19 @@ export const App: React.FC<AppProps> = ({
     preferredTimeStr: string;
   } | null>(null);
 
+  const handleConfirmDeletePatient = async (patient: LocalPatient) => {
+    await patientRepo.deletePatient(patient.id);
+    setIsDeletePatientOpen(false);
+    setPatientToDelete(null);
+    if (editingPatient?.id === patient.id) {
+      setIsCreatePatientOpen(false);
+      setEditingPatient(null);
+    }
+  };
+
   // Agendamentos enriquecidos para exibição na grade
   const detailedAppointments: LocalAppointmentWithDetails[] = useMemo(() => {
-    const patientMap = new Map(patients.map((p) => [p.id, p]));
+    const patientMap = new Map(allPatients.map((p) => [p.id, p]));
     const procedureMap = new Map(procedures.map((pr) => [pr.id, pr]));
 
     const itemsByApp = new Map<string, typeof procedures>();
@@ -210,7 +224,7 @@ export const App: React.FC<AppProps> = ({
         procedures: appProcedures,
       };
     });
-  }, [appointments, patients, procedures, appointmentItems]);
+  }, [appointments, allPatients, procedures, appointmentItems]);
 
   // Manipuladores de Slot e Agendamento
   const handleSlotClick = (date: Date, timeStr: string) => {
@@ -369,7 +383,7 @@ export const App: React.FC<AppProps> = ({
 
           <PatientList
             tenantId={tenantId}
-            patients={patients}
+            patients={activePatients}
             appointments={appointments}
             onOpenCreateModal={() => {
               setEditingPatient(null);
@@ -378,6 +392,10 @@ export const App: React.FC<AppProps> = ({
             onEditPatient={(patient) => {
               setEditingPatient(patient);
               setIsCreatePatientOpen(true);
+            }}
+            onDeletePatient={(patient) => {
+              setPatientToDelete(patient);
+              setIsDeletePatientOpen(true);
             }}
             onSchedule={(pw) => {
               setQuickPatient(pw.patient);
@@ -414,7 +432,7 @@ export const App: React.FC<AppProps> = ({
           />
 
           <InactivePatientsList
-            patients={patients}
+            patients={activePatients}
             appointments={appointments}
             onSchedule={(patient) => {
               setQuickPatient(patient);
@@ -449,7 +467,7 @@ export const App: React.FC<AppProps> = ({
             appointmentItems={appointmentItems}
             procedures={procedures}
             transactions={transactions}
-            patients={patients}
+            patients={activePatients}
           />
         </div>
       )}
@@ -459,7 +477,7 @@ export const App: React.FC<AppProps> = ({
         <div data-testid="mais-tab-content">
           <MoreMenuHub
             onSelectSection={(tab) => setActiveTab(tab)}
-            patientCount={patients.length}
+            patientCount={activePatients.length}
           />
         </div>
       )}
@@ -586,6 +604,21 @@ export const App: React.FC<AppProps> = ({
           setIsCreatePatientOpen(false);
           setEditingPatient(null);
         }}
+        onDeletePatient={(patient) => {
+          setPatientToDelete(patient);
+          setIsDeletePatientOpen(true);
+        }}
+      />
+
+      {/* Modal de Confirmação de Exclusão de Paciente */}
+      <ConfirmDeletePatientModal
+        isOpen={isDeletePatientOpen}
+        patient={patientToDelete}
+        onClose={() => {
+          setIsDeletePatientOpen(false);
+          setPatientToDelete(null);
+        }}
+        onConfirm={handleConfirmDeletePatient}
       />
     </AppShell>
   );
