@@ -1,0 +1,142 @@
+{
+  "runId": "App-Agenda-Consultório-bloqueio-recorrencia-parcelamento-checkout-mvfmmigi",
+  "feature": "bloqueio-recorrencia-parcelamento-checkout",
+  "agent": "antigravity",
+  "modo": "paralelo",
+  "paralelizar": null,
+  "modeloForcado": null,
+  "esforcoForcado": null,
+  "geradoEm": "2026-10-19 19:07",
+  "branchTrabalho": "spec/bloqueio-recorrencia-parcelamento-checkout",
+  "baseDir": ".spec/features/bloqueio-recorrencia-parcelamento-checkout",
+  "specDir": ".spec",
+  "repoName": "App-Agenda-Consultório",
+  "logsDir": "../onp-worktrees/App-Agenda-Consultório-bloqueio-recorrencia-parcelamento-checkout-logs",
+  "ondas": [
+    [
+      "faixa-1",
+      "faixa-2",
+      "faixa-3"
+    ],
+    [
+      "faixa-4",
+      "faixa-5"
+    ]
+  ],
+  "faixas": [
+    {
+      "id": "faixa-1",
+      "branch": "spec/bloqueio-recorrencia-parcelamento-checkout-faixa-1",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-bloqueio-recorrencia-parcelamento-checkout-faixa-1",
+      "tarefas": [
+        {
+          "id": "T-085",
+          "titulo": "Repositório Financeiro: Salvaguarda Idempotente e Método de Estorno (`revertCheckout`)",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "frontend/src/db/repositories/financial-local-repository.ts"
+          ],
+          "refs": [
+            "US-060",
+            "US-062",
+            "AC-101",
+            "AC-103"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "faixa-2",
+      "branch": "spec/bloqueio-recorrencia-parcelamento-checkout-faixa-2",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-bloqueio-recorrencia-parcelamento-checkout-faixa-2",
+      "tarefas": [
+        {
+          "id": "T-086",
+          "titulo": "Frontend: Bloqueio de Ações Rápidas, Banner Informativo e Botão com Confirmação de Estorno",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "frontend/src/features/agenda/components/AppointmentDetailsDrawer.tsx"
+          ],
+          "refs": [
+            "US-060",
+            "US-062",
+            "AC-100",
+            "AC-103"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "faixa-3",
+      "branch": "spec/bloqueio-recorrencia-parcelamento-checkout-faixa-3",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-bloqueio-recorrencia-parcelamento-checkout-faixa-3",
+      "tarefas": [
+        {
+          "id": "T-087",
+          "titulo": "Frontend: Integração Nativa de `InstallmentsForm` e Validação no `CheckoutDrawer`",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "frontend/src/features/checkout/components/CheckoutDrawer.tsx"
+          ],
+          "refs": [
+            "US-061",
+            "AC-102"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "faixa-4",
+      "branch": "spec/bloqueio-recorrencia-parcelamento-checkout-faixa-4",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-bloqueio-recorrencia-parcelamento-checkout-faixa-4",
+      "tarefas": [
+        {
+          "id": "T-088",
+          "titulo": "Frontend: Conexão do Repositório Financeiro e Suporte a Parcelas no `App.tsx`",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "frontend/src/App.tsx"
+          ],
+          "refs": [
+            "US-061",
+            "US-062",
+            "AC-102",
+            "AC-103"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "faixa-5",
+      "branch": "spec/bloqueio-recorrencia-parcelamento-checkout-faixa-5",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-bloqueio-recorrencia-parcelamento-checkout-faixa-5",
+      "tarefas": [
+        {
+          "id": "T-089",
+          "titulo": "Testes Automatizados TDD com Prova Mecânica e Auditoria CI",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "frontend/src/features/agenda/__tests__/bloqueio-status-parcelamento.spec.tsx"
+          ],
+          "refs": [
+            "US-060",
+            "US-061",
+            "US-062",
+            "AC-100",
+            "AC-101",
+            "AC-102",
+            "AC-103"
+          ]
+        }
+      ]
+    }
+  ],
+  "sequenciais": [],
+  "concluidas": [],
+  "avisos": []
+}

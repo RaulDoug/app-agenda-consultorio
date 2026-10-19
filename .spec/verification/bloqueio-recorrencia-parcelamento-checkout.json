@@ -1,0 +1,32 @@
+{
+  "feature": "bloqueio-recorrencia-parcelamento-checkout",
+  "timestamp": "2026-10-19T19:17:48.139Z",
+  "gitRev": "3b16168",
+  "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
+  "reporter": "vitest-json",
+  "exitCode": 0,
+  "testsParsed": 104,
+  "results": {
+    "AC-100": {
+      "status": "pass",
+      "testName": "Feature: bloqueio-recorrencia-parcelamento-checkout (TM-AGE-04 / TM-FIN-01) AC-100: Bloqueio visual de ações rápidas de status e edição em consultas concluídas @spec:AC-100 AC-100: Bloqueio visual de ações rápidas de status e edição em consultas concluídas @spec:AC-100",
+      "method": "vitest-json"
+    },
+    "AC-101": {
+      "status": "pass",
+      "testName": "Feature: bloqueio-recorrencia-parcelamento-checkout (TM-AGE-04 / TM-FIN-01) AC-101: Proteção idempotente no repositório financeiro contra checkout duplicado @spec:AC-101 AC-101: Proteção idempotente no repositório financeiro contra checkout duplicado @spec:AC-101",
+      "method": "vitest-json"
+    },
+    "AC-102": {
+      "status": "pass",
+      "testName": "Feature: bloqueio-recorrencia-parcelamento-checkout (TM-AGE-04 / TM-FIN-01) AC-102: Integração nativa do formulário de parcelamento com entrada e vencimentos no checkout @spec:AC-102 AC-102: Integração nativa do formulário de parcelamento com entrada e vencimentos no checkout @spec:AC-102",
+      "method": "vitest-json"
+    },
+    "AC-103": {
+      "status": "pass",
+      "testName": "Feature: bloqueio-recorrencia-parcelamento-checkout (TM-AGE-04 / TM-FIN-01) AC-103: Estorno financeiro com desativação de transações e reabertura do agendamento para CONFIRMED @spec:AC-103 AC-103: Estorno financeiro com desativação de transações e reabertura do agendamento para CONFIRMED @spec:AC-103",
+      "method": "vitest-json"
+    }
+  },
+  "principles": {}
+}

@@ -22,7 +22,7 @@
 - Arquivos: frontend/src/App.tsx
 - Notas: Repassar as parcelas configuradas no checkout para `financialRepo.recordCheckout` e repassar a instância `financialRepo` para o `AppointmentDetailsDrawer`.
 
-## T-089 — Testes Automatizados TDD com Prova Mecânica e Auditoria CI [pendente]
+## T-089 — Testes Automatizados TDD com Prova Mecânica e Auditoria CI [concluida]
 - Refs: US-060, US-061, US-062, AC-100, AC-101, AC-102, AC-103
 - Arquivos: frontend/src/features/agenda/__tests__/bloqueio-status-parcelamento.spec.tsx
 - Notas: Suíte de testes RTL + IndexedDB cobrindo AC-100, AC-101, AC-102 e AC-103, validação com `onp-spec verify` e auditoria `audit --ci`.
