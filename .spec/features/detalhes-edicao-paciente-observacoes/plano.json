@@ -1,0 +1,121 @@
+{
+  "runId": "App-Agenda-Consultório-detalhes-edicao-paciente-observacoes-mvfp1uf0",
+  "feature": "detalhes-edicao-paciente-observacoes",
+  "agent": "antigravity",
+  "modo": "paralelo",
+  "paralelizar": null,
+  "modeloForcado": null,
+  "esforcoForcado": null,
+  "geradoEm": "2026-10-19 20:15",
+  "branchTrabalho": "spec/detalhes-edicao-paciente-observacoes",
+  "baseDir": ".spec/features/detalhes-edicao-paciente-observacoes",
+  "specDir": ".spec",
+  "repoName": "App-Agenda-Consultório",
+  "logsDir": "../onp-worktrees/App-Agenda-Consultório-detalhes-edicao-paciente-observacoes-logs",
+  "ondas": [
+    [
+      "faixa-1",
+      "faixa-2",
+      "faixa-3"
+    ],
+    [
+      "faixa-4"
+    ]
+  ],
+  "faixas": [
+    {
+      "id": "faixa-1",
+      "branch": "spec/detalhes-edicao-paciente-observacoes-faixa-1",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-detalhes-edicao-paciente-observacoes-faixa-1",
+      "tarefas": [
+        {
+          "id": "T-097",
+          "titulo": "Frontend: Atualização de CreatePatientModal.tsx com Suporte ao Modo de Edição",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "frontend/src/features/patients/components/CreatePatientModal.tsx"
+          ],
+          "refs": [
+            "US-068",
+            "AC-112"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "faixa-2",
+      "branch": "spec/detalhes-edicao-paciente-observacoes-faixa-2",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-detalhes-edicao-paciente-observacoes-faixa-2",
+      "tarefas": [
+        {
+          "id": "T-098",
+          "titulo": "Frontend: Expansão Interativa, Ícone Indicativo de Observações e Ação de Edição no Card",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "frontend/src/features/patients/components/PatientCard.tsx",
+            "frontend/src/features/patients/components/PatientList.tsx"
+          ],
+          "refs": [
+            "US-067",
+            "US-068",
+            "AC-110",
+            "AC-111",
+            "AC-112"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "faixa-3",
+      "branch": "spec/detalhes-edicao-paciente-observacoes-faixa-3",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-detalhes-edicao-paciente-observacoes-faixa-3",
+      "tarefas": [
+        {
+          "id": "T-099",
+          "titulo": "Frontend: Destaque de Observações Clínicas em InlinePatientForm.tsx e Integração no App.tsx",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "frontend/src/features/agenda/components/InlinePatientForm.tsx",
+            "frontend/src/App.tsx"
+          ],
+          "refs": [
+            "US-069",
+            "AC-113",
+            "AC-112"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "faixa-4",
+      "branch": "spec/detalhes-edicao-paciente-observacoes-faixa-4",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-detalhes-edicao-paciente-observacoes-faixa-4",
+      "tarefas": [
+        {
+          "id": "T-100",
+          "titulo": "Testes Automatizados TDD com Prova Mecânica e Auditoria CI",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "frontend/src/features/patients/__tests__/detalhes-edicao-paciente.spec.tsx"
+          ],
+          "refs": [
+            "US-067",
+            "US-068",
+            "US-069",
+            "AC-110",
+            "AC-111",
+            "AC-112",
+            "AC-113"
+          ]
+        }
+      ]
+    }
+  ],
+  "sequenciais": [],
+  "concluidas": [],
+  "avisos": []
+}

@@ -1,14 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { LocalPatient } from '../../../db/types';
 import { PatientLocalRepository, patientLocalRepo } from '../../../db/repositories/patient-local-repository';
 import { User, Phone, FileText, X } from 'lucide-react';
 
-interface CreatePatientModalProps {
+export interface CreatePatientModalProps {
   isOpen: boolean;
   onClose: () => void;
   tenantId: string;
   patientRepo?: PatientLocalRepository;
+  patientToEdit?: LocalPatient | null;
   onPatientCreated?: (patient: LocalPatient) => void;
+  onPatientSaved?: (patient: LocalPatient) => void;
 }
 
 export const CreatePatientModal: React.FC<CreatePatientModalProps> = ({
@@ -16,7 +18,9 @@ export const CreatePatientModal: React.FC<CreatePatientModalProps> = ({
   onClose,
   tenantId,
   patientRepo = patientLocalRepo,
+  patientToEdit,
   onPatientCreated,
+  onPatientSaved,
 }) => {
   const [name, setName] = useState('');
   const [whatsapp, setWhatsapp] = useState('');
@@ -24,8 +28,27 @@ export const CreatePatientModal: React.FC<CreatePatientModalProps> = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
+  const isEditing = Boolean(patientToEdit);
+
+  // Inicializa ou reseta formulário conforme modal abre ou paciente muda
+  useEffect(() => {
+    if (isOpen) {
+      if (patientToEdit) {
+        setName(patientToEdit.name || '');
+        setWhatsapp(patientToEdit.whatsapp || '');
+        setNotes(patientToEdit.notes || '');
+      } else {
+        setName('');
+        setWhatsapp('');
+        setNotes('');
+      }
+      setErrorMsg('');
+      setIsSubmitting(false);
+    }
+  }, [isOpen, patientToEdit]);
+
   // Bloqueio de scroll do plano de fundo
-  React.useEffect(() => {
+  useEffect(() => {
     if (isOpen) {
       const originalOverflow = document.body.style.overflow;
       document.body.style.overflow = 'hidden';
@@ -56,20 +79,31 @@ export const CreatePatientModal: React.FC<CreatePatientModalProps> = ({
     setErrorMsg('');
 
     try {
-      const created = await patientRepo.createPatient({
-        tenant_id: tenantId,
-        name: name.trim(),
-        whatsapp: cleanPhone,
-        notes: notes.trim() || undefined,
-      });
+      let savedPatient: LocalPatient;
+      if (isEditing && patientToEdit) {
+        savedPatient = await patientRepo.updatePatient(patientToEdit.id, {
+          name: name.trim(),
+          whatsapp: cleanPhone,
+          notes: notes.trim() || null,
+        });
+        onPatientSaved?.(savedPatient);
+      } else {
+        savedPatient = await patientRepo.createPatient({
+          tenant_id: tenantId,
+          name: name.trim(),
+          whatsapp: cleanPhone,
+          notes: notes.trim() || undefined,
+        });
+        onPatientCreated?.(savedPatient);
+        onPatientSaved?.(savedPatient);
+      }
 
-      onPatientCreated?.(created);
-      setName('');
-      setWhatsapp('');
-      setNotes('');
       onClose();
     } catch (err: any) {
-      setErrorMsg(err.message || 'Erro ao cadastrar paciente.');
+      setErrorMsg(
+        err.message ||
+          (isEditing ? 'Erro ao salvar alterações do paciente.' : 'Erro ao cadastrar paciente.')
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -95,12 +129,13 @@ export const CreatePatientModal: React.FC<CreatePatientModalProps> = ({
               <User className="w-4 h-4" />
             </div>
             <h3 id="create-patient-title" className="font-bold text-slate-900 text-base">
-              Novo Paciente
+              {isEditing ? 'Editar Paciente' : 'Novo Paciente'}
             </h3>
           </div>
           <button
             type="button"
             onClick={onClose}
+            aria-label="Fechar"
             className="p-1.5 text-slate-400 hover:text-slate-600 rounded-lg hover:bg-slate-100 transition"
           >
             <X className="w-5 h-5" />
@@ -181,10 +216,17 @@ export const CreatePatientModal: React.FC<CreatePatientModalProps> = ({
             </button>
             <button
               type="submit"
+              data-testid={isEditing ? 'btn-save-patient' : 'btn-submit-patient'}
               disabled={isSubmitting}
               className="px-5 py-2.5 bg-teal-600 hover:bg-teal-700 text-white text-xs font-bold rounded-xl shadow-xs transition active:scale-95 disabled:opacity-50 min-h-[44px]"
             >
-              {isSubmitting ? 'Cadastrando...' : 'Cadastrar Paciente'}
+              {isSubmitting
+                ? isEditing
+                  ? 'Salvando...'
+                  : 'Cadastrando...'
+                : isEditing
+                ? 'Salvar Alterações'
+                : 'Cadastrar Paciente'}
             </button>
           </div>
         </form>

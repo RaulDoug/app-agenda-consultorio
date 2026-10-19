@@ -1,0 +1,32 @@
+{
+  "feature": "detalhes-edicao-paciente-observacoes",
+  "timestamp": "2026-10-19T20:21:49.336Z",
+  "gitRev": "4fd8034",
+  "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
+  "reporter": "vitest-json",
+  "exitCode": 0,
+  "testsParsed": 114,
+  "results": {
+    "AC-110": {
+      "status": "pass",
+      "testName": "Feature: detalhes-edicao-paciente-observacoes US-067 — Visualização Expandida de Detalhes e Observações Clínicas no Card de Paciente AC-110: Ícone Indicativo de Observações no Card do Paciente @spec:AC-110 AC-110: Ícone Indicativo de Observações no Card do Paciente @spec:AC-110",
+      "method": "vitest-json"
+    },
+    "AC-111": {
+      "status": "pass",
+      "testName": "Feature: detalhes-edicao-paciente-observacoes US-067 — Visualização Expandida de Detalhes e Observações Clínicas no Card de Paciente AC-111: Expansão Interativa do Card do Paciente com Detalhes e Observações @spec:AC-111 AC-111: Expansão Interativa do Card do Paciente com Detalhes e Observações @spec:AC-111",
+      "method": "vitest-json"
+    },
+    "AC-112": {
+      "status": "pass",
+      "testName": "Feature: detalhes-edicao-paciente-observacoes US-068 — Edição do Cadastro de Pacientes AC-112: Ação de Edição no Card Expandido com Persistência no Banco Local @spec:AC-112 AC-112: Ação de Edição no Card Expandido com Persistência no Banco Local @spec:AC-112",
+      "method": "vitest-json"
+    },
+    "AC-113": {
+      "status": "pass",
+      "testName": "Feature: detalhes-edicao-paciente-observacoes US-069 — Exibição Contextual das Observações do Paciente no Agendamento Rápido AC-113: Bloco de Observações Clínicas na Gaveta de Agendamento @spec:AC-113 AC-113: Bloco de Observações Clínicas na Gaveta de Agendamento @spec:AC-113",
+      "method": "vitest-json"
+    }
+  },
+  "principles": {}
+}

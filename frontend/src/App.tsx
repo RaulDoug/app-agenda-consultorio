@@ -3,6 +3,7 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { AppShell } from './components/layout/AppShell.js';
 import { type NavTabId } from './components/layout/BottomNav.js';
 import { CliniAssistLocalDB, localDb } from './db/local-db.js';
+import { type LocalPatient } from './db/types.js';
 import { AppointmentLocalRepository } from './db/repositories/appointment-local-repository.js';
 import { PatientLocalRepository } from './db/repositories/patient-local-repository.js';
 import { ProcedureLocalRepository } from './db/repositories/procedure-local-repository.js';
@@ -164,10 +165,11 @@ export const App: React.FC<AppProps> = ({
   const [selectedAppointment, setSelectedAppointment] = useState<LocalAppointmentWithDetails | null>(null);
   const [rescheduleAppointment, setRescheduleAppointment] = useState<LocalAppointmentWithDetails | null>(null);
 
-  // Modais de Caixa / Checkout / Retorno
+  // Modais de Caixa / Checkout / Retorno / Pacientes
   const [checkoutAppointment, setCheckoutAppointment] = useState<LocalAppointmentWithDetails | null>(null);
   const [isExpenseModalOpen, setIsExpenseModalOpen] = useState(false);
   const [isCreatePatientOpen, setIsCreatePatientOpen] = useState(false);
+  const [editingPatient, setEditingPatient] = useState<LocalPatient | null>(null);
   const [smartReturnData, setSmartReturnData] = useState<{
     patientId: string;
     patientName: string;
@@ -365,7 +367,14 @@ export const App: React.FC<AppProps> = ({
             tenantId={tenantId}
             patients={patients}
             appointments={appointments}
-            onOpenCreateModal={() => setIsCreatePatientOpen(true)}
+            onOpenCreateModal={() => {
+              setEditingPatient(null);
+              setIsCreatePatientOpen(true);
+            }}
+            onEditPatient={(patient) => {
+              setEditingPatient(patient);
+              setIsCreatePatientOpen(true);
+            }}
             onSchedule={(pw) => {
               setActiveTab('agenda');
               setQuickSlotTime('09:00');
@@ -543,13 +552,24 @@ export const App: React.FC<AppProps> = ({
         onExpenseSaved={() => setIsExpenseModalOpen(false)}
       />
 
-      {/* Modal de Cadastro Rápido de Paciente */}
+      {/* Modal de Cadastro / Edição de Paciente */}
       <CreatePatientModal
         isOpen={isCreatePatientOpen}
         tenantId={tenantId}
         patientRepo={patientRepo}
-        onClose={() => setIsCreatePatientOpen(false)}
-        onPatientCreated={() => setIsCreatePatientOpen(false)}
+        patientToEdit={editingPatient}
+        onClose={() => {
+          setIsCreatePatientOpen(false);
+          setEditingPatient(null);
+        }}
+        onPatientSaved={() => {
+          setIsCreatePatientOpen(false);
+          setEditingPatient(null);
+        }}
+        onPatientCreated={() => {
+          setIsCreatePatientOpen(false);
+          setEditingPatient(null);
+        }}
       />
     </AppShell>
   );

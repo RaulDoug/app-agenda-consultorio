@@ -10,6 +10,7 @@ interface PatientListProps {
   onSelectPatient?: (patient: PatientWithHistoryStatus) => void;
   onSchedule?: (patient: PatientWithHistoryStatus) => void;
   onOpenCreateModal?: () => void;
+  onEditPatient?: (patient: LocalPatient) => void;
 }
 
 export const PatientList: React.FC<PatientListProps> = ({
@@ -18,6 +19,7 @@ export const PatientList: React.FC<PatientListProps> = ({
   onSelectPatient,
   onSchedule,
   onOpenCreateModal,
+  onEditPatient,
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -113,6 +115,7 @@ export const PatientList: React.FC<PatientListProps> = ({
               item={item}
               onClick={onSelectPatient}
               onSchedule={onSchedule}
+              onEdit={onEditPatient}
             />
           ))
         )}

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { LocalPatient } from '../../../db/types';
 import { PatientLocalRepository } from '../../../db/repositories/patient-local-repository';
+import { FileText } from 'lucide-react';
 
 interface InlinePatientFormProps {
   tenantId: string;
@@ -77,21 +78,40 @@ export const InlinePatientForm: React.FC<InlinePatientFormProps> = ({
       </label>
 
       {selectedPatient && !isCreatingNew ? (
-        <div className="flex items-center justify-between p-2.5 bg-teal-50 border border-teal-200 rounded-lg">
-          <div>
-            <div className="font-semibold text-sm text-teal-900">{selectedPatient.name}</div>
-            <div className="text-xs text-teal-700 font-mono">{selectedPatient.whatsapp}</div>
+        <div className="p-2.5 bg-teal-50 border border-teal-200 rounded-lg space-y-2">
+          <div className="flex items-center justify-between">
+            <div>
+              <div className="font-semibold text-sm text-teal-900">{selectedPatient.name}</div>
+              <div className="text-xs text-teal-700 font-mono">{selectedPatient.whatsapp}</div>
+            </div>
+            <button
+              type="button"
+              onClick={() => {
+                onSelectPatient(null as any);
+                setQuery('');
+              }}
+              className="text-xs font-medium text-slate-500 hover:text-slate-800 underline"
+            >
+              Trocar
+            </button>
           </div>
-          <button
-            type="button"
-            onClick={() => {
-              onSelectPatient(null as any);
-              setQuery('');
-            }}
-            className="text-xs font-medium text-slate-500 hover:text-slate-800 underline"
-          >
-            Trocar
-          </button>
+
+          {selectedPatient.notes && selectedPatient.notes.trim().length > 0 && (
+            <div
+              data-testid="selected-patient-notes"
+              className="p-2 bg-amber-50/90 border border-amber-200 rounded-md text-xs text-amber-950 flex items-start gap-1.5"
+            >
+              <FileText className="w-3.5 h-3.5 text-amber-700 mt-0.5 shrink-0" />
+              <div>
+                <span className="font-semibold text-[11px] text-amber-900 uppercase tracking-wide block">
+                  Observações Clínicas:
+                </span>
+                <p className="whitespace-pre-wrap font-normal text-slate-800 text-xs">
+                  {selectedPatient.notes}
+                </p>
+              </div>
+            </div>
+          )}
         </div>
       ) : !isCreatingNew ? (
         <div className="relative">
