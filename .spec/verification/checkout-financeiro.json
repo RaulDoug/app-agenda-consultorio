@@ -1,7 +1,7 @@
 {
   "feature": "checkout-financeiro",
-  "timestamp": "2026-10-19T20:23:30.361Z",
-  "gitRev": "466c296",
+  "timestamp": "2026-10-19T20:36:12.078Z",
+  "gitRev": "c13b1ca7c640658548b6baf38382f1030cabc96d",
   "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
   "exitCode": 0,
