@@ -1,0 +1,69 @@
+{
+  "runId": "App-Agenda-Consultório-correcao-data-agendamento-rapido-mvfoe5rz",
+  "feature": "correcao-data-agendamento-rapido",
+  "agent": "antigravity",
+  "modo": "paralelo",
+  "paralelizar": null,
+  "modeloForcado": null,
+  "esforcoForcado": null,
+  "geradoEm": "2026-10-19 19:57",
+  "branchTrabalho": "spec/correcao-data-agendamento-rapido",
+  "baseDir": ".spec/features/correcao-data-agendamento-rapido",
+  "specDir": ".spec",
+  "repoName": "App-Agenda-Consultório",
+  "logsDir": "../onp-worktrees/App-Agenda-Consultório-correcao-data-agendamento-rapido-logs",
+  "ondas": [
+    [
+      "faixa-1",
+      "faixa-2"
+    ]
+  ],
+  "faixas": [
+    {
+      "id": "faixa-1",
+      "branch": "spec/correcao-data-agendamento-rapido-faixa-1",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-correcao-data-agendamento-rapido-faixa-1",
+      "tarefas": [
+        {
+          "id": "T-095",
+          "titulo": "Frontend: Adição do Campo de Data e Recálculo Reativo de Conflitos",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "frontend/src/features/agenda/components/QuickAppointmentDrawer.tsx",
+            "frontend/src/App.tsx"
+          ],
+          "refs": [
+            "US-066",
+            "AC-108",
+            "AC-109"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "faixa-2",
+      "branch": "spec/correcao-data-agendamento-rapido-faixa-2",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-correcao-data-agendamento-rapido-faixa-2",
+      "tarefas": [
+        {
+          "id": "T-096",
+          "titulo": "Testes Automatizados TDD com Prova Mecânica e Auditoria CI",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "frontend/src/features/agenda/__tests__/quick-appointment-date.spec.tsx"
+          ],
+          "refs": [
+            "US-066",
+            "AC-108",
+            "AC-109"
+          ]
+        }
+      ]
+    }
+  ],
+  "sequenciais": [],
+  "concluidas": [],
+  "avisos": []
+}

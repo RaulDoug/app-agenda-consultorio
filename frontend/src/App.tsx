@@ -455,7 +455,12 @@ export const App: React.FC<AppProps> = ({
         appointmentRepo={appointmentRepo}
         patientRepo={patientRepo}
         procedureRepo={procedureRepo}
-        onAppointmentCreated={() => setIsQuickOpen(false)}
+        onAppointmentCreated={(created) => {
+          if (created?.start_time) {
+            setCurrentDate(new Date(created.start_time));
+          }
+          setIsQuickOpen(false);
+        }}
       />
 
       {/* Gaveta de Detalhes do Agendamento */}
