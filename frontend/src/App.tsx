@@ -162,6 +162,7 @@ export const App: React.FC<AppProps> = ({
   // Modais e Drawers da Agenda
   const [isQuickOpen, setIsQuickOpen] = useState(false);
   const [quickSlotTime, setQuickSlotTime] = useState('08:00');
+  const [quickPatient, setQuickPatient] = useState<LocalPatient | null>(null);
   const [selectedAppointment, setSelectedAppointment] = useState<LocalAppointmentWithDetails | null>(null);
   const [rescheduleAppointment, setRescheduleAppointment] = useState<LocalAppointmentWithDetails | null>(null);
 
@@ -215,6 +216,7 @@ export const App: React.FC<AppProps> = ({
   const handleSlotClick = (date: Date, timeStr: string) => {
     setCurrentDate(date);
     setQuickSlotTime(timeStr);
+    setQuickPatient(null);
     setIsQuickOpen(true);
   };
 
@@ -306,6 +308,7 @@ export const App: React.FC<AppProps> = ({
       activeTab={activeTab}
       onTabChange={setActiveTab}
       onQuickAppointment={() => {
+        setQuickPatient(null);
         setQuickSlotTime('08:00');
         setIsQuickOpen(true);
       }}
@@ -324,6 +327,7 @@ export const App: React.FC<AppProps> = ({
               type="button"
               data-testid="btn-new-appointment-top"
               onClick={() => {
+                setQuickPatient(null);
                 setQuickSlotTime('08:00');
                 setIsQuickOpen(true);
               }}
@@ -376,6 +380,7 @@ export const App: React.FC<AppProps> = ({
               setIsCreatePatientOpen(true);
             }}
             onSchedule={(pw) => {
+              setQuickPatient(pw.patient);
               setActiveTab('agenda');
               setQuickSlotTime('09:00');
               setIsQuickOpen(true);
@@ -411,6 +416,12 @@ export const App: React.FC<AppProps> = ({
           <InactivePatientsList
             patients={patients}
             appointments={appointments}
+            onSchedule={(patient) => {
+              setQuickPatient(patient);
+              setActiveTab('agenda');
+              setQuickSlotTime('09:00');
+              setIsQuickOpen(true);
+            }}
           />
         </div>
       )}
@@ -456,10 +467,14 @@ export const App: React.FC<AppProps> = ({
       {/* Gaveta de Criação Rápida */}
       <QuickAppointmentDrawer
         isOpen={isQuickOpen}
-        onClose={() => setIsQuickOpen(false)}
+        onClose={() => {
+          setIsQuickOpen(false);
+          setQuickPatient(null);
+        }}
         tenantId={tenantId}
         initialDate={currentDate}
         initialTimeStr={quickSlotTime}
+        initialPatient={quickPatient}
         existingAppointments={detailedAppointments}
         appointmentRepo={appointmentRepo}
         patientRepo={patientRepo}
@@ -469,6 +484,7 @@ export const App: React.FC<AppProps> = ({
             setCurrentDate(new Date(created.start_time));
           }
           setIsQuickOpen(false);
+          setQuickPatient(null);
         }}
       />
 

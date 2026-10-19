@@ -1,0 +1,22 @@
+{
+  "feature": "agendamento-atalho-paciente-preselecionado",
+  "timestamp": "2026-10-19T20:33:14.538Z",
+  "gitRev": "28e479c",
+  "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
+  "reporter": "vitest-json",
+  "exitCode": 0,
+  "testsParsed": 116,
+  "results": {
+    "AC-114": {
+      "status": "pass",
+      "testName": "Feature: agendamento-atalho-paciente-preselecionado US-070 — Agendamento Rápido com Paciente Pré-Carregado a partir do Atalho de Cliente AC-114: Pré-Seleção Automática do Paciente ao Acionar o Atalho \"+ Agendar\" @spec:AC-114 AC-114: Pré-Seleção Automática do Paciente ao Acionar o Atalho \"+ Agendar\" @spec:AC-114",
+      "method": "vitest-json"
+    },
+    "AC-115": {
+      "status": "pass",
+      "testName": "Feature: agendamento-atalho-paciente-preselecionado US-070 — Agendamento Rápido com Paciente Pré-Carregado a partir do Atalho de Cliente AC-115: Isolamento e Reset de Seleção para Aberturas Avulsas @spec:AC-115 AC-115: Isolamento e Reset de Seleção para Aberturas Avulsas @spec:AC-115",
+      "method": "vitest-json"
+    }
+  },
+  "principles": {}
+}

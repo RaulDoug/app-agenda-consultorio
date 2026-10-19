@@ -1,0 +1,69 @@
+{
+  "runId": "App-Agenda-Consultório-agendamento-atalho-paciente-preselecionado-mvfphvpd",
+  "feature": "agendamento-atalho-paciente-preselecionado",
+  "agent": "antigravity",
+  "modo": "paralelo",
+  "paralelizar": null,
+  "modeloForcado": null,
+  "esforcoForcado": null,
+  "geradoEm": "2026-10-19 20:27",
+  "branchTrabalho": "spec/agendamento-atalho-paciente-preselecionado",
+  "baseDir": ".spec/features/agendamento-atalho-paciente-preselecionado",
+  "specDir": ".spec",
+  "repoName": "App-Agenda-Consultório",
+  "logsDir": "../onp-worktrees/App-Agenda-Consultório-agendamento-atalho-paciente-preselecionado-logs",
+  "ondas": [
+    [
+      "faixa-1",
+      "faixa-2"
+    ]
+  ],
+  "faixas": [
+    {
+      "id": "faixa-1",
+      "branch": "spec/agendamento-atalho-paciente-preselecionado-faixa-1",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-agendamento-atalho-paciente-preselecionado-faixa-1",
+      "tarefas": [
+        {
+          "id": "T-101",
+          "titulo": "Frontend: Suporte a initialPatient em QuickAppointmentDrawer.tsx e Conexão em App.tsx",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "frontend/src/features/agenda/components/QuickAppointmentDrawer.tsx",
+            "frontend/src/App.tsx"
+          ],
+          "refs": [
+            "US-070",
+            "AC-114",
+            "AC-115"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "faixa-2",
+      "branch": "spec/agendamento-atalho-paciente-preselecionado-faixa-2",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-agendamento-atalho-paciente-preselecionado-faixa-2",
+      "tarefas": [
+        {
+          "id": "T-102",
+          "titulo": "Testes Automatizados TDD com Prova Mecânica e Auditoria CI",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "frontend/src/features/agenda/__tests__/quick-appointment-preselected-patient.spec.tsx"
+          ],
+          "refs": [
+            "US-070",
+            "AC-114",
+            "AC-115"
+          ]
+        }
+      ]
+    }
+  ],
+  "sequenciais": [],
+  "concluidas": [],
+  "avisos": []
+}

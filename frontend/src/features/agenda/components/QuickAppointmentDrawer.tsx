@@ -13,6 +13,7 @@ interface QuickAppointmentDrawerProps {
   tenantId: string;
   initialDate: Date;
   initialTimeStr: string;
+  initialPatient?: LocalPatient | null;
   existingAppointments: LocalAppointmentWithDetails[];
   businessHours?: BusinessHoursConfig;
   appointmentRepo?: AppointmentLocalRepository;
@@ -34,6 +35,7 @@ export const QuickAppointmentDrawer: React.FC<QuickAppointmentDrawerProps> = ({
   tenantId,
   initialDate,
   initialTimeStr,
+  initialPatient,
   existingAppointments,
   businessHours = DEFAULT_BUSINESS_HOURS,
   appointmentRepo = appointmentLocalRepo,
@@ -41,7 +43,7 @@ export const QuickAppointmentDrawer: React.FC<QuickAppointmentDrawerProps> = ({
   procedureRepo = procedureLocalRepo,
   onAppointmentCreated,
 }) => {
-  const [selectedPatient, setSelectedPatient] = useState<LocalPatient | null>(null);
+  const [selectedPatient, setSelectedPatient] = useState<LocalPatient | null>(initialPatient || null);
   const [selectedProcedures, setSelectedProcedures] = useState<LocalProcedure[]>([]);
   const [dateStr, setDateStr] = useState<string>(() => formatDateToYMD(initialDate));
   const [timeStr, setTimeStr] = useState(initialTimeStr);
@@ -50,10 +52,10 @@ export const QuickAppointmentDrawer: React.FC<QuickAppointmentDrawerProps> = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
-  // Reset de estado ao abrir a gaveta para garantir formulário limpo e botão habilitado (AC-089)
+  // Reset de estado ao abrir a gaveta para garantir formulário limpo e botão habilitado (AC-089 / AC-114)
   useEffect(() => {
     if (isOpen) {
-      setSelectedPatient(null);
+      setSelectedPatient(initialPatient || null);
       setSelectedProcedures([]);
       setDateStr(formatDateToYMD(initialDate));
       setTimeStr(initialTimeStr);
@@ -62,7 +64,7 @@ export const QuickAppointmentDrawer: React.FC<QuickAppointmentDrawerProps> = ({
       setIsSubmitting(false);
       setErrorMsg('');
     }
-  }, [isOpen, initialTimeStr, initialDate]);
+  }, [isOpen, initialTimeStr, initialDate, initialPatient]);
 
   // Bloqueio de scroll do plano de fundo enquanto a gaveta estiver aberta (AC-094)
   useEffect(() => {
