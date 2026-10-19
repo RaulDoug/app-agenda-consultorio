@@ -7,7 +7,7 @@
 - Arquivos: frontend/src/db/repositories/financial-local-repository.ts
 - Notas: Implementar verificação de transações ativas pré-existentes em `recordCheckout` e adicionar método `revertCheckout(appointmentId: string)` que marca transações com `is_active: false` e `deleted_at: now`, além de restaurar o agendamento para `CONFIRMED`.
 
-## T-086 — Frontend: Bloqueio de Ações Rápidas, Banner Informativo e Botão com Confirmação de Estorno [pendente]
+## T-086 — Frontend: Bloqueio de Ações Rápidas, Banner Informativo e Botão com Confirmação de Estorno [concluida]
 - Refs: US-060, US-062, AC-100, AC-103
 - Arquivos: frontend/src/features/agenda/components/AppointmentDetailsDrawer.tsx
 - Notas: Quando `appointment.status === 'COMPLETED'`, ocultar edição de procedimentos e botões normais de status. Exibir banner verde de atendimento faturado e botão secundário com caixa de confirmação em 2 passos para acionar `revertCheckout`.
