@@ -44,10 +44,10 @@
 
 ## T-114 — Migração dos Testes Existentes do Backend para Bearer Token [concluida]
 - Refs: US-076, AC-126, AC-127
-- Arquivos: backend/src/routes/__tests__/api.spec.ts, backend/src/api-complementar/__tests__/api-complementar.spec.ts, backend/src/analytics/__tests__/analytics.spec.ts, backend/src/financial/__tests__/financial.spec.ts, backend/src/whatsapp/__tests__/whatsapp-live-pairing.spec.ts, backend/src/whatsapp/__tests__/whatsapp-qrcode-resilience.spec.ts
+- Arquivos: backend/src/routes/__tests__/api.spec.ts, backend/src/api-complementar/__tests__/api-complementar.spec.ts, backend/src/analytics/__tests__/analytics.spec.ts, backend/src/financial/__tests__/financial.spec.ts, backend/src/whatsapp/__tests__/whatsapp-live-pairing.spec.ts, backend/src/whatsapp/__tests__/whatsapp-qrcode-resilience.spec.ts, backend/src/test-utils/auth.ts
 - Notas: Substituir uso de x-tenant-id direto por token JWT assinado com token_version válido inserido no banco para todos os testes passarem no CI.
 
-## T-115 — Documentação de Funcionalidade e Atualização de Regras Globais [pendente]
+## T-115 — Documentação de Funcionalidade e Atualização de Regras Globais [concluida]
 - Refs: US-072, US-073, US-074, US-075, US-076, AC-118, AC-120, AC-122, AC-123, AC-125, AC-126, AC-127
 - Arquivos: docs/backend/funcionalidades/autenticacao_usuarios.md, docs/backend/funcionalidades/regras_globais.md
 - Notas: Criar documento detalhado da funcionalidade e atualizar regras globais com as novas diretrizes de autenticação e segurança.

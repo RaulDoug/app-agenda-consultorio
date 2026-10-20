@@ -1,0 +1,62 @@
+{
+  "feature": "autenticacao-usuarios",
+  "timestamp": "2026-10-20T13:53:27.512Z",
+  "gitRev": "8b27803",
+  "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
+  "reporter": "vitest-json",
+  "exitCode": 1,
+  "testsParsed": 192,
+  "results": {
+    "AC-118": {
+      "status": "pass",
+      "testName": "Feature: autenticacao-usuarios — Suíte Integrada de Requisitos Spec-Driven AC-118: Provisionamento de tenant com hash bcrypt e ausência de rotas públicas de registro @spec:AC-118 AC-118: Provisionamento de tenant com hash bcrypt e ausência de rotas públicas de registro @spec:AC-118",
+      "method": "vitest-json"
+    },
+    "AC-119": {
+      "status": "pass",
+      "testName": "Feature: autenticacao-usuarios — Suíte Integrada de Requisitos Spec-Driven AC-119: Rejeição de e-mails duplicados e validação cadastral na criação @spec:AC-119 AC-119: Rejeição de e-mails duplicados e validação cadastral na criação @spec:AC-119",
+      "method": "vitest-json"
+    },
+    "AC-120": {
+      "status": "pass",
+      "testName": "Feature: autenticacao-usuarios — Suíte Integrada de Requisitos Spec-Driven AC-120: Alteração de senha com política segura e invalidação de tokens anteriores @spec:AC-120 AC-120: Alteração de senha com política segura e invalidação de tokens anteriores @spec:AC-120",
+      "method": "vitest-json"
+    },
+    "AC-121": {
+      "status": "pass",
+      "testName": "Feature: autenticacao-usuarios — Suíte Integrada de Requisitos Spec-Driven AC-121: Rejeição de troca com senha atual incorreta ou descumprimento da política @spec:AC-121 AC-121: Rejeição de troca com senha atual incorreta ou descumprimento da política @spec:AC-121",
+      "method": "vitest-json"
+    },
+    "AC-122": {
+      "status": "pass",
+      "testName": "Feature: autenticacao-usuarios — Suíte Integrada de Requisitos Spec-Driven AC-122: Reset de senha com credencial temporária e exigência de troca obrigatória @spec:AC-122 AC-122: Reset de senha com credencial temporária e exigência de troca obrigatória @spec:AC-122",
+      "method": "vitest-json"
+    },
+    "AC-123": {
+      "status": "pass",
+      "testName": "Feature: autenticacao-usuarios — Suíte Integrada de Requisitos Spec-Driven AC-123: Autenticação bem-sucedida gerando JWT com token_version e status cadastral @spec:AC-123 AC-123: Autenticação bem-sucedida gerando JWT com token_version e status cadastral @spec:AC-123",
+      "method": "vitest-json"
+    },
+    "AC-124": {
+      "status": "pass",
+      "testName": "Feature: autenticacao-usuarios — Suíte Integrada de Requisitos Spec-Driven AC-124: Rejeição genérica de credenciais inválidas e rate limiting contra força bruta @spec:AC-124 AC-124: Rejeição genérica de credenciais inválidas e rate limiting contra força bruta @spec:AC-124",
+      "method": "vitest-json"
+    },
+    "AC-125": {
+      "status": "pass",
+      "testName": "Feature: autenticacao-usuarios — Suíte Integrada de Requisitos Spec-Driven AC-125: Bloqueio estrito com HTTP 403 em rotas de negócio sob flag must_change_password @spec:AC-125 AC-125: Bloqueio estrito com HTTP 403 em rotas de negócio sob flag must_change_password @spec:AC-125",
+      "method": "vitest-json"
+    },
+    "AC-126": {
+      "status": "pass",
+      "testName": "Feature: autenticacao-usuarios — Suíte Integrada de Requisitos Spec-Driven AC-126: Rejeição de requisições autenticadas apenas com o header x-tenant-id @spec:AC-126 AC-126: Rejeição de requisições autenticadas apenas com o header x-tenant-id @spec:AC-126",
+      "method": "vitest-json"
+    },
+    "AC-127": {
+      "status": "pass",
+      "testName": "Feature: autenticacao-usuarios — Suíte Integrada de Requisitos Spec-Driven AC-127: Proteção obrigatória com authMiddleware em rotas de analytics e validação de token_version @spec:AC-127 AC-127: Proteção obrigatória com authMiddleware em rotas de analytics e validação de token_version @spec:AC-127",
+      "method": "vitest-json"
+    }
+  },
+  "principles": {}
+}

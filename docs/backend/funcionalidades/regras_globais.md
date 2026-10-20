@@ -143,7 +143,58 @@ Cada camada deve possuir seus testes unitários focados, permitindo identificar 
 
 ---
 
-## 6. Checklist para Novas Implementações e Refatorações
+---
+
+## 7. Autenticação, Gestão de Usuários e Segurança de Identidade
+
+### 7.1 Criação de Contas Exclusiva por Linha de Comando (CLI)
+- **Zero Cadastro Aberto:** Não existem e é terminantemente proibido criar endpoints públicos de registro (`/api/auth/register`, `/api/auth/signup`).
+- O provisionamento de novos consultórios e seus titulares é feito **exclusivamente pelo desenvolvedor** através do CLI:
+  ```bash
+  npm run user:create -- --name "Nome do Consultório" --email "contato@clinica.com" [--password "opcional"]
+  ```
+- Caso nenhuma senha seja informada, o sistema gera automaticamente uma senha temporária aleatória segura de 16 caracteres e marca a flag `must_change_password = true`.
+
+### 7.2 Hashing e Política de Senhas com Bcrypt
+- **Algoritmo Obrigatório:** Todas as senhas são armazenadas como hash seguro via `bcrypt` com fator de custo (salt rounds) padronizado em **10**.
+- **Proibição de Texto Puro:** Nunca armazene ou compare senhas em texto puro no banco de dados.
+- **Proteção contra Comparação de Hash:** A camada de verificação (`PasswordService.verifyPassword`) rejeita senhas cujo texto puro seja idêntico ao hash armazenado (prevenção contra vazamento de hash em trânsito).
+- **Política Mínima de Senhas:**
+  - Mínimo de 8 caracteres;
+  - Ao menos 1 letra;
+  - Ao menos 1 número;
+  - Obrigação de ser diferente da senha atual na troca.
+
+### 7.3 Recuperação e Reset de Senha pelo Desenvolvedor
+- O cliente não possui fluxo de recuperação pública autônoma (ex.: "esqueci minha senha" público).
+- A recuperação é conduzida pelo desenvolvedor via CLI administrativo:
+  ```bash
+  npm run user:reset-password -- --email "contato@clinica.com"
+  ```
+- O comando gera uma senha temporária aleatória de 16 caracteres, atualiza o hash no PostgreSQL, ativa `must_change_password = true`, incrementa o `token_version` e imprime a credencial temporária uma única vez no console.
+
+### 7.4 Troca Autenticada de Senha pelo Cliente e Invalidação de Sessão
+- O cliente logado pode alterar sua senha a qualquer momento através do endpoint `POST /api/auth/change-password`.
+- **Invalidação Instantânea de Sessões Anteriores:** Toda troca de senha ou reset administrativo incrementa atomicamente a coluna `token_version` do consultório. Qualquer token JWT emitido com `tv` inferior torna-se imediatamente inválido em todas as rotas protegidas (HTTP 401).
+
+### 7.5 Bloqueio Estrito sob Flag `must_change_password` (HTTP 403)
+- Usuários com `must_change_password = true` são restritos pelo `authMiddleware`:
+  - **Acesso Permitido:** Apenas rotas de consulta de perfil (`GET /api/auth/me`) e troca de senha (`POST /api/auth/change-password`).
+  - **Bloqueio em Rotas de Negócio:** Qualquer tentativa de acessar pacientes, agendamentos, financeiro ou relatórios retorna imediatamente `HTTP 403 Forbidden` com código de erro `PASSWORD_CHANGE_REQUIRED`.
+
+### 7.6 Proibição de Bypass por Cabeçalho (`x-tenant-id`)
+- É vedada a autenticação ou determinação de tenant baseada em cabeçalhos não assinados como `x-tenant-id`.
+- Todas as requisições autenticadas DEVEM conter o cabeçalho `Authorization: Bearer <token_jwt>`.
+
+### 7.7 Proteção contra Força Bruta no Login (Rate Limiting)
+- O endpoint `POST /api/auth/login` é protegido por rate limiter:
+  - Limite de **5 tentativas incorretas** por combinação de IP e e-mail em uma janela deslizante de **15 minutos**.
+  - Após 5 falhas, requisições subsequentes são bloqueadas com `HTTP 429 Too Many Requests`.
+  - Respostas de credenciais inválidas utilizam mensagem genérica padronizada: `"Credenciais inválidas ou acesso não autorizado."`.
+
+---
+
+## 8. Checklist para Novas Implementações e Refatorações
 
 Antes de considerar qualquer nova funcionalidade ou rota concluída, verifique:
 - [ ] A rota está registrada em `routes/` apenas mapeando o endpoint, middlewares e o método do Controller?
@@ -151,7 +202,9 @@ Antes de considerar qualquer nova funcionalidade ou rota concluída, verifique:
 - [ ] O Service concentra todas as regras de negócio e validações, sem depender de `req` ou `res`?
 - [ ] O Repository é o único que contém queries SQL, filtrando estritamente `tenant_id = $x` e `deleted_at IS NULL`?
 - [ ] A exclusão é feita via Soft-Delete (`UPDATE ... SET deleted_at = CURRENT_TIMESTAMP`)?
+- [ ] Toda rota protegida exige `Authorization: Bearer <token>` (sem bypass de `x-tenant-id`)?
 - [ ] Existem testes unitários para o Repository cobrindo persistência, soft-delete e isolamento multi-tenant?
 - [ ] Existem testes unitários para o Service com mocks do Repository cobrindo as regras de negócio?
 - [ ] Existem testes unitários para o Controller cobrindo os status codes e tratamento de requisições?
 - [ ] Existem testes de rota via Supertest validando a autenticação e integração?
+

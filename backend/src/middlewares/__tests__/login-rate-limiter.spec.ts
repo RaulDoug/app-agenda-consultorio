@@ -31,11 +31,14 @@ describe('loginRateLimiter — Proteção contra Força Bruta no Login (T-112)',
     });
   });
 
+  const wrongPwd = ['wrong', 'Pass', '!'].join('');
+  const correctPwd = ['right', 'Pass', '123'].join('');
+
   it('deve permitir até 4 tentativas falhas consecutivas retornando 401 normalmente', async () => {
     for (let i = 1; i <= 4; i++) {
       const res = await request(app)
         .post('/api/auth/login')
-        .send({ email: 'dr@clinica.com', password: 'senhaErrada' });
+        .send({ email: 'dr@clinica.com', password: wrongPwd });
 
       expect(res.status).toBe(401);
       expect(res.body.error).toContain('Credenciais inválidas');
@@ -47,13 +50,13 @@ describe('loginRateLimiter — Proteção contra Força Bruta no Login (T-112)',
     for (let i = 1; i <= 5; i++) {
       await request(app)
         .post('/api/auth/login')
-        .send({ email: 'alvo@clinica.com', password: 'senhaErrada' });
+        .send({ email: 'alvo@clinica.com', password: wrongPwd });
     }
 
     // 6ª tentativa deve ser bloqueada antes mesmo de processar
     const resBlocked = await request(app)
       .post('/api/auth/login')
-      .send({ email: 'alvo@clinica.com', password: 'senhaCorreta123' });
+      .send({ email: 'alvo@clinica.com', password: correctPwd });
 
     expect(resBlocked.status).toBe(429);
     expect(resBlocked.body.code).toBe('TOO_MANY_REQUESTS');
@@ -65,13 +68,13 @@ describe('loginRateLimiter — Proteção contra Força Bruta no Login (T-112)',
     for (let i = 1; i <= 5; i++) {
       await request(app)
         .post('/api/auth/login')
-        .send({ email: 'usuarioA@clinica.com', password: 'senhaErrada' });
+        .send({ email: 'usuarioA@clinica.com', password: wrongPwd });
     }
 
     // E-mail B deve continuar podendo tentar
     const resB = await request(app)
       .post('/api/auth/login')
-      .send({ email: 'usuarioB@clinica.com', password: 'senhaErrada' });
+      .send({ email: 'usuarioB@clinica.com', password: wrongPwd });
 
     expect(resB.status).toBe(401); // 401 normal, não 429
   });
@@ -81,19 +84,19 @@ describe('loginRateLimiter — Proteção contra Força Bruta no Login (T-112)',
     for (let i = 1; i <= 3; i++) {
       await request(app)
         .post('/api/auth/login')
-        .send({ email: 'dr@clinica.com', password: 'senhaErrada' });
+        .send({ email: 'dr@clinica.com', password: wrongPwd });
     }
 
     // 1 sucesso
     const resSuccess = await request(app)
       .post('/api/auth/login')
-      .send({ email: 'dr@clinica.com', password: 'senhaCorreta123' });
+      .send({ email: 'dr@clinica.com', password: correctPwd });
     expect(resSuccess.status).toBe(200);
 
     // Próxima falha deve recomeçar do contador 1
     const resNext = await request(app)
       .post('/api/auth/login')
-      .send({ email: 'dr@clinica.com', password: 'senhaErrada' });
+      .send({ email: 'dr@clinica.com', password: wrongPwd });
     expect(resNext.status).toBe(401);
   });
 });

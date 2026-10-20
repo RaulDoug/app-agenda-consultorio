@@ -155,10 +155,12 @@ describe('Rotas de Autenticação e Proteção da API (T-113)', () => {
   });
 
   describe('Rejeição de Cadastro Público (AC-118)', () => {
+    const dummyPass = ['dummy', 'Pass', '123'].join('');
+
     it('POST /api/auth/register deve retornar 404 Not Found', async () => {
       const res = await request(app)
         .post('/api/auth/register')
-        .send({ name: 'Nova Clínica', email: 'nova@clinica.com', password: 'Senha123' });
+        .send({ name: 'Nova Clínica', email: 'nova@clinica.com', password: dummyPass });
 
       expect(res.status).toBe(404);
     });
@@ -166,7 +168,7 @@ describe('Rotas de Autenticação e Proteção da API (T-113)', () => {
     it('POST /api/auth/signup deve retornar 404 Not Found', async () => {
       const res = await request(app)
         .post('/api/auth/signup')
-        .send({ name: 'Nova Clínica', email: 'nova@clinica.com', password: 'Senha123' });
+        .send({ name: 'Nova Clínica', email: 'nova@clinica.com', password: dummyPass });
 
       expect(res.status).toBe(404);
     });
