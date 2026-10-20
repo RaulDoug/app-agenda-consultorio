@@ -7,11 +7,11 @@ export const financialRouter = Router();
 financialRouter.use(authMiddleware);
 const financialRepo = new FinancialRepository();
 
-// Helper para extrair tenantId via JWT ou header x-tenant-id
+// Helper para extrair tenantId via contexto autenticado do authMiddleware
 function getTenantId(req: Request, res: Response): string | null {
-  const tenantId = req.tenantId || (req.headers['x-tenant-id'] as string);
+  const tenantId = req.tenantId;
   if (!tenantId) {
-    res.status(401).json({ error: 'Token de autenticação ou tenant_id não fornecido.' });
+    res.status(401).json({ error: 'Token de autenticação não fornecido.' });
     return null;
   }
   return tenantId;

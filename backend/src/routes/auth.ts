@@ -1,21 +1,36 @@
 import { Router, type Request, type Response } from 'express';
-import { loginWithCredentials } from '../services/auth-service.js';
+import { AuthController } from '../controllers/auth-controller.js';
+import { authAllowPasswordChange } from '../middlewares/auth.js';
+import { loginRateLimiter } from '../middlewares/login-rate-limiter.js';
 
 export const authRouter = Router();
+const authController = new AuthController();
 
-authRouter.post('/login', async (req: Request, res: Response): Promise<void> => {
-  const { email, password } = req.body || {};
+/**
+ * Autenticação de Consultório / Login
+ * POST /api/auth/login
+ */
+authRouter.post('/login', loginRateLimiter, authController.login);
 
-  if (!email || !password) {
-    res.status(401).json({ error: 'Credenciais inválidas ou acesso não autorizado.' });
-    return;
-  }
+/**
+ * Alteração de Senha pelo Cliente Titular
+ * POST /api/auth/change-password
+ */
+authRouter.post('/change-password', authAllowPasswordChange, authController.changePassword);
 
-  try {
-    const db = (req as any).db;
-    const result = await loginWithCredentials(email, password, db);
-    res.status(200).json(result);
-  } catch {
-    res.status(401).json({ error: 'Credenciais inválidas ou acesso não autorizado.' });
-  }
+/**
+ * Consulta de Perfil e Estado de Sessão
+ * GET /api/auth/me
+ */
+authRouter.get('/me', authAllowPasswordChange, authController.me);
+
+/**
+ * Rejeição explícita de rotas públicas de cadastro (criação restrita à CLI do desenvolvedor)
+ */
+authRouter.post('/register', (_req: Request, res: Response) => {
+  res.status(404).json({ error: 'Cadastro público não disponível. Contas são criadas exclusivamente pela administração.' });
+});
+
+authRouter.post('/signup', (_req: Request, res: Response) => {
+  res.status(404).json({ error: 'Cadastro público não disponível. Contas são criadas exclusivamente pela administração.' });
 });

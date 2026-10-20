@@ -1,13 +1,15 @@
 import { Router, type Request, type Response } from 'express';
 import { AnalyticsRepository } from '../repositories/analytics-repository.js';
+import { authMiddleware } from '../middlewares/auth.js';
 
 export const analyticsRouter = Router();
+analyticsRouter.use(authMiddleware);
 const analyticsRepo = new AnalyticsRepository();
 
 function getTenantId(req: Request, res: Response): string | null {
-  const tenantId = req.tenantId || (req.headers['x-tenant-id'] as string);
+  const tenantId = req.tenantId;
   if (!tenantId) {
-    res.status(401).json({ error: 'Token de autenticação ou tenant_id não fornecido.' });
+    res.status(401).json({ error: 'Token de autenticação não fornecido.' });
     return null;
   }
   return tenantId;
