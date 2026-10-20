@@ -9,6 +9,8 @@
     "start": "npx tsx --env-file=.env src/app.ts",
     "test:confirmation": "npx tsx --env-file=.env scripts/test-confirmation-flow.ts",
     "db:migrate": "npx tsx --env-file=.env scripts/db-migrate.ts",
+    "user:create": "npx tsx --env-file=.env scripts/user-create.ts",
+    "user:reset-password": "npx tsx --env-file=.env scripts/user-reset-password.ts",
     "build": "tsc",
     "test": "vitest run",
     "test:watch": "vitest"
