@@ -5,6 +5,7 @@ import { createApp } from '../../app.js';
 import { createInMemoryDatabase, setDatabase, type IDatabase } from '../../db/connection.js';
 import { setEvolutionClient, EvolutionTransientError } from '../evolution-client.js';
 import { MockEvolutionClient } from './mock-evolution.js';
+import { generateTestToken } from '../../middlewares/auth.js';
 
 describe('Feature: Correção do QR Code e Resiliência na Evolution API — Backend', () => {
   let db: IDatabase;
@@ -13,6 +14,7 @@ describe('Feature: Correção do QR Code e Resiliência na Evolution API — Bac
 
   const tenantId = '11111111-1111-1111-1111-111111111111';
   const instanceName = 'cliniassist_default';
+  const token = generateTestToken({ tenant_id: tenantId, tv: 0 });
 
   beforeEach(async () => {
     db = createInMemoryDatabase();
@@ -22,8 +24,8 @@ describe('Feature: Correção do QR Code e Resiliência na Evolution API — Bac
     testApp = createApp();
 
     await db.query(
-      `INSERT INTO tenants (id, name, whatsapp_instance_name, whatsapp_connected)
-       VALUES ($1, 'Consultório CliniAssist', $2, false)`,
+      `INSERT INTO tenants (id, name, whatsapp_instance_name, whatsapp_connected, token_version, is_active, must_change_password)
+       VALUES ($1, 'Consultório CliniAssist', $2, false, 0, true, false)`,
       [tenantId, instanceName]
     );
   });
@@ -36,7 +38,7 @@ describe('Feature: Correção do QR Code e Resiliência na Evolution API — Bac
 
       const resInProgress = await request(testApp)
         .get('/api/whatsapp/session')
-        .set('x-tenant-id', tenantId);
+        .set('Authorization', `Bearer ${token}`);
 
       expect(resInProgress.status).toBe(200);
       expect(resInProgress.body.connected).toBe(false);
@@ -52,7 +54,7 @@ describe('Feature: Correção do QR Code e Resiliência na Evolution API — Bac
 
       const resTransient = await request(testApp)
         .get('/api/whatsapp/session')
-        .set('x-tenant-id', tenantId);
+        .set('Authorization', `Bearer ${token}`);
 
       expect(resTransient.status).toBe(200);
       expect(resTransient.body.connected).toBe(false);

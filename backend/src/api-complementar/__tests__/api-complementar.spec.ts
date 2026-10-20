@@ -6,6 +6,7 @@ import { createInMemoryDatabase, setDatabase, type IDatabase } from '../../db/co
 import { hashPassword } from '../../services/auth-service.js';
 import { setEvolutionClient } from '../../whatsapp/evolution-client.js';
 import { MockEvolutionClient } from '../../whatsapp/__tests__/mock-evolution.js';
+import { generateTestToken } from '../../middlewares/auth.js';
 import {
   calculateDiscountDistribution,
   generateInstallmentSchedule,
@@ -20,6 +21,10 @@ describe('API Complementar — CliniAssist (Sprint BE-6)', () => {
 
   const activeTenantId = '11111111-1111-1111-1111-111111111111';
   const inactiveTenantId = '22222222-2222-2222-2222-222222222222';
+  const tenantBId = '33333333-3333-3333-3333-333333333333';
+
+  const activeToken = generateTestToken({ tenant_id: activeTenantId, tv: 0 });
+  const tenantBToken = generateTestToken({ tenant_id: tenantBId, tv: 0 });
 
   beforeEach(async () => {
     db = createInMemoryDatabase();
@@ -33,11 +38,12 @@ describe('API Complementar — CliniAssist (Sprint BE-6)', () => {
     // Inserção dos tenants para teste de autenticação
     const pwdHash = hashPassword(samplePassword);
     await db.query(
-      `INSERT INTO tenants (id, name, email, password_hash, whatsapp_instance_name, whatsapp_connected, is_active)
+      `INSERT INTO tenants (id, name, email, password_hash, whatsapp_instance_name, whatsapp_connected, is_active, token_version, must_change_password)
        VALUES 
-       ($1, 'Clínica Sorriso & Saúde', 'contato@sorrisosaude.com', $3, 'instancia_sorriso', true, true),
-       ($2, 'Clínica Desativada', 'inativa@cliniassist.com', $3, 'instancia_inativa', false, false)`,
-      [activeTenantId, inactiveTenantId, pwdHash]
+       ($1, 'Clínica Sorriso & Saúde', 'contato@sorrisosaude.com', $3, 'instancia_sorriso', true, true, 0, false),
+       ($2, 'Clínica Desativada', 'inativa@cliniassist.com', $3, 'instancia_inativa', false, false, 0, false),
+       ($4, 'Clínica Secundária', 'tenantb@cliniassist.com', $3, 'instancia_inativa', false, true, 0, false)`,
+      [activeTenantId, inactiveTenantId, pwdHash, tenantBId]
     );
   });
 
@@ -174,7 +180,7 @@ describe('API Complementar — CliniAssist (Sprint BE-6)', () => {
 
       const res = await request(testApp)
         .get('/api/sync/pull')
-        .set('x-tenant-id', activeTenantId)
+        .set('Authorization', `Bearer ${activeToken}`)
         .query({ since: '2026-10-18T11:00:00.000Z' });
 
       expect(res.status).toBe(200);
@@ -203,7 +209,7 @@ describe('API Complementar — CliniAssist (Sprint BE-6)', () => {
       // 1. Instância conectada
       const resConnected = await request(testApp)
         .get('/api/whatsapp/session')
-        .set('x-tenant-id', activeTenantId);
+        .set('Authorization', `Bearer ${activeToken}`);
 
       expect(resConnected.status).toBe(200);
       expect(resConnected.body.connected).toBe(true);
@@ -213,7 +219,7 @@ describe('API Complementar — CliniAssist (Sprint BE-6)', () => {
       // 2. Instância desconectada (deve emitir QR Code)
       const resDisconnected = await request(testApp)
         .get('/api/whatsapp/session')
-        .set('x-tenant-id', inactiveTenantId);
+        .set('Authorization', `Bearer ${tenantBToken}`);
 
       expect(resDisconnected.status).toBe(200);
       expect(resDisconnected.body.connected).toBe(false);
@@ -223,7 +229,7 @@ describe('API Complementar — CliniAssist (Sprint BE-6)', () => {
       // 3. Solicitação de nova conexão / QR Code
       const resConnect = await request(testApp)
         .post('/api/whatsapp/connect')
-        .set('x-tenant-id', inactiveTenantId);
+        .set('Authorization', `Bearer ${tenantBToken}`);
 
       expect(resConnect.status).toBe(200);
       expect(resConnect.body.state).toBe('connecting');
@@ -243,7 +249,7 @@ describe('API Complementar — CliniAssist (Sprint BE-6)', () => {
 
       const putRes = await request(testApp)
         .put('/api/business-hours')
-        .set('x-tenant-id', activeTenantId)
+        .set('Authorization', `Bearer ${activeToken}`)
         .send(businessDays);
 
       expect(putRes.status).toBe(200);
@@ -258,7 +264,7 @@ describe('API Complementar — CliniAssist (Sprint BE-6)', () => {
       // 2. Consulta via GET
       const getRes = await request(testApp)
         .get('/api/business-hours')
-        .set('x-tenant-id', activeTenantId);
+        .set('Authorization', `Bearer ${activeToken}`);
 
       expect(getRes.status).toBe(200);
       expect(getRes.body).toHaveLength(3);
@@ -266,7 +272,7 @@ describe('API Complementar — CliniAssist (Sprint BE-6)', () => {
       // 3. Validação de consistência: horário de término anterior ou igual ao início
       const invalidTimeRes = await request(testApp)
         .put('/api/business-hours')
-        .set('x-tenant-id', activeTenantId)
+        .set('Authorization', `Bearer ${activeToken}`)
         .send([
           { day_of_week: 3, is_open: true, start_time: '18:00', end_time: '08:00' }
         ]);
@@ -276,7 +282,7 @@ describe('API Complementar — CliniAssist (Sprint BE-6)', () => {
       // 4. Validação de intervalo de almoço fora da jornada
       const invalidBreakRes = await request(testApp)
         .put('/api/business-hours')
-        .set('x-tenant-id', activeTenantId)
+        .set('Authorization', `Bearer ${activeToken}`)
         .send([
           { day_of_week: 3, is_open: true, start_time: '08:00', end_time: '18:00', break_start_time: '12:00', break_end_time: '19:00' }
         ]);
@@ -286,7 +292,7 @@ describe('API Complementar — CliniAssist (Sprint BE-6)', () => {
       // 5. Isolamento multi-tenant
       const tenantBRes = await request(testApp)
         .get('/api/business-hours')
-        .set('x-tenant-id', inactiveTenantId);
+        .set('Authorization', `Bearer ${tenantBToken}`);
       expect(tenantBRes.status).toBe(200);
       expect(tenantBRes.body).toHaveLength(0);
     });
@@ -295,7 +301,7 @@ describe('API Complementar — CliniAssist (Sprint BE-6)', () => {
       // 1. Criação de novo bloqueio
       const postRes = await request(testApp)
         .post('/api/schedule-blocks')
-        .set('x-tenant-id', activeTenantId)
+        .set('Authorization', `Bearer ${activeToken}`)
         .send({
           title: 'Congresso de Saúde Integrada',
           start_time: '2026-11-10T08:00:00.000Z',
@@ -313,7 +319,7 @@ describe('API Complementar — CliniAssist (Sprint BE-6)', () => {
       // 2. Validação: datas inconsistentes (término anterior ao início)
       const invalidBlockRes = await request(testApp)
         .post('/api/schedule-blocks')
-        .set('x-tenant-id', activeTenantId)
+        .set('Authorization', `Bearer ${activeToken}`)
         .send({
           title: 'Bloqueio Inválido',
           start_time: '2026-11-12T18:00:00.000Z',
@@ -325,7 +331,7 @@ describe('API Complementar — CliniAssist (Sprint BE-6)', () => {
       // 3. Listagem de bloqueios ativos
       const listRes = await request(testApp)
         .get('/api/schedule-blocks')
-        .set('x-tenant-id', activeTenantId);
+        .set('Authorization', `Bearer ${activeToken}`);
       expect(listRes.status).toBe(200);
       expect(listRes.body).toHaveLength(1);
       expect(listRes.body[0].id).toBe(blockId);
@@ -333,13 +339,13 @@ describe('API Complementar — CliniAssist (Sprint BE-6)', () => {
       // 4. Soft delete do bloqueio
       const deleteRes = await request(testApp)
         .delete(`/api/schedule-blocks/${blockId}`)
-        .set('x-tenant-id', activeTenantId);
+        .set('Authorization', `Bearer ${activeToken}`);
       expect(deleteRes.status).toBe(200);
 
       // 5. Listagem não deve mais exibir o bloqueio
       const listAfterDelete = await request(testApp)
         .get('/api/schedule-blocks')
-        .set('x-tenant-id', activeTenantId);
+        .set('Authorization', `Bearer ${activeToken}`);
       expect(listAfterDelete.status).toBe(200);
       expect(listAfterDelete.body).toHaveLength(0);
 
@@ -407,7 +413,7 @@ describe('API Complementar — CliniAssist (Sprint BE-6)', () => {
       // 2. Consulta geral sem filtros
       const resAll = await request(testApp)
         .get('/api/financial/transactions')
-        .set('x-tenant-id', activeTenantId);
+        .set('Authorization', `Bearer ${activeToken}`);
 
       expect(resAll.status).toBe(200);
       expect(resAll.body).toHaveLength(4);
@@ -422,7 +428,7 @@ describe('API Complementar — CliniAssist (Sprint BE-6)', () => {
       // 3. Filtro por tipo (type = INCOME)
       const resIncome = await request(testApp)
         .get('/api/financial/transactions')
-        .set('x-tenant-id', activeTenantId)
+        .set('Authorization', `Bearer ${activeToken}`)
         .query({ type: 'INCOME' });
 
       expect(resIncome.status).toBe(200);
@@ -432,7 +438,7 @@ describe('API Complementar — CliniAssist (Sprint BE-6)', () => {
       // 4. Filtro por status (status = PENDING)
       const resPending = await request(testApp)
         .get('/api/financial/transactions')
-        .set('x-tenant-id', activeTenantId)
+        .set('Authorization', `Bearer ${activeToken}`)
         .query({ status: 'PENDING' });
 
       expect(resPending.status).toBe(200);
@@ -442,7 +448,7 @@ describe('API Complementar — CliniAssist (Sprint BE-6)', () => {
       // 5. Filtro por período (startDate e endDate)
       const resPeriod = await request(testApp)
         .get('/api/financial/transactions')
-        .set('x-tenant-id', activeTenantId)
+        .set('Authorization', `Bearer ${activeToken}`)
         .query({ startDate: '2026-11-01', endDate: '2026-11-10' });
 
       expect(resPeriod.status).toBe(200);
@@ -452,7 +458,7 @@ describe('API Complementar — CliniAssist (Sprint BE-6)', () => {
       // 6. Filtro combinado (type = EXPENSE, status = PAID)
       const resCombined = await request(testApp)
         .get('/api/financial/transactions')
-        .set('x-tenant-id', activeTenantId)
+        .set('Authorization', `Bearer ${activeToken}`)
         .query({ type: 'EXPENSE', status: 'PAID' });
 
       expect(resCombined.status).toBe(200);

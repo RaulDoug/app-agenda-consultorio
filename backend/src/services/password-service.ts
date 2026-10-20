@@ -15,6 +15,16 @@ export class PasswordService {
   }
 
   /**
+   * Versão síncrona do hash com bcrypt para compatibilidade em seeds e fixtures de teste.
+   */
+  static hashSync(password: string): string {
+    if (!password) {
+      throw new Error('A senha não pode ser vazia para geração de hash.');
+    }
+    return bcrypt.hashSync(password, BCRYPT_SALT_ROUNDS);
+  }
+
+  /**
    * Verifica se a senha em texto puro corresponde ao hash bcrypt armazenado.
    * Não aceita senhas em texto puro iguais ao próprio hash (prevenção contra vazamento de hash).
    */

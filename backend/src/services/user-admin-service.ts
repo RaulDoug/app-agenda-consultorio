@@ -90,8 +90,9 @@ export class UserAdminService {
    * Reseta a senha de um consultório existente, gerando uma credencial temporária
    * e invalidando todas as sessões anteriores via incremento atômico de token_version.
    */
-  async resetPassword(email: string): Promise<ResetPasswordResult> {
-    const normalizedEmail = email?.trim().toLowerCase();
+  async resetPassword(inputOrEmail: string | { email: string }): Promise<ResetPasswordResult> {
+    const rawEmail = typeof inputOrEmail === 'string' ? inputOrEmail : inputOrEmail?.email;
+    const normalizedEmail = rawEmail?.trim().toLowerCase();
 
     if (!normalizedEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalizedEmail)) {
       throw new ValidationError('Informe um e-mail válido para o reset de senha.');

@@ -5,6 +5,7 @@ import { createApp } from '../../app.js';
 import { createInMemoryDatabase, setDatabase, type IDatabase } from '../../db/connection.js';
 import { calculateDiscountDistribution } from '../calculator.js';
 import { generateInstallmentSchedule, validateInstallmentPlan } from '../installments.js';
+import { generateTestToken } from '../../middlewares/auth.js';
 
 describe('Motor Financeiro, Rateio de Descontos e Parcelamento — OdontoFlow', () => {
   let db: IDatabase;
@@ -15,6 +16,7 @@ describe('Motor Financeiro, Rateio de Descontos e Parcelamento — OdontoFlow', 
   const procedureAId = 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa';
   const procedureBId = 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb';
   const procedureCId = 'cccccccc-cccc-cccc-cccc-cccccccccccc';
+  const token = generateTestToken({ tenant_id: tenantId, tv: 0 });
 
   beforeEach(async () => {
     db = createInMemoryDatabase();
@@ -22,7 +24,7 @@ describe('Motor Financeiro, Rateio de Descontos e Parcelamento — OdontoFlow', 
     testApp = createApp();
 
     await db.query(
-      `INSERT INTO tenants (id, name) VALUES ($1, $2)`,
+      `INSERT INTO tenants (id, name, token_version, is_active, must_change_password) VALUES ($1, $2, 0, true, false)`,
       [tenantId, 'Clínica OdontoFlow']
     );
 
@@ -194,7 +196,7 @@ describe('Motor Financeiro, Rateio de Descontos e Parcelamento — OdontoFlow', 
       // 2. Executa baixa em lote via API
       const res = await request(testApp)
         .post('/api/financial/settle-batch')
-        .set('x-tenant-id', tenantId)
+        .set('Authorization', `Bearer ${token}`)
         .send({
           transactionIds: [transId1, transId2],
           paymentMethod: 'PIX',
@@ -222,7 +224,7 @@ describe('Motor Financeiro, Rateio de Descontos e Parcelamento — OdontoFlow', 
       // 1. Despesa paga à vista (PAID)
       const resPaid = await request(testApp)
         .post('/api/financial/expenses')
-        .set('x-tenant-id', tenantId)
+        .set('Authorization', `Bearer ${token}`)
         .send({
           category: 'Laboratório Prótese',
           description: 'Coroa cerâmica dente 16',
@@ -241,7 +243,7 @@ describe('Motor Financeiro, Rateio de Descontos e Parcelamento — OdontoFlow', 
       // 2. Despesa futura a pagar (PENDING - Opção B aprovada pelo PO)
       const resPending = await request(testApp)
         .post('/api/financial/expenses')
-        .set('x-tenant-id', tenantId)
+        .set('Authorization', `Bearer ${token}`)
         .send({
           category: 'Aluguel do Consultório',
           description: 'Vencimento próximo mês',
@@ -267,7 +269,7 @@ describe('Motor Financeiro, Rateio de Descontos e Parcelamento — OdontoFlow', 
 
       const res = await request(testApp)
         .delete(`/api/financial/transactions/${expenseId}`)
-        .set('x-tenant-id', tenantId);
+        .set('Authorization', `Bearer ${token}`);
 
       expect(res.status).toBe(200);
 

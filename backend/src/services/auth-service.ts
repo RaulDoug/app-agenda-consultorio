@@ -4,6 +4,10 @@ import { PasswordService } from './password-service.js';
 import { DEFAULT_JWT_SECRET } from '../middlewares/auth.js';
 import type { IDatabase } from '../db/connection.js';
 
+export function hashPassword(password: string): string {
+  return PasswordService.hashSync(password);
+}
+
 export interface TokenPayload {
   tenant_id: string;
   tenantId?: string;

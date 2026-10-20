@@ -3,6 +3,7 @@ import request from 'supertest';
 import type { Express } from 'express';
 import { createApp } from '../../app.js';
 import { createInMemoryDatabase, setDatabase, type IDatabase } from '../../db/connection.js';
+import { generateTestToken } from '../../middlewares/auth.js';
 
 describe('Queries Analíticas e Relatórios Gerenciais — OdontoFlow', () => {
   let db: IDatabase;
@@ -10,6 +11,8 @@ describe('Queries Analíticas e Relatórios Gerenciais — OdontoFlow', () => {
 
   const tenantId = '11111111-1111-1111-1111-111111111111';
   const tenantBId = '22222222-2222-2222-2222-222222222222';
+  const tokenA = generateTestToken({ tenant_id: tenantId, tv: 0 });
+  const tokenB = generateTestToken({ tenant_id: tenantBId, tv: 0 });
 
   const patient1Id = 'aaaaaaaa-1111-aaaa-1111-aaaaaaaaaaaa';
   const patient2Id = 'bbbbbbbb-2222-bbbb-2222-bbbbbbbbbbbb';
@@ -25,10 +28,11 @@ describe('Queries Analíticas e Relatórios Gerenciais — OdontoFlow', () => {
     testApp = createApp();
 
     // 1. Tenants
-    await db.query(`INSERT INTO tenants (id, name) VALUES ($1, $2), ($3, $4)`, [
-      tenantId, 'Clínica Dr. Silva',
-      tenantBId, 'Clínica Dra. Santos'
-    ]);
+    await db.query(
+      `INSERT INTO tenants (id, name, token_version, is_active, must_change_password)
+       VALUES ($1, $2, 0, true, false), ($3, $4, 0, true, false)`,
+      [tenantId, 'Clínica Dr. Silva', tenantBId, 'Clínica Dra. Santos']
+    );
 
     // 2. Procedimentos
     await db.query(
@@ -95,7 +99,7 @@ describe('Queries Analíticas e Relatórios Gerenciais — OdontoFlow', () => {
       // Consulta métricas
       const res = await request(testApp)
         .get('/api/analytics/no-show')
-        .set('x-tenant-id', tenantId)
+        .set('Authorization', `Bearer ${tokenA}`)
         .query({ startDate: '2026-10-01', endDate: '2026-10-31' });
 
       expect(res.status).toBe(200);
@@ -109,7 +113,7 @@ describe('Queries Analíticas e Relatórios Gerenciais — OdontoFlow', () => {
       // Sem nenhum agendamento para o tenantB
       const res = await request(testApp)
         .get('/api/analytics/no-show')
-        .set('x-tenant-id', tenantBId)
+        .set('Authorization', `Bearer ${tokenB}`)
         .query({ startDate: '2026-10-01', endDate: '2026-10-31' });
 
       expect(res.status).toBe(200);
@@ -147,7 +151,7 @@ describe('Queries Analíticas e Relatórios Gerenciais — OdontoFlow', () => {
 
       const res = await request(testApp)
         .get('/api/analytics/dre')
-        .set('x-tenant-id', tenantId)
+        .set('Authorization', `Bearer ${tokenA}`)
         .query({ startDate: '2026-10-01', endDate: '2026-10-31' });
 
       expect(res.status).toBe(200);
@@ -174,7 +178,7 @@ describe('Queries Analíticas e Relatórios Gerenciais — OdontoFlow', () => {
 
       const res = await request(testApp)
         .get('/api/analytics/cash-flow')
-        .set('x-tenant-id', tenantId)
+        .set('Authorization', `Bearer ${tokenA}`)
         .query({ referenceDate: '2026-10-18' });
 
       expect(res.status).toBe(200);
@@ -227,7 +231,7 @@ describe('Queries Analíticas e Relatórios Gerenciais — OdontoFlow', () => {
 
       const res = await request(testApp)
         .get('/api/analytics/procedures-ranking')
-        .set('x-tenant-id', tenantId);
+        .set('Authorization', `Bearer ${tokenA}`);
 
       expect(res.status).toBe(200);
       expect(res.body).toHaveLength(2);
@@ -285,7 +289,7 @@ describe('Queries Analíticas e Relatórios Gerenciais — OdontoFlow', () => {
 
       const res = await request(testApp)
         .get('/api/analytics/inactive-patients')
-        .set('x-tenant-id', tenantId)
+        .set('Authorization', `Bearer ${tokenA}`)
         .query({ referenceDate: '2026-10-18', inactiveDays: 180 });
 
       expect(res.status).toBe(200);

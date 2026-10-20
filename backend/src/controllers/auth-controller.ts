@@ -53,7 +53,8 @@ export class AuthController {
    */
   changePassword = async (req: Request, res: Response): Promise<void> => {
     const tenantId = req.tenantId;
-    const { current_password, new_password } = req.body || {};
+    const currentPassword = req.body?.current_password ?? req.body?.currentPassword;
+    const newPassword = req.body?.new_password ?? req.body?.newPassword;
 
     if (!tenantId) {
       res.status(401).json({ error: 'Token de autenticação não fornecido ou inválido.' });
@@ -64,8 +65,8 @@ export class AuthController {
       const authService = this.getService(req);
       const result = await authService.changePassword(
         tenantId,
-        current_password,
-        new_password
+        currentPassword,
+        newPassword
       );
 
       res.status(200).json(result);

@@ -8,6 +8,7 @@ import { createApp } from '../../app.js';
 import { createInMemoryDatabase, setDatabase, type IDatabase } from '../../db/connection.js';
 import { setEvolutionClient } from '../evolution-client.js';
 import { MockEvolutionClient } from './mock-evolution.js';
+import { generateTestToken } from '../../middlewares/auth.js';
 
 describe('Feature: Pareamento WhatsApp Live — Backend', () => {
   let db: IDatabase;
@@ -16,6 +17,7 @@ describe('Feature: Pareamento WhatsApp Live — Backend', () => {
 
   const tenantId = '11111111-1111-1111-1111-111111111111';
   const instanceName = 'cliniassist_test_instance';
+  const token = generateTestToken({ tenant_id: tenantId, tv: 0 });
 
   beforeEach(async () => {
     db = createInMemoryDatabase();
@@ -25,8 +27,8 @@ describe('Feature: Pareamento WhatsApp Live — Backend', () => {
     testApp = createApp();
 
     await db.query(
-      `INSERT INTO tenants (id, name, whatsapp_instance_name, whatsapp_connected)
-       VALUES ($1, 'Consultório OdontoFlow', $2, false)`,
+      `INSERT INTO tenants (id, name, whatsapp_instance_name, whatsapp_connected, token_version, is_active, must_change_password)
+       VALUES ($1, 'Consultório OdontoFlow', $2, false, 0, true, false)`,
       [tenantId, instanceName]
     );
   });
@@ -50,7 +52,7 @@ describe('Feature: Pareamento WhatsApp Live — Backend', () => {
 
       const resDisconnected = await request(testApp)
         .get('/api/whatsapp/session')
-        .set('x-tenant-id', tenantId);
+        .set('Authorization', `Bearer ${token}`);
 
       expect(resDisconnected.status).toBe(200);
       expect(resDisconnected.body.connected).toBe(false);
@@ -63,7 +65,7 @@ describe('Feature: Pareamento WhatsApp Live — Backend', () => {
 
       const resConnected = await request(testApp)
         .get('/api/whatsapp/session')
-        .set('x-tenant-id', tenantId);
+        .set('Authorization', `Bearer ${token}`);
 
       expect(resConnected.status).toBe(200);
       expect(resConnected.body.connected).toBe(true);
@@ -82,7 +84,7 @@ describe('Feature: Pareamento WhatsApp Live — Backend', () => {
       // Executa desconexão
       const resDisconnect = await request(testApp)
         .post('/api/whatsapp/disconnect')
-        .set('x-tenant-id', tenantId);
+        .set('Authorization', `Bearer ${token}`);
 
       expect(resDisconnect.status).toBe(200);
       expect(resDisconnect.body.success).toBe(true);
@@ -95,7 +97,7 @@ describe('Feature: Pareamento WhatsApp Live — Backend', () => {
       // Nova consulta de sessão deve retornar desconectado e novo QR Code
       const resSessionAfter = await request(testApp)
         .get('/api/whatsapp/session')
-        .set('x-tenant-id', tenantId);
+        .set('Authorization', `Bearer ${token}`);
 
       expect(resSessionAfter.status).toBe(200);
       expect(resSessionAfter.body.connected).toBe(false);
