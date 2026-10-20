@@ -11,6 +11,7 @@ import { authRouter } from './routes/auth.js';
 import { whatsappSessionRouter } from './routes/whatsapp.js';
 import { businessHoursRouter } from './routes/business-hours.js';
 import { scheduleBlocksRouter } from './routes/schedule-blocks.js';
+import { reportsRouter } from './routes/reports.js';
 
 export function createApp(): Express {
   const app = express();
@@ -33,6 +34,7 @@ export function createApp(): Express {
   app.use('/api/webhooks', webhooksRouter);
   app.use('/api/financial', financialRouter);
   app.use('/api/analytics', analyticsRouter);
+  app.use('/api/reports', reportsRouter);
 
   return app;
 }

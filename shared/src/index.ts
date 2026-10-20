@@ -3,6 +3,7 @@ export * from './types/procedure.js';
 export * from './types/appointment.js';
 export * from './types/business-hours.js';
 export * from './types/financial.js';
+export * from './types/report.js';
 
 // Domínio Puro Compartilhado
 export * from './domain/business-hours.js';

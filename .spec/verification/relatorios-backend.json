@@ -1,0 +1,47 @@
+{
+  "feature": "relatorios-backend",
+  "timestamp": "2026-10-20T18:18:19.597Z",
+  "gitRev": "beb3e83",
+  "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
+  "reporter": "vitest-json",
+  "exitCode": 0,
+  "testsParsed": 372,
+  "results": {
+    "AC-137": {
+      "status": "pass",
+      "testName": "Rotas de Relatórios Gerenciais — /api/reports AC-137: Consulta de métricas de No-Show com resumo amigável e perda estimada @spec:AC-137 AC-137: Consulta de métricas de No-Show com resumo amigável e perda estimada @spec:AC-137",
+      "method": "vitest-json"
+    },
+    "AC-138": {
+      "status": "pass",
+      "testName": "Rotas de Relatórios Gerenciais — /api/reports AC-138: Cálculo de receitas, despesas, lucro líquido e margem de lucro no período @spec:AC-138 AC-138: Cálculo de receitas, despesas, lucro líquido e margem de lucro no período @spec:AC-138",
+      "method": "vitest-json"
+    },
+    "AC-139": {
+      "status": "pass",
+      "testName": "Rotas de Relatórios Gerenciais — /api/reports AC-139: Projeção de contas a receber pendentes em 30, 60 e 90 dias @spec:AC-139 AC-139: Projeção de contas a receber pendentes em 30, 60 e 90 dias @spec:AC-139",
+      "method": "vitest-json"
+    },
+    "AC-140": {
+      "status": "pass",
+      "testName": "Rotas de Relatórios Gerenciais — /api/reports AC-140: Ranking de rentabilidade de procedimentos baseado em receita menos custo operacional @spec:AC-140 AC-140: Ranking de rentabilidade de procedimentos baseado em receita menos custo operacional @spec:AC-140",
+      "method": "vitest-json"
+    },
+    "AC-141": {
+      "status": "pass",
+      "testName": "Rotas de Relatórios Gerenciais — /api/reports AC-141: Listagem de pacientes inativos com corte temporal de 3 meses e 6 meses @spec:AC-141 AC-141: Listagem de pacientes inativos com corte temporal de 3 meses e 6 meses @spec:AC-141",
+      "method": "vitest-json"
+    },
+    "AC-142": {
+      "status": "pass",
+      "testName": "Rotas de Relatórios Gerenciais — /api/reports AC-142: Histórico cronológico detalhado de consultas de um paciente @spec:AC-142 AC-142: Histórico cronológico detalhado de consultas de um paciente @spec:AC-142",
+      "method": "vitest-json"
+    },
+    "AC-143": {
+      "status": "pass",
+      "testName": "Rotas de Relatórios Gerenciais — /api/reports AC-143: Resolução determinística dos períodos hoje, este mês, últimos 30 dias e todos @spec:AC-143 AC-143: Resolução determinística dos períodos hoje, este mês, últimos 30 dias e todos @spec:AC-143",
+      "method": "vitest-json"
+    }
+  },
+  "principles": {}
+}

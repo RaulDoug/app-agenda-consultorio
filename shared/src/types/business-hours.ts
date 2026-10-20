@@ -8,6 +8,7 @@ export interface BusinessHours {
   break_start_time?: string | null; // HH:mm
   break_end_time?: string | null;   // HH:mm
   created_at?: string;
+  updated_at?: string;
 }
 
 export interface ScheduleBlock {

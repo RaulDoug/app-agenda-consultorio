@@ -16,9 +16,11 @@ export interface FinancialTransaction {
   payment_date: string | null;
   installment_number: number;
   total_installments: number;
+  group_id: string | null;
   is_active: boolean;
   deleted_at: string | null;
   created_at: string;
+  updated_at?: string;
 }
 
 export interface CreateFinancialTransactionDTO {
@@ -35,6 +37,17 @@ export interface CreateFinancialTransactionDTO {
   payment_date?: string | null;
   installment_number?: number;
   total_installments?: number;
+  group_id?: string | null;
+}
+
+export interface UpdateFinancialTransactionDTO {
+  category?: string;
+  description?: string | null;
+  amount_cents?: number;
+  payment_method?: string | null;
+  status?: 'PAID' | 'PENDING';
+  due_date?: string;
+  payment_date?: string | null;
 }
 
 export interface ListTransactionsFilters {
@@ -42,6 +55,7 @@ export interface ListTransactionsFilters {
   endDate?: string;
   status?: 'PAID' | 'PENDING';
   type?: 'INCOME' | 'EXPENSE';
+  category?: string;
 }
 
 export interface CheckoutParams {
@@ -56,6 +70,16 @@ export interface CheckoutParams {
     paymentMethod?: string;
     paymentDate?: string;
   };
+}
+
+export interface FinancialMetricsResult {
+  period: 'today' | 'this_month' | 'last_30_days' | 'all';
+  income_paid_cents: number;
+  expenses_paid_cents: number;
+  expenses_pending_cents: number;
+  income_pending_cents: number;
+  net_profit_cents: number;
+  transactions: FinancialTransaction[];
 }
 
 export class FinancialRepository {
@@ -85,11 +109,13 @@ export class FinancialRepository {
         INSERT INTO financial_transactions (
           id, tenant_id, appointment_id, type, category, description,
           amount_cents, payment_method, status, due_date, payment_date,
-          installment_number, total_installments, is_active
+          installment_number, total_installments, group_id, is_active,
+          created_at, updated_at
         ) VALUES (
           $1, $2, $3, $4, $5, $6,
           $7, $8, $9, $10, $11,
-          $12, $13, true
+          $12, $13, $14, true,
+          CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
         ) RETURNING *
       `;
 
@@ -107,6 +133,7 @@ export class FinancialRepository {
         data.payment_date || (data.status === 'PAID' ? data.due_date : null),
         data.installment_number || 1,
         data.total_installments || 1,
+        data.group_id || null,
       ];
 
       const res = await client.query<FinancialTransaction>(sql, params);
@@ -134,6 +161,99 @@ export class FinancialRepository {
   }
 
   /**
+   * Atualiza uma transação individual
+   */
+  async updateTransaction(
+    tenantId: string,
+    id: string,
+    data: UpdateFinancialTransactionDTO
+  ): Promise<FinancialTransaction | null> {
+    const existing = await this.findById(tenantId, id);
+    if (!existing) return null;
+
+    const category = data.category !== undefined ? data.category : existing.category;
+    const description = data.description !== undefined ? data.description : existing.description;
+    const amountCents = data.amount_cents !== undefined ? data.amount_cents : existing.amount_cents;
+    const paymentMethod = data.payment_method !== undefined ? data.payment_method : existing.payment_method;
+    const status = data.status !== undefined ? data.status : existing.status;
+    const dueDate = data.due_date !== undefined ? data.due_date : existing.due_date;
+    const paymentDate =
+      data.payment_date !== undefined
+        ? data.payment_date
+        : status === 'PAID' && !existing.payment_date
+        ? dueDate
+        : existing.payment_date;
+
+    const sql = `
+      UPDATE financial_transactions
+      SET category = $1, description = $2, amount_cents = $3,
+          payment_method = $4, status = $5, due_date = $6,
+          payment_date = $7, updated_at = CURRENT_TIMESTAMP
+      WHERE id = $8 AND tenant_id = $9 AND is_active = true AND deleted_at IS NULL
+      RETURNING *
+    `;
+
+    const res = await this.db.query<FinancialTransaction>(sql, [
+      category,
+      description,
+      amountCents,
+      paymentMethod,
+      status,
+      dueDate,
+      paymentDate,
+      id,
+      tenantId,
+    ]);
+
+    return res.rows[0] || null;
+  }
+
+  /**
+   * Atualiza parcelas pendentes subsequentes de um grupo (D-03: scope = 'ALL')
+   * Preserva accounting integrity das parcelas já pagas (PAID).
+   */
+  async updateInstallmentsBatch(
+    tenantId: string,
+    groupId: string,
+    fromInstallmentNumber: number,
+    data: UpdateFinancialTransactionDTO
+  ): Promise<number> {
+    const fields: string[] = ['updated_at = CURRENT_TIMESTAMP'];
+    const params: any[] = [tenantId, groupId, fromInstallmentNumber];
+
+    if (data.category !== undefined) {
+      params.push(data.category);
+      fields.push(`category = $${params.length}`);
+    }
+    if (data.description !== undefined) {
+      params.push(data.description);
+      fields.push(`description = $${params.length}`);
+    }
+    if (data.amount_cents !== undefined) {
+      params.push(data.amount_cents);
+      fields.push(`amount_cents = $${params.length}`);
+    }
+    if (data.payment_method !== undefined) {
+      params.push(data.payment_method);
+      fields.push(`payment_method = $${params.length}`);
+    }
+
+    const sql = `
+      UPDATE financial_transactions
+      SET ${fields.join(', ')}
+      WHERE tenant_id = $1
+        AND group_id = $2
+        AND installment_number >= $3
+        AND status = 'PENDING'
+        AND is_active = true
+        AND deleted_at IS NULL
+    `;
+
+    const res = await this.db.query(sql, params);
+    return res.rowCount || 0;
+  }
+
+  /**
    * Baixa / Quitação em lote de múltiplas parcelas pendentes (AC-032)
    */
   async settleBatch(
@@ -151,7 +271,8 @@ export class FinancialRepository {
       UPDATE financial_transactions
       SET status = 'PAID',
           payment_method = $1,
-          payment_date = $2
+          payment_date = $2,
+          updated_at = CURRENT_TIMESTAMP
       WHERE tenant_id = $3
         AND id IN (${placeholders})
         AND status = 'PENDING'
@@ -165,13 +286,34 @@ export class FinancialRepository {
   }
 
   /**
+   * Verifica se a exclusão de receita é permitida (D-06).
+   * Impede exclusão direta de receita vinculada a agendamento ativo e concluído.
+   */
+  async checkIncomeDeletionAllowed(tenantId: string, transactionId: string): Promise<boolean> {
+    const tx = await this.findById(tenantId, transactionId);
+    if (!tx) return true;
+
+    if (tx.type === 'INCOME' && tx.appointment_id) {
+      const appRes = await this.db.query(
+        `SELECT id, status FROM appointments WHERE id = $1 AND tenant_id = $2 AND status = 'COMPLETED' AND deleted_at IS NULL`,
+        [tx.appointment_id, tenantId]
+      );
+      if (appRes.rows.length > 0) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  /**
    * Soft Delete de transação financeira para integridade e rastreabilidade contábil (AC-034)
    */
   async softDelete(tenantId: string, transactionId: string): Promise<boolean> {
     const sql = `
       UPDATE financial_transactions
       SET is_active = false,
-          deleted_at = CURRENT_TIMESTAMP
+          deleted_at = CURRENT_TIMESTAMP,
+          updated_at = CURRENT_TIMESTAMP
       WHERE id = $1 AND tenant_id = $2 AND is_active = true AND deleted_at IS NULL
     `;
     const res = await this.db.query(sql, [transactionId, tenantId]);
@@ -184,7 +326,7 @@ export class FinancialRepository {
   async findById(tenantId: string, transactionId: string): Promise<FinancialTransaction | null> {
     const sql = `
       SELECT * FROM financial_transactions
-      WHERE id = $1 AND tenant_id = $2
+      WHERE id = $1 AND tenant_id = $2 AND is_active = true AND deleted_at IS NULL
     `;
     const res = await this.db.query<FinancialTransaction>(sql, [transactionId, tenantId]);
     return res.rows[0] || null;
@@ -220,6 +362,11 @@ export class FinancialRepository {
       conditions.push(`type = $${params.length}`);
     }
 
+    if (filters.category) {
+      params.push(filters.category);
+      conditions.push(`category = $${params.length}`);
+    }
+
     const sql = `
       SELECT * FROM financial_transactions
       WHERE ${conditions.join(' AND ')}
@@ -228,6 +375,107 @@ export class FinancialRepository {
 
     const res = await this.db.query<FinancialTransaction>(sql, params);
     return res.rows;
+  }
+
+  /**
+   * Métricas Financeiras Consolidadas em Regime de Caixa (D-07)
+   */
+  async getMetrics(
+    tenantId: string,
+    period: 'today' | 'this_month' | 'last_30_days' | 'all' = 'this_month',
+    customDates?: { startDate?: string; endDate?: string }
+  ): Promise<FinancialMetricsResult> {
+    const now = new Date();
+    const todayStr = now.toISOString().slice(0, 10);
+
+    let startDate: string | undefined;
+    let endDate: string | undefined;
+
+    if (customDates?.startDate && customDates?.endDate) {
+      startDate = customDates.startDate;
+      endDate = customDates.endDate;
+    } else {
+      switch (period) {
+        case 'today':
+          startDate = todayStr;
+          endDate = todayStr;
+          break;
+        case 'this_month': {
+          const y = now.getUTCFullYear();
+          const m = now.getUTCMonth();
+          startDate = new Date(Date.UTC(y, m, 1)).toISOString().slice(0, 10);
+          startDate = `${y}-${String(m + 1).padStart(2, '0')}-01`;
+          const lastDay = new Date(Date.UTC(y, m + 1, 0)).getUTCDate();
+          endDate = `${y}-${String(m + 1).padStart(2, '0')}-${String(lastDay).padStart(2, '0')}`;
+          break;
+        }
+        case 'last_30_days': {
+          const past30 = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+          startDate = past30.toISOString().slice(0, 10);
+          endDate = todayStr;
+          break;
+        }
+        case 'all':
+        default:
+          startDate = undefined;
+          endDate = undefined;
+          break;
+      }
+    }
+
+    // Busca todas as transações ativas do tenant
+    const allTx = await this.listTransactions(tenantId, {});
+
+    // Filtra em Regime de Caixa:
+    // Receitas pagas consideram payment_date
+    // Despesas pagas consideram payment_date
+    // Valores pendentes consideram due_date
+    const isWithinRange = (dateStr: string | null | undefined): boolean => {
+      if (!dateStr) return false;
+      if (startDate && dateStr < startDate) return false;
+      if (endDate && dateStr > endDate) return false;
+      return true;
+    };
+
+    let incomePaidCents = 0;
+    let expensesPaidCents = 0;
+    let incomePendingCents = 0;
+    let expensesPendingCents = 0;
+
+    const filteredTransactions: FinancialTransaction[] = [];
+
+    for (const tx of allTx) {
+      const relevantDate = tx.status === 'PAID' ? (tx.payment_date || tx.due_date) : tx.due_date;
+      if (isWithinRange(relevantDate) || (!startDate && !endDate)) {
+        filteredTransactions.push(tx);
+
+        if (tx.type === 'INCOME') {
+          if (tx.status === 'PAID') {
+            incomePaidCents += Number(tx.amount_cents);
+          } else {
+            incomePendingCents += Number(tx.amount_cents);
+          }
+        } else if (tx.type === 'EXPENSE') {
+          if (tx.status === 'PAID') {
+            expensesPaidCents += Number(tx.amount_cents);
+          } else {
+            expensesPendingCents += Number(tx.amount_cents);
+          }
+        }
+      }
+    }
+
+    const netProfitCents = incomePaidCents - expensesPaidCents;
+
+    return {
+      period,
+      income_paid_cents: incomePaidCents,
+      expenses_paid_cents: expensesPaidCents,
+      income_pending_cents: incomePendingCents,
+      expenses_pending_cents: expensesPendingCents,
+      net_profit_cents: netProfitCents,
+      transactions: filteredTransactions,
+    };
   }
 
   /**
@@ -274,6 +522,8 @@ export class FinancialRepository {
         paymentDate: params.paymentPlan.paymentDate,
       });
 
+      const groupId = schedule.length > 1 ? crypto.randomUUID() : null;
+
       const txDTOs: CreateFinancialTransactionDTO[] = schedule.map((sch) => ({
         tenant_id: params.tenantId,
         appointment_id: params.appointmentId,
@@ -287,6 +537,7 @@ export class FinancialRepository {
         payment_date: sch.paymentDate || null,
         installment_number: sch.installmentNumber,
         total_installments: sch.totalInstallments,
+        group_id: groupId,
       }));
 
       const createdTransactions = await this.createBatch(txDTOs, client);

@@ -1,0 +1,57 @@
+{
+  "feature": "cruds-backend",
+  "timestamp": "2026-10-20T18:04:28.522Z",
+  "gitRev": "beb3e83",
+  "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
+  "reporter": "vitest-json",
+  "exitCode": 0,
+  "testsParsed": 337,
+  "results": {
+    "AC-128": {
+      "status": "pass",
+      "testName": "Rotas de Procedimentos — /api/procedures deve cadastrar procedimento com duração, preço e custo via POST /api/procedures @spec:AC-128 deve cadastrar procedimento com duração, preço e custo via POST /api/procedures @spec:AC-128",
+      "method": "vitest-json"
+    },
+    "AC-129": {
+      "status": "pass",
+      "testName": "Rotas de Pacientes (Clientes) — /api/patients deve cadastrar paciente com sucesso via POST /api/patients @spec:AC-129 deve cadastrar paciente com sucesso via POST /api/patients @spec:AC-129",
+      "method": "vitest-json"
+    },
+    "AC-130": {
+      "status": "pass",
+      "testName": "Rotas de Horários de Atendimento — /api/business-hours deve atualizar expediente via PUT /api/business-hours @spec:AC-130 deve atualizar expediente via PUT /api/business-hours @spec:AC-130",
+      "method": "vitest-json"
+    },
+    "AC-131": {
+      "status": "pass",
+      "testName": "Rotas de Bloqueios de Agenda — /api/schedule-blocks deve cadastrar bloqueio de agenda via POST /api/schedule-blocks @spec:AC-131 deve cadastrar bloqueio de agenda via POST /api/schedule-blocks @spec:AC-131",
+      "method": "vitest-json"
+    },
+    "AC-132": {
+      "status": "pass",
+      "testName": "Rotas de Agendamentos — /api/appointments D-01: deve retornar 409 estruturado com o título do bloqueio ao tentar agendar em horário bloqueado @spec:AC-132 D-01: deve retornar 409 estruturado com o título do bloqueio ao tentar agendar em horário bloqueado @spec:AC-132",
+      "method": "vitest-json"
+    },
+    "AC-133": {
+      "status": "pass",
+      "testName": "Rotas de Agendamentos — /api/appointments D-09: deve realizar soft-delete com estorno contábil automático de transações financeiras vinculadas @spec:AC-133 D-09: deve realizar soft-delete com estorno contábil automático de transações financeiras vinculadas @spec:AC-133",
+      "method": "vitest-json"
+    },
+    "AC-134": {
+      "status": "pass",
+      "testName": "Rotas Financeiras — /api/financial (Checkout, Categorias, Despesas, Métricas e Proteções) D-04: deve registrar despesa recorrente de 3 meses gerando grupo e parcelas subsequentes PENDING @spec:AC-134 D-04: deve registrar despesa recorrente de 3 meses gerando grupo e parcelas subsequentes PENDING @spec:AC-134",
+      "method": "vitest-json"
+    },
+    "AC-135": {
+      "status": "pass",
+      "testName": "Rotas Financeiras — /api/financial (Checkout, Categorias, Despesas, Métricas e Proteções) D-03: deve atualizar parcelas pendentes com scope = ALL @spec:AC-135 D-03: deve atualizar parcelas pendentes com scope = ALL @spec:AC-135",
+      "method": "vitest-json"
+    },
+    "AC-136": {
+      "status": "pass",
+      "testName": "Rotas Financeiras — /api/financial (Checkout, Categorias, Despesas, Métricas e Proteções) D-07: GET /api/financial/metrics deve retornar faturamento recebido, despesas e saldo líquido em Regime de Caixa @spec:AC-136 D-07: GET /api/financial/metrics deve retornar faturamento recebido, despesas e saldo líquido em Regime de Caixa @spec:AC-136",
+      "method": "vitest-json"
+    }
+  },
+  "principles": {}
+}

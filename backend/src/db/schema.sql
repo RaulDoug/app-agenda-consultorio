@@ -40,6 +40,7 @@ CREATE TABLE IF NOT EXISTS procedures (
     name VARCHAR(255) NOT NULL,
     default_duration_minutes INT NOT NULL DEFAULT 30 CHECK (default_duration_minutes > 0),
     default_price_cents INT NOT NULL DEFAULT 0 CHECK (default_price_cents >= 0),
+    cost_cents INT NOT NULL DEFAULT 0 CHECK (cost_cents >= 0),
     is_active BOOLEAN DEFAULT TRUE,
     deleted_at TIMESTAMP WITH TIME ZONE DEFAULT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
@@ -84,6 +85,7 @@ CREATE TABLE IF NOT EXISTS appointment_items (
     appointment_id UUID NOT NULL REFERENCES appointments(id) ON DELETE CASCADE,
     procedure_id UUID NOT NULL REFERENCES procedures(id),
     effective_price_cents INT NOT NULL CHECK (effective_price_cents >= 0),
+    cost_cents INT NOT NULL DEFAULT 0 CHECK (cost_cents >= 0),
     duration_minutes INT NOT NULL CHECK (duration_minutes > 0)
 );
 
@@ -110,12 +112,28 @@ CREATE TABLE IF NOT EXISTS financial_transactions (
     payment_date DATE,
     installment_number INT DEFAULT 1,
     total_installments INT DEFAULT 1,
+    group_id UUID,
     is_active BOOLEAN DEFAULT TRUE,
     deleted_at TIMESTAMP WITH TIME ZONE DEFAULT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 CREATE INDEX IF NOT EXISTS idx_transactions_tenant_dates ON financial_transactions(tenant_id, due_date, status);
+CREATE INDEX IF NOT EXISTS idx_transactions_tenant_group ON financial_transactions(tenant_id, group_id);
+
+-- 6.1 Categorias Financeiras de Despesas
+CREATE TABLE IF NOT EXISTS financial_categories (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    tenant_id UUID NOT NULL REFERENCES tenants(id) ON DELETE CASCADE,
+    name VARCHAR(100) NOT NULL,
+    type VARCHAR(20) DEFAULT 'EXPENSE',
+    is_default BOOLEAN DEFAULT FALSE,
+    is_active BOOLEAN DEFAULT TRUE,
+    deleted_at TIMESTAMP WITH TIME ZONE DEFAULT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+CREATE INDEX IF NOT EXISTS idx_financial_categories_tenant ON financial_categories(tenant_id);
 
 -- 7. Horário de Funcionamento Regular do Consultório
 CREATE TABLE IF NOT EXISTS business_hours (

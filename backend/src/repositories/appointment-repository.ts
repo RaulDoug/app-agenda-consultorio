@@ -3,10 +3,18 @@ import { getDatabase, type IDatabase } from '../db/connection.js';
 
 export class DoubleBookingConflictError extends Error {
   readonly statusCode = 409;
-  constructor(message: string = 'Conflito de horário detectado (Double Booking).') {
+  readonly code = 'DOUBLE_BOOKING';
+  constructor(message: string = 'Já existe um agendamento conflitante neste intervalo de horário (Double Booking).') {
     super(message);
     this.name = 'DoubleBookingConflictError';
   }
+}
+
+export interface PreparedAppointmentItem {
+  procedure_id: string;
+  effective_price_cents: number;
+  cost_cents: number;
+  duration_minutes: number;
 }
 
 export class AppointmentRepository {
@@ -20,10 +28,38 @@ export class AppointmentRepository {
     return this.customDb || getDatabase();
   }
 
+  async findConflictingAppointments(
+    tenantId: string,
+    startTimeIso: string,
+    endTimeIso: string,
+    excludeId?: string
+  ): Promise<Appointment[]> {
+    let sql = `
+      SELECT * FROM appointments
+      WHERE tenant_id = $1
+        AND deleted_at IS NULL
+        AND status != 'CANCELLED'
+        AND (start_time < $3 AND end_time > $2)
+    `;
+    const params: any[] = [tenantId, startTimeIso, endTimeIso];
+
+    if (excludeId) {
+      params.push(excludeId);
+      sql += ` AND id != $${params.length}`;
+    }
+
+    sql += ` ORDER BY start_time ASC`;
+
+    const res = await this.db.query<Appointment>(sql, params);
+    return res.rows;
+  }
+
   async createWithItems(
     tenantId: string,
     data: CreateAppointmentDTO,
-    customId?: string
+    customId?: string,
+    preparedItems?: PreparedAppointmentItem[],
+    totalCharged?: number
   ): Promise<Appointment> {
     const client = await this.db.getClient();
     await client.query('BEGIN');
@@ -43,10 +79,9 @@ export class AppointmentRepository {
         throw new Error('Pelo menos um procedimento é obrigatório para o agendamento.');
       }
 
-      // Busca dados dos procedimentos para calcular duração e preço
       const placeholders = data.procedure_ids.map((_, idx) => `$${idx + 1}`).join(', ');
       const proceduresQuery = `
-        SELECT id, default_duration_minutes, default_price_cents
+        SELECT id, default_duration_minutes, default_price_cents, cost_cents
         FROM procedures
         WHERE id IN (${placeholders}) AND tenant_id = $${data.procedure_ids.length + 1} AND deleted_at IS NULL AND is_active = true
       `;
@@ -56,26 +91,24 @@ export class AppointmentRepository {
         throw new Error('Um ou mais procedimentos selecionados são inválidos ou pertencem a outro consultório.');
       }
 
-      // Calcula duração total e preço total
-      const totalDurationMinutes = proceduresRes.rows.reduce(
-        (sum, p) => sum + Number(p.default_duration_minutes),
-        0
-      );
-      const totalChargedCents = proceduresRes.rows.reduce(
-        (sum, p) => sum + Number(p.default_price_cents),
-        0
-      );
+      // Mapeia procedimentos
+      const procMap = new Map(proceduresRes.rows.map((p) => [p.id, p]));
+
+      // Duração total somando todos os procedimentos
+      const totalDurationMinutes = data.procedure_ids.reduce((sum, pid) => {
+        const proc = procMap.get(pid);
+        return sum + Number(proc?.default_duration_minutes || 30);
+      }, 0);
 
       const startDate = new Date(data.start_time);
       if (isNaN(startDate.getTime())) {
         throw new Error('Data de início do agendamento é inválida.');
       }
       const endDate = new Date(startDate.getTime() + totalDurationMinutes * 60 * 1000);
-
       const startTimeIso = startDate.toISOString();
       const endTimeIso = endDate.toISOString();
 
-      // 3. Prevenção de conflito de horário (Double Booking) se não for encaixe extraordinário
+      // Se não for encaixe extraordinário, verifica conflito de agendamento (Double Booking)
       if (!data.confirm_overtime) {
         const overlapQuery = `
           SELECT id FROM appointments
@@ -86,13 +119,17 @@ export class AppointmentRepository {
           LIMIT 1
         `;
         const overlapRes = await client.query(overlapQuery, [tenantId, startTimeIso, endTimeIso]);
-
         if (overlapRes.rows.length > 0) {
           throw new DoubleBookingConflictError(
             'Já existe um agendamento conflitante neste intervalo de horário (Double Booking).'
           );
         }
       }
+
+      // Preço total cobrado (respeita desconto se fornecido)
+      const computedTotal = totalCharged !== undefined
+        ? totalCharged
+        : proceduresRes.rows.reduce((sum, p) => sum + Number(p.default_price_cents), 0);
 
       // 4. Inserção do agendamento principal
       const appointmentId = customId || crypto.randomUUID();
@@ -115,7 +152,7 @@ export class AppointmentRepository {
         startTimeIso,
         endTimeIso,
         Boolean(data.confirm_overtime),
-        totalChargedCents,
+        computedTotal,
         data.notes || null,
       ]);
 
@@ -123,22 +160,46 @@ export class AppointmentRepository {
 
       // 5. Inserção dos itens do agendamento (Appointment Items)
       const items: AppointmentItem[] = [];
-      for (const proc of proceduresRes.rows) {
-        const itemId = crypto.randomUUID();
-        const insertItemSql = `
-          INSERT INTO appointment_items (
-            id, appointment_id, procedure_id, effective_price_cents, duration_minutes
-          ) VALUES ($1, $2, $3, $4, $5)
-          RETURNING *
-        `;
-        const itemRes = await client.query<AppointmentItem>(insertItemSql, [
-          itemId,
-          appointmentId,
-          proc.id,
-          proc.default_price_cents,
-          proc.default_duration_minutes,
-        ]);
-        items.push(itemRes.rows[0]);
+
+      if (preparedItems && preparedItems.length > 0) {
+        for (const item of preparedItems) {
+          const itemId = crypto.randomUUID();
+          const insertItemSql = `
+            INSERT INTO appointment_items (
+              id, appointment_id, procedure_id, effective_price_cents, cost_cents, duration_minutes
+            ) VALUES ($1, $2, $3, $4, $5, $6)
+            RETURNING *
+          `;
+          const itemRes = await client.query<AppointmentItem>(insertItemSql, [
+            itemId,
+            appointmentId,
+            item.procedure_id,
+            item.effective_price_cents,
+            item.cost_cents || 0,
+            item.duration_minutes,
+          ]);
+          items.push(itemRes.rows[0]);
+        }
+      } else {
+        for (const pid of data.procedure_ids) {
+          const proc = procMap.get(pid)!;
+          const itemId = crypto.randomUUID();
+          const insertItemSql = `
+            INSERT INTO appointment_items (
+              id, appointment_id, procedure_id, effective_price_cents, cost_cents, duration_minutes
+            ) VALUES ($1, $2, $3, $4, $5, $6)
+            RETURNING *
+          `;
+          const itemRes = await client.query<AppointmentItem>(insertItemSql, [
+            itemId,
+            appointmentId,
+            proc.id,
+            proc.default_price_cents,
+            proc.cost_cents || 0,
+            proc.default_duration_minutes,
+          ]);
+          items.push(itemRes.rows[0]);
+        }
       }
 
       await client.query('COMMIT');
@@ -215,7 +276,30 @@ export class AppointmentRepository {
     sql += ` ORDER BY start_time ASC`;
 
     const res = await this.db.query<Appointment>(sql, params);
-    return res.rows;
+    const appointments = res.rows;
+
+    if (appointments.length > 0) {
+      const appIds = appointments.map((a) => a.id);
+      const placeholders = appIds.map((_, i) => `$${i + 1}`).join(', ');
+      const itemsRes = await this.db.query<AppointmentItem>(
+        `SELECT * FROM appointment_items WHERE appointment_id IN (${placeholders})`,
+        appIds
+      );
+
+      const itemsMap = new Map<string, AppointmentItem[]>();
+      for (const item of itemsRes.rows) {
+        if (!itemsMap.has(item.appointment_id)) {
+          itemsMap.set(item.appointment_id, []);
+        }
+        itemsMap.get(item.appointment_id)!.push(item);
+      }
+
+      for (const app of appointments) {
+        app.items = itemsMap.get(app.id) || [];
+      }
+    }
+
+    return appointments;
   }
 
   async update(
@@ -237,6 +321,10 @@ export class AppointmentRepository {
     if (data.confirm_overtime !== undefined) {
       params.push(data.confirm_overtime);
       updates.push(`is_overtime = $${params.length}`);
+    }
+    if (data.total_charged_cents !== undefined) {
+      params.push(data.total_charged_cents);
+      updates.push(`total_charged_cents = $${params.length}`);
     }
     if (data.notes !== undefined) {
       params.push(data.notes);
@@ -263,13 +351,150 @@ export class AppointmentRepository {
     return this.findById(tenantId, id);
   }
 
+  async updateWithItems(
+    tenantId: string,
+    id: string,
+    data: UpdateAppointmentDTO,
+    items?: PreparedAppointmentItem[],
+    endTimeIso?: string
+  ): Promise<Appointment | null> {
+    const client = await this.db.getClient();
+    await client.query('BEGIN');
+
+    try {
+      const updates: string[] = [];
+      const params: any[] = [id, tenantId];
+
+      if (data.start_time !== undefined) {
+        params.push(data.start_time);
+        updates.push(`start_time = $${params.length}`);
+      }
+      if (endTimeIso) {
+        params.push(endTimeIso);
+        updates.push(`end_time = $${params.length}`);
+      }
+      if (data.status !== undefined) {
+        params.push(data.status);
+        updates.push(`status = $${params.length}`);
+      }
+      if (data.confirm_overtime !== undefined) {
+        params.push(data.confirm_overtime);
+        updates.push(`is_overtime = $${params.length}`);
+      }
+      if (data.total_charged_cents !== undefined) {
+        params.push(data.total_charged_cents);
+        updates.push(`total_charged_cents = $${params.length}`);
+      }
+      if (data.notes !== undefined) {
+        params.push(data.notes);
+        updates.push(`notes = $${params.length}`);
+      }
+
+      updates.push(`updated_at = CURRENT_TIMESTAMP`);
+
+      const updateSql = `
+        UPDATE appointments
+        SET ${updates.join(', ')}
+        WHERE id = $1 AND tenant_id = $2 AND deleted_at IS NULL
+        RETURNING *
+      `;
+      const appRes = await client.query<Appointment>(updateSql, params);
+      if (appRes.rows.length === 0) {
+        await client.query('ROLLBACK');
+        return null;
+      }
+
+      if (items && items.length > 0) {
+        await client.query(`DELETE FROM appointment_items WHERE appointment_id = $1`, [id]);
+        for (const item of items) {
+          const itemId = crypto.randomUUID();
+          await client.query(
+            `INSERT INTO appointment_items (id, appointment_id, procedure_id, effective_price_cents, cost_cents, duration_minutes)
+             VALUES ($1, $2, $3, $4, $5, $6)`,
+            [
+              itemId,
+              id,
+              item.procedure_id,
+              item.effective_price_cents,
+              item.cost_cents,
+              item.duration_minutes,
+            ]
+          );
+        }
+      }
+
+      await client.query('COMMIT');
+      return this.findById(tenantId, id);
+    } catch (err) {
+      await client.query('ROLLBACK');
+      throw err;
+    } finally {
+      client.release();
+    }
+  }
+
+  /**
+   * Executa cancelamento ou exclusão via soft-delete com estorno contábil automático (D-09).
+   */
+  async cancelOrDeleteWithFinancialReversal(
+    tenantId: string,
+    id: string,
+    isDelete: boolean
+  ): Promise<boolean> {
+    const client = await this.db.getClient();
+    await client.query('BEGIN');
+
+    try {
+      // 1. Busca status atual do agendamento
+      const checkRes = await client.query<{ id: string; status: string }>(
+        `SELECT id, status FROM appointments WHERE id = $1 AND tenant_id = $2 AND deleted_at IS NULL`,
+        [id, tenantId]
+      );
+      if (checkRes.rows.length === 0) {
+        await client.query('ROLLBACK');
+        return false;
+      }
+
+      const currentStatus = checkRes.rows[0].status;
+
+      // 2. Atualiza o agendamento
+      if (isDelete) {
+        await client.query(
+          `UPDATE appointments
+           SET deleted_at = CURRENT_TIMESTAMP, updated_at = CURRENT_TIMESTAMP
+           WHERE id = $1 AND tenant_id = $2 AND deleted_at IS NULL`,
+          [id, tenantId]
+        );
+      } else {
+        await client.query(
+          `UPDATE appointments
+           SET status = 'CANCELLED', updated_at = CURRENT_TIMESTAMP
+           WHERE id = $1 AND tenant_id = $2 AND deleted_at IS NULL`,
+          [id, tenantId]
+        );
+      }
+
+      // 3. Estorno contábil automático: se o agendamento estava concluído ou possui transações vinculadas, desativa todas elas
+      if (currentStatus === 'COMPLETED' || isDelete || !isDelete) {
+        await client.query(
+          `UPDATE financial_transactions
+           SET is_active = false, deleted_at = CURRENT_TIMESTAMP, updated_at = CURRENT_TIMESTAMP
+           WHERE tenant_id = $1 AND appointment_id = $2 AND deleted_at IS NULL`,
+          [tenantId, id]
+        );
+      }
+
+      await client.query('COMMIT');
+      return true;
+    } catch (err) {
+      await client.query('ROLLBACK');
+      throw err;
+    } finally {
+      client.release();
+    }
+  }
+
   async softDelete(tenantId: string, id: string): Promise<boolean> {
-    const sql = `
-      UPDATE appointments
-      SET deleted_at = CURRENT_TIMESTAMP, updated_at = CURRENT_TIMESTAMP
-      WHERE id = $1 AND tenant_id = $2 AND deleted_at IS NULL
-    `;
-    const res = await this.db.query(sql, [id, tenantId]);
-    return (res.rowCount ?? 0) > 0;
+    return this.cancelOrDeleteWithFinancialReversal(tenantId, id, true);
   }
 }

@@ -208,3 +208,41 @@ Antes de considerar qualquer nova funcionalidade ou rota concluída, verifique:
 - [ ] Existem testes unitários para o Controller cobrindo os status codes e tratamento de requisições?
 - [ ] Existem testes de rota via Supertest validando a autenticação e integração?
 
+---
+
+## 9. Regras de Negócio Consolidadas dos Módulos Principais
+
+### 9.1 Procedimentos e Custos (`cost_cents`)
+- Todo procedimento armazena obrigatoriamente `default_price_cents` (preço cobrado ao paciente) e `cost_cents` (custo operacional de insumos e terceiros).
+- Itens de agendamento em `appointment_items` gravam `cost_cents` no momento da criação da consulta para permitir apuração histórica da margem de contribuição.
+
+### 9.2 Horários de Atendimento e Bloqueios de Agenda
+- A tabela `business_hours` possui 7 registros por tenant (um por dia da semana). Dias fechados recebem `is_open = false`, sem exclusão física ou lógica.
+- Bloqueios de agenda em `schedule_blocks` possuem `title`, `start_time`, `end_time` e operam com soft-delete (`deleted_at`).
+
+### 9.3 Validação Tripla de Agendamentos e Estorno Contábil Automático (D-09)
+- Todo agendamento criado sem a flag `confirm_overtime: true` é submetido a verificação tripla de conflitos:
+  1. Bloqueios de Agenda (`SCHEDULE_BLOCK` com `block_title`);
+  2. Fora do Expediente ou Intervalo de Almoço (`OUTSIDE_HOURS` ou `BREAK_TIME`);
+  3. Sobreposição de Paciente (`DOUBLE_BOOKING`).
+- Se houver conflito, o servidor responde com `HTTP 409 Conflict` estruturado.
+- Se `confirm_overtime: true` for informado, o agendamento é aceito como encaixe extraordinário (`is_overtime = true`).
+- **D-09: Estorno Automático no Cancelamento/Exclusão:** Quando um agendamento com status `COMPLETED` for cancelado (`status = 'CANCELLED'`) ou excluído (soft-delete), todas as transações financeiras vinculadas em `financial_transactions` sofrem soft-delete automático (`is_active = false, deleted_at = CURRENT_TIMESTAMP`), impedindo saldo de caixa fantasma.
+
+### 9.4 Gestão Financeira, Parcelamento e Regime de Caixa
+- **Edição de Parcelas com Escopo ALL (D-03):** Atualiza apenas parcelas subsequentes com status `PENDING` no mesmo `group_id`, resguardando a integridade contábil das parcelas já pagas (`PAID`).
+- **Despesas Recorrentes e Parceladas (D-04):** A primeira parcela recebe o status informado pelo usuário (`PAID` ou `PENDING`); todas as parcelas subsequentes nascem obrigatoriamente como `PENDING`.
+- **Categorias Customizadas por Consultório (D-05):** `financial_categories` armazena categorias por tenant com auto-seed sob demanda.
+- **Proteção de Receitas Concluídas (D-06):** É proibido excluir transação de receita vinculada a um agendamento ativo e concluído (HTTP 400 com código `LINKED_COMPLETED_APPOINTMENT`).
+- **Métricas em Regime de Caixa (D-07):** Transações pagas são contabilizadas na data de pagamento (`payment_date`), e valores pendentes na data de vencimento (`due_date`).
+
+### 9.5 Relatórios Gerenciais, Inteligência e Períodos
+- **Filtro Padronizado de Períodos:** Todos os relatórios temporais suportam `period: 'today' | 'this_month' | 'last_30_days' | 'all'`, além de `startDate` e `endDate` customizados em formato `YYYY-MM-DD`.
+- **Relatório de No-Show (Faltas):** Retorna `total_appointments`, `no_show_count`, taxa percentual `no_show_rate`, resumo `"X de Y consultas"` e `lost_estimated_cents` (somando o preço dos procedimentos registrados nas consultas faltosas).
+- **DRE Gerencial:** Totaliza receitas pagas, despesas pagas, lucro líquido (`net_profit_cents`) e margem de lucro percentual com 2 casas decimais.
+- **Recebíveis Futuros:** Apura projeções para os próximos 30, 60 e 90 dias com breakdown discriminado por janela temporal.
+- **Procedimentos Mais Rentáveis:** Classifica de 3 a 5 procedimentos ordenados pelo lucro real (`total_profit_cents = receita - custo operacional dos procedimentos`).
+- **Pacientes Inativos:** Filtra pacientes sem retorno nos últimos 3 ou 6 meses, excluindo aqueles que possuem agendamentos futuros marcados (`PENDING` ou `CONFIRMED`) e destacando `never_consulted: true`.
+- **Histórico por Paciente:** Linha do tempo das consultas de um paciente contendo procedimentos, valores, status de atendimento e status financeiro vinculado (`PAID`, `PENDING` ou `NONE`).
+
+

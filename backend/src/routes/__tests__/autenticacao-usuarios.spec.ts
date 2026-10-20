@@ -34,8 +34,8 @@ describe('Feature: autenticacao-usuarios — Suíte Integrada de Requisitos Spec
     });
 
     expect(tenant.id).toBeDefined();
-    expect(tenant.password_hash.startsWith('$2')).toBe(true);
-    await expect(PasswordService.verifyPassword(rawPass, tenant.password_hash)).resolves.toBe(true);
+    expect(tenant.password_hash!.startsWith('$2')).toBe(true);
+    await expect(PasswordService.verifyPassword(rawPass, tenant.password_hash!)).resolves.toBe(true);
     expect(tenant.must_change_password).toBe(false);
     expect(tenant.token_version).toBe(0);
 

@@ -12,7 +12,13 @@ export interface AppointmentItem {
   appointment_id: string;
   procedure_id: string;
   effective_price_cents: number;
+  cost_cents?: number;
   duration_minutes: number;
+}
+
+export interface AppointmentDiscount {
+  type: 'PERCENTAGE' | 'FIXED';
+  value: number; // percent (0-100) or cents (>= 0)
 }
 
 export interface Appointment {
@@ -36,12 +42,24 @@ export interface CreateAppointmentDTO {
   start_time: string;
   procedure_ids: string[];
   confirm_overtime?: boolean;
+  discount?: AppointmentDiscount;
   notes?: string | null;
 }
 
 export interface UpdateAppointmentDTO {
   start_time?: string;
   status?: AppointmentStatus;
+  procedure_ids?: string[];
   confirm_overtime?: boolean;
+  discount?: AppointmentDiscount;
+  total_charged_cents?: number | null;
   notes?: string | null;
+}
+
+export interface AppointmentConflictResponse {
+  code: 'SCHEDULE_BLOCK' | 'DOUBLE_BOOKING' | 'BREAK_TIME' | 'OUTSIDE_HOURS';
+  message: string;
+  block_title?: string;
+  conflict_start?: string;
+  conflict_end?: string;
 }

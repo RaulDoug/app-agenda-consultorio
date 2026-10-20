@@ -10,5 +10,5 @@
       "@odontoflow/shared/*": ["../shared/src/*"]
     }
   },
-  "include": ["src/**/*", "test/**/*", "tests/**/*", "../shared/src/**/*"]
+  "include": ["src/**/*", "test/**/*", "tests/**/*", "scripts/**/*", "../shared/src/**/*"]
 }

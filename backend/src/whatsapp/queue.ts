@@ -173,7 +173,7 @@ export class BullMQConfirmationQueue implements IConfirmationQueue {
   }
 
   async getPendingJobs(): Promise<EnqueuedJobRecord[]> {
-    const jobs = await this.queue.getJobs(['delayed', 'waiting', 'paused']);
+    const jobs = await this.queue.getJobs(['delayed', 'waiting']);
     return jobs.map((j) => ({
       id: j.id || '',
       name: j.name,
