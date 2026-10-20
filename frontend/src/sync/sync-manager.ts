@@ -39,7 +39,6 @@ export class SyncManager {
   private getHeaders(): Record<string, string> {
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',
-      'x-tenant-id': this.tenantId,
     };
     if (this.token) {
       headers['Authorization'] = `Bearer ${this.token}`;

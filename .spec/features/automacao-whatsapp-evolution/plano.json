@@ -1,0 +1,196 @@
+{
+  "runId": "App-Agenda-Consultório-automacao-whatsapp-evolution-mvh18scv",
+  "feature": "automacao-whatsapp-evolution",
+  "agent": "antigravity",
+  "modo": "paralelo",
+  "paralelizar": null,
+  "modeloForcado": null,
+  "esforcoForcado": null,
+  "geradoEm": "2026-10-20 18:44",
+  "branchTrabalho": "spec/automacao-whatsapp-evolution",
+  "baseDir": ".spec/features/automacao-whatsapp-evolution",
+  "specDir": ".spec",
+  "repoName": "App-Agenda-Consultório",
+  "logsDir": "../onp-worktrees/App-Agenda-Consultório-automacao-whatsapp-evolution-logs",
+  "ondas": [
+    [
+      "faixa-1",
+      "faixa-2",
+      "faixa-3"
+    ],
+    [
+      "faixa-4",
+      "faixa-5",
+      "faixa-6"
+    ]
+  ],
+  "faixas": [
+    {
+      "id": "faixa-1",
+      "branch": "spec/automacao-whatsapp-evolution-faixa-1",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-automacao-whatsapp-evolution-faixa-1",
+      "tarefas": [
+        {
+          "id": "T-127",
+          "titulo": "DDL, Migrations e Contratos Compartilhados",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "backend/src/db/schema.sql",
+            "shared/src/types/whatsapp.ts",
+            "shared/src/index.ts"
+          ],
+          "refs": [
+            "US-088",
+            "US-089",
+            "US-090",
+            "AC-146",
+            "AC-148"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "faixa-2",
+      "branch": "spec/automacao-whatsapp-evolution-faixa-2",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-automacao-whatsapp-evolution-faixa-2",
+      "tarefas": [
+        {
+          "id": "T-128",
+          "titulo": "Camada de Repositórios SQL do WhatsApp",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "backend/src/repositories/whatsapp-repository.ts",
+            "backend/src/repositories/__tests__/whatsapp-repository.spec.ts"
+          ],
+          "refs": [
+            "US-089",
+            "US-090",
+            "AC-146",
+            "AC-147",
+            "AC-148",
+            "AC-149",
+            "AC-150"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "faixa-3",
+      "branch": "spec/automacao-whatsapp-evolution-faixa-3",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-automacao-whatsapp-evolution-faixa-3",
+      "tarefas": [
+        {
+          "id": "T-129",
+          "titulo": "Camada de Serviços de Negócio e Scheduler Diário",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "backend/src/services/whatsapp-service.ts",
+            "backend/src/services/whatsapp-scheduler-service.ts",
+            "backend/src/services/webhook-service.ts",
+            "backend/src/services/__tests__/whatsapp-service.spec.ts",
+            "backend/src/services/__tests__/whatsapp-scheduler-service.spec.ts"
+          ],
+          "refs": [
+            "US-088",
+            "US-089",
+            "US-090",
+            "AC-144",
+            "AC-146",
+            "AC-147",
+            "AC-148",
+            "AC-150"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "faixa-4",
+      "branch": "spec/automacao-whatsapp-evolution-faixa-4",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-automacao-whatsapp-evolution-faixa-4",
+      "tarefas": [
+        {
+          "id": "T-130",
+          "titulo": "Camada de Controllers HTTP e Validações",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "backend/src/controllers/whatsapp-controller.ts",
+            "backend/src/controllers/webhook-controller.ts",
+            "backend/src/controllers/__tests__/whatsapp-controller.spec.ts",
+            "backend/src/controllers/__tests__/webhook-controller.spec.ts"
+          ],
+          "refs": [
+            "US-088",
+            "US-089",
+            "US-090",
+            "AC-145",
+            "AC-146",
+            "AC-147",
+            "AC-149",
+            "AC-150"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "faixa-5",
+      "branch": "spec/automacao-whatsapp-evolution-faixa-5",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-automacao-whatsapp-evolution-faixa-5",
+      "tarefas": [
+        {
+          "id": "T-131",
+          "titulo": "Rotas REST, Registro no Express e Suíte Integrada",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "backend/src/routes/whatsapp.routes.ts",
+            "backend/src/routes/webhooks.routes.ts",
+            "backend/src/routes/__tests__/whatsapp.routes.spec.ts",
+            "backend/src/routes/__tests__/webhooks.routes.spec.ts",
+            "backend/src/app.ts"
+          ],
+          "refs": [
+            "US-088",
+            "US-089",
+            "US-090",
+            "US-091",
+            "AC-144",
+            "AC-145",
+            "AC-146",
+            "AC-147",
+            "AC-148",
+            "AC-149",
+            "AC-150"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "faixa-6",
+      "branch": "spec/automacao-whatsapp-evolution-faixa-6",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-automacao-whatsapp-evolution-faixa-6",
+      "tarefas": [
+        {
+          "id": "T-132",
+          "titulo": "Documentação Técnica do Subsistema de WhatsApp",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "docs/backend/funcionalidades/whatsapp_evolution.md",
+            "docs/backend/funcionalidades/regras_globais.md"
+          ],
+          "refs": [
+            "US-091",
+            "AC-150"
+          ]
+        }
+      ]
+    }
+  ],
+  "sequenciais": [],
+  "concluidas": [],
+  "avisos": []
+}

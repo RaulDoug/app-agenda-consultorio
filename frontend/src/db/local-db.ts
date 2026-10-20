@@ -7,6 +7,7 @@ import type {
   LocalFinancialTransaction,
   LocalBusinessHours,
   LocalScheduleBlock,
+  LocalAuthSession,
   SyncOutboxItem,
   SyncMetadata,
 } from './types.js';
@@ -19,6 +20,7 @@ export class CliniAssistLocalDB extends Dexie {
   financial_transactions!: Table<LocalFinancialTransaction, string>;
   business_hours!: Table<LocalBusinessHours, string>;
   schedule_blocks!: Table<LocalScheduleBlock, string>;
+  auth_session!: Table<LocalAuthSession, string>;
   sync_outbox!: Table<SyncOutboxItem, string>;
   sync_metadata!: Table<SyncMetadata, string>;
 
@@ -35,6 +37,10 @@ export class CliniAssistLocalDB extends Dexie {
       schedule_blocks: 'id, tenant_id, start_time, end_time, deleted_at',
       sync_outbox: 'id, client_mutation_id, status, entity, record_id, created_at, [status+created_at]',
       sync_metadata: 'key',
+    });
+
+    this.version(2).stores({
+      auth_session: 'key',
     });
   }
 

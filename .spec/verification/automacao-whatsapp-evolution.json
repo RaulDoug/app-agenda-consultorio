@@ -1,0 +1,47 @@
+{
+  "feature": "automacao-whatsapp-evolution",
+  "timestamp": "2026-10-20T19:16:02.872Z",
+  "gitRev": "d0066c0",
+  "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
+  "reporter": "vitest-json",
+  "exitCode": 0,
+  "testsParsed": 409,
+  "results": {
+    "AC-144": {
+      "status": "pass",
+      "testName": "Feature: automacao-whatsapp-evolution — Suíte Integrada de Requisitos Spec-Driven US-088 — Agendador Diário Automático e Disparo em Lote de Confirmações AC-144: Varredura de consultas pendentes para o dia seguinte e agendamento em lote com jitter anti-ban @spec:AC-144 AC-144: Varredura de consultas pendentes para o dia seguinte e agendamento em lote com jitter anti-ban @spec:AC-144",
+      "method": "vitest-json"
+    },
+    "AC-145": {
+      "status": "pass",
+      "testName": "Feature: automacao-whatsapp-evolution — Suíte Integrada de Requisitos Spec-Driven US-088 — Agendador Diário Automático e Disparo em Lote de Confirmações AC-145: Disparo manual sob demanda de lote de confirmações via API com idempotência @spec:AC-145 AC-145: Disparo manual sob demanda de lote de confirmações via API com idempotência @spec:AC-145",
+      "method": "vitest-json"
+    },
+    "AC-146": {
+      "status": "pass",
+      "testName": "Feature: automacao-whatsapp-evolution — Suíte Integrada de Requisitos Spec-Driven US-089 — Parametrização Dinâmica do WhatsApp por Consultório AC-146: Consulta de configurações de WhatsApp por consultório com auto-seed @spec:AC-146 AC-146: Consulta de configurações de WhatsApp por consultório com auto-seed @spec:AC-146",
+      "method": "vitest-json"
+    },
+    "AC-147": {
+      "status": "pass",
+      "testName": "Feature: automacao-whatsapp-evolution — Suíte Integrada de Requisitos Spec-Driven US-089 — Parametrização Dinâmica do WhatsApp por Consultório AC-147: Atualização de templates Spintax e preferências de envio @spec:AC-147 AC-147: Atualização de templates Spintax e preferências de envio @spec:AC-147",
+      "method": "vitest-json"
+    },
+    "AC-148": {
+      "status": "pass",
+      "testName": "Feature: automacao-whatsapp-evolution — Suíte Integrada de Requisitos Spec-Driven US-090 — Registro e Rastreabilidade de Histórico de Comunicações AC-148: Persistência de logs de mensagens enviadas e recebidas com status da Evolution API @spec:AC-148 AC-148: Persistência de logs de mensagens enviadas e recebidas com status da Evolution API @spec:AC-148",
+      "method": "vitest-json"
+    },
+    "AC-149": {
+      "status": "pass",
+      "testName": "Feature: automacao-whatsapp-evolution — Suíte Integrada de Requisitos Spec-Driven US-090 — Registro e Rastreabilidade de Histórico de Comunicações AC-149: Consulta filtrada de histórico de mensagens por agendamento ou paciente @spec:AC-149 AC-149: Consulta filtrada de histórico de mensagens por agendamento ou paciente @spec:AC-149",
+      "method": "vitest-json"
+    },
+    "AC-150": {
+      "status": "pass",
+      "testName": "Feature: automacao-whatsapp-evolution — Suíte Integrada de Requisitos Spec-Driven US-091 — Arquitetura em 4 Camadas e Réplica de Acolhimento Humanizada AC-150: Desacoplamento estrito em 4 camadas e réplica de acolhimento para dúvidas ou áudios @spec:AC-150 AC-150: Desacoplamento estrito em 4 camadas e réplica de acolhimento para dúvidas ou áudios @spec:AC-150",
+      "method": "vitest-json"
+    }
+  },
+  "principles": {}
+}

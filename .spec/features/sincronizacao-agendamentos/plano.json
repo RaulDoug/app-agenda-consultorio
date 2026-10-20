@@ -1,0 +1,98 @@
+{
+  "runId": "App-Agenda-Consultório-sincronizacao-agendamentos-mvh7rc49",
+  "feature": "sincronizacao-agendamentos",
+  "agent": "antigravity",
+  "modo": "sequencial",
+  "paralelizar": null,
+  "modeloForcado": null,
+  "esforcoForcado": null,
+  "geradoEm": "2026-10-20 21:47",
+  "branchTrabalho": "spec/sincronizacao-agendamentos",
+  "baseDir": ".spec/features/sincronizacao-agendamentos",
+  "specDir": ".spec",
+  "repoName": "App-Agenda-Consultório",
+  "logsDir": "../onp-worktrees/App-Agenda-Consultório-sincronizacao-agendamentos-logs",
+  "ondas": [],
+  "faixas": [],
+  "sequenciais": [
+    {
+      "id": "T-001",
+      "titulo": "Backend Parser e Persistência de Mutações (POST /api/sync/batch)",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "backend/src/routes/sync.ts",
+        "backend/src/routes/__tests__/api.spec.ts"
+      ],
+      "refs": [
+        "US-095",
+        "AC-166",
+        "AC-167"
+      ]
+    },
+    {
+      "id": "T-002",
+      "titulo": "Backend Idempotência, Last-Write-Wins e Validação de Conflito de Horário",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "backend/src/routes/sync.ts",
+        "backend/src/routes/__tests__/api.spec.ts"
+      ],
+      "refs": [
+        "US-096",
+        "AC-169",
+        "AC-170",
+        "AC-171"
+      ]
+    },
+    {
+      "id": "T-003",
+      "titulo": "Frontend SyncManager Push e Pull Enriquecido com Confirmação",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "frontend/src/sync/sync-manager.ts",
+        "frontend/src/sync/__tests__/sync-manager.spec.ts"
+      ],
+      "refs": [
+        "US-095",
+        "AC-168",
+        "AC-174"
+      ]
+    },
+    {
+      "id": "T-004",
+      "titulo": "Frontend Flush Automático no Logout e Alerta de Pendências",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "frontend/src/features/auth/hooks/AuthContext.tsx",
+        "frontend/src/features/auth/hooks/__tests__/auth-context.spec.tsx",
+        "frontend/src/features/auth/components/LogoutConfirmDrawer.tsx"
+      ],
+      "refs": [
+        "US-097",
+        "AC-172",
+        "AC-173"
+      ]
+    },
+    {
+      "id": "T-005",
+      "titulo": "Testes Integrados, E2E e Documentação Técnica",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "frontend/e2e/sync-appointments.spec.ts",
+        "docs/backend/funcionalidades/sincronizacao_agendamentos.md",
+        "docs/backend/funcionalidades/regras_globais.md"
+      ],
+      "refs": [
+        "US-097",
+        "AC-174"
+      ]
+    }
+  ],
+  "concluidas": [],
+  "avisos": []
+}

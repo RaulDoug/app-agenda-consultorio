@@ -38,6 +38,17 @@ export class PatientRepository {
     return res.rows[0] || null;
   }
 
+  async findByWhatsapp(tenantId: string, whatsapp: string): Promise<Patient | null> {
+    const clean = whatsapp.replace(/\D/g, '');
+    const query = `
+      SELECT * FROM patients
+      WHERE tenant_id = $1 AND (whatsapp = $2 OR whatsapp = $3) AND is_active = true AND deleted_at IS NULL
+      LIMIT 1
+    `;
+    const res = await this.db.query<Patient>(query, [tenantId, clean, whatsapp]);
+    return res.rows[0] || null;
+  }
+
   async findAll(tenantId: string, options?: { search?: string; includeInactive?: boolean }): Promise<Patient[]> {
     let sql = `
       SELECT * FROM patients

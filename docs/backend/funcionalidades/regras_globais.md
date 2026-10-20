@@ -245,4 +245,20 @@ Antes de considerar qualquer nova funcionalidade ou rota concluída, verifique:
 - **Pacientes Inativos:** Filtra pacientes sem retorno nos últimos 3 ou 6 meses, excluindo aqueles que possuem agendamentos futuros marcados (`PENDING` ou `CONFIRMED`) e destacando `never_consulted: true`.
 - **Histórico por Paciente:** Linha do tempo das consultas de um paciente contendo procedimentos, valores, status de atendimento e status financeiro vinculado (`PAID`, `PENDING` ou `NONE`).
 
+### 9.6 Mensageria WhatsApp, Anti-Ban e Automação (Evolution API)
+- **Varredura Diária Automática e Antecedência D+1:** Disparos de confirmação ocorrem automaticamente às 09:00 (America/Sao_Paulo) para consultas do dia seguinte (`PENDING`), sendo proibido o disparo automático no mesmo dia da consulta.
+- **Idempotência Inteligente (12 horas):** Disparos manuais sob demanda (`POST /api/whatsapp/batch-confirmations/trigger`) ignoram agendamentos que já receberam mensagem outbound nas últimas 12 horas, salvo sob flag `force: true`.
+- **Salvaguardas Anti-Ban Estritas:** Uso obrigatório de jitter humanizado randômico (20s a 50s entre disparos consecutivos), Spintax estocástico (`{Olá|Oi}`) e janela comercial rígida (08:00 às 20:00).
+- **Acolhimento Humanizado para Dúvidas e Mídias:** Mensagens livres e áudios transitam a consulta para `MESSAGE_RECEIVED` e disparam automaticamente réplica de acolhimento personalizada informando que a equipe humana responderá em breve.
+- **Rastreabilidade e Log Auditável:** Todas as mensagens transacionais trocadas com pacientes cadastrados são registradas na tabela `whatsapp_messages` com direção (`OUTBOUND` ou `INBOUND`), status e ID da Evolution API. Números desconhecidos são ignorados silenciosamente sem gerar erros (AC-025).
+- **Arquitetura em 4 Camadas:** É terminantemente proibido executar queries SQL em rotas de WhatsApp ou Webhooks. Toda a persistência é isolada em `WhatsappRepository`, a regra de negócio em `WhatsappService`, `WhatsappSchedulerService` e `WebhookService`, e o contrato HTTP em `WhatsappController` e `WebhookController`.
 
+### 9.7 Sincronização em Lote (Batch Sync), Idempotência e Last-Write-Wins
+- **Suporte Nativo a Mutações:** O endpoint `POST /api/sync/batch` processa nativamente payloads estruturados `{ mutations: [{ entity, operation, payload }] }`, além do formato legado com arrays diretos (`appointments`, `patients`).
+- **Idempotência por Chave Primária UUID:** Cada agendamento utiliza o UUID v4 gerado no cliente como Chave Primária (`id`) no PostgreSQL. Reenvios subsequentes do mesmo lote (mesmo UUID) são idempotentes e nunca geram registros duplicados.
+- **Resolução de Conflito Last-Write-Wins (LWW):** Em concorrência ou edições offline, a versão com `updated_at` mais recente sobrepõe a versão existente no PostgreSQL. Requisições defasadas são contabilizadas como `ignoredCount` sem sobrescrever dados novos.
+- **Gravação Atômica de Itens (`appointment_items`):** A criação ou atualização de agendamentos com múltiplos procedimentos vinculados persiste as entidades de forma atômica na mesma transação.
+
+### 9.8 Unicidade Cadastral de Pacientes por Consultório
+- **Bloqueio de Duplicidade de WhatsApp:** É estritamente proibido cadastrar ou atualizar dois pacientes ativos (`is_active = true AND deleted_at IS NULL`) com o mesmo número de WhatsApp (comparação por dígitos numéricos `replace(/\D/g, '')`) dentro do mesmo `tenant_id`. Tentativas de duplicação devem ser rejeitadas com erro `HTTP 409 Conflict` informando o nome do cliente já existente.
+- **Validação de Choque de Horários e Encaixes:** Agendamentos sobrepostos no mesmo consultório são validados contra consultas ativas existentes, sendo aceitos como encaixe extraordinário apenas quando a flag `is_overtime: true` ou `is_extra_fit: true` estiver presente.

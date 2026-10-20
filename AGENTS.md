@@ -72,3 +72,16 @@ Ao atuar no diretório `backend/`, o agente de IA e os desenvolvedores DEVEM OBR
    - Atualizar `docs/backend/funcionalidades/regras_globais.md` com eventuais novas regras;
    - Criar ou atualizar o arquivo `.md` correspondente na pasta `docs/backend/funcionalidades/` com explicação detalhada mas concisa para consulta de futuras sessões e IAs.
 4. **Respeitar `backend/AGENTS.md`:** Seguir as diretrizes locais da pasta do backend.
+
+---
+
+## Diretrizes Mandatórias de Frontend e Consulta de Documentação
+
+Ao atuar no diretório `frontend/`, o agente de IA e os desenvolvedores DEVEM OBRIGATORIAMENTE:
+1. **Consultar Sempre `docs/frontend/funcionalidades/regras_globais.md`:** Todas as decisões de arquitetura e código devem seguir estritamente as regras globais de frontend (Arquitetura em 4 Camadas, Paradigma Local-First, Reatividade com `useLiveQuery`, Fila `sync_outbox`, One-Thumb Ergonomics e Testes Unitários com `fake-indexeddb`).
+2. **Consultar a Pasta `docs/frontend/funcionalidades/`:** Antes de alterar ou criar qualquer componente, hook ou fluxo no frontend, consultar os arquivos de documentação específicos da funcionalidade correspondente para entender comportamento de tela, regras de interação e dependências.
+3. **Atualização Contínua da Documentação:** A cada tarefa ou ajuste finalizado no frontend:
+   - Atualizar `docs/frontend/funcionalidades/regras_globais.md` com eventuais novas regras e padrões de UI/UX;
+   - Criar ou atualizar o arquivo `.md` correspondente na pasta `docs/frontend/funcionalidades/` com explicação clara e concisa para consulta de futuras sessões e IAs.
+4. **Respeitar `frontend/AGENTS.md` e `.agents/rules/frontend-regras.md`:** Seguir as diretrizes locais da pasta do frontend.
+

@@ -1,6 +1,15 @@
+import type { AuthTenantProfile } from '@cliniassist/shared';
+
 /**
  * Tipos de entidades armazenadas no banco local IndexedDB (Dexie.js) do CliniAssist
  */
+
+export interface LocalAuthSession {
+  key: 'current';
+  token: string;
+  tenant: AuthTenantProfile;
+  authenticated_at: string;
+}
 
 export interface LocalPatient {
   id: string;

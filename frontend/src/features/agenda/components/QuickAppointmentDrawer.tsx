@@ -138,6 +138,13 @@ export const QuickAppointmentDrawer: React.FC<QuickAppointmentDrawerProps> = ({
   const hasConflict = isOverlapping || isOutOfHours;
   const isEncaixe = isExtraFitOverride;
 
+  // Se não houver conflito, reseta o estado de encaixe para garantir integridade
+  useEffect(() => {
+    if (!hasConflict && isExtraFitOverride) {
+      setIsExtraFitOverride(false);
+    }
+  }, [hasConflict, isExtraFitOverride]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (isSubmitting) return; // Prevenção contra duplo clique
@@ -239,52 +246,6 @@ export const QuickAppointmentDrawer: React.FC<QuickAppointmentDrawerProps> = ({
 
         {/* Conteúdo com Scroll */}
         <form onSubmit={handleSubmit} className="p-4 space-y-4 overflow-y-auto flex-1">
-          {errorMsg && (
-            <div className="p-2.5 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-lg">
-              {errorMsg}
-            </div>
-          )}
-
-          {/* Alerta de Encaixe / Sobreposição */}
-          {hasConflict ? (
-            <div
-              data-testid="encaixe-warning"
-              className="p-3 bg-amber-50 border border-amber-300 rounded-xl text-amber-900 text-xs space-y-2.5"
-            >
-              <div className="flex items-start gap-2.5">
-                <span className="text-base leading-none">⚡</span>
-                <div>
-                  <span className="font-bold">Aviso de Encaixe:</span>{' '}
-                  {isOverlapping
-                    ? 'Já existe outro atendimento agendado neste horário.'
-                    : 'Horário fora do expediente regular ou durante o almoço.'}
-                </div>
-              </div>
-
-              <label className="flex items-center gap-2 pt-2 border-t border-amber-200/80 cursor-pointer font-medium select-none">
-                <input
-                  type="checkbox"
-                  checked={isExtraFitOverride}
-                  onChange={(e) => setIsExtraFitOverride(e.target.checked)}
-                  className="rounded border-amber-400 text-amber-600 focus:ring-amber-500"
-                />
-                <span>Permitir Encaixe / Horário Extra neste horário</span>
-              </label>
-            </div>
-          ) : (
-            <div className="flex items-center justify-end">
-              <label className="flex items-center gap-1.5 text-xs text-slate-500 cursor-pointer select-none">
-                <input
-                  type="checkbox"
-                  checked={isExtraFitOverride}
-                  onChange={(e) => setIsExtraFitOverride(e.target.checked)}
-                  className="rounded border-slate-300 text-teal-600 focus:ring-teal-500"
-                />
-                <span>Marcar como Encaixe</span>
-              </label>
-            </div>
-          )}
-
           {/* Data, Horário e Duração */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <div>
@@ -322,6 +283,54 @@ export const QuickAppointmentDrawer: React.FC<QuickAppointmentDrawerProps> = ({
               </div>
             </div>
           </div>
+
+          {/* Mensagem de Erro Centralizada */}
+          {errorMsg && (
+            <div
+              data-testid="quick-appointment-error"
+              className="p-3 bg-rose-50 border border-rose-300 text-rose-800 text-xs rounded-xl font-medium shadow-xs flex items-center gap-2"
+            >
+              <span className="text-sm">⚠️</span>
+              <span>{errorMsg}</span>
+            </div>
+          )}
+
+          {/* Alerta de Encaixe / Sobreposição no Centro do Card */}
+          {hasConflict ? (
+            <div
+              data-testid="encaixe-warning"
+              className={`p-3.5 rounded-xl text-xs space-y-2.5 transition-all ${
+                errorMsg && !isExtraFitOverride
+                  ? 'bg-amber-100 border-2 border-amber-500 text-amber-950 shadow-md ring-2 ring-amber-300'
+                  : 'bg-amber-50 border border-amber-300 text-amber-900 shadow-xs'
+              }`}
+            >
+              <div className="flex items-start gap-2.5">
+                <span className="text-base leading-none">⚡</span>
+                <div>
+                  <span className="font-bold text-amber-950">Aviso de Encaixe:</span>{' '}
+                  {isOverlapping
+                    ? 'Já existe outro atendimento agendado neste horário.'
+                    : 'Horário fora do expediente regular ou durante o almoço.'}
+                </div>
+              </div>
+
+              <label className="flex items-center gap-2.5 pt-2.5 border-t border-amber-200 cursor-pointer font-semibold select-none text-amber-950">
+                <input
+                  type="checkbox"
+                  checked={isExtraFitOverride}
+                  onChange={(e) => {
+                    setIsExtraFitOverride(e.target.checked);
+                    if (e.target.checked && errorMsg.includes('encaixe')) {
+                      setErrorMsg('');
+                    }
+                  }}
+                  className="w-4 h-4 rounded border-amber-400 text-amber-600 focus:ring-amber-500"
+                />
+                <span>Permitir Encaixe / Horário Extra neste horário</span>
+              </label>
+            </div>
+          ) : null}
 
           {/* Paciente com Cadastro Inline */}
           <InlinePatientForm

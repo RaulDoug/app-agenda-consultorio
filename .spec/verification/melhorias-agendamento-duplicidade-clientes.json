@@ -1,0 +1,27 @@
+{
+  "feature": "melhorias-agendamento-duplicidade-clientes",
+  "timestamp": "2026-10-20T23:08:38.224Z",
+  "gitRev": "d0066c0",
+  "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
+  "reporter": "vitest-json",
+  "exitCode": 0,
+  "testsParsed": 466,
+  "results": {
+    "AC-175": {
+      "status": "pass",
+      "testName": "Melhorias em Agendamento e Bloqueio de Duplicidade de Clientes US-098 / AC-175: Pré-seleção Inteligente de Data e Horário deve pré-selecionar o próximo slot futuro no mesmo dia quando dentro do expediente @spec:AC-175 deve pré-selecionar o próximo slot futuro no mesmo dia quando dentro do expediente @spec:AC-175",
+      "method": "vitest-json"
+    },
+    "AC-176": {
+      "status": "pass",
+      "testName": "Melhorias em Agendamento e Bloqueio de Duplicidade de Clientes US-099 / AC-176: Exibição Estrita sob Demanda da Opção de Encaixe NÃO deve exibir nenhuma opção ou checkbox de encaixe quando o horário for regular e livre @spec:AC-176 NÃO deve exibir nenhuma opção ou checkbox de encaixe quando o horário for regular e livre @spec:AC-176",
+      "method": "vitest-json"
+    },
+    "AC-177": {
+      "status": "pass",
+      "testName": "Rotas de Pacientes (Clientes) — /api/patients deve retornar 409 Conflict ao tentar cadastrar paciente com WhatsApp duplicado @spec:AC-177 deve retornar 409 Conflict ao tentar cadastrar paciente com WhatsApp duplicado @spec:AC-177",
+      "method": "vitest-json"
+    }
+  },
+  "principles": {}
+}

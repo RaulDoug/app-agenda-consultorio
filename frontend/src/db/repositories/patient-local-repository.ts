@@ -14,12 +14,27 @@ export class PatientLocalRepository {
   constructor(private db: CliniAssistLocalDB = localDb) {}
 
   async createPatient(input: CreatePatientInput): Promise<LocalPatient> {
+    const cleanPhone = input.whatsapp.replace(/\D/g, '');
+    const tenantId = input.tenant_id || (input as any).tenantId || '';
+
+    if (cleanPhone && tenantId) {
+      const duplicate = await this.db.patients
+        .where('tenant_id')
+        .equals(tenantId)
+        .filter((p) => p.is_active && p.whatsapp.replace(/\D/g, '') === cleanPhone)
+        .first();
+
+      if (duplicate) {
+        throw new Error(`Já existe um paciente cadastrado com este WhatsApp: "${duplicate.name}".`);
+      }
+    }
+
     const now = new Date().toISOString();
     const patient: LocalPatient = {
       id: input.id || crypto.randomUUID(),
-      tenant_id: input.tenant_id,
+      tenant_id: tenantId,
       name: input.name.trim(),
-      whatsapp: input.whatsapp.replace(/\D/g, ''),
+      whatsapp: cleanPhone,
       notes: input.notes || null,
       is_active: true,
       created_at: now,
@@ -43,6 +58,20 @@ export class PatientLocalRepository {
     const existing = await this.db.patients.get(id);
     if (!existing) {
       throw new Error(`Paciente com id ${id} não encontrado no banco local.`);
+    }
+
+    if (updates.whatsapp !== undefined) {
+      const cleanPhone = updates.whatsapp.replace(/\D/g, '');
+      const duplicate = await this.db.patients
+        .where('tenant_id')
+        .equals(existing.tenant_id)
+        .filter((p) => p.is_active && p.id !== id && p.whatsapp.replace(/\D/g, '') === cleanPhone)
+        .first();
+
+      if (duplicate) {
+        throw new Error(`Já existe outro paciente cadastrado com este WhatsApp: "${duplicate.name}".`);
+      }
+      updates.whatsapp = cleanPhone;
     }
 
     const now = new Date().toISOString();

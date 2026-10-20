@@ -1,0 +1,236 @@
+{
+  "runId": "App-Agenda-Consultório-autenticacao-login-frontend-mvh3hzvz",
+  "feature": "autenticacao-login-frontend",
+  "agent": "antigravity",
+  "modo": "sequencial",
+  "paralelizar": null,
+  "modeloForcado": null,
+  "esforcoForcado": null,
+  "geradoEm": "2026-10-20 19:47",
+  "branchTrabalho": "spec/autenticacao-login-frontend",
+  "baseDir": ".spec/features/autenticacao-login-frontend",
+  "specDir": ".spec",
+  "repoName": "App-Agenda-Consultório",
+  "logsDir": "../onp-worktrees/App-Agenda-Consultório-autenticacao-login-frontend-logs",
+  "ondas": [],
+  "faixas": [],
+  "sequenciais": [
+    {
+      "id": "T-001",
+      "titulo": "Contratos compartilhados de autenticação e política de senhas",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "shared/src/types/auth.ts",
+        "shared/src/domain/password-policy.ts",
+        "shared/src/index.ts",
+        "shared/src/__tests__/password-policy.spec.ts"
+      ],
+      "refs": [
+        "US-092",
+        "US-093",
+        "AC-162"
+      ]
+    },
+    {
+      "id": "T-002",
+      "titulo": "Migração Dexie v2 e Repositório Local de Sessão",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "frontend/src/db/types.ts",
+        "frontend/src/db/local-db.ts",
+        "frontend/src/db/repositories/auth-session-local-repository.ts",
+        "frontend/src/db/repositories/__tests__/auth-session-local-repository.spec.ts"
+      ],
+      "refs": [
+        "US-092",
+        "US-093",
+        "US-094",
+        "AC-151",
+        "AC-157",
+        "AC-158",
+        "AC-165"
+      ]
+    },
+    {
+      "id": "T-003",
+      "titulo": "Cliente HTTP ApiClient e Serviço de Autenticação",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "frontend/src/services/api-client.ts",
+        "frontend/src/services/auth-api.ts",
+        "frontend/src/services/__tests__/api-client.spec.ts",
+        "frontend/src/services/__tests__/auth-api.spec.ts"
+      ],
+      "refs": [
+        "US-092",
+        "US-093",
+        "US-094",
+        "AC-152",
+        "AC-153",
+        "AC-154",
+        "AC-155",
+        "AC-160",
+        "AC-163"
+      ]
+    },
+    {
+      "id": "T-004",
+      "titulo": "Migração do SyncManager e Módulo de WhatsApp para Bearer Token",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "frontend/src/sync/sync-manager.ts",
+        "frontend/src/sync/__tests__/sync-manager.spec.ts"
+      ],
+      "refs": [
+        "US-094",
+        "AC-163"
+      ]
+    },
+    {
+      "id": "T-005",
+      "titulo": "Provedor de Estado AuthProvider e Hook useAuth",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "frontend/src/features/auth/hooks/AuthContext.tsx",
+        "frontend/src/features/auth/hooks/useAuth.ts",
+        "frontend/src/features/auth/hooks/__tests__/auth-context.spec.tsx"
+      ],
+      "refs": [
+        "US-092",
+        "US-093",
+        "US-094",
+        "AC-151",
+        "AC-158",
+        "AC-160",
+        "AC-161",
+        "AC-165"
+      ]
+    },
+    {
+      "id": "T-006",
+      "titulo": "Hooks de Formulário useLoginForm e useChangePasswordForm",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "frontend/src/features/auth/hooks/useLoginForm.ts",
+        "frontend/src/features/auth/hooks/useChangePasswordForm.ts",
+        "frontend/src/features/auth/hooks/__tests__/use-login-form.spec.ts"
+      ],
+      "refs": [
+        "US-092",
+        "US-093",
+        "AC-152",
+        "AC-153",
+        "AC-154",
+        "AC-155",
+        "AC-156",
+        "AC-157",
+        "AC-162"
+      ]
+    },
+    {
+      "id": "T-007",
+      "titulo": "Componentes Visuais da Tela de Login, Troca de Senha e Splash",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "frontend/src/features/auth/components/LoginScreen.tsx",
+        "frontend/src/features/auth/components/ChangePasswordScreen.tsx",
+        "frontend/src/features/auth/components/SessionSplash.tsx",
+        "frontend/src/features/auth/components/AuthGate.tsx",
+        "frontend/src/features/auth/components/LogoutConfirmDrawer.tsx",
+        "frontend/src/features/auth/__tests__/auth-components.spec.tsx"
+      ],
+      "refs": [
+        "US-092",
+        "US-093",
+        "US-094",
+        "AC-151",
+        "AC-152",
+        "AC-153",
+        "AC-154",
+        "AC-155",
+        "AC-156",
+        "AC-157",
+        "AC-159",
+        "AC-161",
+        "AC-162",
+        "AC-165"
+      ]
+    },
+    {
+      "id": "T-008",
+      "titulo": "Integração no Shell da Aplicação e Card de Perfil em Ajustes",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "frontend/src/features/settings/components/ClinicProfileCard.tsx",
+        "frontend/src/features/settings/components/SettingsView.tsx",
+        "frontend/src/App.tsx",
+        "frontend/src/main.tsx",
+        "frontend/src/__tests__/app-auth-integration.spec.tsx"
+      ],
+      "refs": [
+        "US-092",
+        "US-094",
+        "AC-151",
+        "AC-164",
+        "AC-165"
+      ]
+    },
+    {
+      "id": "T-009",
+      "titulo": "Automação E2E com Playwright e Validação de Regressão",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "frontend/e2e/cliniassist-mobile.spec.ts",
+        "frontend/e2e/auth-flow.spec.ts"
+      ],
+      "refs": [
+        "US-092",
+        "US-093",
+        "AC-151",
+        "AC-152",
+        "AC-158"
+      ]
+    },
+    {
+      "id": "T-010",
+      "titulo": "Documentação Técnica da Funcionalidade e Atualização das Regras Globais",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "docs/frontend/funcionalidades/autenticacao_login.md",
+        "docs/frontend/funcionalidades/regras_globais.md"
+      ],
+      "refs": [
+        "US-092",
+        "US-093",
+        "US-094",
+        "AC-151",
+        "AC-152",
+        "AC-153",
+        "AC-154",
+        "AC-155",
+        "AC-156",
+        "AC-157",
+        "AC-158",
+        "AC-159",
+        "AC-160",
+        "AC-161",
+        "AC-162",
+        "AC-163",
+        "AC-164",
+        "AC-165"
+      ]
+    }
+  ],
+  "concluidas": [],
+  "avisos": []
+}

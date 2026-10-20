@@ -19,9 +19,12 @@ Gerencia o cadastro, edição, listagem com busca textual e exclusão lógica (s
    - `name`: String não vazia (aplica-se trim). Retorna HTTP 400 se ausente ou em branco.
    - `whatsapp`: String não vazia (aplica-se trim). Retorna HTTP 400 se ausente ou em branco.
    - `notes`: Texto opcional para prontuário/histórico.
-3. **Busca Textual:**
+3. **Unicidade de Telefone/WhatsApp (Bloqueio de Duplicidade):**
+   - O sistema valida a unicidade do número de WhatsApp (`cleanDigits`) entre pacientes ativos (`is_active = true AND deleted_at IS NULL`) do mesmo consultório (`tenant_id`).
+   - Tentativas de cadastro (`POST /api/patients`) ou atualização (`PUT /api/patients/:id`) com número já existente retornam `HTTP 409 Conflict` informando o nome do paciente já cadastrado.
+4. **Busca Textual:**
    - O endpoint `GET /api/patients?search=termo` realiza busca case-insensitive (`ILIKE`) tanto no nome quanto no número de WhatsApp do paciente.
-4. **Soft-Delete Inegociável:**
+5. **Soft-Delete Inegociável:**
    - A exclusão via `DELETE /api/patients/:id` nunca executa `DELETE FROM`.
    - Atualiza `is_active = false`, `deleted_at = CURRENT_TIMESTAMP` e `updated_at = CURRENT_TIMESTAMP`.
    - Buscas normais filtram `AND deleted_at IS NULL`.

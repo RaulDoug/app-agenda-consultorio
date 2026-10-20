@@ -1,7 +1,7 @@
 # Spec: Relatorios backend
 
 > feature: relatorios-backend
-> status: pronto
+> status: auditada
 
 ## Contexto
 
@@ -100,11 +100,11 @@ Como usuário do sistema, quero selecionar rapidamente entre hoje, este mês, ú
 
 | ID | Suposição | Status | Resolução |
 |---|---|---|---|
-| ASM-001 | Consultas com status `CANCELLED` não entram no cômputo de faltas (`NO_SHOW`) nem na receita efetiva. | confirmada | Confirmado conforme regras do sistema. |
-| ASM-002 | Procedimentos sem custo explicitado assumem custo zero para cálculo de rentabilidade. | confirmada | Confirmado via `COALESCE(cost_cents, 0)`. |
+| ASM-046 | Consultas com status `CANCELLED` não entram no cômputo de faltas (`NO_SHOW`) nem na receita efetiva. | confirmada | Confirmado conforme regras do sistema. |
+| ASM-047 | Procedimentos sem custo explicitado assumem custo zero para cálculo de rentabilidade. | confirmada | Confirmado via `COALESCE(cost_cents, 0)`. |
 
 ## Perguntas em aberto
 
 | ID | Pergunta | Status | Resposta |
 |---|---|---|---|
-| Q-001 | Pacientes que nunca se consultaram devem ser listados como inativos se o cadastro for mais antigo que o corte? | respondida | Sim, são incluídos com a flag `never_consulted: true`. |
+| Q-045 | Pacientes que nunca se consultaram devem ser listados como inativos se o cadastro for mais antigo que o corte? | respondida | Sim, são incluídos com a flag `never_consulted: true`. |

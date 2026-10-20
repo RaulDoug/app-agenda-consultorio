@@ -163,3 +163,37 @@ CREATE TABLE IF NOT EXISTS schedule_blocks (
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 CREATE INDEX IF NOT EXISTS idx_blocks_tenant_dates ON schedule_blocks(tenant_id, start_time, end_time);
+
+-- 9. Configurações de Mensageria WhatsApp por Consultório
+CREATE TABLE IF NOT EXISTS whatsapp_settings (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    tenant_id UUID NOT NULL UNIQUE REFERENCES tenants(id) ON DELETE CASCADE,
+    confirmation_message_template TEXT NOT NULL,
+    confirmation_reply_template TEXT NOT NULL,
+    reschedule_reply_template TEXT NOT NULL,
+    welcome_fallback_reply_template TEXT NOT NULL,
+    confirmation_hour INT NOT NULL DEFAULT 9,
+    confirmation_days_ahead INT NOT NULL DEFAULT 1,
+    auto_reply_enabled BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+CREATE INDEX IF NOT EXISTS idx_whatsapp_settings_tenant ON whatsapp_settings(tenant_id);
+
+-- 10. Histórico e Rastreabilidade de Mensagens WhatsApp
+CREATE TABLE IF NOT EXISTS whatsapp_messages (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    tenant_id UUID NOT NULL REFERENCES tenants(id) ON DELETE CASCADE,
+    appointment_id UUID REFERENCES appointments(id) ON DELETE SET NULL,
+    patient_id UUID REFERENCES patients(id) ON DELETE SET NULL,
+    direction VARCHAR(10) NOT NULL,
+    phone VARCHAR(20) NOT NULL,
+    message_text TEXT NOT NULL,
+    status VARCHAR(20) NOT NULL,
+    evolution_message_id VARCHAR(100),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+CREATE INDEX IF NOT EXISTS idx_whatsapp_messages_tenant ON whatsapp_messages(tenant_id, created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_whatsapp_messages_app ON whatsapp_messages(appointment_id);
+CREATE INDEX IF NOT EXISTS idx_whatsapp_messages_patient ON whatsapp_messages(patient_id);
+

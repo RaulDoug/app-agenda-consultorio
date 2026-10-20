@@ -42,6 +42,29 @@ describe('Rotas de Pacientes (Clientes) — /api/patients', () => {
     expect(res.body.whatsapp).toBe('11987654321');
   });
 
+  it('deve retornar 409 Conflict ao tentar cadastrar paciente com WhatsApp duplicado @spec:AC-177', async () => {
+    // Primeiro cadastro
+    await request(app)
+      .post('/api/patients')
+      .set('Authorization', `Bearer ${token}`)
+      .send({
+        name: 'Juliana Paes',
+        whatsapp: '11987654321',
+      });
+
+    // Tentativa duplicada com formatação diferente (mesmos dígitos)
+    const resDuplicado = await request(app)
+      .post('/api/patients')
+      .set('Authorization', `Bearer ${token}`)
+      .send({
+        name: 'Juliana Outra',
+        whatsapp: '(11) 98765-4321',
+      });
+
+    expect(resDuplicado.status).toBe(409);
+    expect(resDuplicado.body.error).toContain('Já existe um paciente cadastrado com este WhatsApp');
+  });
+
   it('deve rejeitar cadastro sem nome com 400', async () => {
     const res = await request(app)
       .post('/api/patients')

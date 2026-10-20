@@ -257,10 +257,10 @@
       "codigo": "VERIFY_OBSOLETO",
       "feature": "dominio-agenda",
       "ref": "—",
-      "ocorrencias": 49,
+      "ocorrencias": 66,
       "primeiraVez": "2026-10-17T19:21:57.173Z",
-      "ultimaVez": "2026-10-20T18:03:59.949Z",
-      "gitRev": "beb3e83"
+      "ultimaVez": "2026-10-20T23:08:46.258Z",
+      "gitRev": "d0066c0"
     },
     "ARQUIVO_INEXISTENTE::persistencia-api::T-008": {
       "codigo": "ARQUIVO_INEXISTENTE",
@@ -437,10 +437,10 @@
       "codigo": "VERIFY_OBSOLETO",
       "feature": "persistencia-api",
       "ref": "—",
-      "ocorrencias": 47,
+      "ocorrencias": 64,
       "primeiraVez": "2026-10-17T19:43:11.018Z",
-      "ultimaVez": "2026-10-20T18:03:59.949Z",
-      "gitRev": "beb3e83"
+      "ultimaVez": "2026-10-20T23:08:46.258Z",
+      "gitRev": "d0066c0"
     },
     "ARQUIVO_INEXISTENTE::whatsapp-bullmq::T-013": {
       "codigo": "ARQUIVO_INEXISTENTE",
@@ -599,10 +599,10 @@
       "codigo": "VERIFY_OBSOLETO",
       "feature": "whatsapp-bullmq",
       "ref": "—",
-      "ocorrencias": 43,
+      "ocorrencias": 60,
       "primeiraVez": "2026-10-17T20:48:29.108Z",
-      "ultimaVez": "2026-10-20T18:03:59.949Z",
-      "gitRev": "beb3e83"
+      "ultimaVez": "2026-10-20T23:08:46.258Z",
+      "gitRev": "d0066c0"
     },
     "ARQUIVO_INEXISTENTE::motor-financeiro::T-018": {
       "codigo": "ARQUIVO_INEXISTENTE",
@@ -797,10 +797,10 @@
       "codigo": "VERIFY_OBSOLETO",
       "feature": "motor-financeiro",
       "ref": "—",
-      "ocorrencias": 41,
+      "ocorrencias": 58,
       "primeiraVez": "2026-10-18T13:43:01.743Z",
-      "ultimaVez": "2026-10-20T18:03:59.949Z",
-      "gitRev": "beb3e83"
+      "ultimaVez": "2026-10-20T23:08:46.258Z",
+      "gitRev": "d0066c0"
     },
     "ARQUIVO_INEXISTENTE::queries-analiticas::T-023": {
       "codigo": "ARQUIVO_INEXISTENTE",
@@ -878,10 +878,10 @@
       "codigo": "VERIFY_OBSOLETO",
       "feature": "queries-analiticas",
       "ref": "—",
-      "ocorrencias": 40,
+      "ocorrencias": 57,
       "primeiraVez": "2026-10-18T13:51:15.785Z",
-      "ultimaVez": "2026-10-20T18:03:59.949Z",
-      "gitRev": "beb3e83"
+      "ultimaVez": "2026-10-20T23:08:46.258Z",
+      "gitRev": "d0066c0"
     },
     "ARQUIVO_INEXISTENTE::api-complementar::T-028": {
       "codigo": "ARQUIVO_INEXISTENTE",
@@ -905,19 +905,19 @@
       "codigo": "PRINCIPIO_VIOLADO",
       "feature": "—",
       "ref": "P-002",
-      "ocorrencias": 14,
+      "ocorrencias": 15,
       "primeiraVez": "2026-10-18T15:03:35.180Z",
-      "ultimaVez": "2026-10-20T13:52:04.435Z",
-      "gitRev": "8b27803"
+      "ultimaVez": "2026-10-20T20:26:39.907Z",
+      "gitRev": "d0066c0"
     },
     "VERIFY_OBSOLETO::api-complementar::—": {
       "codigo": "VERIFY_OBSOLETO",
       "feature": "api-complementar",
       "ref": "—",
-      "ocorrencias": 36,
+      "ocorrencias": 53,
       "primeiraVez": "2026-10-18T15:05:16.610Z",
-      "ultimaVez": "2026-10-20T18:03:59.949Z",
-      "gitRev": "beb3e83"
+      "ultimaVez": "2026-10-20T23:08:46.258Z",
+      "gitRev": "d0066c0"
     },
     "ARQUIVO_ORFAO::—::frontend/src/App.tsx": {
       "codigo": "ARQUIVO_ORFAO",
@@ -950,19 +950,19 @@
       "codigo": "VERIFY_OBSOLETO",
       "feature": "fundacao-frontend",
       "ref": "—",
-      "ocorrencias": 35,
+      "ocorrencias": 52,
       "primeiraVez": "2026-10-18T15:22:18.302Z",
-      "ultimaVez": "2026-10-20T18:03:59.949Z",
-      "gitRev": "beb3e83"
+      "ultimaVez": "2026-10-20T23:08:46.258Z",
+      "gitRev": "d0066c0"
     },
     "VERIFY_OBSOLETO::banco-local-sync::—": {
       "codigo": "VERIFY_OBSOLETO",
       "feature": "banco-local-sync",
       "ref": "—",
-      "ocorrencias": 34,
+      "ocorrencias": 51,
       "primeiraVez": "2026-10-18T15:30:59.499Z",
-      "ultimaVez": "2026-10-20T18:03:59.949Z",
-      "gitRev": "beb3e83"
+      "ultimaVez": "2026-10-20T23:08:46.258Z",
+      "gitRev": "d0066c0"
     },
     "ARQUIVO_INEXISTENTE::agenda-pacientes::T-044": {
       "codigo": "ARQUIVO_INEXISTENTE",
@@ -1004,10 +1004,10 @@
       "codigo": "VERIFY_OBSOLETO",
       "feature": "agenda-pacientes",
       "ref": "—",
-      "ocorrencias": 32,
+      "ocorrencias": 49,
       "primeiraVez": "2026-10-18T15:44:50.299Z",
-      "ultimaVez": "2026-10-20T18:03:59.948Z",
-      "gitRev": "beb3e83"
+      "ultimaVez": "2026-10-20T23:08:46.257Z",
+      "gitRev": "d0066c0"
     },
     "AC_INCOMPLETO::analytics-gestao::AC-072": {
       "codigo": "AC_INCOMPLETO",
@@ -1022,19 +1022,19 @@
       "codigo": "VERIFY_OBSOLETO",
       "feature": "checkout-financeiro",
       "ref": "—",
-      "ocorrencias": 30,
+      "ocorrencias": 47,
       "primeiraVez": "2026-10-18T16:02:48.379Z",
-      "ultimaVez": "2026-10-20T18:03:59.949Z",
-      "gitRev": "beb3e83"
+      "ultimaVez": "2026-10-20T23:08:46.258Z",
+      "gitRev": "d0066c0"
     },
     "VERIFY_OBSOLETO::analytics-gestao::—": {
       "codigo": "VERIFY_OBSOLETO",
       "feature": "analytics-gestao",
       "ref": "—",
-      "ocorrencias": 29,
+      "ocorrencias": 46,
       "primeiraVez": "2026-10-18T16:18:19.849Z",
-      "ultimaVez": "2026-10-20T18:03:59.949Z",
-      "gitRev": "beb3e83"
+      "ultimaVez": "2026-10-20T23:08:46.258Z",
+      "gitRev": "d0066c0"
     },
     "VERIFY_FALHOU::ajustes-e2e-playwright::AC-074": {
       "codigo": "VERIFY_FALHOU",
@@ -1049,10 +1049,10 @@
       "codigo": "VERIFY_OBSOLETO",
       "feature": "ajustes-e2e-playwright",
       "ref": "—",
-      "ocorrencias": 28,
+      "ocorrencias": 45,
       "primeiraVez": "2026-10-18T16:22:55.038Z",
-      "ultimaVez": "2026-10-20T18:03:59.949Z",
-      "gitRev": "beb3e83"
+      "ultimaVez": "2026-10-20T23:08:46.258Z",
+      "gitRev": "d0066c0"
     },
     "ARQUIVO_ORFAO::—::backend/src/server.ts": {
       "codigo": "ARQUIVO_ORFAO",
@@ -1085,19 +1085,19 @@
       "codigo": "VERIFY_OBSOLETO",
       "feature": "pareamento-whatsapp-live",
       "ref": "—",
-      "ocorrencias": 23,
+      "ocorrencias": 40,
       "primeiraVez": "2026-10-19T13:36:09.881Z",
-      "ultimaVez": "2026-10-20T18:03:59.949Z",
-      "gitRev": "beb3e83"
+      "ultimaVez": "2026-10-20T23:08:46.258Z",
+      "gitRev": "d0066c0"
     },
     "VERIFY_OBSOLETO::correcao-qrcode-evolution::—": {
       "codigo": "VERIFY_OBSOLETO",
       "feature": "correcao-qrcode-evolution",
       "ref": "—",
-      "ocorrencias": 22,
+      "ocorrencias": 39,
       "primeiraVez": "2026-10-19T13:46:52.568Z",
-      "ultimaVez": "2026-10-20T18:03:59.949Z",
-      "gitRev": "beb3e83"
+      "ultimaVez": "2026-10-20T23:08:46.258Z",
+      "gitRev": "d0066c0"
     },
     "ARQUIVO_ORFAO::—::backend/src/scripts/test-confirmation-flow.ts": {
       "codigo": "ARQUIVO_ORFAO",
@@ -1202,145 +1202,145 @@
       "codigo": "VERIFY_OBSOLETO",
       "feature": "replica-confirmacao-whatsapp",
       "ref": "—",
-      "ocorrencias": 19,
+      "ocorrencias": 36,
       "primeiraVez": "2026-10-19T17:33:25.806Z",
-      "ultimaVez": "2026-10-20T18:03:59.949Z",
-      "gitRev": "beb3e83"
+      "ultimaVez": "2026-10-20T23:08:46.258Z",
+      "gitRev": "d0066c0"
     },
     "VERIFY_OBSOLETO::correcoes-agenda-procedimentos::—": {
       "codigo": "VERIFY_OBSOLETO",
       "feature": "correcoes-agenda-procedimentos",
       "ref": "—",
-      "ocorrencias": 17,
+      "ocorrencias": 34,
       "primeiraVez": "2026-10-19T18:07:25.990Z",
-      "ultimaVez": "2026-10-20T18:03:59.949Z",
-      "gitRev": "beb3e83"
+      "ultimaVez": "2026-10-20T23:08:46.258Z",
+      "gitRev": "d0066c0"
     },
     "VERIFY_OBSOLETO::card-procedimentos-agenda::—": {
       "codigo": "VERIFY_OBSOLETO",
       "feature": "card-procedimentos-agenda",
       "ref": "—",
-      "ocorrencias": 16,
+      "ocorrencias": 33,
       "primeiraVez": "2026-10-19T18:52:05.002Z",
-      "ultimaVez": "2026-10-20T18:03:59.949Z",
-      "gitRev": "beb3e83"
+      "ultimaVez": "2026-10-20T23:08:46.258Z",
+      "gitRev": "d0066c0"
     },
     "VERIFY_OBSOLETO::correcoes-agenda-ux-reschedule::—": {
       "codigo": "VERIFY_OBSOLETO",
       "feature": "correcoes-agenda-ux-reschedule",
       "ref": "—",
-      "ocorrencias": 16,
+      "ocorrencias": 33,
       "primeiraVez": "2026-10-19T18:52:05.002Z",
-      "ultimaVez": "2026-10-20T18:03:59.949Z",
-      "gitRev": "beb3e83"
+      "ultimaVez": "2026-10-20T23:08:46.258Z",
+      "gitRev": "d0066c0"
     },
     "VERIFY_OBSOLETO::checkout-conclusao-agenda::—": {
       "codigo": "VERIFY_OBSOLETO",
       "feature": "checkout-conclusao-agenda",
       "ref": "—",
-      "ocorrencias": 15,
+      "ocorrencias": 32,
       "primeiraVez": "2026-10-19T19:18:17.434Z",
-      "ultimaVez": "2026-10-20T18:03:59.949Z",
-      "gitRev": "beb3e83"
+      "ultimaVez": "2026-10-20T23:08:46.258Z",
+      "gitRev": "d0066c0"
     },
     "VERIFY_OBSOLETO::bloqueio-recorrencia-parcelamento-checkout::—": {
       "codigo": "VERIFY_OBSOLETO",
       "feature": "bloqueio-recorrencia-parcelamento-checkout",
       "ref": "—",
-      "ocorrencias": 12,
+      "ocorrencias": 29,
       "primeiraVez": "2026-10-19T19:49:37.786Z",
-      "ultimaVez": "2026-10-20T18:03:59.949Z",
-      "gitRev": "beb3e83"
+      "ultimaVez": "2026-10-20T23:08:46.258Z",
+      "gitRev": "d0066c0"
     },
     "VERIFY_OBSOLETO::correcao-data-agendamento-rapido::—": {
       "codigo": "VERIFY_OBSOLETO",
       "feature": "correcao-data-agendamento-rapido",
       "ref": "—",
-      "ocorrencias": 10,
+      "ocorrencias": 27,
       "primeiraVez": "2026-10-19T20:33:40.741Z",
-      "ultimaVez": "2026-10-20T18:03:59.949Z",
-      "gitRev": "beb3e83"
+      "ultimaVez": "2026-10-20T23:08:46.258Z",
+      "gitRev": "d0066c0"
     },
     "VERIFY_OBSOLETO::detalhes-edicao-paciente-observacoes::—": {
       "codigo": "VERIFY_OBSOLETO",
       "feature": "detalhes-edicao-paciente-observacoes",
       "ref": "—",
-      "ocorrencias": 10,
+      "ocorrencias": 27,
       "primeiraVez": "2026-10-19T20:33:40.741Z",
-      "ultimaVez": "2026-10-20T18:03:59.949Z",
-      "gitRev": "beb3e83"
+      "ultimaVez": "2026-10-20T23:08:46.258Z",
+      "gitRev": "d0066c0"
     },
     "VERIFY_OBSOLETO::relatorios-fab-cadastro-paciente::—": {
       "codigo": "VERIFY_OBSOLETO",
       "feature": "relatorios-fab-cadastro-paciente",
       "ref": "—",
-      "ocorrencias": 10,
+      "ocorrencias": 27,
       "primeiraVez": "2026-10-19T20:33:40.741Z",
-      "ultimaVez": "2026-10-20T18:03:59.949Z",
-      "gitRev": "beb3e83"
+      "ultimaVez": "2026-10-20T23:08:46.258Z",
+      "gitRev": "d0066c0"
     },
     "ID_DUPLICADO::dominio-agenda::ASM-001": {
       "codigo": "ID_DUPLICADO",
       "feature": "dominio-agenda",
       "ref": "ASM-001",
-      "ocorrencias": 3,
+      "ocorrencias": 7,
       "primeiraVez": "2026-10-20T13:23:25.538Z",
-      "ultimaVez": "2026-10-20T17:29:24.121Z",
-      "gitRev": "beb3e83"
+      "ultimaVez": "2026-10-20T20:26:39.906Z",
+      "gitRev": "d0066c0"
     },
     "ID_DUPLICADO::dominio-agenda::ASM-002": {
       "codigo": "ID_DUPLICADO",
       "feature": "dominio-agenda",
       "ref": "ASM-002",
-      "ocorrencias": 2,
+      "ocorrencias": 6,
       "primeiraVez": "2026-10-20T13:23:25.539Z",
-      "ultimaVez": "2026-10-20T13:23:32.513Z",
-      "gitRev": "68c6e2c"
+      "ultimaVez": "2026-10-20T20:26:39.907Z",
+      "gitRev": "d0066c0"
     },
     "ID_DUPLICADO::dominio-agenda::Q-001": {
       "codigo": "ID_DUPLICADO",
       "feature": "dominio-agenda",
       "ref": "Q-001",
-      "ocorrencias": 3,
+      "ocorrencias": 7,
       "primeiraVez": "2026-10-20T13:23:25.539Z",
-      "ultimaVez": "2026-10-20T17:29:24.122Z",
-      "gitRev": "beb3e83"
+      "ultimaVez": "2026-10-20T20:26:39.907Z",
+      "gitRev": "d0066c0"
     },
     "ID_DUPLICADO::persistencia-api::ASM-003": {
       "codigo": "ID_DUPLICADO",
       "feature": "persistencia-api",
       "ref": "ASM-003",
-      "ocorrencias": 2,
+      "ocorrencias": 5,
       "primeiraVez": "2026-10-20T13:23:25.539Z",
-      "ultimaVez": "2026-10-20T13:23:32.513Z",
-      "gitRev": "68c6e2c"
+      "ultimaVez": "2026-10-20T20:26:39.907Z",
+      "gitRev": "d0066c0"
     },
     "ID_DUPLICADO::persistencia-api::Q-002": {
       "codigo": "ID_DUPLICADO",
       "feature": "persistencia-api",
       "ref": "Q-002",
-      "ocorrencias": 2,
+      "ocorrencias": 3,
       "primeiraVez": "2026-10-20T13:23:25.539Z",
-      "ultimaVez": "2026-10-20T13:23:32.513Z",
-      "gitRev": "68c6e2c"
+      "ultimaVez": "2026-10-20T19:14:19.104Z",
+      "gitRev": "d0066c0"
     },
     "ID_DUPLICADO::whatsapp-bullmq::Q-003": {
       "codigo": "ID_DUPLICADO",
       "feature": "whatsapp-bullmq",
       "ref": "Q-003",
-      "ocorrencias": 2,
+      "ocorrencias": 3,
       "primeiraVez": "2026-10-20T13:23:25.539Z",
-      "ultimaVez": "2026-10-20T13:23:32.513Z",
-      "gitRev": "68c6e2c"
+      "ultimaVez": "2026-10-20T19:14:19.104Z",
+      "gitRev": "d0066c0"
     },
     "VERIFY_OBSOLETO::agendamento-atalho-paciente-preselecionado::—": {
       "codigo": "VERIFY_OBSOLETO",
       "feature": "agendamento-atalho-paciente-preselecionado",
       "ref": "—",
-      "ocorrencias": 9,
+      "ocorrencias": 26,
       "primeiraVez": "2026-10-20T13:23:25.539Z",
-      "ultimaVez": "2026-10-20T18:03:59.949Z",
-      "gitRev": "beb3e83"
+      "ultimaVez": "2026-10-20T23:08:46.258Z",
+      "gitRev": "d0066c0"
     },
     "ARQUIVO_INEXISTENTE::autenticacao-usuarios::T-106": {
       "codigo": "ARQUIVO_INEXISTENTE",
@@ -1517,10 +1517,10 @@
       "codigo": "VERIFY_OBSOLETO",
       "feature": "exclusao-cadastro-paciente",
       "ref": "—",
-      "ocorrencias": 9,
+      "ocorrencias": 26,
       "primeiraVez": "2026-10-20T13:23:25.539Z",
-      "ultimaVez": "2026-10-20T18:03:59.949Z",
-      "gitRev": "beb3e83"
+      "ultimaVez": "2026-10-20T23:08:46.258Z",
+      "gitRev": "d0066c0"
     },
     "ARQUIVO_ORFAO::—::backend/src/test-utils/auth.ts": {
       "codigo": "ARQUIVO_ORFAO",
@@ -1535,10 +1535,10 @@
       "codigo": "VERIFY_OBSOLETO",
       "feature": "autenticacao-usuarios",
       "ref": "—",
-      "ocorrencias": 3,
+      "ocorrencias": 20,
       "primeiraVez": "2026-10-20T17:29:24.122Z",
-      "ultimaVez": "2026-10-20T18:03:59.949Z",
-      "gitRev": "beb3e83"
+      "ultimaVez": "2026-10-20T23:08:46.258Z",
+      "gitRev": "d0066c0"
     },
     "ARQUIVO_INEXISTENTE::cruds-backend::T-001": {
       "codigo": "ARQUIVO_INEXISTENTE",
@@ -1724,10 +1724,613 @@
       "codigo": "VERIFY_OBSOLETO",
       "feature": "cruds-backend",
       "ref": "—",
-      "ocorrencias": 1,
+      "ocorrencias": 18,
       "primeiraVez": "2026-10-20T18:03:59.949Z",
-      "ultimaVez": "2026-10-20T18:03:59.949Z",
-      "gitRev": "beb3e83"
+      "ultimaVez": "2026-10-20T23:08:46.258Z",
+      "gitRev": "d0066c0"
+    },
+    "ID_DUPLICADO::relatorios-backend::ASM-001": {
+      "codigo": "ID_DUPLICADO",
+      "feature": "relatorios-backend",
+      "ref": "ASM-001",
+      "ocorrencias": 3,
+      "primeiraVez": "2026-10-20T18:44:31.045Z",
+      "ultimaVez": "2026-10-20T19:16:12.467Z",
+      "gitRev": "d0066c0"
+    },
+    "ID_DUPLICADO::relatorios-backend::ASM-002": {
+      "codigo": "ID_DUPLICADO",
+      "feature": "relatorios-backend",
+      "ref": "ASM-002",
+      "ocorrencias": 3,
+      "primeiraVez": "2026-10-20T18:44:31.045Z",
+      "ultimaVez": "2026-10-20T19:16:12.468Z",
+      "gitRev": "d0066c0"
+    },
+    "ID_DUPLICADO::relatorios-backend::Q-001": {
+      "codigo": "ID_DUPLICADO",
+      "feature": "relatorios-backend",
+      "ref": "Q-001",
+      "ocorrencias": 3,
+      "primeiraVez": "2026-10-20T18:44:31.045Z",
+      "ultimaVez": "2026-10-20T19:16:12.468Z",
+      "gitRev": "d0066c0"
+    },
+    "STATUS_INVALIDO::automacao-whatsapp-evolution::.spec\\features\\automacao-whatsapp-evolution\\spec.md": {
+      "codigo": "STATUS_INVALIDO",
+      "feature": "automacao-whatsapp-evolution",
+      "ref": ".spec\\features\\automacao-whatsapp-evolution\\spec.md",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-20T18:44:31.045Z",
+      "ultimaVez": "2026-10-20T18:44:31.045Z",
+      "gitRev": "d0066c0"
+    },
+    "ARQUIVO_INEXISTENTE::automacao-whatsapp-evolution::T-127": {
+      "codigo": "ARQUIVO_INEXISTENTE",
+      "feature": "automacao-whatsapp-evolution",
+      "ref": "T-127",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-20T18:44:31.045Z",
+      "ultimaVez": "2026-10-20T18:44:31.045Z",
+      "gitRev": "d0066c0"
+    },
+    "ARQUIVO_INEXISTENTE::automacao-whatsapp-evolution::T-128": {
+      "codigo": "ARQUIVO_INEXISTENTE",
+      "feature": "automacao-whatsapp-evolution",
+      "ref": "T-128",
+      "ocorrencias": 2,
+      "primeiraVez": "2026-10-20T18:44:31.045Z",
+      "ultimaVez": "2026-10-20T18:44:31.045Z",
+      "gitRev": "d0066c0"
+    },
+    "ARQUIVO_INEXISTENTE::automacao-whatsapp-evolution::T-129": {
+      "codigo": "ARQUIVO_INEXISTENTE",
+      "feature": "automacao-whatsapp-evolution",
+      "ref": "T-129",
+      "ocorrencias": 5,
+      "primeiraVez": "2026-10-20T18:44:31.045Z",
+      "ultimaVez": "2026-10-20T18:44:31.045Z",
+      "gitRev": "d0066c0"
+    },
+    "ARQUIVO_INEXISTENTE::automacao-whatsapp-evolution::T-130": {
+      "codigo": "ARQUIVO_INEXISTENTE",
+      "feature": "automacao-whatsapp-evolution",
+      "ref": "T-130",
+      "ocorrencias": 4,
+      "primeiraVez": "2026-10-20T18:44:31.045Z",
+      "ultimaVez": "2026-10-20T18:44:31.045Z",
+      "gitRev": "d0066c0"
+    },
+    "ARQUIVO_INEXISTENTE::automacao-whatsapp-evolution::T-131": {
+      "codigo": "ARQUIVO_INEXISTENTE",
+      "feature": "automacao-whatsapp-evolution",
+      "ref": "T-131",
+      "ocorrencias": 5,
+      "primeiraVez": "2026-10-20T18:44:31.045Z",
+      "ultimaVez": "2026-10-20T19:14:19.104Z",
+      "gitRev": "d0066c0"
+    },
+    "ARQUIVO_INEXISTENTE::automacao-whatsapp-evolution::T-132": {
+      "codigo": "ARQUIVO_INEXISTENTE",
+      "feature": "automacao-whatsapp-evolution",
+      "ref": "T-132",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-20T18:44:31.045Z",
+      "ultimaVez": "2026-10-20T18:44:31.045Z",
+      "gitRev": "d0066c0"
+    },
+    "AC_SEM_TESTE::automacao-whatsapp-evolution::AC-144": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "automacao-whatsapp-evolution",
+      "ref": "AC-144",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-20T18:44:31.045Z",
+      "ultimaVez": "2026-10-20T18:44:31.045Z",
+      "gitRev": "d0066c0"
+    },
+    "AC_SEM_TESTE::automacao-whatsapp-evolution::AC-145": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "automacao-whatsapp-evolution",
+      "ref": "AC-145",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-20T18:44:31.045Z",
+      "ultimaVez": "2026-10-20T18:44:31.045Z",
+      "gitRev": "d0066c0"
+    },
+    "AC_SEM_TESTE::automacao-whatsapp-evolution::AC-146": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "automacao-whatsapp-evolution",
+      "ref": "AC-146",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-20T18:44:31.045Z",
+      "ultimaVez": "2026-10-20T18:44:31.045Z",
+      "gitRev": "d0066c0"
+    },
+    "AC_SEM_TESTE::automacao-whatsapp-evolution::AC-147": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "automacao-whatsapp-evolution",
+      "ref": "AC-147",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-20T18:44:31.045Z",
+      "ultimaVez": "2026-10-20T18:44:31.045Z",
+      "gitRev": "d0066c0"
+    },
+    "AC_SEM_TESTE::automacao-whatsapp-evolution::AC-148": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "automacao-whatsapp-evolution",
+      "ref": "AC-148",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-20T18:44:31.045Z",
+      "ultimaVez": "2026-10-20T18:44:31.045Z",
+      "gitRev": "d0066c0"
+    },
+    "AC_SEM_TESTE::automacao-whatsapp-evolution::AC-149": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "automacao-whatsapp-evolution",
+      "ref": "AC-149",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-20T18:44:31.045Z",
+      "ultimaVez": "2026-10-20T18:44:31.045Z",
+      "gitRev": "d0066c0"
+    },
+    "AC_SEM_TESTE::automacao-whatsapp-evolution::AC-150": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "automacao-whatsapp-evolution",
+      "ref": "AC-150",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-20T18:44:31.045Z",
+      "ultimaVez": "2026-10-20T18:44:31.045Z",
+      "gitRev": "d0066c0"
+    },
+    "STATUS_INVALIDO::relatorios-backend::.spec\\features\\relatorios-backend\\spec.md": {
+      "codigo": "STATUS_INVALIDO",
+      "feature": "relatorios-backend",
+      "ref": ".spec\\features\\relatorios-backend\\spec.md",
+      "ocorrencias": 2,
+      "primeiraVez": "2026-10-20T18:44:31.045Z",
+      "ultimaVez": "2026-10-20T19:14:19.104Z",
+      "gitRev": "d0066c0"
+    },
+    "VERIFY_OBSOLETO::relatorios-backend::—": {
+      "codigo": "VERIFY_OBSOLETO",
+      "feature": "relatorios-backend",
+      "ref": "—",
+      "ocorrencias": 16,
+      "primeiraVez": "2026-10-20T19:14:19.104Z",
+      "ultimaVez": "2026-10-20T23:08:46.258Z",
+      "gitRev": "d0066c0"
+    },
+    "ID_DUPLICADO::persistencia-api::ASM-004": {
+      "codigo": "ID_DUPLICADO",
+      "feature": "persistencia-api",
+      "ref": "ASM-004",
+      "ocorrencias": 2,
+      "primeiraVez": "2026-10-20T19:47:40.145Z",
+      "ultimaVez": "2026-10-20T20:26:39.907Z",
+      "gitRev": "d0066c0"
+    },
+    "ARQUIVO_INEXISTENTE::autenticacao-login-frontend::T-001": {
+      "codigo": "ARQUIVO_INEXISTENTE",
+      "feature": "autenticacao-login-frontend",
+      "ref": "T-001",
+      "ocorrencias": 3,
+      "primeiraVez": "2026-10-20T19:47:40.145Z",
+      "ultimaVez": "2026-10-20T19:47:40.145Z",
+      "gitRev": "d0066c0"
+    },
+    "ARQUIVO_INEXISTENTE::autenticacao-login-frontend::T-002": {
+      "codigo": "ARQUIVO_INEXISTENTE",
+      "feature": "autenticacao-login-frontend",
+      "ref": "T-002",
+      "ocorrencias": 2,
+      "primeiraVez": "2026-10-20T19:47:40.145Z",
+      "ultimaVez": "2026-10-20T19:47:40.145Z",
+      "gitRev": "d0066c0"
+    },
+    "ARQUIVO_INEXISTENTE::autenticacao-login-frontend::T-003": {
+      "codigo": "ARQUIVO_INEXISTENTE",
+      "feature": "autenticacao-login-frontend",
+      "ref": "T-003",
+      "ocorrencias": 4,
+      "primeiraVez": "2026-10-20T19:47:40.145Z",
+      "ultimaVez": "2026-10-20T19:47:40.145Z",
+      "gitRev": "d0066c0"
+    },
+    "ARQUIVO_INEXISTENTE::autenticacao-login-frontend::T-004": {
+      "codigo": "ARQUIVO_INEXISTENTE",
+      "feature": "autenticacao-login-frontend",
+      "ref": "T-004",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-20T19:47:40.145Z",
+      "ultimaVez": "2026-10-20T19:47:40.145Z",
+      "gitRev": "d0066c0"
+    },
+    "ARQUIVO_INEXISTENTE::autenticacao-login-frontend::T-005": {
+      "codigo": "ARQUIVO_INEXISTENTE",
+      "feature": "autenticacao-login-frontend",
+      "ref": "T-005",
+      "ocorrencias": 3,
+      "primeiraVez": "2026-10-20T19:47:40.145Z",
+      "ultimaVez": "2026-10-20T19:47:40.145Z",
+      "gitRev": "d0066c0"
+    },
+    "ARQUIVO_INEXISTENTE::autenticacao-login-frontend::T-006": {
+      "codigo": "ARQUIVO_INEXISTENTE",
+      "feature": "autenticacao-login-frontend",
+      "ref": "T-006",
+      "ocorrencias": 3,
+      "primeiraVez": "2026-10-20T19:47:40.145Z",
+      "ultimaVez": "2026-10-20T19:47:40.145Z",
+      "gitRev": "d0066c0"
+    },
+    "ARQUIVO_INEXISTENTE::autenticacao-login-frontend::T-007": {
+      "codigo": "ARQUIVO_INEXISTENTE",
+      "feature": "autenticacao-login-frontend",
+      "ref": "T-007",
+      "ocorrencias": 6,
+      "primeiraVez": "2026-10-20T19:47:40.145Z",
+      "ultimaVez": "2026-10-20T19:47:40.145Z",
+      "gitRev": "d0066c0"
+    },
+    "ARQUIVO_INEXISTENTE::autenticacao-login-frontend::T-008": {
+      "codigo": "ARQUIVO_INEXISTENTE",
+      "feature": "autenticacao-login-frontend",
+      "ref": "T-008",
+      "ocorrencias": 2,
+      "primeiraVez": "2026-10-20T19:47:40.145Z",
+      "ultimaVez": "2026-10-20T19:47:40.145Z",
+      "gitRev": "d0066c0"
+    },
+    "ARQUIVO_INEXISTENTE::autenticacao-login-frontend::T-009": {
+      "codigo": "ARQUIVO_INEXISTENTE",
+      "feature": "autenticacao-login-frontend",
+      "ref": "T-009",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-20T19:47:40.145Z",
+      "ultimaVez": "2026-10-20T19:47:40.145Z",
+      "gitRev": "d0066c0"
+    },
+    "ARQUIVO_INEXISTENTE::autenticacao-login-frontend::T-010": {
+      "codigo": "ARQUIVO_INEXISTENTE",
+      "feature": "autenticacao-login-frontend",
+      "ref": "T-010",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-20T19:47:40.145Z",
+      "ultimaVez": "2026-10-20T19:47:40.145Z",
+      "gitRev": "d0066c0"
+    },
+    "AC_SEM_TESTE::autenticacao-login-frontend::AC-151": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "autenticacao-login-frontend",
+      "ref": "AC-151",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-20T19:47:40.145Z",
+      "ultimaVez": "2026-10-20T19:47:40.145Z",
+      "gitRev": "d0066c0"
+    },
+    "AC_SEM_TESTE::autenticacao-login-frontend::AC-152": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "autenticacao-login-frontend",
+      "ref": "AC-152",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-20T19:47:40.145Z",
+      "ultimaVez": "2026-10-20T19:47:40.145Z",
+      "gitRev": "d0066c0"
+    },
+    "AC_SEM_TESTE::autenticacao-login-frontend::AC-153": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "autenticacao-login-frontend",
+      "ref": "AC-153",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-20T19:47:40.145Z",
+      "ultimaVez": "2026-10-20T19:47:40.145Z",
+      "gitRev": "d0066c0"
+    },
+    "AC_SEM_TESTE::autenticacao-login-frontend::AC-154": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "autenticacao-login-frontend",
+      "ref": "AC-154",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-20T19:47:40.145Z",
+      "ultimaVez": "2026-10-20T19:47:40.145Z",
+      "gitRev": "d0066c0"
+    },
+    "AC_SEM_TESTE::autenticacao-login-frontend::AC-155": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "autenticacao-login-frontend",
+      "ref": "AC-155",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-20T19:47:40.145Z",
+      "ultimaVez": "2026-10-20T19:47:40.145Z",
+      "gitRev": "d0066c0"
+    },
+    "AC_SEM_TESTE::autenticacao-login-frontend::AC-156": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "autenticacao-login-frontend",
+      "ref": "AC-156",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-20T19:47:40.145Z",
+      "ultimaVez": "2026-10-20T19:47:40.145Z",
+      "gitRev": "d0066c0"
+    },
+    "AC_SEM_TESTE::autenticacao-login-frontend::AC-157": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "autenticacao-login-frontend",
+      "ref": "AC-157",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-20T19:47:40.145Z",
+      "ultimaVez": "2026-10-20T19:47:40.145Z",
+      "gitRev": "d0066c0"
+    },
+    "AC_SEM_TESTE::autenticacao-login-frontend::AC-158": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "autenticacao-login-frontend",
+      "ref": "AC-158",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-20T19:47:40.145Z",
+      "ultimaVez": "2026-10-20T19:47:40.145Z",
+      "gitRev": "d0066c0"
+    },
+    "AC_SEM_TESTE::autenticacao-login-frontend::AC-159": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "autenticacao-login-frontend",
+      "ref": "AC-159",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-20T19:47:40.145Z",
+      "ultimaVez": "2026-10-20T19:47:40.145Z",
+      "gitRev": "d0066c0"
+    },
+    "AC_SEM_TESTE::autenticacao-login-frontend::AC-160": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "autenticacao-login-frontend",
+      "ref": "AC-160",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-20T19:47:40.145Z",
+      "ultimaVez": "2026-10-20T19:47:40.145Z",
+      "gitRev": "d0066c0"
+    },
+    "AC_SEM_TESTE::autenticacao-login-frontend::AC-161": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "autenticacao-login-frontend",
+      "ref": "AC-161",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-20T19:47:40.145Z",
+      "ultimaVez": "2026-10-20T19:47:40.145Z",
+      "gitRev": "d0066c0"
+    },
+    "AC_SEM_TESTE::autenticacao-login-frontend::AC-162": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "autenticacao-login-frontend",
+      "ref": "AC-162",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-20T19:47:40.145Z",
+      "ultimaVez": "2026-10-20T19:47:40.145Z",
+      "gitRev": "d0066c0"
+    },
+    "AC_SEM_TESTE::autenticacao-login-frontend::AC-163": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "autenticacao-login-frontend",
+      "ref": "AC-163",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-20T19:47:40.145Z",
+      "ultimaVez": "2026-10-20T19:47:40.145Z",
+      "gitRev": "d0066c0"
+    },
+    "AC_SEM_TESTE::autenticacao-login-frontend::AC-164": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "autenticacao-login-frontend",
+      "ref": "AC-164",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-20T19:47:40.145Z",
+      "ultimaVez": "2026-10-20T19:47:40.145Z",
+      "gitRev": "d0066c0"
+    },
+    "AC_SEM_TESTE::autenticacao-login-frontend::AC-165": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "autenticacao-login-frontend",
+      "ref": "AC-165",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-20T19:47:40.145Z",
+      "ultimaVez": "2026-10-20T19:47:40.145Z",
+      "gitRev": "d0066c0"
+    },
+    "VERIFY_OBSOLETO::automacao-whatsapp-evolution::—": {
+      "codigo": "VERIFY_OBSOLETO",
+      "feature": "automacao-whatsapp-evolution",
+      "ref": "—",
+      "ocorrencias": 11,
+      "primeiraVez": "2026-10-20T20:26:39.907Z",
+      "ultimaVez": "2026-10-20T23:08:46.258Z",
+      "gitRev": "d0066c0"
+    },
+    "VERIFY_OBSOLETO::autenticacao-login-frontend::—": {
+      "codigo": "VERIFY_OBSOLETO",
+      "feature": "autenticacao-login-frontend",
+      "ref": "—",
+      "ocorrencias": 8,
+      "primeiraVez": "2026-10-20T20:28:33.934Z",
+      "ultimaVez": "2026-10-20T23:08:46.258Z",
+      "gitRev": "d0066c0"
+    },
+    "STATUS_INVALIDO::sincronizacao-agendamentos::.spec\\features\\sincronizacao-agendamentos\\spec.md": {
+      "codigo": "STATUS_INVALIDO",
+      "feature": "sincronizacao-agendamentos",
+      "ref": ".spec\\features\\sincronizacao-agendamentos\\spec.md",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-20T21:46:27.314Z",
+      "ultimaVez": "2026-10-20T21:46:27.314Z",
+      "gitRev": "d0066c0"
+    },
+    "ARQUIVO_INEXISTENTE::sincronizacao-agendamentos::T-005": {
+      "codigo": "ARQUIVO_INEXISTENTE",
+      "feature": "sincronizacao-agendamentos",
+      "ref": "T-005",
+      "ocorrencias": 2,
+      "primeiraVez": "2026-10-20T21:46:27.314Z",
+      "ultimaVez": "2026-10-20T21:46:27.314Z",
+      "gitRev": "d0066c0"
+    },
+    "AC_SEM_TESTE::sincronizacao-agendamentos::AC-166": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "sincronizacao-agendamentos",
+      "ref": "AC-166",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-20T21:46:27.314Z",
+      "ultimaVez": "2026-10-20T21:46:27.314Z",
+      "gitRev": "d0066c0"
+    },
+    "AC_SEM_TESTE::sincronizacao-agendamentos::AC-167": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "sincronizacao-agendamentos",
+      "ref": "AC-167",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-20T21:46:27.314Z",
+      "ultimaVez": "2026-10-20T21:46:27.314Z",
+      "gitRev": "d0066c0"
+    },
+    "AC_SEM_TESTE::sincronizacao-agendamentos::AC-168": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "sincronizacao-agendamentos",
+      "ref": "AC-168",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-20T21:46:27.314Z",
+      "ultimaVez": "2026-10-20T21:46:27.314Z",
+      "gitRev": "d0066c0"
+    },
+    "AC_SEM_TESTE::sincronizacao-agendamentos::AC-169": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "sincronizacao-agendamentos",
+      "ref": "AC-169",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-20T21:46:27.314Z",
+      "ultimaVez": "2026-10-20T21:46:27.314Z",
+      "gitRev": "d0066c0"
+    },
+    "AC_SEM_TESTE::sincronizacao-agendamentos::AC-170": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "sincronizacao-agendamentos",
+      "ref": "AC-170",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-20T21:46:27.314Z",
+      "ultimaVez": "2026-10-20T21:46:27.314Z",
+      "gitRev": "d0066c0"
+    },
+    "AC_SEM_TESTE::sincronizacao-agendamentos::AC-171": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "sincronizacao-agendamentos",
+      "ref": "AC-171",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-20T21:46:27.314Z",
+      "ultimaVez": "2026-10-20T21:46:27.314Z",
+      "gitRev": "d0066c0"
+    },
+    "AC_SEM_TESTE::sincronizacao-agendamentos::AC-172": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "sincronizacao-agendamentos",
+      "ref": "AC-172",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-20T21:46:27.314Z",
+      "ultimaVez": "2026-10-20T21:46:27.314Z",
+      "gitRev": "d0066c0"
+    },
+    "AC_SEM_TESTE::sincronizacao-agendamentos::AC-173": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "sincronizacao-agendamentos",
+      "ref": "AC-173",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-20T21:46:27.314Z",
+      "ultimaVez": "2026-10-20T21:46:27.314Z",
+      "gitRev": "d0066c0"
+    },
+    "AC_SEM_TESTE::sincronizacao-agendamentos::AC-174": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "sincronizacao-agendamentos",
+      "ref": "AC-174",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-20T21:46:27.314Z",
+      "ultimaVez": "2026-10-20T21:46:27.314Z",
+      "gitRev": "d0066c0"
+    },
+    "VERIFY_OBSOLETO::sincronizacao-agendamentos::—": {
+      "codigo": "VERIFY_OBSOLETO",
+      "feature": "sincronizacao-agendamentos",
+      "ref": "—",
+      "ocorrencias": 6,
+      "primeiraVez": "2026-10-20T22:14:27.232Z",
+      "ultimaVez": "2026-10-20T23:08:46.258Z",
+      "gitRev": "d0066c0"
+    },
+    "ARQUIVO_INEXISTENTE::melhorias-agendamento-duplicidade-clientes::T-001": {
+      "codigo": "ARQUIVO_INEXISTENTE",
+      "feature": "melhorias-agendamento-duplicidade-clientes",
+      "ref": "T-001",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-20T22:34:49.107Z",
+      "ultimaVez": "2026-10-20T22:34:49.107Z",
+      "gitRev": "d0066c0"
+    },
+    "ARQUIVO_INEXISTENTE::melhorias-agendamento-duplicidade-clientes::T-005": {
+      "codigo": "ARQUIVO_INEXISTENTE",
+      "feature": "melhorias-agendamento-duplicidade-clientes",
+      "ref": "T-005",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-20T22:34:49.107Z",
+      "ultimaVez": "2026-10-20T22:34:49.107Z",
+      "gitRev": "d0066c0"
+    },
+    "AC_SEM_TESTE::melhorias-agendamento-duplicidade-clientes::AC-175": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "melhorias-agendamento-duplicidade-clientes",
+      "ref": "AC-175",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-20T22:34:49.107Z",
+      "ultimaVez": "2026-10-20T22:34:49.107Z",
+      "gitRev": "d0066c0"
+    },
+    "AC_SEM_TESTE::melhorias-agendamento-duplicidade-clientes::AC-176": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "melhorias-agendamento-duplicidade-clientes",
+      "ref": "AC-176",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-20T22:34:49.107Z",
+      "ultimaVez": "2026-10-20T22:34:49.107Z",
+      "gitRev": "d0066c0"
+    },
+    "AC_SEM_TESTE::melhorias-agendamento-duplicidade-clientes::AC-177": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "melhorias-agendamento-duplicidade-clientes",
+      "ref": "AC-177",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-20T22:34:49.107Z",
+      "ultimaVez": "2026-10-20T22:34:49.107Z",
+      "gitRev": "d0066c0"
+    },
+    "VERIFY_FALHOU::melhorias-agendamento-duplicidade-clientes::AC-176": {
+      "codigo": "VERIFY_FALHOU",
+      "feature": "melhorias-agendamento-duplicidade-clientes",
+      "ref": "AC-176",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-20T22:50:17.114Z",
+      "ultimaVez": "2026-10-20T22:50:17.114Z",
+      "gitRev": "d0066c0"
+    },
+    "VERIFY_FALHOU::melhorias-agendamento-duplicidade-clientes::AC-177": {
+      "codigo": "VERIFY_FALHOU",
+      "feature": "melhorias-agendamento-duplicidade-clientes",
+      "ref": "AC-177",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-20T22:50:17.114Z",
+      "ultimaVez": "2026-10-20T22:50:17.114Z",
+      "gitRev": "d0066c0"
+    },
+    "VERIFY_OBSOLETO::melhorias-agendamento-duplicidade-clientes::—": {
+      "codigo": "VERIFY_OBSOLETO",
+      "feature": "melhorias-agendamento-duplicidade-clientes",
+      "ref": "—",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-20T23:08:14.670Z",
+      "ultimaVez": "2026-10-20T23:08:14.670Z",
+      "gitRev": "d0066c0"
     }
   },
   "gitRev": "fd9fbc3",

@@ -1,0 +1,87 @@
+{
+  "feature": "autenticacao-login-frontend",
+  "timestamp": "2026-10-20T20:28:58.186Z",
+  "gitRev": "d0066c0",
+  "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
+  "reporter": "vitest-json",
+  "exitCode": 0,
+  "testsParsed": 442,
+  "results": {
+    "AC-151": {
+      "status": "pass",
+      "testName": "AuthSessionLocalRepository — Persistência e Limpeza de Sessão AC-151: Retorna nulo quando não há sessão ativa salva no Dexie @spec:AC-151 AC-151: Retorna nulo quando não há sessão ativa salva no Dexie @spec:AC-151",
+      "method": "vitest-json"
+    },
+    "AC-152": {
+      "status": "pass",
+      "testName": "AuthApiService — Comunicação com Endpoints de Autenticação AC-152: Submete login com e-mail normalizado e retorna token e perfil do tenant @spec:AC-152 AC-152: Submete login com e-mail normalizado e retorna token e perfil do tenant @spec:AC-152",
+      "method": "vitest-json"
+    },
+    "AC-153": {
+      "status": "pass",
+      "testName": "AuthApiService — Comunicação com Endpoints de Autenticação AC-153: Normaliza erro 401 como AuthApiError de credenciais inválidas @spec:AC-153 AC-153: Normaliza erro 401 como AuthApiError de credenciais inválidas @spec:AC-153",
+      "method": "vitest-json"
+    },
+    "AC-154": {
+      "status": "pass",
+      "testName": "AuthApiService — Comunicação com Endpoints de Autenticação AC-154: Trata HTTP 429 exibindo erro de bloqueio por tentativas com retryAfterMinutes @spec:AC-154 AC-154: Trata HTTP 429 exibindo erro de bloqueio por tentativas com retryAfterMinutes @spec:AC-154",
+      "method": "vitest-json"
+    },
+    "AC-155": {
+      "status": "pass",
+      "testName": "AuthApiService — Comunicação com Endpoints de Autenticação AC-155: Identifica ausência de internet e converte em NetworkError amigável @spec:AC-155 AC-155: Identifica ausência de internet e converte em NetworkError amigável @spec:AC-155",
+      "method": "vitest-json"
+    },
+    "AC-156": {
+      "status": "pass",
+      "testName": "useLoginForm & useChangePasswordForm — Validações e Estado de Formulário useLoginForm AC-156: Alterna visibilidade da senha entre texto e password @spec:AC-156 AC-156: Alterna visibilidade da senha entre texto e password @spec:AC-156",
+      "method": "vitest-json"
+    },
+    "AC-157": {
+      "status": "pass",
+      "testName": "AuthSessionLocalRepository — Persistência e Limpeza de Sessão AC-157: Grava e recupera o último e-mail utilizado mesmo após logout da sessão @spec:AC-157 AC-157: Grava e recupera o último e-mail utilizado mesmo após logout da sessão @spec:AC-157",
+      "method": "vitest-json"
+    },
+    "AC-158": {
+      "status": "pass",
+      "testName": "AuthSessionLocalRepository — Persistência e Limpeza de Sessão AC-158: Persiste e recupera sessão instantaneamente no Dexie em modo Local-First @spec:AC-158 AC-158: Persiste e recupera sessão instantaneamente no Dexie em modo Local-First @spec:AC-158",
+      "method": "vitest-json"
+    },
+    "AC-159": {
+      "status": "pass",
+      "testName": "Componentes Visuais de Autenticação — UI e Portas de Acesso AC-159: Exibe Splash minimalista com logotipo CliniAssist e gradiente da marca @spec:AC-159 AC-159: Exibe Splash minimalista com logotipo CliniAssist e gradiente da marca @spec:AC-159",
+      "method": "vitest-json"
+    },
+    "AC-160": {
+      "status": "pass",
+      "testName": "ApiClient — Injeção de Bearer Token e Interceptores de Sessão AC-160: Dispara callback onSessionExpired ao receber HTTP 401 em rota protegida @spec:AC-160 AC-160: Dispara callback onSessionExpired ao receber HTTP 401 em rota protegida @spec:AC-160",
+      "method": "vitest-json"
+    },
+    "AC-161": {
+      "status": "pass",
+      "testName": "AuthProvider & useAuth — Gerenciamento do Ciclo de Vida da Sessão AC-161: Transiciona para must_change_password se o consultório tiver troca pendente @spec:AC-161 AC-161: Transiciona para must_change_password se o consultório tiver troca pendente @spec:AC-161",
+      "method": "vitest-json"
+    },
+    "AC-162": {
+      "status": "pass",
+      "testName": "Política de Senhas Compartilhada — US-093 AC-162: Validação da política de senha (mínimo 8 caracteres, letra, número e diferente da atual) @spec:AC-162 AC-162: Validação da política de senha (mínimo 8 caracteres, letra, número e diferente da atual) @spec:AC-162",
+      "method": "vitest-json"
+    },
+    "AC-163": {
+      "status": "pass",
+      "testName": "ApiClient — Injeção de Bearer Token e Interceptores de Sessão AC-163: Anexa cabeçalho Authorization Bearer e não envia x-tenant-id @spec:AC-163 AC-163: Anexa cabeçalho Authorization Bearer e não envia x-tenant-id @spec:AC-163",
+      "method": "vitest-json"
+    },
+    "AC-164": {
+      "status": "pass",
+      "testName": "Integração de Autenticação — Perfil e Logout em Ajustes AC-164: Renderiza card de Perfil do Consultório no topo de Ajustes com botão Sair da Conta @spec:AC-164 AC-164: Renderiza card de Perfil do Consultório no topo de Ajustes com botão Sair da Conta @spec:AC-164",
+      "method": "vitest-json"
+    },
+    "AC-165": {
+      "status": "pass",
+      "testName": "AuthSessionLocalRepository — Persistência e Limpeza de Sessão AC-165: Contabiliza pendências na outbox e limpa todo o banco local no logout confirmado @spec:AC-165 AC-165: Contabiliza pendências na outbox e limpa todo o banco local no logout confirmado @spec:AC-165",
+      "method": "vitest-json"
+    }
+  },
+  "principles": {}
+}

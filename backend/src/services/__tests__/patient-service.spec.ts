@@ -10,6 +10,7 @@ describe('PatientService — Regras de Negócio de Pacientes', () => {
     mockRepo = {
       create: vi.fn(),
       findById: vi.fn(),
+      findByWhatsapp: vi.fn().mockResolvedValue(null),
       findAll: vi.fn(),
       update: vi.fn(),
       softDelete: vi.fn(),
@@ -19,6 +20,18 @@ describe('PatientService — Regras de Negócio de Pacientes', () => {
   });
 
   describe('createPatient', () => {
+    it('deve rejeitar cadastro com WhatsApp duplicado no tenant @spec:AC-177', async () => {
+      (mockRepo.findByWhatsapp as any).mockResolvedValue({
+        id: 'patient-existing',
+        name: 'Juliana Silva',
+        whatsapp: '11988887777',
+      });
+
+      await expect(
+        service.createPatient('tenant-1', { name: 'Novo Paciente', whatsapp: '11988887777' })
+      ).rejects.toThrow('Já existe um paciente cadastrado com este WhatsApp: "Juliana Silva".');
+    });
+
     it('deve cadastrar paciente com dados válidos e trim aplicado', async () => {
       const mockResult: any = {
         id: 'patient-123',
@@ -73,6 +86,18 @@ describe('PatientService — Regras de Negócio de Pacientes', () => {
     it('deve rejeitar atualização com whatsapp vazio', async () => {
       await expect(service.updatePatient('tenant-1', 'p-1', { whatsapp: '   ' }))
         .rejects.toThrow('WhatsApp do paciente não pode ser vazio.');
+    });
+
+    it('deve rejeitar atualização para WhatsApp já utilizado por outro paciente @spec:AC-177', async () => {
+      (mockRepo.findByWhatsapp as any).mockResolvedValue({
+        id: 'patient-other',
+        name: 'Carlos Antigo',
+        whatsapp: '11988887777',
+      });
+
+      await expect(
+        service.updatePatient('tenant-1', 'p-1', { whatsapp: '11988887777' })
+      ).rejects.toThrow('Já existe outro paciente cadastrado com este WhatsApp: "Carlos Antigo".');
     });
 
     it('deve delegar atualização sanitizada ao repositório', async () => {

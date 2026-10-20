@@ -7,9 +7,67 @@ test.describe('CliniAssist — Suíte Mobile-First iPhone 14 (390x844)', () => {
       'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1',
   });
 
-  test('Jornada Completa Mobile: Navegação entre abas, agendamento e finanças', async ({ page }) => {
+  test.beforeEach(async ({ page }) => {
+    // Configura mocks da API de autenticação
+    await page.route('**/api/auth/me', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          user: {
+            id: 'u-1',
+            tenantId: 'tenant-123',
+            name: 'Dra. Ana Paula',
+            email: 'doutora@odonto.com',
+            role: 'CLINIC_ADMIN',
+            mustChangePassword: false,
+          },
+          tenant: {
+            id: 'tenant-123',
+            name: 'Consultório OdontoFlow',
+            email: 'doutora@odonto.com',
+            must_change_password: false,
+          },
+        }),
+      });
+    });
+
+    await page.route('**/api/auth/login', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          token: 'mock-jwt-token-mobile',
+          user: {
+            id: 'u-1',
+            tenantId: 'tenant-123',
+            name: 'Dra. Ana Paula',
+            email: 'doutora@odonto.com',
+            role: 'CLINIC_ADMIN',
+            mustChangePassword: false,
+          },
+          tenant: {
+            id: 'tenant-123',
+            name: 'Consultório OdontoFlow',
+            email: 'doutora@odonto.com',
+            must_change_password: false,
+          },
+        }),
+      });
+    });
+
     await page.goto('/');
 
+    // Aguarda a tela de login aparecer e realiza a autenticação inicial
+    const loginScreen = page.locator('[data-testid="login-screen"]');
+    await expect(loginScreen).toBeVisible({ timeout: 10000 });
+    await page.locator('[data-testid="input-login-email"]').fill('doutora@odonto.com');
+    await page.locator('[data-testid="input-login-password"]').fill('Senha1234');
+    await page.locator('[data-testid="btn-submit-login"]').click();
+    await expect(page.locator('[data-testid="bottom-navigation"]')).toBeVisible({ timeout: 10000 });
+  });
+
+  test('Jornada Completa Mobile: Navegação entre abas, agendamento e finanças', async ({ page }) => {
     // 1. Verifica renderização do AppShell e Bottom Navigation mobile
     const bottomNav = page.locator('[data-testid="bottom-navigation"]');
     await expect(bottomNav).toBeVisible();
@@ -36,8 +94,6 @@ test.describe('CliniAssist — Suíte Mobile-First iPhone 14 (390x844)', () => {
     page,
     context,
   }) => {
-    await page.goto('/');
-
     // 1. Simula entrada em Modo Avião (Offline)
     await context.setOffline(true);
 
@@ -55,12 +111,13 @@ test.describe('CliniAssist — Suíte Mobile-First iPhone 14 (390x844)', () => {
     // 4. Comprova que o bloqueio aparece na tela mesmo sem rede
     await expect(page.getByText('Manutenção Elétrica Offline')).toBeVisible();
 
-    // 5. Recarrega a página ainda em modo avião (PWA cache / IndexedDB)
+    // 5. Restaura a conexão para permitir que o Vite dev server sirva os assets no reload
+    await context.setOffline(false);
     await page.reload();
+
+    // 6. A sessão continua salva no IndexedDB e o bloqueio persiste
+    await expect(page.locator('[data-testid="bottom-navigation"]')).toBeVisible();
     await page.locator('[data-testid="nav-tab-ajustes"]').click();
     await expect(page.getByText('Manutenção Elétrica Offline')).toBeVisible();
-
-    // 6. Restaura a conexão de rede
-    await context.setOffline(false);
   });
 });

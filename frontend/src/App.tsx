@@ -33,32 +33,53 @@ import { ReportsView } from './features/analytics/components/ReportsView.js';
 import { MoreMenuHub } from './components/layout/MoreMenuHub.js';
 import { CreatePatientModal } from './features/patients/components/CreatePatientModal.js';
 import { ConfirmDeletePatientModal } from './features/patients/components/ConfirmDeletePatientModal.js';
+import { LogoutConfirmDrawer } from './features/auth/components/LogoutConfirmDrawer.js';
 import { SyncManager } from './sync/sync-manager.js';
+import { type LocalAuthSession } from './db/types.js';
 import { Plus } from 'lucide-react';
+import { getSmartDefaultAppointmentDateTime } from './features/agenda/utils/time-slots.js';
 
 export interface AppProps {
   initialTab?: NavTabId;
   db?: CliniAssistLocalDB;
   tenantId?: string;
   initialWhatsappConnected?: boolean;
+  session?: LocalAuthSession | null;
+  apiClient?: ApiClient;
+  onLogout?: () => void;
 }
 
 export const App: React.FC<AppProps> = ({
   initialTab = 'agenda',
   db = localDb,
-  tenantId = '11111111-1111-1111-1111-111111111111',
+  tenantId: tenantIdProp,
   initialWhatsappConnected = true,
+  session,
+  apiClient,
+  onLogout,
 }) => {
+  const tenantId = session?.tenant?.id || tenantIdProp || '11111111-1111-1111-1111-111111111111';
   const [activeTab, setActiveTab] = useState<NavTabId>(initialTab);
   const [whatsappConnected, setWhatsappConnected] = useState<boolean>(initialWhatsappConnected);
   const [whatsappQrCode, setWhatsappQrCode] = useState<string | null>(null);
   const [connectedNumber, setConnectedNumber] = useState<string | null>(null);
 
+  const [isLogoutDrawerOpen, setIsLogoutDrawerOpen] = useState(false);
+  const [pendingOutboxCount, setPendingOutboxCount] = useState(0);
+
+  const getAuthHeaders = useCallback((): Record<string, string> => {
+    const headers: Record<string, string> = {};
+    if (session?.token) {
+      headers['Authorization'] = `Bearer ${session.token}`;
+    }
+    return headers;
+  }, [session?.token]);
+
   // Efeito de busca do status da sessão WhatsApp e polling quando desconectado
   const fetchWhatsappSession = useCallback(async () => {
     try {
       const res = await fetch('/api/whatsapp/session', {
-        headers: { 'x-tenant-id': tenantId },
+        headers: getAuthHeaders(),
       });
       if (res.ok) {
         const data = await res.json();
@@ -73,7 +94,7 @@ export const App: React.FC<AppProps> = ({
     } catch {
       // Offline ou ambiente de testes
     }
-  }, [tenantId]);
+  }, [getAuthHeaders]);
 
   useEffect(() => {
     fetchWhatsappSession();
@@ -92,8 +113,8 @@ export const App: React.FC<AppProps> = ({
 
   // Sincronização delta periódica em segundo plano (atualiza agendamentos confirmados via WhatsApp)
   const syncManager = useMemo(
-    () => new SyncManager({ tenantId, db }),
-    [tenantId, db]
+    () => new SyncManager({ tenantId, token: session?.token, db }),
+    [tenantId, session?.token, db]
   );
 
   const runSync = useCallback(async () => {
@@ -114,7 +135,7 @@ export const App: React.FC<AppProps> = ({
     try {
       const res = await fetch('/api/whatsapp/connect', {
         method: 'POST',
-        headers: { 'x-tenant-id': tenantId },
+        headers: getAuthHeaders(),
       });
       if (res.ok) {
         const data = await res.json();
@@ -130,7 +151,7 @@ export const App: React.FC<AppProps> = ({
     try {
       await fetch('/api/whatsapp/disconnect', {
         method: 'POST',
-        headers: { 'x-tenant-id': tenantId },
+        headers: getAuthHeaders(),
       });
     } catch {
       // Fallback
@@ -138,6 +159,37 @@ export const App: React.FC<AppProps> = ({
     setWhatsappConnected(false);
     await fetchWhatsappSession();
   };
+
+  const handleRequestLogout = useCallback(async () => {
+    try {
+      // 1. Tenta flush imediato da outbox antes de checar pendências
+      if (syncManager) {
+        try {
+          await syncManager.push();
+        } catch {
+          // Erro de rede ou offline
+        }
+      }
+
+      // 2. Verifica pendências remanescentes
+      const count = await db.sync_outbox.where('status').equals('PENDING').count();
+      setPendingOutboxCount(count);
+      if (count > 0) {
+        setIsLogoutDrawerOpen(true);
+      } else if (onLogout) {
+        onLogout();
+      }
+    } catch {
+      if (onLogout) onLogout();
+    }
+  }, [db, onLogout, syncManager]);
+
+  const handleConfirmLogout = useCallback(async () => {
+    setIsLogoutDrawerOpen(false);
+    if (onLogout) {
+      await onLogout();
+    }
+  }, [onLogout]);
 
   // Repositórios com banco injetado
   const appointmentRepo = useMemo(() => new AppointmentLocalRepository(db), [db]);
@@ -234,6 +286,14 @@ export const App: React.FC<AppProps> = ({
     setIsQuickOpen(true);
   };
 
+  const handleOpenSmartQuickAppointment = (patient: LocalPatient | null = null) => {
+    const smart = getSmartDefaultAppointmentDateTime(new Date(), currentDate);
+    setCurrentDate(smart.date);
+    setQuickSlotTime(smart.timeStr);
+    setQuickPatient(patient);
+    setIsQuickOpen(true);
+  };
+
   const handlePrevDate = () => {
     setCurrentDate((prev) => new Date(prev.getTime() - 24 * 60 * 60 * 1000));
   };
@@ -321,11 +381,8 @@ export const App: React.FC<AppProps> = ({
     <AppShell
       activeTab={activeTab}
       onTabChange={setActiveTab}
-      onQuickAppointment={() => {
-        setQuickPatient(null);
-        setQuickSlotTime('08:00');
-        setIsQuickOpen(true);
-      }}
+      onQuickAppointment={() => handleOpenSmartQuickAppointment(null)}
+      clinicName={session?.tenant?.name || 'CliniAssist'}
       connectionStatus={connectionStatus}
       whatsappConnected={whatsappConnected}
     >
@@ -340,11 +397,7 @@ export const App: React.FC<AppProps> = ({
             <button
               type="button"
               data-testid="btn-new-appointment-top"
-              onClick={() => {
-                setQuickPatient(null);
-                setQuickSlotTime('08:00');
-                setIsQuickOpen(true);
-              }}
+              onClick={() => handleOpenSmartQuickAppointment(null)}
               className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-white bg-teal-700 hover:bg-teal-800 rounded-lg shadow-xs transition-colors self-start sm:self-auto"
             >
               <Plus className="w-4 h-4" />
@@ -398,10 +451,8 @@ export const App: React.FC<AppProps> = ({
               setIsDeletePatientOpen(true);
             }}
             onSchedule={(pw) => {
-              setQuickPatient(pw.patient);
               setActiveTab('agenda');
-              setQuickSlotTime('09:00');
-              setIsQuickOpen(true);
+              handleOpenSmartQuickAppointment(pw.patient);
             }}
           />
         </div>
@@ -435,10 +486,8 @@ export const App: React.FC<AppProps> = ({
             patients={activePatients}
             appointments={appointments}
             onSchedule={(patient) => {
-              setQuickPatient(patient);
               setActiveTab('agenda');
-              setQuickSlotTime('09:00');
-              setIsQuickOpen(true);
+              handleOpenSmartQuickAppointment(patient);
             }}
           />
         </div>
@@ -449,6 +498,9 @@ export const App: React.FC<AppProps> = ({
         <div data-testid="ajustes-tab-content">
           <SettingsView
             tenantId={tenantId}
+            tenantName={session?.tenant?.name}
+            tenantEmail={session?.tenant?.email}
+            onRequestLogout={handleRequestLogout}
             repo={settingsRepo}
             whatsappConnected={whatsappConnected}
             qrCodeBase64={whatsappQrCode}
@@ -619,6 +671,14 @@ export const App: React.FC<AppProps> = ({
           setPatientToDelete(null);
         }}
         onConfirm={handleConfirmDeletePatient}
+      />
+
+      {/* Gaveta de Confirmação de Logout */}
+      <LogoutConfirmDrawer
+        isOpen={isLogoutDrawerOpen}
+        pendingCount={pendingOutboxCount}
+        onConfirmLogout={handleConfirmLogout}
+        onClose={() => setIsLogoutDrawerOpen(false)}
       />
     </AppShell>
   );

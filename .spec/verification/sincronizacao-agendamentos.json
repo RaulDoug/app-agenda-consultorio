@@ -1,0 +1,57 @@
+{
+  "feature": "sincronizacao-agendamentos",
+  "timestamp": "2026-10-20T21:58:07.213Z",
+  "gitRev": "d0066c0",
+  "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
+  "reporter": "vitest-json",
+  "exitCode": 0,
+  "testsParsed": 450,
+  "results": {
+    "AC-166": {
+      "status": "pass",
+      "testName": "Sincronização de Agendamentos — Backend Batch Sync AC-166: Backend aceita mutações de agendamentos e itens via POST /api/sync/batch @spec:AC-166 AC-166: Backend aceita mutações de agendamentos e itens via POST /api/sync/batch @spec:AC-166",
+      "method": "vitest-json"
+    },
+    "AC-167": {
+      "status": "pass",
+      "testName": "Sincronização de Agendamentos — Backend Batch Sync AC-167: Persistência atômica de agendamento e múltiplos procedimentos vinculados @spec:AC-167 AC-167: Persistência atômica de agendamento e múltiplos procedimentos vinculados @spec:AC-167",
+      "method": "vitest-json"
+    },
+    "AC-168": {
+      "status": "pass",
+      "testName": "SyncManager — Autenticação via Bearer e Preservação de Outbox AC-168: Confirmação e limpeza segura da fila sync_outbox no frontend @spec:AC-168 AC-168: Confirmação e limpeza segura da fila sync_outbox no frontend @spec:AC-168",
+      "method": "vitest-json"
+    },
+    "AC-169": {
+      "status": "pass",
+      "testName": "Sincronização de Agendamentos — Backend Batch Sync AC-169: Idempotência em reenvios de lote com mesmo UUID @spec:AC-169 AC-169: Idempotência em reenvios de lote com mesmo UUID @spec:AC-169",
+      "method": "vitest-json"
+    },
+    "AC-170": {
+      "status": "pass",
+      "testName": "Sincronização de Agendamentos — Backend Batch Sync AC-170: Resolução de conflito Last-Write-Wins por updated_at @spec:AC-170 AC-170: Resolução de conflito Last-Write-Wins por updated_at @spec:AC-170",
+      "method": "vitest-json"
+    },
+    "AC-171": {
+      "status": "pass",
+      "testName": "Sincronização de Agendamentos — Backend Batch Sync AC-171: Validação de choque de horários e liberação para encaixes @spec:AC-171 AC-171: Validação de choque de horários e liberação para encaixes @spec:AC-171",
+      "method": "vitest-json"
+    },
+    "AC-172": {
+      "status": "pass",
+      "testName": "AuthProvider & useAuth — Gerenciamento do Ciclo de Vida da Sessão AC-172: Flush automático da fila outbox antes de efetuar logout @spec:AC-172 AC-172: Flush automático da fila outbox antes de efetuar logout @spec:AC-172",
+      "method": "vitest-json"
+    },
+    "AC-173": {
+      "status": "pass",
+      "testName": "Componentes Visuais de Autenticação — UI e Portas de Acesso AC-173: Alerta com contagem de pendências se o flush falhar por falta de rede @spec:AC-173 AC-173: Alerta com contagem de pendências se o flush falhar por falta de rede @spec:AC-173",
+      "method": "vitest-json"
+    },
+    "AC-174": {
+      "status": "pass",
+      "testName": "SyncManager — Autenticação via Bearer e Preservação de Outbox AC-174: Restauração completa de agendamentos e procedimentos pós-login @spec:AC-174 AC-174: Restauração completa de agendamentos e procedimentos pós-login @spec:AC-174",
+      "method": "vitest-json"
+    }
+  },
+  "principles": {}
+}

@@ -3,6 +3,7 @@ import { SettingsLocalRepository, settingsRepo as defaultRepo, type BusinessHour
 import type { LocalBusinessHours } from '../../../db/types.js';
 import { ScheduleBlocksManager } from './ScheduleBlocksManager.js';
 import { WhatsAppPairingView } from '../../analytics/components/WhatsAppPairingView.js';
+import { ClinicProfileCard } from './ClinicProfileCard.js';
 import { Clock, Check, Save } from 'lucide-react';
 
 const DAY_NAMES = [
@@ -17,6 +18,9 @@ const DAY_NAMES = [
 
 interface SettingsViewProps {
   tenantId?: string;
+  tenantName?: string;
+  tenantEmail?: string | null;
+  onRequestLogout?: () => void;
   repo?: SettingsLocalRepository;
   whatsappConnected?: boolean;
   qrCodeBase64?: string | null;
@@ -27,6 +31,9 @@ interface SettingsViewProps {
 
 export const SettingsView: React.FC<SettingsViewProps> = ({
   tenantId = 'tenant-default',
+  tenantName,
+  tenantEmail,
+  onRequestLogout,
   repo = defaultRepo,
   whatsappConnected = true,
   qrCodeBase64,
@@ -96,6 +103,15 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
 
   return (
     <div data-testid="settings-view" className="space-y-6 max-w-4xl mx-auto">
+      {/* Card de Perfil e Logout do Consultório */}
+      {onRequestLogout && (
+        <ClinicProfileCard
+          tenantName={tenantName}
+          tenantEmail={tenantEmail}
+          onRequestLogout={onRequestLogout}
+        />
+      )}
+
       <div>
         <h2 className="text-xl font-bold text-slate-800">Ajustes do Consultório</h2>
         <p className="text-xs text-slate-500">

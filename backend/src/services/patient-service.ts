@@ -23,11 +23,19 @@ export class PatientService {
       throw error;
     }
 
+    const cleanWhatsapp = whatsapp.replace(/\D/g, '');
+    const existing = await this.patientRepo.findByWhatsapp(tenantId, cleanWhatsapp);
+    if (existing) {
+      const error: any = new Error(`Já existe um paciente cadastrado com este WhatsApp: "${existing.name}".`);
+      error.statusCode = 409;
+      throw error;
+    }
+
     return this.patientRepo.create(
       tenantId,
       {
         name,
-        whatsapp,
+        whatsapp: cleanWhatsapp || whatsapp,
         notes: data.notes?.trim() || null,
       },
       customId
@@ -79,7 +87,14 @@ export class PatientService {
         error.statusCode = 400;
         throw error;
       }
-      updates.whatsapp = whatsapp;
+      const cleanWhatsapp = whatsapp.replace(/\D/g, '');
+      const existing = await this.patientRepo.findByWhatsapp(tenantId, cleanWhatsapp);
+      if (existing && existing.id !== id) {
+        const error: any = new Error(`Já existe outro paciente cadastrado com este WhatsApp: "${existing.name}".`);
+        error.statusCode = 409;
+        throw error;
+      }
+      updates.whatsapp = cleanWhatsapp || whatsapp;
     }
 
     if (data.notes !== undefined) {
