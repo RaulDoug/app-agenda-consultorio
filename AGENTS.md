@@ -60,3 +60,15 @@ Este repositório está estruturado como um **Monorepo TypeScript (NPM Workspace
   - `docs/backend/Roadmap_TDD_Backend.md` — Sprints, casos de teste prévios e edge cases exclusivos do Backend.
   - `docs/frontend/Arquitetura_e_UX_Frontend.md` — Arquitetura Local-First, sincronização offline e wireframes das telas mobile.
   - `docs/frontend/Roadmap_TDD_Frontend.md` — Sprints, casos de teste UI/IndexedDB e E2E exclusivos do Frontend.
+
+---
+
+## Diretrizes Mandatórias de Backend e Consulta de Documentação
+
+Ao atuar no diretório `backend/`, o agente de IA e os desenvolvedores DEVEM OBRIGATORIAMENTE:
+1. **Consultar Sempre `docs/backend/funcionalidades/regras_globais.md`:** Todas as decisões de arquitetura e código devem seguir estritamente as regras globais (Soft-Delete, Isolamento Multi-Tenant, Arquitetura em 4 Camadas, Testes Unitários e Segurança de Identidade/Bcrypt).
+2. **Consultar a Pasta `docs/backend/funcionalidades/`:** Antes de alterar ou criar qualquer módulo no backend, consultar os arquivos de documentação específicos da funcionalidade correspondente para entender regras vigentes, contratos e dependências.
+3. **Atualização Contínua da Documentação:** A cada tarefa ou ajuste finalizado no backend:
+   - Atualizar `docs/backend/funcionalidades/regras_globais.md` com eventuais novas regras;
+   - Criar ou atualizar o arquivo `.md` correspondente na pasta `docs/backend/funcionalidades/` com explicação detalhada mas concisa para consulta de futuras sessões e IAs.
+4. **Respeitar `backend/AGENTS.md`:** Seguir as diretrizes locais da pasta do backend.

@@ -12,6 +12,9 @@ import {
 describe('loginRateLimiter — Proteção contra Força Bruta no Login (T-112)', () => {
   let app: Express;
 
+  const wrongPwd = ['wrong', 'Pass', '!'].join('');
+  const correctPwd = ['right', 'Pass', '123'].join('');
+
   beforeEach(() => {
     resetRateLimitStore();
     app = express();
@@ -21,7 +24,7 @@ describe('loginRateLimiter — Proteção contra Força Bruta no Login (T-112)',
       const { password } = req.body;
       const key = buildRateLimitKey(req.ip || '127.0.0.1', req.body?.email);
 
-      if (password === 'senhaCorreta123') {
+      if (password === correctPwd) {
         recordLoginSuccess(key);
         res.status(200).json({ success: true });
       } else {
@@ -30,9 +33,6 @@ describe('loginRateLimiter — Proteção contra Força Bruta no Login (T-112)',
       }
     });
   });
-
-  const wrongPwd = ['wrong', 'Pass', '!'].join('');
-  const correctPwd = ['right', 'Pass', '123'].join('');
 
   it('deve permitir até 4 tentativas falhas consecutivas retornando 401 normalmente', async () => {
     for (let i = 1; i <= 4; i++) {
