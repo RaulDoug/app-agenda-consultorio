@@ -1,0 +1,27 @@
+{
+  "feature": "sincronizacao-financeiro-offline",
+  "timestamp": "2026-10-21T19:05:01.436Z",
+  "gitRev": "b054d2e",
+  "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
+  "reporter": "vitest-json",
+  "exitCode": 1,
+  "testsParsed": 484,
+  "results": {
+    "AC-193": {
+      "status": "pass",
+      "testName": "Feature sincronizacao-financeiro-offline — TDD Spec Anchor AC-193: Ingestão e persistência de transações financeiras em lote no backend via POST /api/sync/batch @spec:AC-193 AC-193: Ingestão e persistência de transações financeiras em lote no backend via POST /api/sync/batch @spec:AC-193",
+      "method": "vitest-json"
+    },
+    "AC-194": {
+      "status": "pass",
+      "testName": "Feature sincronizacao-financeiro-offline — TDD Spec Anchor AC-194: Resolução de conflitos Last-Write-Wins e exclusão lógica de transações financeiras no sync/batch @spec:AC-194 AC-194: Resolução de conflitos Last-Write-Wins e exclusão lógica de transações financeiras no sync/batch @spec:AC-194",
+      "method": "vitest-json"
+    },
+    "AC-195": {
+      "status": "pass",
+      "testName": "Feature sincronizacao-financeiro-offline — TDD Spec Anchor AC-195: Restauração íntegra de transações financeiras no GET /api/sync/pull após novo login @spec:AC-195 AC-195: Restauração íntegra de transações financeiras no GET /api/sync/pull após novo login @spec:AC-195",
+      "method": "vitest-json"
+    }
+  },
+  "principles": {}
+}

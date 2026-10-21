@@ -1,22 +1,26 @@
 import React, { useState } from 'react';
 import { LocalPatient } from '../../../db/types';
 import { PatientWithHistoryStatus } from '../types';
-import { FileText, ChevronDown, ChevronUp, Pencil, Trash2 } from 'lucide-react';
+import { FileText, ChevronDown, ChevronUp, Pencil, Trash2, DollarSign } from 'lucide-react';
 
 interface PatientCardProps {
   item: PatientWithHistoryStatus;
+  pendingAmountCents?: number;
   onSchedule?: (patient: PatientWithHistoryStatus) => void;
   onEdit?: (patient: LocalPatient) => void;
   onDelete?: (patient: LocalPatient) => void;
   onClick?: (patient: PatientWithHistoryStatus) => void;
+  onOpenFinancial?: (patient: LocalPatient) => void;
 }
 
 export const PatientCard: React.FC<PatientCardProps> = ({
   item,
+  pendingAmountCents = 0,
   onSchedule,
   onEdit,
   onDelete,
   onClick,
+  onOpenFinancial,
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const { patient, nextAppointment, lastCancelledWithoutReschedule, hasNoHistory } = item;
@@ -64,9 +68,18 @@ export const PatientCard: React.FC<PatientCardProps> = ({
           <span className="text-xs text-slate-500 font-mono">{patient.whatsapp}</span>
         </div>
 
-        {/* Badges de Histórico e Retorno + Chevron */}
+        {/* Badges de Histórico, Pendência e Retorno + Chevron */}
         <div className="flex items-center gap-2 shrink-0">
           <div className="flex flex-col items-end gap-1">
+            {pendingAmountCents > 0 && (
+              <span
+                data-testid={`badge-pending-${patient.id}`}
+                className="inline-block px-2 py-0.5 rounded-full text-[11px] font-bold bg-amber-100 text-amber-800 border border-amber-200"
+              >
+                ⚠️ Pendência: R$ {(pendingAmountCents / 100).toFixed(2)}
+              </span>
+            )}
+
             {hasNoHistory && (
               <span
                 data-testid="badge-sem-historico"
@@ -181,29 +194,48 @@ export const PatientCard: React.FC<PatientCardProps> = ({
       )}
 
       {/* Ações Inferiores Padrão */}
-      <div className="flex items-center justify-between pt-2 border-t border-slate-100 text-xs">
+      <div className="flex items-center justify-between pt-2 border-t border-slate-100 text-xs gap-2">
         <a
           href={`https://wa.me/55${patient.whatsapp.replace(/\D/g, '')}`}
           target="_blank"
           rel="noreferrer"
           onClick={(e) => e.stopPropagation()}
-          className="text-emerald-700 hover:text-emerald-900 font-medium inline-flex items-center gap-1"
+          className="text-emerald-700 hover:text-emerald-900 font-medium inline-flex items-center gap-1 min-h-[44px]"
         >
           Conversar no WhatsApp
         </a>
 
-        {onSchedule && (
-          <button
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              onSchedule(item);
-            }}
-            className="px-2.5 py-1 text-xs font-semibold rounded bg-teal-50 text-teal-700 hover:bg-teal-100 transition"
-          >
-            + Agendar
-          </button>
-        )}
+        <div className="flex items-center gap-2">
+          {onOpenFinancial && (
+            <button
+              type="button"
+              data-testid={`btn-patient-financial-${patient.id}`}
+              onClick={(e) => {
+                e.stopPropagation();
+                onOpenFinancial(patient);
+              }}
+              className="min-h-[44px] min-w-[44px] px-2.5 py-1 text-xs font-bold rounded-lg bg-teal-50 text-teal-800 hover:bg-teal-100 border border-teal-200 transition flex items-center gap-1"
+              title="Prontuário Financeiro"
+              aria-label={`Prontuário financeiro de ${patient.name}`}
+            >
+              <DollarSign className="w-4 h-4 text-teal-700" />
+              <span>Finanças</span>
+            </button>
+          )}
+
+          {onSchedule && (
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                onSchedule(item);
+              }}
+              className="min-h-[44px] px-2.5 py-1 text-xs font-semibold rounded bg-teal-50 text-teal-700 hover:bg-teal-100 transition"
+            >
+              + Agendar
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );

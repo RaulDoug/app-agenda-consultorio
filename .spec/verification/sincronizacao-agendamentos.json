@@ -1,11 +1,11 @@
 {
   "feature": "sincronizacao-agendamentos",
-  "timestamp": "2026-10-20T21:58:07.213Z",
-  "gitRev": "d0066c0",
+  "timestamp": "2026-10-21T17:33:40.712Z",
+  "gitRev": "b054d2e",
   "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
-  "exitCode": 0,
-  "testsParsed": 450,
+  "exitCode": 1,
+  "testsParsed": 484,
   "results": {
     "AC-166": {
       "status": "pass",

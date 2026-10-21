@@ -23,6 +23,8 @@ export const InstallmentsForm: React.FC<InstallmentsFormProps> = ({
     return d.toISOString().split('T')[0];
   });
 
+  const [customDueDates, setCustomDueDates] = useState<Record<number, string>>({});
+
   const entryCents = useMemo(() => {
     const val = parseFloat(entryReais) || 0;
     return Math.max(0, Math.round(val * 100));
@@ -41,7 +43,7 @@ export const InstallmentsForm: React.FC<InstallmentsFormProps> = ({
       items.push({
         installmentNumber: 0,
         totalInstallments: installmentsCount,
-        dueDate: todayStr,
+        dueDate: customDueDates[0] || todayStr,
         amountCents: entryCents,
         status: 'PAID',
         paymentDate: todayStr,
@@ -60,30 +62,32 @@ export const InstallmentsForm: React.FC<InstallmentsFormProps> = ({
       const baseDay = parseInt(dStr, 10);
 
       for (let i = 0; i < installmentsCount; i++) {
+        const instNum = i + 1;
         // Avançar meses respeitando a virada de ano
         const instDate = new Date(baseYear, baseMonth + i, baseDay);
         // Formato YYYY-MM-DD
         const year = instDate.getFullYear();
         const month = String(instDate.getMonth() + 1).padStart(2, '0');
         const day = String(instDate.getDate()).padStart(2, '0');
-        const dueDate = `${year}-${month}-${day}`;
+        const defaultDueDate = `${year}-${month}-${day}`;
+        const dueDate = customDueDates[instNum] || defaultDueDate;
 
         const amountCents = i < remainder ? baseShare + 1 : baseShare;
 
         items.push({
-          installmentNumber: i + 1,
+          installmentNumber: instNum,
           totalInstallments: installmentsCount,
           dueDate,
           amountCents,
           status: 'PENDING',
           paymentDate: null,
-          description: `Parcela ${i + 1}/${installmentsCount}`,
+          description: `Parcela ${instNum}/${installmentsCount}`,
         });
       }
     }
 
     return items;
-  }, [totalCents, entryCents, installmentsCount, firstDueDate, isEntryInvalid]);
+  }, [totalCents, entryCents, installmentsCount, firstDueDate, customDueDates, isEntryInvalid]);
 
   useEffect(() => {
     onChangePlan(plan, !isEntryInvalid);
@@ -171,20 +175,38 @@ export const InstallmentsForm: React.FC<InstallmentsFormProps> = ({
             {plan.map((item, idx) => (
               <div
                 key={idx}
-                className="p-2 flex items-center justify-between text-xs hover:bg-slate-50 transition"
+                className="p-2 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs hover:bg-slate-50 transition"
               >
-                <div className="flex items-center gap-1.5">
+                <div className="flex items-center gap-1.5 flex-1 min-w-0">
                   <span
-                    className={`w-2 h-2 rounded-full ${
+                    className={`w-2 h-2 rounded-full shrink-0 ${
                       item.status === 'PAID' ? 'bg-emerald-500' : 'bg-amber-400'
                     }`}
                   />
-                  <span className="font-semibold text-slate-800">{item.description}</span>
-                  <span className="text-[11px] text-slate-400 font-mono">
-                    ({item.dueDate})
-                  </span>
+                  <span className="font-semibold text-slate-800 shrink-0">{item.description}</span>
+                  {item.installmentNumber > 0 ? (
+                    <>
+                      <input
+                        type="date"
+                        value={item.dueDate}
+                        onChange={(e) =>
+                          setCustomDueDates((prev) => ({
+                            ...prev,
+                            [item.installmentNumber]: e.target.value,
+                          }))
+                        }
+                        className="ml-1 px-1.5 py-0.5 text-[11px] font-mono border border-slate-200 rounded bg-white text-slate-700 focus:outline-none focus:ring-1 focus:ring-teal-500"
+                        aria-label={`Data da parcela ${item.installmentNumber}`}
+                      />
+                      <span className="sr-only">({item.dueDate})</span>
+                    </>
+                  ) : (
+                    <span className="text-[11px] text-slate-400 font-mono">
+                      ({item.dueDate})
+                    </span>
+                  )}
                 </div>
-                <span className="font-mono font-bold text-slate-900">
+                <span className="font-mono font-bold text-slate-900 shrink-0">
                   R$ {(item.amountCents / 100).toFixed(2)}
                 </span>
               </div>

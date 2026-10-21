@@ -20,6 +20,7 @@ import { RescheduleModal } from './features/agenda/components/RescheduleModal.js
 import { type ViewMode, type LocalAppointmentWithDetails } from './features/agenda/types.js';
 
 import { PatientList } from './features/patients/components/PatientList.js';
+import { PatientFinancialDrawer } from './features/patients/components/PatientFinancialDrawer.js';
 
 import { CashFlowDashboard } from './features/analytics/components/CashFlowDashboard.js';
 import { InactivePatientsList } from './features/analytics/components/InactivePatientsList.js';
@@ -36,6 +37,7 @@ import { ConfirmDeletePatientModal } from './features/patients/components/Confir
 import { LogoutConfirmDrawer } from './features/auth/components/LogoutConfirmDrawer.js';
 import { SyncManager } from './sync/sync-manager.js';
 import { type LocalAuthSession } from './db/types.js';
+import { ApiClient } from './services/api-client.js';
 import { Plus } from 'lucide-react';
 import { getSmartDefaultAppointmentDateTime } from './features/agenda/utils/time-slots.js';
 
@@ -205,9 +207,13 @@ export const App: React.FC<AppProps> = ({
   const allPatients = useLiveQuery(() => db.patients.toArray(), [db]) || [];
   const activePatients = useMemo(() => allPatients.filter((p) => p.is_active), [allPatients]);
   const appointments = useLiveQuery(() => db.appointments.toArray(), [db]) || [];
-  const procedures = useLiveQuery(() => db.procedures.toArray(), [db]) || [];
   const appointmentItems = useLiveQuery(() => db.appointment_items.toArray(), [db]) || [];
-  const transactions = useLiveQuery(() => db.financial_transactions.toArray(), [db]) || [];
+  const procedures = useLiveQuery(() => db.procedures.toArray(), [db]) || [];
+  const allTransactions = useLiveQuery(() => db.financial_transactions.toArray(), [db]) || [];
+  const transactions = useMemo(
+    () => allTransactions.filter((tx) => tx.is_active !== false && !tx.deleted_at),
+    [allTransactions]
+  );
 
   // Estado da Agenda
   const [currentDate, setCurrentDate] = useState<Date>(() => new Date());
@@ -233,6 +239,7 @@ export const App: React.FC<AppProps> = ({
     baseDate: Date;
     preferredTimeStr: string;
   } | null>(null);
+  const [patientForFinancial, setPatientForFinancial] = useState<LocalPatient | null>(null);
 
   const handleConfirmDeletePatient = async (patient: LocalPatient) => {
     await patientRepo.deletePatient(patient.id);
@@ -295,11 +302,27 @@ export const App: React.FC<AppProps> = ({
   };
 
   const handlePrevDate = () => {
-    setCurrentDate((prev) => new Date(prev.getTime() - 24 * 60 * 60 * 1000));
+    setCurrentDate((prev) => {
+      if (viewMode === 'week') {
+        return new Date(prev.getTime() - 7 * 24 * 60 * 60 * 1000);
+      }
+      if (viewMode === 'month') {
+        return new Date(prev.getFullYear(), prev.getMonth() - 1, prev.getDate());
+      }
+      return new Date(prev.getTime() - 24 * 60 * 60 * 1000);
+    });
   };
 
   const handleNextDate = () => {
-    setCurrentDate((prev) => new Date(prev.getTime() + 24 * 60 * 60 * 1000));
+    setCurrentDate((prev) => {
+      if (viewMode === 'week') {
+        return new Date(prev.getTime() + 7 * 24 * 60 * 60 * 1000);
+      }
+      if (viewMode === 'month') {
+        return new Date(prev.getFullYear(), prev.getMonth() + 1, prev.getDate());
+      }
+      return new Date(prev.getTime() + 24 * 60 * 60 * 1000);
+    });
   };
 
   const handleToday = () => {
@@ -308,7 +331,12 @@ export const App: React.FC<AppProps> = ({
 
   // Concluir Checkout e gerar transações
   const handleCompleteCheckout = async (result: CheckoutResult) => {
-    if (result.paymentMethod === 'PARCELADO') {
+    const procedureTitle =
+      checkoutAppointment?.procedures && checkoutAppointment.procedures.length > 0
+        ? checkoutAppointment.procedures.map((p) => p.name).join(', ')
+        : 'Atendimento Concluído';
+
+    if (result.paymentMethod === 'PARCELADO' || (result.installments && result.installments.length > 0)) {
       let installmentsList = result.installments;
 
       if (!installmentsList || installmentsList.length === 0) {
@@ -327,7 +355,7 @@ export const App: React.FC<AppProps> = ({
             amountCents: entry,
             status: 'PAID' as const,
             paymentDate: new Date().toISOString(),
-            description: 'Entrada Checkout',
+            description: `Entrada - ${procedureTitle}`,
           });
         }
 
@@ -341,7 +369,7 @@ export const App: React.FC<AppProps> = ({
             amountCents: i === 1 ? installmentValue + remainder : installmentValue,
             status: 'PENDING' as const,
             paymentDate: null,
-            description: `Parcela ${i}/${count}`,
+            description: `${procedureTitle} (${i}/${count})`,
           });
         }
       }
@@ -350,7 +378,7 @@ export const App: React.FC<AppProps> = ({
         tenantId,
         appointmentId: result.appointmentId,
         totalCents: result.totalCents,
-        paymentMethod: 'PARCELADO',
+        paymentMethod: result.paymentMethod,
         installments: installmentsList,
       });
     } else {
@@ -367,7 +395,7 @@ export const App: React.FC<AppProps> = ({
             amountCents: result.totalCents,
             status: 'PAID' as const,
             paymentDate: new Date().toISOString(),
-            description: 'Atendimento Concluído',
+            description: procedureTitle,
           },
         ],
       });
@@ -387,152 +415,154 @@ export const App: React.FC<AppProps> = ({
       whatsappConnected={whatsappConnected}
     >
       {/* ABA 1: AGENDA */}
-      {activeTab === 'agenda' && (
-        <div data-testid="agenda-tab-content" className="space-y-4">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <div>
-              <h2 className="text-xl font-bold text-slate-800">Agenda de Atendimentos</h2>
-              <p className="text-xs text-slate-500">Visualização diária, semanal e mensal com agendamento rápido.</p>
-            </div>
-            <button
-              type="button"
-              data-testid="btn-new-appointment-top"
-              onClick={() => handleOpenSmartQuickAppointment(null)}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-white bg-teal-700 hover:bg-teal-800 rounded-lg shadow-xs transition-colors self-start sm:self-auto"
-            >
-              <Plus className="w-4 h-4" />
-              + Novo Agendamento
-            </button>
+      <div data-testid="agenda-tab-content" className={activeTab === 'agenda' ? 'space-y-4' : 'hidden'}>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <h2 className="text-xl font-bold text-slate-800">Agenda de Atendimentos</h2>
+            <p className="text-xs text-slate-500">Visualização diária, semanal e mensal com agendamento rápido.</p>
           </div>
-
-          <ViewModeSelector
-            currentDate={currentDate}
-            viewMode={viewMode}
-            onViewModeChange={setViewMode}
-            onPrevDate={handlePrevDate}
-            onNextDate={handleNextDate}
-            onToday={handleToday}
-          />
-
-          <ScheduleGrid
-            currentDate={currentDate}
-            viewMode={viewMode}
-            appointments={detailedAppointments}
-            onSlotClick={handleSlotClick}
-            onAppointmentClick={(app) => setSelectedAppointment(app)}
-            onMarkNoShow={(appId) => appointmentRepo.updateStatus(appId, 'NO_SHOW')}
-            onReschedule={(app) => setRescheduleAppointment(app)}
-          />
+          <button
+            type="button"
+            data-testid="btn-new-appointment-top"
+            onClick={() => handleOpenSmartQuickAppointment(null)}
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-white bg-teal-700 hover:bg-teal-800 rounded-lg shadow-xs transition-colors self-start sm:self-auto"
+          >
+            <Plus className="w-4 h-4" />
+            + Novo Agendamento
+          </button>
         </div>
-      )}
+
+        <ViewModeSelector
+          currentDate={currentDate}
+          viewMode={viewMode}
+          onViewModeChange={setViewMode}
+          onPrevDate={handlePrevDate}
+          onNextDate={handleNextDate}
+          onToday={handleToday}
+        />
+
+        <ScheduleGrid
+          currentDate={currentDate}
+          viewMode={viewMode}
+          appointments={detailedAppointments}
+          onSlotClick={handleSlotClick}
+          onAppointmentClick={(app) => setSelectedAppointment(app)}
+          onMarkNoShow={(appId) => appointmentRepo.updateStatus(appId, 'NO_SHOW')}
+          onReschedule={(app) => setRescheduleAppointment(app)}
+          onSelectDate={(day) => {
+            setCurrentDate(day);
+            setViewMode('day');
+          }}
+        />
+      </div>
 
       {/* ABA 2: CLIENTES */}
-      {activeTab === 'clientes' && (
-        <div data-testid="clientes-tab-content" className="space-y-4">
-          <div>
-            <h2 className="text-xl font-bold text-slate-800">Clientes & Pacientes</h2>
-            <p className="text-xs text-slate-500">Base integrada com histórico de atendimentos e atalhos rápidos.</p>
-          </div>
-
-          <PatientList
-            tenantId={tenantId}
-            patients={activePatients}
-            appointments={appointments}
-            onOpenCreateModal={() => {
-              setEditingPatient(null);
-              setIsCreatePatientOpen(true);
-            }}
-            onEditPatient={(patient) => {
-              setEditingPatient(patient);
-              setIsCreatePatientOpen(true);
-            }}
-            onDeletePatient={(patient) => {
-              setPatientToDelete(patient);
-              setIsDeletePatientOpen(true);
-            }}
-            onSchedule={(pw) => {
-              setActiveTab('agenda');
-              handleOpenSmartQuickAppointment(pw.patient);
-            }}
-          />
+      <div data-testid="clientes-tab-content" className={activeTab === 'clientes' ? 'space-y-4' : 'hidden'}>
+        <div>
+          <h2 className="text-xl font-bold text-slate-800">Clientes & Pacientes</h2>
+          <p className="text-xs text-slate-500">Base integrada com histórico de atendimentos e atalhos rápidos.</p>
         </div>
-      )}
+
+        <PatientList
+          tenantId={tenantId}
+          patients={activePatients}
+          appointments={appointments}
+          transactions={transactions}
+          onOpenCreateModal={() => {
+            setEditingPatient(null);
+            setIsCreatePatientOpen(true);
+          }}
+          onEditPatient={(patient) => {
+            setEditingPatient(patient);
+            setIsCreatePatientOpen(true);
+          }}
+          onDeletePatient={(patient) => {
+            setPatientToDelete(patient);
+            setIsDeletePatientOpen(true);
+          }}
+          onOpenFinancial={(patient) => {
+            setPatientForFinancial(patient);
+          }}
+          onSchedule={(pw) => {
+            setActiveTab('agenda');
+            handleOpenSmartQuickAppointment(pw.patient);
+          }}
+        />
+      </div>
 
       {/* ABA 3: CAIXA & FINANCEIRO */}
-      {activeTab === 'caixa' && (
-        <div data-testid="caixa-tab-content" className="space-y-6">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <div>
-              <h2 className="text-xl font-bold text-slate-800">Fluxo de Caixa & Finanças</h2>
-              <p className="text-xs text-slate-500">Controle diário, DRE simples cumulativo, baixas e despesas.</p>
-            </div>
-            <button
-              type="button"
-              data-testid="btn-open-expense-modal"
-              onClick={() => setIsExpenseModalOpen(true)}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-rose-700 bg-rose-50 border border-rose-200 hover:bg-rose-100 rounded-lg shadow-xs transition-colors self-start sm:self-auto"
-            >
-              <Plus className="w-4 h-4" />
-              + Nova Despesa
-            </button>
+      <div data-testid="caixa-tab-content" className={activeTab === 'caixa' ? 'space-y-6' : 'hidden'}>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <h2 className="text-xl font-bold text-slate-800">Fluxo de Caixa & Finanças</h2>
+            <p className="text-xs text-slate-500">Controle diário, DRE simples cumulativo, baixas e despesas.</p>
           </div>
-
-          <CashFlowDashboard
-            transactions={transactions}
-            financialRepo={financialRepo}
-          />
-
-          <InactivePatientsList
-            patients={activePatients}
-            appointments={appointments}
-            onSchedule={(patient) => {
-              setActiveTab('agenda');
-              handleOpenSmartQuickAppointment(patient);
-            }}
-          />
+          <button
+            type="button"
+            data-testid="btn-open-expense-modal"
+            onClick={() => setIsExpenseModalOpen(true)}
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-rose-700 bg-rose-50 border border-rose-200 hover:bg-rose-100 rounded-lg shadow-xs transition-colors self-start sm:self-auto"
+          >
+            <Plus className="w-4 h-4" />
+            + Nova Despesa
+          </button>
         </div>
-      )}
+
+        <CashFlowDashboard
+          transactions={transactions}
+          financialRepo={financialRepo}
+          token={session?.token}
+          patients={activePatients}
+          appointments={appointments}
+          procedures={procedures}
+          appointmentItems={appointmentItems}
+        />
+
+        <InactivePatientsList
+          patients={activePatients}
+          appointments={appointments}
+          onSchedule={(patient) => {
+            setActiveTab('agenda');
+            handleOpenSmartQuickAppointment(patient);
+          }}
+        />
+      </div>
 
       {/* ABA 4: AJUSTES */}
-      {activeTab === 'ajustes' && (
-        <div data-testid="ajustes-tab-content">
-          <SettingsView
-            tenantId={tenantId}
-            tenantName={session?.tenant?.name}
-            tenantEmail={session?.tenant?.email}
-            onRequestLogout={handleRequestLogout}
-            repo={settingsRepo}
-            whatsappConnected={whatsappConnected}
-            qrCodeBase64={whatsappQrCode}
-            connectedNumber={connectedNumber}
-            onRefreshWhatsApp={handleRefreshWhatsapp}
-            onDisconnectWhatsApp={handleDisconnectWhatsapp}
-          />
-        </div>
-      )}
+      <div data-testid="ajustes-tab-content" className={activeTab === 'ajustes' ? 'block' : 'hidden'}>
+        <SettingsView
+          tenantId={tenantId}
+          tenantName={session?.tenant?.name}
+          tenantEmail={session?.tenant?.email}
+          onRequestLogout={handleRequestLogout}
+          repo={settingsRepo}
+          whatsappConnected={whatsappConnected}
+          qrCodeBase64={whatsappQrCode}
+          connectedNumber={connectedNumber}
+          onRefreshWhatsApp={handleRefreshWhatsapp}
+          onDisconnectWhatsApp={handleDisconnectWhatsapp}
+        />
+      </div>
 
       {/* ABA 5: RELATÓRIOS & MÉTRICAS */}
-      {activeTab === 'relatorios' && (
-        <div data-testid="relatorios-tab-content">
-          <ReportsView
-            appointments={appointments}
-            appointmentItems={appointmentItems}
-            procedures={procedures}
-            transactions={transactions}
-            patients={activePatients}
-          />
-        </div>
-      )}
+      <div data-testid="relatorios-tab-content" className={activeTab === 'relatorios' ? 'block' : 'hidden'}>
+        <ReportsView
+          appointments={appointments}
+          appointmentItems={appointmentItems}
+          procedures={procedures}
+          transactions={transactions}
+          patients={activePatients}
+          token={session?.token}
+        />
+      </div>
 
       {/* ABA 6: MAIS (HUB MOBILE) */}
-      {activeTab === 'mais' && (
-        <div data-testid="mais-tab-content">
-          <MoreMenuHub
-            onSelectSection={(tab) => setActiveTab(tab)}
-            patientCount={activePatients.length}
-          />
-        </div>
-      )}
+      <div data-testid="mais-tab-content" className={activeTab === 'mais' ? 'block' : 'hidden'}>
+        <MoreMenuHub
+          onSelectSection={(tab) => setActiveTab(tab)}
+          patientCount={activePatients.length}
+        />
+      </div>
 
       {/* Gaveta de Criação Rápida */}
       <QuickAppointmentDrawer
@@ -679,6 +709,17 @@ export const App: React.FC<AppProps> = ({
         pendingCount={pendingOutboxCount}
         onConfirmLogout={handleConfirmLogout}
         onClose={() => setIsLogoutDrawerOpen(false)}
+      />
+
+      {/* Gaveta de Prontuário Financeiro do Paciente */}
+      <PatientFinancialDrawer
+        isOpen={Boolean(patientForFinancial)}
+        patient={patientForFinancial}
+        appointments={appointments}
+        transactions={transactions}
+        procedures={procedures}
+        financialRepo={financialRepo}
+        onClose={() => setPatientForFinancial(null)}
       />
     </AppShell>
   );

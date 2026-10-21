@@ -76,8 +76,10 @@ export const CheckoutDrawer: React.FC<CheckoutDrawerProps> = ({
     return [];
   });
 
-  const [discountType, setDiscountType] = useState<'reais' | 'percentual'>('reais');
+  const [discountType, setDiscountType] = useState<'reais' | 'percentual'>('percentual');
   const [discountValueInput, setDiscountValueInput] = useState<string>('0');
+  const [targetTotalCents, setTargetTotalCents] = useState<number>(0);
+  const [finalTotalInputStr, setFinalTotalInputStr] = useState<string>('');
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('PIX');
   const [installmentPlan, setInstallmentPlan] = useState<InstallmentPlanItem[]>([]);
   const [isInstallmentsValid, setIsInstallmentsValid] = useState<boolean>(true);
@@ -86,50 +88,106 @@ export const CheckoutDrawer: React.FC<CheckoutDrawerProps> = ({
 
   // Sincroniza itens quando appointment mudar
   React.useEffect(() => {
+    let initialSubtotal = 0;
     if (appointment?.procedures && appointment.procedures.length > 0) {
-      setItems(
-        appointment.procedures.map((p) => ({
-          id: p.id,
-          name: p.name,
-          basePriceCents: p.default_price_cents,
-        }))
-      );
+      const initialItems = appointment.procedures.map((p) => ({
+        id: p.id,
+        name: p.name,
+        basePriceCents: p.default_price_cents,
+      }));
+      setItems(initialItems);
+      initialSubtotal = initialItems.reduce((acc, it) => acc + it.basePriceCents, 0);
     } else if (appointment) {
-      setItems([
-        {
-          id: crypto.randomUUID(),
-          name: appointment.notes || 'Atendimento Geral',
-          basePriceCents: 15000,
-        },
-      ]);
+      const defaultItem = {
+        id: crypto.randomUUID(),
+        name: appointment.notes || 'Atendimento Geral',
+        basePriceCents: 15000,
+      };
+      setItems([defaultItem]);
+      initialSubtotal = defaultItem.basePriceCents;
     } else {
       setItems([]);
+      initialSubtotal = 0;
     }
+    setTargetTotalCents(initialSubtotal);
+    setFinalTotalInputStr((initialSubtotal / 100).toFixed(2));
     setDiscountValueInput('0');
     setPaymentMethod('PIX');
     setErrorMsg('');
   }, [appointment?.id]);
 
-  // Subtotal base
+  // Subtotal base fixo dos procedimentos
   const subtotalCents = useMemo(() => {
     return items.reduce((acc, it) => acc + it.basePriceCents, 0);
   }, [items]);
 
-  // Desconto calculado em centavos
-  const calculatedDiscountCents = useMemo(() => {
-    const rawVal = parseFloat(discountValueInput) || 0;
-    if (rawVal <= 0) return 0;
+  // Diferença entre total desejado e subtotal de tabela
+  const diffCents = targetTotalCents - subtotalCents;
+  const percentDiff = subtotalCents > 0 ? (diffCents / subtotalCents) * 100 : 0;
 
-    if (discountType === 'percentual') {
-      return calculateDiscountFromPercentage(subtotalCents, rawVal);
-    }
-    return Math.round(rawVal * 100);
-  }, [subtotalCents, discountType, discountValueInput]);
-
-  // Rateio proporcional
+  // Rateio proporcional sem modificar o valor de tabela dos itens
   const splitResult = useMemo(() => {
-    return splitDiscountProportionally(items, calculatedDiscountCents);
-  }, [items, calculatedDiscountCents]);
+    if (items.length === 0 || subtotalCents === 0) {
+      return {
+        subtotalCents,
+        discountCents: 0,
+        totalCents: targetTotalCents,
+        items: items.map((it) => ({
+          id: it.id,
+          name: it.name,
+          basePriceCents: it.basePriceCents,
+          discountCents: 0,
+          effectivePriceCents: it.basePriceCents,
+        })),
+      };
+    }
+
+    if (diffCents < 0) {
+      // Desconto proporcional
+      const discountCents = Math.abs(diffCents);
+      return splitDiscountProportionally(items, discountCents);
+    }
+
+    if (diffCents > 0) {
+      // Acréscimo proporcional ponderado pelo valor de tabela dos itens
+      let allocated = 0;
+      return {
+        subtotalCents,
+        discountCents: 0,
+        totalCents: targetTotalCents,
+        items: items.map((it, idx) => {
+          let itemAdd = 0;
+          if (idx === items.length - 1) {
+            itemAdd = diffCents - allocated;
+          } else {
+            itemAdd = Math.round((it.basePriceCents / subtotalCents) * diffCents);
+            allocated += itemAdd;
+          }
+          return {
+            id: it.id,
+            name: it.name,
+            basePriceCents: it.basePriceCents,
+            discountCents: 0,
+            effectivePriceCents: it.basePriceCents + itemAdd,
+          };
+        }),
+      };
+    }
+
+    // Exatamente igual
+    return {
+      subtotalCents,
+      discountCents: 0,
+      totalCents: subtotalCents,
+      items: items.map((it) => ({
+        id: it.id,
+        name: it.name,
+        basePriceCents: it.basePriceCents,
+        discountCents: 0,
+        effectivePriceCents: it.basePriceCents,
+      })),
+    };
+  }, [items, subtotalCents, diffCents, targetTotalCents]);
 
   const handleUpdateItemPrice = (id: string, newPriceCents: number) => {
     setItems((prev) =>
@@ -141,12 +199,49 @@ export const CheckoutDrawer: React.FC<CheckoutDrawerProps> = ({
     setItems((prev) => prev.filter((it) => it.id !== id));
   };
 
-  // Ajustar total final diretamente calculando desconto correspondente
-  const handleFinalTotalChange = (targetTotalReais: number) => {
-    const targetCents = Math.round(targetTotalReais * 100);
-    const neededDiscountCents = Math.max(0, subtotalCents - targetCents);
-    setDiscountType('reais');
-    setDiscountValueInput((neededDiscountCents / 100).toFixed(2));
+  // Ajustar total final diretamente sem alterar o preço base do procedimento
+  const handleFinalTotalChange = (str: string) => {
+    setFinalTotalInputStr(str);
+    const parsed = parseFloat(str);
+    if (isNaN(parsed) || parsed < 0) return;
+
+    const newTargetCents = Math.round(parsed * 100);
+    setTargetTotalCents(newTargetCents);
+
+    const diff = newTargetCents - subtotalCents;
+    if (subtotalCents > 0) {
+      const pct = (diff / subtotalCents) * 100;
+      if (discountType === 'percentual') {
+        setDiscountValueInput(pct === 0 ? '0' : (pct > 0 ? `+${pct.toFixed(1)}` : `${pct.toFixed(1)}`));
+      } else {
+        setDiscountValueInput(diff === 0 ? '0' : (diff > 0 ? `+${(diff / 100).toFixed(2)}` : `${(diff / 100).toFixed(2)}`));
+      }
+    }
+  };
+
+  const handleFinalTotalBlur = () => {
+    const parsed = parseFloat(finalTotalInputStr);
+    if (isNaN(parsed) || parsed < 0) {
+      setFinalTotalInputStr((targetTotalCents / 100).toFixed(2));
+    } else {
+      setFinalTotalInputStr(parsed.toFixed(2));
+    }
+  };
+
+  // Ajustar pelo campo de desconto / acréscimo
+  const handleDiscountInputChange = (str: string) => {
+    setDiscountValueInput(str);
+    const parsed = parseFloat(str);
+    if (isNaN(parsed)) return;
+
+    let newTarget = subtotalCents;
+    if (discountType === 'percentual') {
+      newTarget = Math.max(0, Math.round(subtotalCents * (1 + parsed / 100)));
+    } else {
+      newTarget = Math.max(0, subtotalCents + Math.round(parsed * 100));
+    }
+    setTargetTotalCents(newTarget);
+    setFinalTotalInputStr((newTarget / 100).toFixed(2));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -249,51 +344,46 @@ export const CheckoutDrawer: React.FC<CheckoutDrawerProps> = ({
               </span>
             </div>
 
-            {/* Campo de Desconto (R$ ou %) */}
-            <div className="flex items-center gap-2">
-              <span className="text-xs font-semibold text-slate-700">Desconto:</span>
-              <div className="flex items-center bg-white border border-slate-300 rounded-lg overflow-hidden flex-1">
-                <select
-                  value={discountType}
-                  onChange={(e) => setDiscountType(e.target.value as any)}
-                  className="px-2 py-1.5 text-xs bg-slate-100 border-r border-slate-300 text-slate-700 focus:outline-none"
-                  aria-label="Tipo de desconto"
-                >
-                  <option value="reais">R$</option>
-                  <option value="percentual">%</option>
-                </select>
-                <input
-                  type="number"
-                  step={discountType === 'reais' ? '0.01' : '1'}
-                  min="0"
-                  max={discountType === 'percentual' ? '100' : undefined}
-                  value={discountValueInput}
-                  onChange={(e) => setDiscountValueInput(e.target.value)}
-                  placeholder="0.00"
-                  className="px-2.5 py-1.5 text-xs font-mono font-semibold text-slate-800 w-full focus:outline-none"
-                  aria-label="Valor do desconto"
-                />
+            {/* Variação de Valor (Desconto ou Acréscimo) */}
+            <div className="flex items-center justify-between text-xs">
+              <span className="text-xs font-semibold text-slate-700">
+                {diffCents > 0 ? 'Acréscimo:' : 'Desconto:'}
+              </span>
+              <div className="flex items-center gap-2">
+                {diffCents === 0 && (
+                  <span className="text-xs font-mono text-slate-400">
+                    0.0% (R$ 0.00)
+                  </span>
+                )}
+                {diffCents < 0 && (
+                  <span className="text-xs font-bold text-amber-700 font-mono bg-amber-50 px-2 py-0.5 rounded border border-amber-200">
+                    - R$ {(Math.abs(diffCents) / 100).toFixed(2)} ({percentDiff.toFixed(1)}%)
+                  </span>
+                )}
+                {diffCents > 0 && (
+                  <span className="text-xs font-bold text-emerald-700 font-mono bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                    + R$ {(diffCents / 100).toFixed(2)} (+{percentDiff.toFixed(1)}%)
+                  </span>
+                )}
               </div>
-
-              {splitResult.discountCents > 0 && (
-                <span className="text-xs font-bold text-amber-700 shrink-0">
-                  - R$ {(splitResult.discountCents / 100).toFixed(2)}
-                </span>
-              )}
             </div>
 
             {/* Edição Rápida do Total Final com Rateio Automático */}
             <div className="flex items-center justify-between pt-2 border-t border-slate-200">
-              <span className="text-xs font-bold text-slate-800">Total Final Cobrado:</span>
-              <div className="flex items-center gap-1 bg-white px-2.5 py-1 rounded-lg border border-teal-500 shadow-2xs">
+              <div>
+                <span className="text-xs font-bold text-slate-800 block">Total Final Cobrado:</span>
+                <span className="text-[10px] text-slate-500">Ajuste o valor final diretamente</span>
+              </div>
+              <div className="flex items-center gap-1 bg-white px-2.5 py-1.5 rounded-lg border-2 border-teal-500 shadow-2xs focus-within:ring-2 focus-within:ring-teal-500/20">
                 <span className="text-xs font-bold text-teal-700">R$</span>
                 <input
                   type="number"
                   step="0.01"
                   min="0"
-                  value={(splitResult.totalCents / 100).toFixed(2)}
-                  onChange={(e) => handleFinalTotalChange(parseFloat(e.target.value) || 0)}
-                  className="w-24 text-sm font-mono font-extrabold text-teal-900 bg-transparent focus:outline-none text-right"
+                  value={finalTotalInputStr}
+                  onChange={(e) => handleFinalTotalChange(e.target.value)}
+                  onBlur={handleFinalTotalBlur}
+                  className="w-28 text-base font-mono font-extrabold text-teal-900 bg-transparent focus:outline-none text-right"
                   aria-label="Total final"
                 />
               </div>

@@ -33,3 +33,11 @@ O módulo financeiro do OdontoFlow é responsável pelo controle completo do flu
      - **Despesas a Pagar (`expenses_pending_cents`):** soma de despesas com status `PENDING` considerando `due_date`.
      - **Lucro Líquido Realizado (`net_profit_cents`):** `income_paid_cents - expenses_paid_cents`.
    - Filtros suportados: `today`, `this_month`, `last_30_days`, `all` ou datas customizadas via query params `startDate` e `endDate`.
+
+## 4. Sincronização Offline-First e Estorno de Lançamentos
+1. **Tipagem Estrita PostgreSQL em Soft-Delete (`/api/sync/batch`):**
+   - Na ingestão de mutações de exclusão lógica (`operation: 'DELETE'` ou `is_active: false`), o timestamp de exclusão e atualização utiliza cast explícito `COALESCE($3::timestamptz, $4::timestamptz)` para evitar erros de tipagem estrita (`42804 datatype_mismatch text vs timestamptz`).
+2. **Atualização Parcial de Lançamentos:**
+   - Em operações de quitação ou estorno de pagamento (`status: 'PENDING', payment_date: null`), o endpoint preserva campos não informados no payload (`amount_cents`, `category`, `due_date`), e permite a anulação explícita de `payment_date` através de verificação booleana (`CASE WHEN $11::boolean THEN $12::date ELSE payment_date END`).
+3. **Consistência Bidirecional com IndexedDB:**
+   - Registros com `is_active: false` sincronizados para o cliente são preservados com a flag desativada, garantindo que o `useLiveQuery` e telas filtrem lançamentos estornados mesmo após logout e novo login.

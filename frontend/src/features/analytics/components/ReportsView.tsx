@@ -9,6 +9,7 @@ import {
 import { CashFilterPeriod } from '../utils/cash-calculator';
 import { calculateReportsDashboard } from '../utils/reports-calculator';
 import { InactivePatientsList } from './InactivePatientsList';
+import { ReportsApiClient, reportsApiClient } from '../../../services/reports-api';
 import {
   TrendingUp,
   AlertTriangle,
@@ -20,6 +21,8 @@ import {
   ChevronDown,
   ArrowUpRight,
   ArrowDownRight,
+  RefreshCw,
+  Database,
 } from 'lucide-react';
 
 interface ReportsViewProps {
@@ -28,6 +31,8 @@ interface ReportsViewProps {
   procedures: LocalProcedure[];
   transactions: LocalFinancialTransaction[];
   patients: LocalPatient[];
+  token?: string;
+  apiClient?: ReportsApiClient;
 }
 
 export const ReportsView: React.FC<ReportsViewProps> = ({
@@ -36,12 +41,23 @@ export const ReportsView: React.FC<ReportsViewProps> = ({
   procedures,
   transactions,
   patients,
+  token,
+  apiClient = reportsApiClient,
 }) => {
   const [period, setPeriod] = useState<CashFilterPeriod>('this_month');
   const [showInactiveList, setShowInactiveList] = useState(false);
+  const [syncStatus, setSyncStatus] = useState<'local' | 'server'>('local');
+  const [isRevalidating, setIsRevalidating] = useState(false);
 
-  // Calcula todas as métricas gerenciais reativamente
-  const data = useMemo(() => {
+  // Sincroniza o token de autenticação no cliente de API de relatórios
+  React.useEffect(() => {
+    if (token && apiClient?.setToken) {
+      apiClient.setToken(token);
+    }
+  }, [token, apiClient]);
+
+  // Calcula todas as métricas gerenciais reativamente a partir do Dexie
+  const localData = useMemo(() => {
     return calculateReportsDashboard(
       appointments,
       appointmentItems,
@@ -51,6 +67,39 @@ export const ReportsView: React.FC<ReportsViewProps> = ({
       period
     );
   }, [appointments, appointmentItems, procedures, transactions, patients, period]);
+
+  const [serverData, setServerData] = useState<any>(null);
+
+  const data = serverData && syncStatus === 'server' ? { ...localData, ...serverData } : localData;
+
+  const handleRevalidate = async () => {
+    setIsRevalidating(true);
+    try {
+      const [noShow, dre, recv] = await Promise.all([
+        apiClient.getNoShow(period),
+        apiClient.getDRE(period),
+        apiClient.getReceivables(),
+      ]);
+      setServerData({
+        noShowRate: noShow.no_show_rate,
+        noShowCount: noShow.no_show_count,
+        lostRevenueCents: noShow.lost_estimated_cents,
+        netProfitCents: dre.net_profit_cents,
+        totalIncomePaidCents: dre.total_income_paid_cents,
+        totalExpensePaidCents: dre.total_expense_paid_cents,
+        marginPercent: dre.margin_percentage,
+        receivablesNext30Cents: recv.pending_next_30_cents,
+        receivablesNext60Cents: recv.pending_next_60_cents,
+        receivablesNext90Cents: recv.pending_next_90_cents,
+      });
+      setSyncStatus('server');
+    } catch {
+      // Falha transparente: permanece no modo local
+      setSyncStatus('local');
+    } finally {
+      setIsRevalidating(false);
+    }
+  };
 
   const formatReais = (cents: number) => {
     const isNegative = cents < 0;
@@ -64,39 +113,68 @@ export const ReportsView: React.FC<ReportsViewProps> = ({
       {/* Cabeçalho e Seletor de Período */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white p-4 rounded-2xl border border-slate-200 shadow-2xs">
         <div>
-          <h2 className="text-xl font-bold text-slate-800 flex items-center gap-2">
-            <TrendingUp className="w-6 h-6 text-teal-600" />
-            Relatórios & Indicadores Gerenciais
-          </h2>
+          <div className="flex items-center gap-2 flex-wrap">
+            <h2 className="text-xl font-bold text-slate-800 flex items-center gap-2">
+              <TrendingUp className="w-6 h-6 text-teal-600" />
+              Relatórios & Indicadores Gerenciais
+            </h2>
+            <span
+              className={`text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider ${
+                syncStatus === 'server'
+                  ? 'bg-emerald-100 text-emerald-800'
+                  : 'bg-slate-100 text-slate-600'
+              }`}
+              data-testid="badge-report-sync-source"
+            >
+              {syncStatus === 'server' ? '✓ Servidor Sincronizado' : '● Local (Offline-First)'}
+            </span>
+          </div>
           <p className="text-xs text-slate-500 mt-0.5">
             Acompanhe a lucratividade, comparecimento e retenção de pacientes em tempo real.
           </p>
         </div>
 
-        {/* Seletor de Período */}
-        <div className="flex items-center bg-slate-100 p-1 rounded-xl text-xs self-start sm:self-auto">
-          {[
-            { key: 'today', label: 'Hoje' },
-            { key: 'this_month', label: 'Este Mês' },
-            { key: 'last_30_days', label: 'Últimos 30d' },
-            { key: 'all', label: 'Todos' },
-          ].map((p) => {
-            const isSelected = period === p.key;
-            return (
-              <button
-                key={p.key}
-                type="button"
-                onClick={() => setPeriod(p.key as CashFilterPeriod)}
-                className={`px-3 py-1.5 rounded-lg font-semibold transition-all ${
-                  isSelected
-                    ? 'bg-white text-teal-800 shadow-xs'
-                    : 'text-slate-600 hover:text-slate-900'
-                }`}
-              >
-                {p.label}
-              </button>
-            );
-          })}
+        <div className="flex items-center gap-2 self-start sm:self-auto flex-wrap">
+          <button
+            type="button"
+            onClick={handleRevalidate}
+            disabled={isRevalidating}
+            className="min-h-[38px] px-3 py-1.5 bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200 rounded-xl text-xs font-bold transition flex items-center gap-1.5 active:scale-95 disabled:opacity-50"
+            data-testid="btn-revalidate-reports"
+          >
+            <RefreshCw className={`w-3.5 h-3.5 ${isRevalidating ? 'animate-spin text-teal-600' : 'text-slate-500'}`} />
+            {isRevalidating ? 'Revalidando...' : 'Revalidar com Servidor'}
+          </button>
+
+          {/* Seletor de Período */}
+          <div className="flex items-center bg-slate-100 p-1 rounded-xl text-xs">
+            {[
+              { key: 'today', label: 'Hoje' },
+              { key: 'this_month', label: 'Este Mês' },
+              { key: 'last_30_days', label: 'Últimos 30d' },
+              { key: 'all', label: 'Todos' },
+            ].map((p) => {
+              const isSelected = period === p.key;
+              return (
+                <button
+                  key={p.key}
+                  type="button"
+                  onClick={() => {
+                    setPeriod(p.key as CashFilterPeriod);
+                    setSyncStatus('local');
+                    setServerData(null);
+                  }}
+                  className={`min-h-[36px] px-3 py-1.5 rounded-lg font-semibold transition-all ${
+                    isSelected
+                      ? 'bg-white text-teal-800 shadow-xs'
+                      : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                >
+                  {p.label}
+                </button>
+              );
+            })}
+          </div>
         </div>
       </div>
 
@@ -241,7 +319,7 @@ export const ReportsView: React.FC<ReportsViewProps> = ({
           </div>
         ) : (
           <div className="space-y-3">
-            {data.ranking.map((item, idx) => (
+            {data.ranking.map((item: any, idx: number) => (
               <div
                 key={item.procedureId}
                 className="p-3 bg-slate-50/70 hover:bg-slate-50 rounded-xl border border-slate-100 transition space-y-1.5"

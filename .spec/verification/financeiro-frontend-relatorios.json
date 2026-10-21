@@ -1,0 +1,37 @@
+{
+  "feature": "financeiro-frontend-relatorios",
+  "timestamp": "2026-10-21T16:57:06.498Z",
+  "gitRev": "b054d2e",
+  "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
+  "reporter": "vitest-json",
+  "exitCode": 1,
+  "testsParsed": 481,
+  "results": {
+    "AC-178": {
+      "status": "pass",
+      "testName": "Feature financeiro-frontend-relatorios — TDD Spec Anchor AC-178: Extrato de transações em lista vertical responsiva com filtragem e exportação @spec:AC-178 AC-178: Extrato de transações em lista vertical responsiva com filtragem e exportação @spec:AC-178",
+      "method": "vitest-json"
+    },
+    "AC-179": {
+      "status": "pass",
+      "testName": "Feature financeiro-frontend-relatorios — TDD Spec Anchor AC-179: Seleção múltipla com barra de ação inferior e baixa em lote via Bottom Sheet @spec:AC-179 AC-179: Seleção múltipla com barra de ação inferior e baixa em lote via Bottom Sheet @spec:AC-179",
+      "method": "vitest-json"
+    },
+    "AC-180": {
+      "status": "pass",
+      "testName": "Feature financeiro-frontend-relatorios — TDD Spec Anchor AC-180: Seleção dinâmica de categorias de despesa com fallback offline @spec:AC-180 AC-180: Seleção dinâmica de categorias de despesa com fallback offline @spec:AC-180",
+      "method": "vitest-json"
+    },
+    "AC-181": {
+      "status": "pass",
+      "testName": "Feature financeiro-frontend-relatorios — TDD Spec Anchor AC-181: Visualização instantânea de métricas em cards verticais com revalidação do servidor @spec:AC-181 AC-181: Visualização instantânea de métricas em cards verticais com revalidação do servidor @spec:AC-181",
+      "method": "vitest-json"
+    },
+    "AC-182": {
+      "status": "pass",
+      "testName": "Feature financeiro-frontend-relatorios — TDD Spec Anchor AC-182: Visualização de prontuário financeiro via Bottom Drawer com quitação pontual @spec:AC-182 AC-182: Visualização de prontuário financeiro via Bottom Drawer com quitação pontual @spec:AC-182",
+      "method": "vitest-json"
+    }
+  },
+  "principles": {}
+}

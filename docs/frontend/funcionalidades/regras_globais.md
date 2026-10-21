@@ -170,3 +170,18 @@ O OdontoFlow foi concebido para o **"Dentista-Operador"** que utiliza o sistema 
    - O repositório local `PatientLocalRepository` valida a unicidade dos dígitos numéricos do WhatsApp antes de inserir ou atualizar pacientes ativos no mesmo consultório (`tenant_id`).
    - Tentativas com número duplicado disparam erro descritivo contendo o nome do paciente já cadastrado, exibindo alerta vermelho no formulário sem fechar a tela nem enfileirar mutações duplicadas.
 
+---
+
+## 9. Checkout Financeiro e Preservação de Preços de Tabela
+
+1. **Imutabilidade do Valor Base do Procedimento:**
+   - Na conclusão da consulta via `CheckoutDrawer`, os valores cadastrais dos procedimentos (`basePriceCents`) permanecem intocados e visíveis no card do item, preservando o valor de tabela original.
+2. **Centralização da Edição no Total Final Cobrado:**
+   - O ajuste de valor cobrado é realizado unicamente no campo `Total Final Cobrado`, eliminando erros operacionais e divergências em itens individuais.
+3. **Sinalização Numérica e Percentual da Variação:**
+   - Diferenças a maior em relação ao subtotal são exibidas como **Acréscimo** com sinal positivo explícito (`+ R$ X,XX (+Y.Y%)`) em verde.
+   - Diferenças a menor são exibidas como **Desconto** com sinal negativo explícito (`- R$ X,XX (-Y.Y%)`) em âmbar.
+4. **Rateio Proporcional Ponderado:**
+   - Tanto acréscimos quanto descontos são distribuídos proporcionalmente aos pesos de cada item no subtotal, calculando o `effectivePriceCents` sem sobrescrever `basePriceCents`.
+
+

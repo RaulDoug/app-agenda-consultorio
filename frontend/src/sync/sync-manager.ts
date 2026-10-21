@@ -137,19 +137,37 @@ export class SyncManager {
       const data = await res.json();
       const serverTimestamp = data.server_timestamp || new Date().toISOString();
 
-      // Grava deltas nas tabelas locais
+      // Grava deltas nas tabelas locais com proteção contra sobrescrita de mutações pendentes
       await this.db.transaction(
         'rw',
-        [this.db.patients, this.db.procedures, this.db.appointments, this.db.appointment_items, this.db.sync_metadata],
+        [
+          this.db.patients,
+          this.db.procedures,
+          this.db.appointments,
+          this.db.appointment_items,
+          this.db.financial_transactions,
+          this.db.sync_metadata,
+          this.db.sync_outbox,
+        ],
         async () => {
+          // Identifica IDs que possuem mutações pendentes na outbox
+          const pendingMutations = await this.db.sync_outbox.toArray();
+          const pendingRecordIds = new Set(pendingMutations.map((m) => m.record_id));
+
           if (Array.isArray(data.patients)) {
             for (const p of data.patients) {
+              if (pendingRecordIds.has(p.id)) continue;
+              const local = await this.db.patients.get(p.id);
+              if (local && local.updated_at && local.updated_at > p.updated_at) continue;
               await this.db.patients.put(p);
             }
           }
 
           if (Array.isArray(data.procedures)) {
             for (const pr of data.procedures) {
+              if (pendingRecordIds.has(pr.id)) continue;
+              const local = await this.db.procedures.get(pr.id);
+              if (local && local.updated_at && local.updated_at > pr.updated_at) continue;
               await this.db.procedures.put(pr);
             }
           }
@@ -157,12 +175,29 @@ export class SyncManager {
           if (Array.isArray(data.appointments)) {
             for (const a of data.appointments) {
               const { items, ...appData } = a;
-              await this.db.appointments.put(appData);
-              if (Array.isArray(items)) {
-                for (const item of items) {
-                  await this.db.appointment_items.put(item);
+              // Se há mutação pendente local (ex: NO_SHOW recente), não sobrescreve com delta antigo
+              if (!pendingRecordIds.has(appData.id)) {
+                const local = await this.db.appointments.get(appData.id);
+                if (!local || !local.updated_at || local.updated_at <= appData.updated_at) {
+                  await this.db.appointments.put(appData);
                 }
               }
+              if (Array.isArray(items)) {
+                for (const item of items) {
+                  if (!pendingRecordIds.has(item.id)) {
+                    await this.db.appointment_items.put(item);
+                  }
+                }
+              }
+            }
+          }
+
+          if (Array.isArray(data.financial_transactions)) {
+            for (const tx of data.financial_transactions) {
+              if (pendingRecordIds.has(tx.id)) continue;
+              const local = await this.db.financial_transactions.get(tx.id);
+              if (local && local.updated_at && local.updated_at > tx.updated_at) continue;
+              await this.db.financial_transactions.put(tx);
             }
           }
 

@@ -1,0 +1,62 @@
+{
+  "feature": "melhorias-financeiro-agenda-gestao",
+  "timestamp": "2026-10-21T16:56:38.389Z",
+  "gitRev": "b054d2e",
+  "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
+  "reporter": "vitest-json",
+  "exitCode": 1,
+  "testsParsed": 481,
+  "results": {
+    "AC-183": {
+      "status": "pass",
+      "testName": "Feature melhorias-financeiro-agenda-gestao — TDD Spec Anchor AC-183: Transição de visualização semanal/mensal para diária e navegação temporal dinâmica @spec:AC-183 AC-183: Transição de visualização semanal/mensal para diária e navegação temporal dinâmica @spec:AC-183",
+      "method": "vitest-json"
+    },
+    "AC-184": {
+      "status": "pass",
+      "testName": "Feature melhorias-financeiro-agenda-gestao — TDD Spec Anchor AC-184: Resiliência de status local contra sobrescrita por sincronização pull desatualizada @spec:AC-184 AC-184: Resiliência de status local contra sobrescrita por sincronização pull desatualizada @spec:AC-184",
+      "method": "vitest-json"
+    },
+    "AC-185": {
+      "status": "pass",
+      "testName": "Feature melhorias-financeiro-agenda-gestao — TDD Spec Anchor AC-185: Cartão de Crédito à vista e parcelamento exclusivo na modalidade Parcelado com vencimentos individuais @spec:AC-185 AC-185: Cartão de Crédito à vista e parcelamento exclusivo na modalidade Parcelado com vencimentos individuais @spec:AC-185",
+      "method": "vitest-json"
+    },
+    "AC-186": {
+      "status": "pass",
+      "testName": "Feature melhorias-financeiro-agenda-gestao — TDD Spec Anchor AC-186: Ajuste manual e irrestrito de valores e procedimentos no checkout @spec:AC-186 AC-186: Ajuste manual e irrestrito de valores e procedimentos no checkout @spec:AC-186",
+      "method": "vitest-json"
+    },
+    "AC-187": {
+      "status": "pass",
+      "testName": "Feature melhorias-financeiro-agenda-gestao — TDD Spec Anchor AC-187: Filtros temporais avançados e busca textual normalizada no Extrato @spec:AC-187 AC-187: Filtros temporais avançados e busca textual normalizada no Extrato @spec:AC-187",
+      "method": "vitest-json"
+    },
+    "AC-188": {
+      "status": "pass",
+      "testName": "Feature melhorias-financeiro-agenda-gestao — TDD Spec Anchor AC-188: Exportação CSV do Livro Caixa com identificação de cliente e telefone em receitas @spec:AC-188 AC-188: Exportação CSV do Livro Caixa com identificação de cliente e telefone em receitas @spec:AC-188",
+      "method": "vitest-json"
+    },
+    "AC-189": {
+      "status": "pass",
+      "testName": "Feature melhorias-financeiro-agenda-gestao — TDD Spec Anchor AC-189: Detalhes, edição, estorno de pagamentos e soft-delete de transações no Extrato @spec:AC-189 AC-189: Detalhes, edição, estorno de pagamentos e soft-delete de transações no Extrato @spec:AC-189",
+      "method": "vitest-json"
+    },
+    "AC-190": {
+      "status": "pass",
+      "testName": "Feature melhorias-financeiro-agenda-gestao — TDD Spec Anchor AC-190: Despesas rápidas com reset de formulário, suporte a pendências, parcelamento e recorrência @spec:AC-190 AC-190: Despesas rápidas com reset de formulário, suporte a pendências, parcelamento e recorrência @spec:AC-190",
+      "method": "vitest-json"
+    },
+    "AC-191": {
+      "status": "pass",
+      "testName": "Feature melhorias-financeiro-agenda-gestao — TDD Spec Anchor AC-191: Indicador visual de débitos no card do paciente e isolamento financeiro estrito por ID @spec:AC-191 AC-191: Indicador visual de débitos no card do paciente e isolamento financeiro estrito por ID @spec:AC-191",
+      "method": "vitest-json"
+    },
+    "AC-192": {
+      "status": "pass",
+      "testName": "Feature melhorias-financeiro-agenda-gestao — TDD Spec Anchor AC-192: Baixa individual com seleção de método e valor, persistência de abas/filtros e autenticação de relatórios @spec:AC-192 AC-192: Baixa individual com seleção de método e valor, persistência de abas/filtros e autenticação de relatórios @spec:AC-192",
+      "method": "vitest-json"
+    }
+  },
+  "principles": {}
+}

@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { LocalPatient, LocalAppointment } from '../../../db/types';
+import { LocalPatient, LocalAppointment, LocalFinancialTransaction } from '../../../db/types';
 import { PatientWithHistoryStatus } from '../types';
 import { PatientCard } from './PatientCard';
 
@@ -7,23 +7,47 @@ interface PatientListProps {
   tenantId: string;
   patients: LocalPatient[];
   appointments: LocalAppointment[];
+  transactions?: LocalFinancialTransaction[];
   onSelectPatient?: (patient: PatientWithHistoryStatus) => void;
   onSchedule?: (patient: PatientWithHistoryStatus) => void;
   onOpenCreateModal?: () => void;
   onEditPatient?: (patient: LocalPatient) => void;
   onDeletePatient?: (patient: LocalPatient) => void;
+  onOpenFinancial?: (patient: LocalPatient) => void;
 }
 
 export const PatientList: React.FC<PatientListProps> = ({
   patients,
   appointments,
+  transactions = [],
   onSelectPatient,
   onSchedule,
   onOpenCreateModal,
   onEditPatient,
   onDeletePatient,
+  onOpenFinancial,
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
+
+  // Mapeia débitos pendentes por paciente através de seus agendamentos
+  const pendingByPatient = useMemo(() => {
+    const map = new Map<string, number>();
+    const appToPatient = new Map<string, string>();
+    appointments.forEach((a) => {
+      appToPatient.set(a.id, a.patient_id);
+    });
+
+    transactions.forEach((t) => {
+      if (t.is_active && !t.deleted_at && t.type === 'INCOME' && t.status === 'PENDING' && t.appointment_id) {
+        const patientId = appToPatient.get(t.appointment_id);
+        if (patientId) {
+          map.set(patientId, (map.get(patientId) || 0) + t.amount_cents);
+        }
+      }
+    });
+
+    return map;
+  }, [appointments, transactions]);
 
   // Computa o histórico e status de cada paciente
   const patientsWithStatus: PatientWithHistoryStatus[] = useMemo(() => {
@@ -115,10 +139,12 @@ export const PatientList: React.FC<PatientListProps> = ({
             <PatientCard
               key={item.patient.id}
               item={item}
+              pendingAmountCents={pendingByPatient.get(item.patient.id) || 0}
               onClick={onSelectPatient}
               onSchedule={onSchedule}
               onEdit={onEditPatient}
               onDelete={onDeletePatient}
+              onOpenFinancial={onOpenFinancial}
             />
           ))
         )}

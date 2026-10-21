@@ -1,0 +1,2180 @@
+{
+  ".agents/skills/onp-spec-driven/scripts/lib/src/cli.js": {
+    "mtime": 1792259241.216701,
+    "seen": 1792605053.8478167,
+    "ast_hash": "dec989ee79480f92895cf0fcef42ed80",
+    "semantic_hash": "dec989ee79480f92895cf0fcef42ed80"
+  },
+  ".agents/skills/onp-spec-driven/scripts/lib/src/config.js": {
+    "mtime": 1792259241.2370343,
+    "seen": 1792605053.8478167,
+    "ast_hash": "9c4351a496c222a31af7566978f2685d",
+    "semantic_hash": "9c4351a496c222a31af7566978f2685d"
+  },
+  ".agents/skills/onp-spec-driven/scripts/lib/src/core/audit.js": {
+    "mtime": 1792259241.197089,
+    "seen": 1792605053.8478167,
+    "ast_hash": "8dfab9df66642a12626b725cbd28f47f",
+    "semantic_hash": "8dfab9df66642a12626b725cbd28f47f"
+  },
+  ".agents/skills/onp-spec-driven/scripts/lib/src/core/labels.js": {
+    "mtime": 1792259241.2789052,
+    "seen": 1792605053.8478167,
+    "ast_hash": "3d742b2db65f5e3891d034c0336a71b8",
+    "semantic_hash": "3d742b2db65f5e3891d034c0336a71b8"
+  },
+  ".agents/skills/onp-spec-driven/scripts/lib/src/core/ledger.js": {
+    "mtime": 1792259241.2938533,
+    "seen": 1792605053.8478167,
+    "ast_hash": "d3bc7de90ee02da046dfccca7835a1cd",
+    "semantic_hash": "d3bc7de90ee02da046dfccca7835a1cd"
+  },
+  ".agents/skills/onp-spec-driven/scripts/lib/src/core/licoes.js": {
+    "mtime": 1792259241.3096435,
+    "seen": 1792605053.8478167,
+    "ast_hash": "2bf5edd8fde0847369902e1d94dde02f",
+    "semantic_hash": "2bf5edd8fde0847369902e1d94dde02f"
+  },
+  ".agents/skills/onp-spec-driven/scripts/lib/src/core/plano.js": {
+    "mtime": 1792259241.3289776,
+    "seen": 1792605053.8478167,
+    "ast_hash": "5ae80e3eb8b861cd02199cc603d48f32",
+    "semantic_hash": "5ae80e3eb8b861cd02199cc603d48f32"
+  },
+  ".agents/skills/onp-spec-driven/scripts/lib/src/core/project.js": {
+    "mtime": 1792259241.3501284,
+    "seen": 1792605053.8478167,
+    "ast_hash": "54da09810992ff2d246323f948fc2e1d",
+    "semantic_hash": "54da09810992ff2d246323f948fc2e1d"
+  },
+  ".agents/skills/onp-spec-driven/scripts/lib/src/core/report.js": {
+    "mtime": 1792259241.3631077,
+    "seen": 1792605053.8478167,
+    "ast_hash": "75896a855db04337c11b783e6b680123",
+    "semantic_hash": "75896a855db04337c11b783e6b680123"
+  },
+  ".agents/skills/onp-spec-driven/scripts/lib/src/core/resumo.js": {
+    "mtime": 1792259241.380116,
+    "seen": 1792605053.8478167,
+    "ast_hash": "0e8debe253ef42f82df783d75a1a6a5b",
+    "semantic_hash": "0e8debe253ef42f82df783d75a1a6a5b"
+  },
+  ".agents/skills/onp-spec-driven/scripts/lib/src/core/scaffold.js": {
+    "mtime": 1792259241.3963244,
+    "seen": 1792605053.8478167,
+    "ast_hash": "16febbc9a489ec62a297c3abcae969f0",
+    "semantic_hash": "16febbc9a489ec62a297c3abcae969f0"
+  },
+  ".agents/skills/onp-spec-driven/scripts/lib/src/core/sinais.js": {
+    "mtime": 1792259241.4118385,
+    "seen": 1792605053.8478167,
+    "ast_hash": "66808dda18cf54f201134afde2d47a3a",
+    "semantic_hash": "66808dda18cf54f201134afde2d47a3a"
+  },
+  ".agents/skills/onp-spec-driven/scripts/lib/src/core/verify.js": {
+    "mtime": 1792259241.475703,
+    "seen": 1792605053.8478167,
+    "ast_hash": "32314ec56e79a7515992f60a52b55bba",
+    "semantic_hash": "32314ec56e79a7515992f60a52b55bba"
+  },
+  ".agents/skills/onp-spec-driven/scripts/lib/src/index.js": {
+    "mtime": 1792259241.264435,
+    "seen": 1792605053.8478167,
+    "ast_hash": "b7855a58e04361001aabd74959aea80a",
+    "semantic_hash": "b7855a58e04361001aabd74959aea80a"
+  },
+  ".agents/skills/onp-spec-driven/scripts/lib/src/parsers/annotations.js": {
+    "mtime": 1792259241.17939,
+    "seen": 1792605053.8478167,
+    "ast_hash": "60f1916cd42289ff8bb3ee6a06792abf",
+    "semantic_hash": "60f1916cd42289ff8bb3ee6a06792abf"
+  },
+  ".agents/skills/onp-spec-driven/scripts/lib/src/parsers/constitution.js": {
+    "mtime": 1792259241.2494352,
+    "seen": 1792605053.8478167,
+    "ast_hash": "a79f86dc115597ecebc02bb98ead2130",
+    "semantic_hash": "a79f86dc115597ecebc02bb98ead2130"
+  },
+  ".agents/skills/onp-spec-driven/scripts/lib/src/parsers/spec.js": {
+    "mtime": 1792259241.4283085,
+    "seen": 1792605053.8478167,
+    "ast_hash": "3e8595bcbc71bc254d3f47637066a728",
+    "semantic_hash": "3e8595bcbc71bc254d3f47637066a728"
+  },
+  ".agents/skills/onp-spec-driven/scripts/lib/src/parsers/tasks.js": {
+    "mtime": 1792259241.4463084,
+    "seen": 1792605053.8478167,
+    "ast_hash": "d0d650893b01dfa7f46ee2328d820c95",
+    "semantic_hash": "d0d650893b01dfa7f46ee2328d820c95"
+  },
+  ".agents/skills/onp-spec-driven/scripts/lib/src/util/text.js": {
+    "mtime": 1792259241.461584,
+    "seen": 1792605053.8478167,
+    "ast_hash": "3e8b29898a4fb78ab36f17bd95d0d8f5",
+    "semantic_hash": "3e8b29898a4fb78ab36f17bd95d0d8f5"
+  },
+  ".agents/skills/onp-spec-driven/scripts/onp-spec.mjs": {
+    "mtime": 1792259241.5687914,
+    "seen": 1792605053.8478167,
+    "ast_hash": "84f3362751ecc70dc484630c2eb73fc9",
+    "semantic_hash": "84f3362751ecc70dc484630c2eb73fc9"
+  },
+  ".spec/features/agenda-pacientes/plano.json": {
+    "mtime": 1792338279.2543213,
+    "seen": 1792605053.8478167,
+    "ast_hash": "42cbe790bb83f025672093e256d86942",
+    "semantic_hash": "42cbe790bb83f025672093e256d86942"
+  },
+  ".spec/features/agendamento-atalho-paciente-preselecionado/plano.json": {
+    "mtime": 1792441679.8218582,
+    "seen": 1792605053.8478167,
+    "ast_hash": "af7dddbd035ca26bd0155e531dc4171d",
+    "semantic_hash": "af7dddbd035ca26bd0155e531dc4171d"
+  },
+  ".spec/features/ajustes-e2e-playwright/plano.json": {
+    "mtime": 1792340568.3506937,
+    "seen": 1792605053.8478167,
+    "ast_hash": "09a06242f78a2e4028d3d66d5a4966ec",
+    "semantic_hash": "09a06242f78a2e4028d3d66d5a4966ec"
+  },
+  ".spec/features/analytics-gestao/plano.json": {
+    "mtime": 1792339483.9648502,
+    "seen": 1792605053.8478167,
+    "ast_hash": "5bd61193142fcd5c42c6436721263278",
+    "semantic_hash": "5bd61193142fcd5c42c6436721263278"
+  },
+  ".spec/features/api-complementar/plano.json": {
+    "mtime": 1792335907.597694,
+    "seen": 1792605053.8478167,
+    "ast_hash": "b52455221e17bdad994ba8a33064f7e8",
+    "semantic_hash": "b52455221e17bdad994ba8a33064f7e8"
+  },
+  ".spec/features/autenticacao-login-frontend/plano.json": {
+    "mtime": 1792525666.0433245,
+    "seen": 1792605053.8478167,
+    "ast_hash": "46f07330bc67f683e3e3d6df35731f23",
+    "semantic_hash": "46f07330bc67f683e3e3d6df35731f23"
+  },
+  ".spec/features/autenticacao-usuarios/plano.json": {
+    "mtime": 1792502663.7648988,
+    "seen": 1792605053.8478167,
+    "ast_hash": "09be02b831b7ac766b0812fab94baa99",
+    "semantic_hash": "09be02b831b7ac766b0812fab94baa99"
+  },
+  ".spec/features/automacao-whatsapp-evolution/plano.json": {
+    "mtime": 1792521877.1382856,
+    "seen": 1792605053.8478167,
+    "ast_hash": "0fb5088f894d6c79a2fa0afa5357efa3",
+    "semantic_hash": "0fb5088f894d6c79a2fa0afa5357efa3"
+  },
+  ".spec/features/banco-local-sync/plano.json": {
+    "mtime": 1792337456.009048,
+    "seen": 1792605053.8478167,
+    "ast_hash": "c0d016200c117eb6a7520f01caf948af",
+    "semantic_hash": "c0d016200c117eb6a7520f01caf948af"
+  },
+  ".spec/features/bloqueio-recorrencia-parcelamento-checkout/plano.json": {
+    "mtime": 1792436857.07707,
+    "seen": 1792605053.8478167,
+    "ast_hash": "1a1777bd55942ec6e1294e5cbd9e5d7a",
+    "semantic_hash": "1a1777bd55942ec6e1294e5cbd9e5d7a"
+  },
+  ".spec/features/card-procedimentos-agenda/plano.json": {
+    "mtime": 1792433967.805677,
+    "seen": 1792605053.8478167,
+    "ast_hash": "91b3c3ddb91d04c4fde9dc9755911a7c",
+    "semantic_hash": "91b3c3ddb91d04c4fde9dc9755911a7c"
+  },
+  ".spec/features/checkout-conclusao-agenda/plano.json": {
+    "mtime": 1792435016.847538,
+    "seen": 1792605053.8478167,
+    "ast_hash": "59aca8b736605475868a046956149b24",
+    "semantic_hash": "59aca8b736605475868a046956149b24"
+  },
+  ".spec/features/checkout-financeiro/plano.json": {
+    "mtime": 1792338936.6248195,
+    "seen": 1792605053.8478167,
+    "ast_hash": "633e0ba7a90f15a89f3583981603e74c",
+    "semantic_hash": "633e0ba7a90f15a89f3583981603e74c"
+  },
+  ".spec/features/correcao-data-agendamento-rapido/plano.json": {
+    "mtime": 1792439826.6283004,
+    "seen": 1792605053.8478167,
+    "ast_hash": "3ee04eb6b9fe57fc0f71b1c16098659b",
+    "semantic_hash": "3ee04eb6b9fe57fc0f71b1c16098659b"
+  },
+  ".spec/features/correcao-qrcode-evolution/plano.json": {
+    "mtime": 1792416283.47731,
+    "seen": 1792605053.8478167,
+    "ast_hash": "52770ff2e94810f44299192b77030c20",
+    "semantic_hash": "52770ff2e94810f44299192b77030c20"
+  },
+  ".spec/features/correcoes-agenda-procedimentos/plano.json": {
+    "mtime": 1792431213.874366,
+    "seen": 1792605053.8478167,
+    "ast_hash": "304025173ab1444510248bf21efb63be",
+    "semantic_hash": "304025173ab1444510248bf21efb63be"
+  },
+  ".spec/features/correcoes-agenda-ux-reschedule/plano.json": {
+    "mtime": 1792432654.034727,
+    "seen": 1792605053.8478167,
+    "ast_hash": "c6aa6cb437101b8d9feeffa4239d9f2c",
+    "semantic_hash": "c6aa6cb437101b8d9feeffa4239d9f2c"
+  },
+  ".spec/features/detalhes-edicao-paciente-observacoes/plano.json": {
+    "mtime": 1792440931.6565118,
+    "seen": 1792605053.8478167,
+    "ast_hash": "cf966d95c2fea2b297cd0842a9db69bb",
+    "semantic_hash": "cf966d95c2fea2b297cd0842a9db69bb"
+  },
+  ".spec/features/dominio-agenda/plano.json": {
+    "mtime": 1792264629.9526043,
+    "seen": 1792605053.8478167,
+    "ast_hash": "965a511918f627efebd985051871aa79",
+    "semantic_hash": "965a511918f627efebd985051871aa79"
+  },
+  ".spec/features/exclusao-cadastro-paciente/plano.json": {
+    "mtime": 1792442499.509276,
+    "seen": 1792605053.8478167,
+    "ast_hash": "6a1bca2afd66091c4b14ca84494cc6bc",
+    "semantic_hash": "6a1bca2afd66091c4b14ca84494cc6bc"
+  },
+  ".spec/features/financeiro-frontend-relatorios/plano.json": {
+    "mtime": 1792580310.4712012,
+    "seen": 1792605053.8478167,
+    "ast_hash": "b1115ba5dca9392395ca3b0b70aedc18",
+    "semantic_hash": "b1115ba5dca9392395ca3b0b70aedc18"
+  },
+  ".spec/features/fundacao-frontend/plano.json": {
+    "mtime": 1792336924.470388,
+    "seen": 1792605053.8478167,
+    "ast_hash": "635d002501bc712193fa5697643ac407",
+    "semantic_hash": "635d002501bc712193fa5697643ac407"
+  },
+  ".spec/features/melhorias-agendamento-duplicidade-clientes/plano.json": {
+    "mtime": 1792535694.5884933,
+    "seen": 1792605053.8478167,
+    "ast_hash": "ede644b07be4f99453a6759f3bb51550",
+    "semantic_hash": "ede644b07be4f99453a6759f3bb51550"
+  },
+  ".spec/features/melhorias-financeiro-agenda-gestao/plano.json": {
+    "mtime": 1792585497.3297417,
+    "seen": 1792605053.8478167,
+    "ast_hash": "6b06232cd67df85acd60786c42320199",
+    "semantic_hash": "6b06232cd67df85acd60786c42320199"
+  },
+  ".spec/features/motor-financeiro/plano.json": {
+    "mtime": 1792328971.2247498,
+    "seen": 1792605053.8478167,
+    "ast_hash": "031327ca2d39b09b9df0a330f517a805",
+    "semantic_hash": "031327ca2d39b09b9df0a330f517a805"
+  },
+  ".spec/features/pareamento-whatsapp-live/plano.json": {
+    "mtime": 1792413667.0233338,
+    "seen": 1792605053.8478167,
+    "ast_hash": "3916645baec7399b7852e90c0bb28751",
+    "semantic_hash": "3916645baec7399b7852e90c0bb28751"
+  },
+  ".spec/features/persistencia-api/plano.json": {
+    "mtime": 1792266186.4433203,
+    "seen": 1792605053.8478167,
+    "ast_hash": "1c5b2599708407d74d7037f0f916f476",
+    "semantic_hash": "1c5b2599708407d74d7037f0f916f476"
+  },
+  ".spec/features/queries-analiticas/plano.json": {
+    "mtime": 1792331471.9619498,
+    "seen": 1792605053.8478167,
+    "ast_hash": "a369374358b2cbd16674aa7a8d5e68b6",
+    "semantic_hash": "a369374358b2cbd16674aa7a8d5e68b6"
+  },
+  ".spec/features/relatorios-fab-cadastro-paciente/plano.json": {
+    "mtime": 1792438752.1224551,
+    "seen": 1792605053.8478167,
+    "ast_hash": "c4fd38b01b2b8711d8a2cdec8511939b",
+    "semantic_hash": "c4fd38b01b2b8711d8a2cdec8511939b"
+  },
+  ".spec/features/replica-confirmacao-whatsapp/plano.json": {
+    "mtime": 1792420065.914271,
+    "seen": 1792605053.8478167,
+    "ast_hash": "77a916a449ea3ca61e3cc0c7ebea5561",
+    "semantic_hash": "77a916a449ea3ca61e3cc0c7ebea5561"
+  },
+  ".spec/features/sincronizacao-agendamentos/plano.json": {
+    "mtime": 1792532820.2499063,
+    "seen": 1792605053.8478167,
+    "ast_hash": "362b36c4556955e374af56f2aea0bed9",
+    "semantic_hash": "362b36c4556955e374af56f2aea0bed9"
+  },
+  ".spec/features/sincronizacao-financeiro-offline/plano.json": {
+    "mtime": 1792603067.4215121,
+    "seen": 1792605053.8478167,
+    "ast_hash": "2e8396b1ccdfd16bde8c4222b59abd44",
+    "semantic_hash": "2e8396b1ccdfd16bde8c4222b59abd44"
+  },
+  ".spec/features/whatsapp-bullmq/plano.json": {
+    "mtime": 1792270104.308966,
+    "seen": 1792605053.8478167,
+    "ast_hash": "dcd47f6612684f572f2577e442e817a8",
+    "semantic_hash": "dcd47f6612684f572f2577e442e817a8"
+  },
+  ".spec/verification/agenda-pacientes.json": {
+    "mtime": 1792442972.250324,
+    "seen": 1792605053.8478167,
+    "ast_hash": "637867b95e870ebf2dddb6af323b776a",
+    "semantic_hash": "637867b95e870ebf2dddb6af323b776a"
+  },
+  ".spec/verification/agendamento-atalho-paciente-preselecionado.json": {
+    "mtime": 1792442972.2513263,
+    "seen": 1792605053.8478167,
+    "ast_hash": "58bde1066a84b1ba88a54e469fc42a41",
+    "semantic_hash": "58bde1066a84b1ba88a54e469fc42a41"
+  },
+  ".spec/verification/ajustes-e2e-playwright.json": {
+    "mtime": 1792442972.2524967,
+    "seen": 1792605053.8478167,
+    "ast_hash": "aa94f5914ef798a5d426be41874ea83d",
+    "semantic_hash": "aa94f5914ef798a5d426be41874ea83d"
+  },
+  ".spec/verification/analytics-gestao.json": {
+    "mtime": 1792442972.2524967,
+    "seen": 1792605053.8478167,
+    "ast_hash": "d8a1621580f0d2d3191f241caeb499a3",
+    "semantic_hash": "d8a1621580f0d2d3191f241caeb499a3"
+  },
+  ".spec/verification/api-complementar.json": {
+    "mtime": 1792442972.253678,
+    "seen": 1792605053.8478167,
+    "ast_hash": "7b39a0d82ffd58265e37cba52a0a0692",
+    "semantic_hash": "7b39a0d82ffd58265e37cba52a0a0692"
+  },
+  ".spec/verification/autenticacao-login-frontend.json": {
+    "mtime": 1792528138.2546663,
+    "seen": 1792605053.8478167,
+    "ast_hash": "cd7a06554aae0cf683563a8eb0c85a9a",
+    "semantic_hash": "cd7a06554aae0cf683563a8eb0c85a9a"
+  },
+  ".spec/verification/autenticacao-usuarios.json": {
+    "mtime": 1792504407.5885186,
+    "seen": 1792605053.8478167,
+    "ast_hash": "baffe72aba032c86e2909db68c4efdef",
+    "semantic_hash": "baffe72aba032c86e2909db68c4efdef"
+  },
+  ".spec/verification/automacao-whatsapp-evolution.json": {
+    "mtime": 1792523762.9379182,
+    "seen": 1792605053.8478167,
+    "ast_hash": "21e1e18a9cc682e2dbe6ff8bec131e99",
+    "semantic_hash": "21e1e18a9cc682e2dbe6ff8bec131e99"
+  },
+  ".spec/verification/banco-local-sync.json": {
+    "mtime": 1792442972.2550256,
+    "seen": 1792605053.8478167,
+    "ast_hash": "8d4bdee6bdd18b3b47c3b8a25b506dbe",
+    "semantic_hash": "8d4bdee6bdd18b3b47c3b8a25b506dbe"
+  },
+  ".spec/verification/bloqueio-recorrencia-parcelamento-checkout.json": {
+    "mtime": 1792442972.2560248,
+    "seen": 1792605053.8478167,
+    "ast_hash": "142afaa480f77d4c3a509750e0032977",
+    "semantic_hash": "142afaa480f77d4c3a509750e0032977"
+  },
+  ".spec/verification/card-procedimentos-agenda.json": {
+    "mtime": 1792442972.2570271,
+    "seen": 1792605053.8478167,
+    "ast_hash": "12e5345c39fa099cd3e167711f6c0ad5",
+    "semantic_hash": "12e5345c39fa099cd3e167711f6c0ad5"
+  },
+  ".spec/verification/checkout-conclusao-agenda.json": {
+    "mtime": 1792442972.2570271,
+    "seen": 1792605053.8478167,
+    "ast_hash": "3124b57f50138b5845c041f1dd8be2af",
+    "semantic_hash": "3124b57f50138b5845c041f1dd8be2af"
+  },
+  ".spec/verification/checkout-financeiro.json": {
+    "mtime": 1792442972.258243,
+    "seen": 1792605053.8478167,
+    "ast_hash": "5e88d9a8c05f3e1af6707f6bb74667c5",
+    "semantic_hash": "5e88d9a8c05f3e1af6707f6bb74667c5"
+  },
+  ".spec/verification/correcao-data-agendamento-rapido.json": {
+    "mtime": 1792442972.2592516,
+    "seen": 1792605053.8478167,
+    "ast_hash": "d14235b5db79469adf29210504662cb9",
+    "semantic_hash": "d14235b5db79469adf29210504662cb9"
+  },
+  ".spec/verification/correcao-qrcode-evolution.json": {
+    "mtime": 1792442972.2602572,
+    "seen": 1792605053.8478167,
+    "ast_hash": "c69bdbeebee41ab95f00650386274d84",
+    "semantic_hash": "c69bdbeebee41ab95f00650386274d84"
+  },
+  ".spec/verification/correcoes-agenda-procedimentos.json": {
+    "mtime": 1792442972.2617736,
+    "seen": 1792605053.8478167,
+    "ast_hash": "7d804142f75f004e8b974976ea3841da",
+    "semantic_hash": "7d804142f75f004e8b974976ea3841da"
+  },
+  ".spec/verification/correcoes-agenda-ux-reschedule.json": {
+    "mtime": 1792442972.262784,
+    "seen": 1792605053.8478167,
+    "ast_hash": "0b9e9816b0abbeab94c8f0c5116e2893",
+    "semantic_hash": "0b9e9816b0abbeab94c8f0c5116e2893"
+  },
+  ".spec/verification/cruds-backend.json": {
+    "mtime": 1792519468.603974,
+    "seen": 1792605053.8478167,
+    "ast_hash": "e2ee491e383a5f6379700d3d294b93cc",
+    "semantic_hash": "e2ee491e383a5f6379700d3d294b93cc"
+  },
+  ".spec/verification/detalhes-edicao-paciente-observacoes.json": {
+    "mtime": 1792442972.263854,
+    "seen": 1792605053.8478167,
+    "ast_hash": "0e77848d9c0a1a01fc8a9da10228b332",
+    "semantic_hash": "0e77848d9c0a1a01fc8a9da10228b332"
+  },
+  ".spec/verification/dominio-agenda.json": {
+    "mtime": 1792442972.264989,
+    "seen": 1792605053.8478167,
+    "ast_hash": "ce43e5c475f3e2f58ab959fea754c793",
+    "semantic_hash": "ce43e5c475f3e2f58ab959fea754c793"
+  },
+  ".spec/verification/exclusao-cadastro-paciente.json": {
+    "mtime": 1792442972.2661173,
+    "seen": 1792605053.8478167,
+    "ast_hash": "c12ba2b4080d96d96be1f28c0f0895d6",
+    "semantic_hash": "c12ba2b4080d96d96be1f28c0f0895d6"
+  },
+  ".spec/verification/financeiro-frontend-relatorios.json": {
+    "mtime": 1792601826.5767865,
+    "seen": 1792605053.8478167,
+    "ast_hash": "42f81f303741c02ef17b1e4b26e2d09d",
+    "semantic_hash": "42f81f303741c02ef17b1e4b26e2d09d"
+  },
+  ".spec/verification/fundacao-frontend.json": {
+    "mtime": 1792442972.2661173,
+    "seen": 1792605053.8478167,
+    "ast_hash": "0f905a15e1164434de9d87da9f0a04bb",
+    "semantic_hash": "0f905a15e1164434de9d87da9f0a04bb"
+  },
+  ".spec/verification/melhorias-agendamento-duplicidade-clientes.json": {
+    "mtime": 1792537718.2988362,
+    "seen": 1792605053.8478167,
+    "ast_hash": "248662d3b6448cdece6ce02d4d833f33",
+    "semantic_hash": "248662d3b6448cdece6ce02d4d833f33"
+  },
+  ".spec/verification/melhorias-financeiro-agenda-gestao.json": {
+    "mtime": 1792601798.491465,
+    "seen": 1792605053.8478167,
+    "ast_hash": "8ed1e52fd330e6656875dd72b0c08b36",
+    "semantic_hash": "8ed1e52fd330e6656875dd72b0c08b36"
+  },
+  ".spec/verification/motor-financeiro.json": {
+    "mtime": 1792442972.2675252,
+    "seen": 1792605053.8478167,
+    "ast_hash": "c8527fe3cdfc7b860d5ea173be183abc",
+    "semantic_hash": "c8527fe3cdfc7b860d5ea173be183abc"
+  },
+  ".spec/verification/pareamento-whatsapp-live.json": {
+    "mtime": 1792442972.2688763,
+    "seen": 1792605053.8478167,
+    "ast_hash": "d545156efd734b8b4873bd8b24eacc82",
+    "semantic_hash": "d545156efd734b8b4873bd8b24eacc82"
+  },
+  ".spec/verification/persistencia-api.json": {
+    "mtime": 1792442972.2699926,
+    "seen": 1792605053.8478167,
+    "ast_hash": "7c7c1104aea2448c982deec4c1fd2f6b",
+    "semantic_hash": "7c7c1104aea2448c982deec4c1fd2f6b"
+  },
+  ".spec/verification/queries-analiticas.json": {
+    "mtime": 1792442972.2709935,
+    "seen": 1792605053.8478167,
+    "ast_hash": "3cb5236d6e178728aa8a47ba9154abe5",
+    "semantic_hash": "3cb5236d6e178728aa8a47ba9154abe5"
+  },
+  ".spec/verification/raw.json": {
+    "mtime": 1792604020.657704,
+    "seen": 1792605053.8478167,
+    "ast_hash": "95af3c626bd8a9f1c0d62c6752014ae1",
+    "semantic_hash": "95af3c626bd8a9f1c0d62c6752014ae1"
+  },
+  ".spec/verification/relatorios-backend.json": {
+    "mtime": 1792520299.729071,
+    "seen": 1792605053.8478167,
+    "ast_hash": "447aee13bff7bbf6b340f9c6c1002b9c",
+    "semantic_hash": "447aee13bff7bbf6b340f9c6c1002b9c"
+  },
+  ".spec/verification/relatorios-fab-cadastro-paciente.json": {
+    "mtime": 1792442972.2709935,
+    "seen": 1792605053.8478167,
+    "ast_hash": "21580e7b4ec767e7763c391a47a419c6",
+    "semantic_hash": "21580e7b4ec767e7763c391a47a419c6"
+  },
+  ".spec/verification/replica-confirmacao-whatsapp.json": {
+    "mtime": 1792442972.2724996,
+    "seen": 1792605053.8478167,
+    "ast_hash": "329aa268a95dd7853669c7e4f48fc72c",
+    "semantic_hash": "329aa268a95dd7853669c7e4f48fc72c"
+  },
+  ".spec/verification/sinais.json": {
+    "mtime": 1792604028.5785728,
+    "seen": 1792605053.8478167,
+    "ast_hash": "5dee17ed697359233708aa3ce0e22f3f",
+    "semantic_hash": "5dee17ed697359233708aa3ce0e22f3f"
+  },
+  ".spec/verification/sincronizacao-agendamentos.json": {
+    "mtime": 1792604020.8016632,
+    "seen": 1792605053.8478167,
+    "ast_hash": "5f190cee4266d53135efa89df79e0967",
+    "semantic_hash": "5f190cee4266d53135efa89df79e0967"
+  },
+  ".spec/verification/sincronizacao-financeiro-offline.json": {
+    "mtime": 1792603991.591028,
+    "seen": 1792605053.8478167,
+    "ast_hash": "68f2a99fe615dddd7cea3ff1273d53b4",
+    "semantic_hash": "68f2a99fe615dddd7cea3ff1273d53b4"
+  },
+  ".spec/verification/whatsapp-bullmq.json": {
+    "mtime": 1792442972.2724996,
+    "seen": 1792605053.8478167,
+    "ast_hash": "938e2dc777300540ae3b24ff00709ee6",
+    "semantic_hash": "938e2dc777300540ae3b24ff00709ee6"
+  },
+  "backend/package.json": {
+    "mtime": 1792503071.1643636,
+    "seen": 1792605053.8478167,
+    "ast_hash": "ae299b1b129596218397ed53f1045d13",
+    "semantic_hash": "ae299b1b129596218397ed53f1045d13"
+  },
+  "backend/scripts/db-migrate.ts": {
+    "mtime": 1792502718.546963,
+    "seen": 1792605053.8478167,
+    "ast_hash": "4497f203c85de4952e4fa8f751edcaf1",
+    "semantic_hash": "4497f203c85de4952e4fa8f751edcaf1"
+  },
+  "backend/scripts/test-confirmation-flow.ts": {
+    "mtime": 1792419560.2334037,
+    "seen": 1792605053.8478167,
+    "ast_hash": "16e6b39ba6728913b38b8249a441ca5b",
+    "semantic_hash": "16e6b39ba6728913b38b8249a441ca5b"
+  },
+  "backend/scripts/user-create.ts": {
+    "mtime": 1792503043.4686694,
+    "seen": 1792605053.8478167,
+    "ast_hash": "c28ae25b579cfa025abf3bb946087d9e",
+    "semantic_hash": "c28ae25b579cfa025abf3bb946087d9e"
+  },
+  "backend/scripts/user-reset-password.ts": {
+    "mtime": 1792503055.5674906,
+    "seen": 1792605053.8478167,
+    "ast_hash": "1a6440a8692e13634f01154c4ac3f21c",
+    "semantic_hash": "1a6440a8692e13634f01154c4ac3f21c"
+  },
+  "backend/src/analytics/__tests__/analytics.spec.ts": {
+    "mtime": 1792503768.202221,
+    "seen": 1792605053.8478167,
+    "ast_hash": "5abfaec4de12f7ba9251411573c145f8",
+    "semantic_hash": "5abfaec4de12f7ba9251411573c145f8"
+  },
+  "backend/src/api-complementar/__tests__/api-complementar.spec.ts": {
+    "mtime": 1792503917.9038935,
+    "seen": 1792605053.8478167,
+    "ast_hash": "0a52a6e2260a7b251af63ed8039298dc",
+    "semantic_hash": "0a52a6e2260a7b251af63ed8039298dc"
+  },
+  "backend/src/app.ts": {
+    "mtime": 1792520182.0341504,
+    "seen": 1792605053.8478167,
+    "ast_hash": "e3230defd8e9943647fb0b576c69f910",
+    "semantic_hash": "e3230defd8e9943647fb0b576c69f910"
+  },
+  "backend/src/controllers/__tests__/appointment-controller.spec.ts": {
+    "mtime": 1792519123.535777,
+    "seen": 1792605053.8478167,
+    "ast_hash": "3d37a3c1ca90a60bdaa4d76b0bea9764",
+    "semantic_hash": "3d37a3c1ca90a60bdaa4d76b0bea9764"
+  },
+  "backend/src/controllers/__tests__/business-hours-controller.spec.ts": {
+    "mtime": 1792518959.1052873,
+    "seen": 1792605053.8478167,
+    "ast_hash": "d5ad36069139d924ffc05dc61ff8c706",
+    "semantic_hash": "d5ad36069139d924ffc05dc61ff8c706"
+  },
+  "backend/src/controllers/__tests__/financial-category-controller.spec.ts": {
+    "mtime": 1792517036.3846471,
+    "seen": 1792605053.8478167,
+    "ast_hash": "aa62ab51421d2e133898acd965035a7c",
+    "semantic_hash": "aa62ab51421d2e133898acd965035a7c"
+  },
+  "backend/src/controllers/__tests__/financial-controller.spec.ts": {
+    "mtime": 1792517086.1793425,
+    "seen": 1792605053.8478167,
+    "ast_hash": "1be03ccf7c5ebaa393e6905541cd5c3e",
+    "semantic_hash": "1be03ccf7c5ebaa393e6905541cd5c3e"
+  },
+  "backend/src/controllers/__tests__/patient-controller.spec.ts": {
+    "mtime": 1792518975.568819,
+    "seen": 1792605053.8478167,
+    "ast_hash": "8d773e80ce96fb174e90f6606e4b1cbc",
+    "semantic_hash": "8d773e80ce96fb174e90f6606e4b1cbc"
+  },
+  "backend/src/controllers/__tests__/procedure-controller.spec.ts": {
+    "mtime": 1792518993.848999,
+    "seen": 1792605053.8478167,
+    "ast_hash": "f84ad90966606a4927c3a1cb7dc4e607",
+    "semantic_hash": "f84ad90966606a4927c3a1cb7dc4e607"
+  },
+  "backend/src/controllers/__tests__/reports-controller.spec.ts": {
+    "mtime": 1792520130.21412,
+    "seen": 1792605053.8478167,
+    "ast_hash": "2c493f1a92e808af2f2ec91ca4f4ae83",
+    "semantic_hash": "2c493f1a92e808af2f2ec91ca4f4ae83"
+  },
+  "backend/src/controllers/__tests__/schedule-block-controller.spec.ts": {
+    "mtime": 1792519022.672156,
+    "seen": 1792605053.8478167,
+    "ast_hash": "f48f9e925e28c60768f67548ad760109",
+    "semantic_hash": "f48f9e925e28c60768f67548ad760109"
+  },
+  "backend/src/controllers/__tests__/webhook-controller.spec.ts": {
+    "mtime": 1792523177.9358919,
+    "seen": 1792605053.8478167,
+    "ast_hash": "163e35620618dffb3ebd225cf6946850",
+    "semantic_hash": "163e35620618dffb3ebd225cf6946850"
+  },
+  "backend/src/controllers/__tests__/whatsapp-controller.spec.ts": {
+    "mtime": 1792523167.2075298,
+    "seen": 1792605053.8478167,
+    "ast_hash": "89286743f67fcfefad3b7b16946d5b81",
+    "semantic_hash": "89286743f67fcfefad3b7b16946d5b81"
+  },
+  "backend/src/controllers/appointment-controller.ts": {
+    "mtime": 1792518852.3564415,
+    "seen": 1792605053.8478167,
+    "ast_hash": "e8cf9acff77ed3c0c4e0b02ae756d47f",
+    "semantic_hash": "e8cf9acff77ed3c0c4e0b02ae756d47f"
+  },
+  "backend/src/controllers/auth-controller.ts": {
+    "mtime": 1792504123.6142187,
+    "seen": 1792605053.8478167,
+    "ast_hash": "de6aefc3698abea9c50993afb61fb622",
+    "semantic_hash": "de6aefc3698abea9c50993afb61fb622"
+  },
+  "backend/src/controllers/business-hours-controller.ts": {
+    "mtime": 1792515896.5011442,
+    "seen": 1792605053.8478167,
+    "ast_hash": "2eb03947ed3d6bcab7f2fdbd70b5765d",
+    "semantic_hash": "2eb03947ed3d6bcab7f2fdbd70b5765d"
+  },
+  "backend/src/controllers/financial-category-controller.ts": {
+    "mtime": 1792518923.0686703,
+    "seen": 1792605053.8478167,
+    "ast_hash": "e8fe431d7952c6803c85e8cdae56bcc3",
+    "semantic_hash": "e8fe431d7952c6803c85e8cdae56bcc3"
+  },
+  "backend/src/controllers/financial-controller.ts": {
+    "mtime": 1792518941.5560205,
+    "seen": 1792605053.8478167,
+    "ast_hash": "5a4f8552d46743374cf20d4ae98884f4",
+    "semantic_hash": "5a4f8552d46743374cf20d4ae98884f4"
+  },
+  "backend/src/controllers/patient-controller.ts": {
+    "mtime": 1792518868.9162033,
+    "seen": 1792605053.8478167,
+    "ast_hash": "596e9df9a0d135ed9d380a894bc33fa6",
+    "semantic_hash": "596e9df9a0d135ed9d380a894bc33fa6"
+  },
+  "backend/src/controllers/procedure-controller.ts": {
+    "mtime": 1792518887.1080585,
+    "seen": 1792605053.8478167,
+    "ast_hash": "915322eb0642978b3546928504a5c981",
+    "semantic_hash": "915322eb0642978b3546928504a5c981"
+  },
+  "backend/src/controllers/reports-controller.ts": {
+    "mtime": 1792520142.4627676,
+    "seen": 1792605053.8478167,
+    "ast_hash": "08604889e001efeaea96bcb813d5b98f",
+    "semantic_hash": "08604889e001efeaea96bcb813d5b98f"
+  },
+  "backend/src/controllers/schedule-block-controller.ts": {
+    "mtime": 1792518905.203163,
+    "seen": 1792605053.8478167,
+    "ast_hash": "f1422bae022e19d51f9bf6b54df31bb8",
+    "semantic_hash": "f1422bae022e19d51f9bf6b54df31bb8"
+  },
+  "backend/src/controllers/webhook-controller.ts": {
+    "mtime": 1792523151.7131462,
+    "seen": 1792605053.8478167,
+    "ast_hash": "80acf8881673036d3bed0ec0638ba3b0",
+    "semantic_hash": "80acf8881673036d3bed0ec0638ba3b0"
+  },
+  "backend/src/controllers/whatsapp-controller.ts": {
+    "mtime": 1792523142.856838,
+    "seen": 1792605053.8478167,
+    "ast_hash": "1df0d4d2fce5d31ccc381c70062bd560",
+    "semantic_hash": "1df0d4d2fce5d31ccc381c70062bd560"
+  },
+  "backend/src/db/connection.ts": {
+    "mtime": 1792328971.2403524,
+    "seen": 1792605053.8478167,
+    "ast_hash": "802a25d8c71b9f8c817840f4df8ba1f0",
+    "semantic_hash": "802a25d8c71b9f8c817840f4df8ba1f0"
+  },
+  "backend/src/db/migrations/001_tenant_auth_columns.sql": {
+    "mtime": 1792502704.6341372,
+    "seen": 1792605053.8478167,
+    "ast_hash": "04d8e466585e0ad922ef7601732a63c1",
+    "semantic_hash": "04d8e466585e0ad922ef7601732a63c1"
+  },
+  "backend/src/db/migrations/002_cruds_schema_updates.sql": {
+    "mtime": 1792517238.7169957,
+    "seen": 1792605053.8478167,
+    "ast_hash": "54f3258349e5cf005b79a866cf80ce43",
+    "semantic_hash": "54f3258349e5cf005b79a866cf80ce43"
+  },
+  "backend/src/db/schema.sql": {
+    "mtime": 1792522758.0913823,
+    "seen": 1792605053.8478167,
+    "ast_hash": "6fa0a4d8a3280c3e2f0ba19d416f60ca",
+    "semantic_hash": "6fa0a4d8a3280c3e2f0ba19d416f60ca"
+  },
+  "backend/src/domain/__tests__/schedule-domain.spec.ts": {
+    "mtime": 1792264629.958011,
+    "seen": 1792605053.8478167,
+    "ast_hash": "63d624392ba036f03cb0242d5764ef71",
+    "semantic_hash": "63d624392ba036f03cb0242d5764ef71"
+  },
+  "backend/src/domain/appointment-state.ts": {
+    "mtime": 1792333993.9231014,
+    "seen": 1792605053.8478167,
+    "ast_hash": "7be8a132396579c782031a2d3ee62a72",
+    "semantic_hash": "7be8a132396579c782031a2d3ee62a72"
+  },
+  "backend/src/domain/business-hours.ts": {
+    "mtime": 1792335907.6117342,
+    "seen": 1792605053.8478167,
+    "ast_hash": "a99ed3f4d96ee1bbc97a527754801439",
+    "semantic_hash": "a99ed3f4d96ee1bbc97a527754801439"
+  },
+  "backend/src/domain/duration.ts": {
+    "mtime": 1792264629.9595995,
+    "seen": 1792605053.8478167,
+    "ast_hash": "acbb31e62f19009c70122905a28305af",
+    "semantic_hash": "acbb31e62f19009c70122905a28305af"
+  },
+  "backend/src/domain/index.ts": {
+    "mtime": 1792264629.9601238,
+    "seen": 1792605053.8478167,
+    "ast_hash": "076cf0de4ea1dbe110998fd6a8a9fcd5",
+    "semantic_hash": "076cf0de4ea1dbe110998fd6a8a9fcd5"
+  },
+  "backend/src/domain/phone.ts": {
+    "mtime": 1792264629.960656,
+    "seen": 1792605053.8478167,
+    "ast_hash": "11d2ec4bd69ac0d7befdfcef65151e36",
+    "semantic_hash": "11d2ec4bd69ac0d7befdfcef65151e36"
+  },
+  "backend/src/domain/smart-return.ts": {
+    "mtime": 1792335907.6127353,
+    "seen": 1792605053.8478167,
+    "ast_hash": "a99ed3f4d96ee1bbc97a527754801439",
+    "semantic_hash": "a99ed3f4d96ee1bbc97a527754801439"
+  },
+  "backend/src/domain/timezone.ts": {
+    "mtime": 1792264629.961716,
+    "seen": 1792605053.8478167,
+    "ast_hash": "2faadf22181e062676f05744cb86d34c",
+    "semantic_hash": "2faadf22181e062676f05744cb86d34c"
+  },
+  "backend/src/financial/__tests__/financial.spec.ts": {
+    "mtime": 1792503639.4483016,
+    "seen": 1792605053.8478167,
+    "ast_hash": "9c83571b18fa50334d851033ece30e77",
+    "semantic_hash": "9c83571b18fa50334d851033ece30e77"
+  },
+  "backend/src/financial/calculator.ts": {
+    "mtime": 1792335907.6127353,
+    "seen": 1792605053.8478167,
+    "ast_hash": "a99ed3f4d96ee1bbc97a527754801439",
+    "semantic_hash": "a99ed3f4d96ee1bbc97a527754801439"
+  },
+  "backend/src/financial/installments.ts": {
+    "mtime": 1792335907.6137364,
+    "seen": 1792605053.8478167,
+    "ast_hash": "a99ed3f4d96ee1bbc97a527754801439",
+    "semantic_hash": "a99ed3f4d96ee1bbc97a527754801439"
+  },
+  "backend/src/middlewares/__tests__/auth.spec.ts": {
+    "mtime": 1792503191.4007647,
+    "seen": 1792605053.8478167,
+    "ast_hash": "ba5df41666b4f2cafd467fdcaa2376c2",
+    "semantic_hash": "ba5df41666b4f2cafd467fdcaa2376c2"
+  },
+  "backend/src/middlewares/__tests__/login-rate-limiter.spec.ts": {
+    "mtime": 1792507300.30818,
+    "seen": 1792605053.8478167,
+    "ast_hash": "20890180096882851d1106bbff0e6e22",
+    "semantic_hash": "20890180096882851d1106bbff0e6e22"
+  },
+  "backend/src/middlewares/auth.ts": {
+    "mtime": 1792503168.0609543,
+    "seen": 1792605053.8478167,
+    "ast_hash": "77abb054dd9304adf5f1b5806762c05a",
+    "semantic_hash": "77abb054dd9304adf5f1b5806762c05a"
+  },
+  "backend/src/middlewares/login-rate-limiter.ts": {
+    "mtime": 1792503229.323082,
+    "seen": 1792605053.8478167,
+    "ast_hash": "b2b069caa4d1a6e498563e7637068fa0",
+    "semantic_hash": "b2b069caa4d1a6e498563e7637068fa0"
+  },
+  "backend/src/repositories/__tests__/appointment-repository.spec.ts": {
+    "mtime": 1792516746.9819024,
+    "seen": 1792605053.8478167,
+    "ast_hash": "7db64b70c329f22d9e21c00e10f7ba3e",
+    "semantic_hash": "7db64b70c329f22d9e21c00e10f7ba3e"
+  },
+  "backend/src/repositories/__tests__/business-hours-repository.spec.ts": {
+    "mtime": 1792516216.9557898,
+    "seen": 1792605053.8478167,
+    "ast_hash": "7bd6a6c4f1e010d5c43f51943ccb2388",
+    "semantic_hash": "7bd6a6c4f1e010d5c43f51943ccb2388"
+  },
+  "backend/src/repositories/__tests__/financial-category-repository.spec.ts": {
+    "mtime": 1792517012.9014826,
+    "seen": 1792605053.8478167,
+    "ast_hash": "ab6db599d2d85cf80ac31d4aaf12ad72",
+    "semantic_hash": "ab6db599d2d85cf80ac31d4aaf12ad72"
+  },
+  "backend/src/repositories/__tests__/financial-repository.spec.ts": {
+    "mtime": 1792517056.319073,
+    "seen": 1792605053.8478167,
+    "ast_hash": "a159d27cf88afb2dfc2807519083e4f4",
+    "semantic_hash": "a159d27cf88afb2dfc2807519083e4f4"
+  },
+  "backend/src/repositories/__tests__/patient-repository.spec.ts": {
+    "mtime": 1792518194.378943,
+    "seen": 1792605053.8478167,
+    "ast_hash": "3dc53c4cce20f7bb1888d724630a5d23",
+    "semantic_hash": "3dc53c4cce20f7bb1888d724630a5d23"
+  },
+  "backend/src/repositories/__tests__/procedure-repository.spec.ts": {
+    "mtime": 1792515686.4973154,
+    "seen": 1792605053.8478167,
+    "ast_hash": "2b40f283365195c2393a61c1fa63c42d",
+    "semantic_hash": "2b40f283365195c2393a61c1fa63c42d"
+  },
+  "backend/src/repositories/__tests__/reports-repository.spec.ts": {
+    "mtime": 1792520018.520311,
+    "seen": 1792605053.8478167,
+    "ast_hash": "8daf0dd2cda519231ebc4207c08b3e93",
+    "semantic_hash": "8daf0dd2cda519231ebc4207c08b3e93"
+  },
+  "backend/src/repositories/__tests__/schedule-block-repository.spec.ts": {
+    "mtime": 1792516046.1457424,
+    "seen": 1792605053.8478167,
+    "ast_hash": "033f04aaaac724daa541751f6b15c785",
+    "semantic_hash": "033f04aaaac724daa541751f6b15c785"
+  },
+  "backend/src/repositories/__tests__/tenant-repository.spec.ts": {
+    "mtime": 1792502914.637045,
+    "seen": 1792605053.8478167,
+    "ast_hash": "81089fb6526986947543ccc5ecaf1570",
+    "semantic_hash": "81089fb6526986947543ccc5ecaf1570"
+  },
+  "backend/src/repositories/__tests__/whatsapp-repository.spec.ts": {
+    "mtime": 1792523247.5696301,
+    "seen": 1792605053.8478167,
+    "ast_hash": "47865d7e5e0062ced0be8cf1c2a535b2",
+    "semantic_hash": "47865d7e5e0062ced0be8cf1c2a535b2"
+  },
+  "backend/src/repositories/analytics-repository.ts": {
+    "mtime": 1792332152.126673,
+    "seen": 1792605053.8478167,
+    "ast_hash": "bd0a690f39c062f68b06773a9fdf25f9",
+    "semantic_hash": "bd0a690f39c062f68b06773a9fdf25f9"
+  },
+  "backend/src/repositories/appointment-repository.ts": {
+    "mtime": 1792516385.8658845,
+    "seen": 1792605053.8478167,
+    "ast_hash": "66eefa0a94c671543a2f9462fbab0714",
+    "semantic_hash": "66eefa0a94c671543a2f9462fbab0714"
+  },
+  "backend/src/repositories/business-hours-repository.ts": {
+    "mtime": 1792516178.0722423,
+    "seen": 1792605053.8478167,
+    "ast_hash": "0a5c98f9325788591f87bc49c6783214",
+    "semantic_hash": "0a5c98f9325788591f87bc49c6783214"
+  },
+  "backend/src/repositories/financial-category-repository.ts": {
+    "mtime": 1792516877.2335832,
+    "seen": 1792605053.8478167,
+    "ast_hash": "d2dd1d59a6922efa3887cca19d91ab46",
+    "semantic_hash": "d2dd1d59a6922efa3887cca19d91ab46"
+  },
+  "backend/src/repositories/financial-repository.ts": {
+    "mtime": 1792516938.4532385,
+    "seen": 1792605053.8478167,
+    "ast_hash": "7e431715f006eec5d4c49755124d6680",
+    "semantic_hash": "7e431715f006eec5d4c49755124d6680"
+  },
+  "backend/src/repositories/patient-repository.ts": {
+    "mtime": 1792535789.2629454,
+    "seen": 1792605053.8478167,
+    "ast_hash": "0686ef1519e66da89df8cf0208786894",
+    "semantic_hash": "0686ef1519e66da89df8cf0208786894"
+  },
+  "backend/src/repositories/procedure-repository.ts": {
+    "mtime": 1792515555.729196,
+    "seen": 1792605053.8478167,
+    "ast_hash": "fd881503b9cdcddad52e4eecc42e7532",
+    "semantic_hash": "fd881503b9cdcddad52e4eecc42e7532"
+  },
+  "backend/src/repositories/reports-repository.ts": {
+    "mtime": 1792520046.2694263,
+    "seen": 1792605053.8478167,
+    "ast_hash": "3f6b2160fec6f6970d52c309e5445190",
+    "semantic_hash": "3f6b2160fec6f6970d52c309e5445190"
+  },
+  "backend/src/repositories/schedule-block-repository.ts": {
+    "mtime": 1792515924.430181,
+    "seen": 1792605053.8478167,
+    "ast_hash": "54dd82694dba615ac13a6ee8ef923d0a",
+    "semantic_hash": "54dd82694dba615ac13a6ee8ef923d0a"
+  },
+  "backend/src/repositories/tenant-repository.ts": {
+    "mtime": 1792502895.8571458,
+    "seen": 1792605053.8478167,
+    "ast_hash": "be76dc04a57926a3ef644fbb3ff4c9aa",
+    "semantic_hash": "be76dc04a57926a3ef644fbb3ff4c9aa"
+  },
+  "backend/src/repositories/whatsapp-repository.ts": {
+    "mtime": 1792523436.8151433,
+    "seen": 1792605053.8478167,
+    "ast_hash": "0c3219ee3d0612760600e90cb92fd0d7",
+    "semantic_hash": "0c3219ee3d0612760600e90cb92fd0d7"
+  },
+  "backend/src/routes/__tests__/api.spec.ts": {
+    "mtime": 1792266186.4546688,
+    "seen": 1792605053.8478167,
+    "ast_hash": "455484b2877706d1ea6607c466117022",
+    "semantic_hash": "455484b2877706d1ea6607c466117022"
+  },
+  "backend/src/routes/__tests__/appointments.routes.spec.ts": {
+    "mtime": 1792517547.66503,
+    "seen": 1792605053.8478167,
+    "ast_hash": "39745a664a3c792f6a46b00f2b24dd40",
+    "semantic_hash": "39745a664a3c792f6a46b00f2b24dd40"
+  },
+  "backend/src/routes/__tests__/autenticacao-usuarios.spec.ts": {
+    "mtime": 1792519038.7924283,
+    "seen": 1792605053.8478167,
+    "ast_hash": "58dc8327fae40b286e734133b268a609",
+    "semantic_hash": "58dc8327fae40b286e734133b268a609"
+  },
+  "backend/src/routes/__tests__/auth.routes.spec.ts": {
+    "mtime": 1792504374.830562,
+    "seen": 1792605053.8478167,
+    "ast_hash": "15f88c8111002c523794ee8b765aa47c",
+    "semantic_hash": "15f88c8111002c523794ee8b765aa47c"
+  },
+  "backend/src/routes/__tests__/business-hours.routes.spec.ts": {
+    "mtime": 1792517505.4637501,
+    "seen": 1792605053.8478167,
+    "ast_hash": "cec206bfff5bf3cd7b021e700d485bf1",
+    "semantic_hash": "cec206bfff5bf3cd7b021e700d485bf1"
+  },
+  "backend/src/routes/__tests__/financial.routes.spec.ts": {
+    "mtime": 1792519057.086421,
+    "seen": 1792605053.8478167,
+    "ast_hash": "d893e6367f7e135865575fc4c88cf723",
+    "semantic_hash": "d893e6367f7e135865575fc4c88cf723"
+  },
+  "backend/src/routes/__tests__/patients.routes.spec.ts": {
+    "mtime": 1792536145.7419574,
+    "seen": 1792605053.8478167,
+    "ast_hash": "a8bd3331ef992e54553170c5ce07d59f",
+    "semantic_hash": "a8bd3331ef992e54553170c5ce07d59f"
+  },
+  "backend/src/routes/__tests__/procedures.routes.spec.ts": {
+    "mtime": 1792517472.843925,
+    "seen": 1792605053.8478167,
+    "ast_hash": "30c29eac5d82414978e21e7e8f904292",
+    "semantic_hash": "30c29eac5d82414978e21e7e8f904292"
+  },
+  "backend/src/routes/__tests__/reports.routes.spec.ts": {
+    "mtime": 1792520238.9762635,
+    "seen": 1792605053.8478167,
+    "ast_hash": "57a111b73bf79087350b04812f7e7458",
+    "semantic_hash": "57a111b73bf79087350b04812f7e7458"
+  },
+  "backend/src/routes/__tests__/schedule-blocks.routes.spec.ts": {
+    "mtime": 1792517522.9536433,
+    "seen": 1792605053.8478167,
+    "ast_hash": "61df389cb0fbfd0e646c3ed1f2cf8c98",
+    "semantic_hash": "61df389cb0fbfd0e646c3ed1f2cf8c98"
+  },
+  "backend/src/routes/__tests__/sincronizacao-agendamentos.spec.ts": {
+    "mtime": 1792533041.6188097,
+    "seen": 1792605053.8478167,
+    "ast_hash": "12c8bc66a9ffcf6f7483d6a6c7504c22",
+    "semantic_hash": "12c8bc66a9ffcf6f7483d6a6c7504c22"
+  },
+  "backend/src/routes/__tests__/sincronizacao-financeiro-offline.spec.ts": {
+    "mtime": 1792602988.5207014,
+    "seen": 1792605053.8478167,
+    "ast_hash": "cbf70bb00e4d4e7258fced0d6f32a07c",
+    "semantic_hash": "cbf70bb00e4d4e7258fced0d6f32a07c"
+  },
+  "backend/src/routes/__tests__/whatsapp.routes.spec.ts": {
+    "mtime": 1792523396.5015466,
+    "seen": 1792605053.8478167,
+    "ast_hash": "0881529e8d79a60fb7c0d373a8096084",
+    "semantic_hash": "0881529e8d79a60fb7c0d373a8096084"
+  },
+  "backend/src/routes/analytics.ts": {
+    "mtime": 1792503317.5426843,
+    "seen": 1792605053.8478167,
+    "ast_hash": "0c4324921b9a083d7a5cf64aaff53d0e",
+    "semantic_hash": "0c4324921b9a083d7a5cf64aaff53d0e"
+  },
+  "backend/src/routes/appointments.ts": {
+    "mtime": 1792516443.8340592,
+    "seen": 1792605053.8478167,
+    "ast_hash": "89dc4b590f1d831e347feaf6a1fe672f",
+    "semantic_hash": "89dc4b590f1d831e347feaf6a1fe672f"
+  },
+  "backend/src/routes/auth.ts": {
+    "mtime": 1792503298.3727417,
+    "seen": 1792605053.8478167,
+    "ast_hash": "c8e7dc239a9c77a279c4c87a05e55b3a",
+    "semantic_hash": "c8e7dc239a9c77a279c4c87a05e55b3a"
+  },
+  "backend/src/routes/business-hours.ts": {
+    "mtime": 1792515906.7571251,
+    "seen": 1792605053.8478167,
+    "ast_hash": "d2cf38fc3b20ee56323d61093ad58da7",
+    "semantic_hash": "d2cf38fc3b20ee56323d61093ad58da7"
+  },
+  "backend/src/routes/financial.ts": {
+    "mtime": 1792516987.7967193,
+    "seen": 1792605053.8478167,
+    "ast_hash": "4366e9fe390b71717cf89c9466cf243f",
+    "semantic_hash": "4366e9fe390b71717cf89c9466cf243f"
+  },
+  "backend/src/routes/patients.ts": {
+    "mtime": 1792520197.8697033,
+    "seen": 1792605053.8478167,
+    "ast_hash": "7ea4edeba7bc4c8dfdd3d50b80578410",
+    "semantic_hash": "7ea4edeba7bc4c8dfdd3d50b80578410"
+  },
+  "backend/src/routes/procedures.ts": {
+    "mtime": 1792515636.4036627,
+    "seen": 1792605053.8478167,
+    "ast_hash": "45a71f13585d8e4a2b423ad7c8862dc9",
+    "semantic_hash": "45a71f13585d8e4a2b423ad7c8862dc9"
+  },
+  "backend/src/routes/reports.ts": {
+    "mtime": 1792520166.1260707,
+    "seen": 1792605053.8478167,
+    "ast_hash": "34dea49a142b6d016ccce6a61c88c5c8",
+    "semantic_hash": "34dea49a142b6d016ccce6a61c88c5c8"
+  },
+  "backend/src/routes/schedule-blocks.ts": {
+    "mtime": 1792515965.3676267,
+    "seen": 1792605053.8478167,
+    "ast_hash": "b117109761855d7ae463a2880c7806f9",
+    "semantic_hash": "b117109761855d7ae463a2880c7806f9"
+  },
+  "backend/src/routes/sync.ts": {
+    "mtime": 1792603941.6752262,
+    "seen": 1792605053.8478167,
+    "ast_hash": "f06e3f4113916a309b79974706efa9ab",
+    "semantic_hash": "f06e3f4113916a309b79974706efa9ab"
+  },
+  "backend/src/routes/webhooks.routes.ts": {
+    "mtime": 1792523327.9803052,
+    "seen": 1792605053.8478167,
+    "ast_hash": "b4b209fcb8a838a222e09f9d09e6fd0a",
+    "semantic_hash": "b4b209fcb8a838a222e09f9d09e6fd0a"
+  },
+  "backend/src/routes/webhooks.ts": {
+    "mtime": 1792523359.018885,
+    "seen": 1792605053.8478167,
+    "ast_hash": "18c249e80a352c6db6ee28c768ba6dad",
+    "semantic_hash": "18c249e80a352c6db6ee28c768ba6dad"
+  },
+  "backend/src/routes/whatsapp.routes.ts": {
+    "mtime": 1792523317.7096624,
+    "seen": 1792605053.8478167,
+    "ast_hash": "e56779b7d2fd48f52c778566b30f20cd",
+    "semantic_hash": "e56779b7d2fd48f52c778566b30f20cd"
+  },
+  "backend/src/routes/whatsapp.ts": {
+    "mtime": 1792523349.4606376,
+    "seen": 1792605053.8478167,
+    "ast_hash": "a2303e5696f22cdee0065c40e27ab5c1",
+    "semantic_hash": "a2303e5696f22cdee0065c40e27ab5c1"
+  },
+  "backend/src/services/__tests__/appointment-service.spec.ts": {
+    "mtime": 1792519083.7695124,
+    "seen": 1792605053.8478167,
+    "ast_hash": "e2c1aaef2f2b0d4471eb360c344f7c0e",
+    "semantic_hash": "e2c1aaef2f2b0d4471eb360c344f7c0e"
+  },
+  "backend/src/services/__tests__/auth-service.spec.ts": {
+    "mtime": 1792502988.668753,
+    "seen": 1792605053.8478167,
+    "ast_hash": "2a7907fb59dc20a6ba2145e26ec3bfe5",
+    "semantic_hash": "2a7907fb59dc20a6ba2145e26ec3bfe5"
+  },
+  "backend/src/services/__tests__/business-hours-service.spec.ts": {
+    "mtime": 1792516739.5104241,
+    "seen": 1792605053.8478167,
+    "ast_hash": "fb246f94f021359b0083b905c9cbd917",
+    "semantic_hash": "fb246f94f021359b0083b905c9cbd917"
+  },
+  "backend/src/services/__tests__/financial-category-service.spec.ts": {
+    "mtime": 1792517025.4573877,
+    "seen": 1792605053.8478167,
+    "ast_hash": "dfa885c553c780bc1cb693bdcc94ecbb",
+    "semantic_hash": "dfa885c553c780bc1cb693bdcc94ecbb"
+  },
+  "backend/src/services/__tests__/financial-service.spec.ts": {
+    "mtime": 1792519100.8830552,
+    "seen": 1792605053.8478167,
+    "ast_hash": "859be15d9ed79f7b7a44bc2b44734576",
+    "semantic_hash": "859be15d9ed79f7b7a44bc2b44734576"
+  },
+  "backend/src/services/__tests__/password-service.spec.ts": {
+    "mtime": 1792502847.7592785,
+    "seen": 1792605053.8478167,
+    "ast_hash": "3a354e82fe24e9ebff5ea4f9814797bf",
+    "semantic_hash": "3a354e82fe24e9ebff5ea4f9814797bf"
+  },
+  "backend/src/services/__tests__/patient-service.spec.ts": {
+    "mtime": 1792536119.0350075,
+    "seen": 1792605053.8478167,
+    "ast_hash": "95e3f5d7ef4954e85544cf8782d2de3b",
+    "semantic_hash": "95e3f5d7ef4954e85544cf8782d2de3b"
+  },
+  "backend/src/services/__tests__/procedure-service.spec.ts": {
+    "mtime": 1792515717.4015646,
+    "seen": 1792605053.8478167,
+    "ast_hash": "ef2fb8314427b7e8517a9a275237964a",
+    "semantic_hash": "ef2fb8314427b7e8517a9a275237964a"
+  },
+  "backend/src/services/__tests__/reports-service.spec.ts": {
+    "mtime": 1792520090.6853704,
+    "seen": 1792605053.8478167,
+    "ast_hash": "907c77d60e3f1710a1e88682e32cee9c",
+    "semantic_hash": "907c77d60e3f1710a1e88682e32cee9c"
+  },
+  "backend/src/services/__tests__/schedule-block-service.spec.ts": {
+    "mtime": 1792516065.0136237,
+    "seen": 1792605053.8478167,
+    "ast_hash": "3e7e37ebf669cf42209b174e71de09d3",
+    "semantic_hash": "3e7e37ebf669cf42209b174e71de09d3"
+  },
+  "backend/src/services/__tests__/user-admin-service.spec.ts": {
+    "mtime": 1792503110.3221657,
+    "seen": 1792605053.8478167,
+    "ast_hash": "a375af59010b23e3762a2e58a27b00a7",
+    "semantic_hash": "a375af59010b23e3762a2e58a27b00a7"
+  },
+  "backend/src/services/__tests__/webhook-service.spec.ts": {
+    "mtime": 1792523067.5691833,
+    "seen": 1792605053.8478167,
+    "ast_hash": "e0e3029b017a55f0c0fd5214f519c8d7",
+    "semantic_hash": "e0e3029b017a55f0c0fd5214f519c8d7"
+  },
+  "backend/src/services/__tests__/whatsapp-scheduler-service.spec.ts": {
+    "mtime": 1792523048.0147612,
+    "seen": 1792605053.8478167,
+    "ast_hash": "bfd6d2d4f0a12913098c190ac630fb2b",
+    "semantic_hash": "bfd6d2d4f0a12913098c190ac630fb2b"
+  },
+  "backend/src/services/__tests__/whatsapp-service.spec.ts": {
+    "mtime": 1792523032.4840117,
+    "seen": 1792605053.8478167,
+    "ast_hash": "5c99fe47d059f7bd33579032a82ad9cd",
+    "semantic_hash": "5c99fe47d059f7bd33579032a82ad9cd"
+  },
+  "backend/src/services/appointment-service.ts": {
+    "mtime": 1792516416.6958244,
+    "seen": 1792605053.8478167,
+    "ast_hash": "a33c7382c67d67c16d6ca4711c3980a2",
+    "semantic_hash": "a33c7382c67d67c16d6ca4711c3980a2"
+  },
+  "backend/src/services/auth-service.ts": {
+    "mtime": 1792503813.2327425,
+    "seen": 1792605053.8478167,
+    "ast_hash": "6ff272480267da84c7654160662698f6",
+    "semantic_hash": "6ff272480267da84c7654160662698f6"
+  },
+  "backend/src/services/business-hours-service.ts": {
+    "mtime": 1792516720.8651116,
+    "seen": 1792605053.8478167,
+    "ast_hash": "02c95cdd87122b9846c28edbd1dace3a",
+    "semantic_hash": "02c95cdd87122b9846c28edbd1dace3a"
+  },
+  "backend/src/services/financial-category-service.ts": {
+    "mtime": 1792516888.198718,
+    "seen": 1792605053.8478167,
+    "ast_hash": "1b6693db01101a630509c8e5af5afef6",
+    "semantic_hash": "1b6693db01101a630509c8e5af5afef6"
+  },
+  "backend/src/services/financial-service.ts": {
+    "mtime": 1792516963.0070646,
+    "seen": 1792605053.8478167,
+    "ast_hash": "8b98fb2c8a4a203bb64d2ef60449657d",
+    "semantic_hash": "8b98fb2c8a4a203bb64d2ef60449657d"
+  },
+  "backend/src/services/password-service.ts": {
+    "mtime": 1792503840.7048688,
+    "seen": 1792605053.8478167,
+    "ast_hash": "764c9d8ddfe060d0c4a572d17e39a936",
+    "semantic_hash": "764c9d8ddfe060d0c4a572d17e39a936"
+  },
+  "backend/src/services/patient-service.ts": {
+    "mtime": 1792535994.4193938,
+    "seen": 1792605053.8478167,
+    "ast_hash": "635f4d701eb3ebf1fd7d1d5f872409dd",
+    "semantic_hash": "635f4d701eb3ebf1fd7d1d5f872409dd"
+  },
+  "backend/src/services/procedure-service.ts": {
+    "mtime": 1792515611.6843855,
+    "seen": 1792605053.8478167,
+    "ast_hash": "131508e5e0bae1763d640c684dd675a7",
+    "semantic_hash": "131508e5e0bae1763d640c684dd675a7"
+  },
+  "backend/src/services/reports-service.ts": {
+    "mtime": 1792520107.5046546,
+    "seen": 1792605053.8478167,
+    "ast_hash": "144cfa2eb0d87ff392120e56505a87cf",
+    "semantic_hash": "144cfa2eb0d87ff392120e56505a87cf"
+  },
+  "backend/src/services/schedule-block-service.ts": {
+    "mtime": 1792515941.82164,
+    "seen": 1792605053.8478167,
+    "ast_hash": "4a0fe5294fb835d15652cce6c4301f0e",
+    "semantic_hash": "4a0fe5294fb835d15652cce6c4301f0e"
+  },
+  "backend/src/services/user-admin-service.ts": {
+    "mtime": 1792504107.9750807,
+    "seen": 1792605053.8478167,
+    "ast_hash": "b2da8f9e1999768add5af988a3027cad",
+    "semantic_hash": "b2da8f9e1999768add5af988a3027cad"
+  },
+  "backend/src/services/webhook-service.ts": {
+    "mtime": 1792523469.7590919,
+    "seen": 1792605053.8478167,
+    "ast_hash": "ae387b53269e57812fab790fdd59b4ba",
+    "semantic_hash": "ae387b53269e57812fab790fdd59b4ba"
+  },
+  "backend/src/services/whatsapp-scheduler-service.ts": {
+    "mtime": 1792523457.7397783,
+    "seen": 1792605053.8478167,
+    "ast_hash": "f8b87260e934e6f468ec68d21babcc2a",
+    "semantic_hash": "f8b87260e934e6f468ec68d21babcc2a"
+  },
+  "backend/src/services/whatsapp-service.ts": {
+    "mtime": 1792523448.162428,
+    "seen": 1792605053.8478167,
+    "ast_hash": "9c5d861b9c5a1c268ee70bb50c3805e4",
+    "semantic_hash": "9c5d861b9c5a1c268ee70bb50c3805e4"
+  },
+  "backend/src/test-utils/auth.ts": {
+    "mtime": 1792503464.6419466,
+    "seen": 1792605053.8478167,
+    "ast_hash": "a992f936cb47084e3a7cf3f843eff7a7",
+    "semantic_hash": "a992f936cb47084e3a7cf3f843eff7a7"
+  },
+  "backend/src/whatsapp/__tests__/mock-evolution.ts": {
+    "mtime": 1792416659.3495898,
+    "seen": 1792605053.8478167,
+    "ast_hash": "a18bf97f37583d6409ca682069303c8d",
+    "semantic_hash": "a18bf97f37583d6409ca682069303c8d"
+  },
+  "backend/src/whatsapp/__tests__/whatsapp-auto-reply.spec.ts": {
+    "mtime": 1792429107.66087,
+    "seen": 1792605053.8478167,
+    "ast_hash": "0efab8dfa809736ac4c80053ae3e3410",
+    "semantic_hash": "0efab8dfa809736ac4c80053ae3e3410"
+  },
+  "backend/src/whatsapp/__tests__/whatsapp-live-pairing.spec.ts": {
+    "mtime": 1792503535.7288668,
+    "seen": 1792605053.8478167,
+    "ast_hash": "132ed0d4c52b8bbbcbce7e440fa9b9da",
+    "semantic_hash": "132ed0d4c52b8bbbcbce7e440fa9b9da"
+  },
+  "backend/src/whatsapp/__tests__/whatsapp-qrcode-resilience.spec.ts": {
+    "mtime": 1792503574.3545961,
+    "seen": 1792605053.8478167,
+    "ast_hash": "977fe14583fd58c9adb5883eabf06c49",
+    "semantic_hash": "977fe14583fd58c9adb5883eabf06c49"
+  },
+  "backend/src/whatsapp/__tests__/whatsapp.spec.ts": {
+    "mtime": 1792270104.3205204,
+    "seen": 1792605053.8478167,
+    "ast_hash": "6f82f449e255370270ce01df51d8adc2",
+    "semantic_hash": "6f82f449e255370270ce01df51d8adc2"
+  },
+  "backend/src/whatsapp/evolution-client.ts": {
+    "mtime": 1792419501.3701675,
+    "seen": 1792605053.8478167,
+    "ast_hash": "031ac3ff74f381b6fa4eb9b1950eec9c",
+    "semantic_hash": "031ac3ff74f381b6fa4eb9b1950eec9c"
+  },
+  "backend/src/whatsapp/parser.ts": {
+    "mtime": 1792334072.9874914,
+    "seen": 1792605053.8478167,
+    "ast_hash": "ace2a541214f5911a8c65f801af027ca",
+    "semantic_hash": "ace2a541214f5911a8c65f801af027ca"
+  },
+  "backend/src/whatsapp/queue.ts": {
+    "mtime": 1792518828.3513608,
+    "seen": 1792605053.8478167,
+    "ast_hash": "1bceb5e4875112a2b515307f26058582",
+    "semantic_hash": "1bceb5e4875112a2b515307f26058582"
+  },
+  "backend/src/whatsapp/reply-templates.ts": {
+    "mtime": 1792420191.8914983,
+    "seen": 1792605053.8478167,
+    "ast_hash": "d9c82ca8a97e26bd6aed47b1ed3b00b0",
+    "semantic_hash": "d9c82ca8a97e26bd6aed47b1ed3b00b0"
+  },
+  "backend/src/whatsapp/scheduler.ts": {
+    "mtime": 1792270104.323226,
+    "seen": 1792605053.8478167,
+    "ast_hash": "8cacc943f0169b3eb3c1f6bf30777d4e",
+    "semantic_hash": "8cacc943f0169b3eb3c1f6bf30777d4e"
+  },
+  "backend/src/whatsapp/spintax.ts": {
+    "mtime": 1792270104.3242798,
+    "seen": 1792605053.8478167,
+    "ast_hash": "b4b89be1f0aa384ea9a5f8d745642ea3",
+    "semantic_hash": "b4b89be1f0aa384ea9a5f8d745642ea3"
+  },
+  "backend/tsconfig.json": {
+    "mtime": 1792519408.0779288,
+    "seen": 1792605053.8478167,
+    "ast_hash": "69531636751aebed0eb46d0784c91215",
+    "semantic_hash": "69531636751aebed0eb46d0784c91215"
+  },
+  "backend/vitest.config.ts": {
+    "mtime": 1792519219.7749393,
+    "seen": 1792605053.8478167,
+    "ast_hash": "ba89c52a27770b0f0028df57945a448d",
+    "semantic_hash": "ba89c52a27770b0f0028df57945a448d"
+  },
+  "frontend/e2e/auth-flow.spec.ts": {
+    "mtime": 1792527780.825459,
+    "seen": 1792605053.8478167,
+    "ast_hash": "e52e34e188a871d1bb35e3cb1191a7c2",
+    "semantic_hash": "e52e34e188a871d1bb35e3cb1191a7c2"
+  },
+  "frontend/e2e/cliniassist-mobile.spec.ts": {
+    "mtime": 1792527893.796905,
+    "seen": 1792605053.8478167,
+    "ast_hash": "95d0cba5e97069b8fff7adf91ce16e35",
+    "semantic_hash": "95d0cba5e97069b8fff7adf91ce16e35"
+  },
+  "frontend/e2e/sync-appointments.spec.ts": {
+    "mtime": 1792533385.0385387,
+    "seen": 1792605053.8478167,
+    "ast_hash": "a615b1c8a7234910f122ea084775a78d",
+    "semantic_hash": "a615b1c8a7234910f122ea084775a78d"
+  },
+  "frontend/package.json": {
+    "mtime": 1792336924.4818103,
+    "seen": 1792605053.8478167,
+    "ast_hash": "82d16dd778de1988b954dc3b55a37c03",
+    "semantic_hash": "82d16dd778de1988b954dc3b55a37c03"
+  },
+  "frontend/playwright.config.ts": {
+    "mtime": 1792336924.4828665,
+    "seen": 1792605053.8478167,
+    "ast_hash": "0c0e2db52146d2f19e21bea83c552b09",
+    "semantic_hash": "0c0e2db52146d2f19e21bea83c552b09"
+  },
+  "frontend/postcss.config.js": {
+    "mtime": 1792336924.483929,
+    "seen": 1792605053.8478167,
+    "ast_hash": "33fad9c02cb0ec6d6030369ef6347d57",
+    "semantic_hash": "33fad9c02cb0ec6d6030369ef6347d57"
+  },
+  "frontend/public/manifest.json": {
+    "mtime": 1792336924.4849925,
+    "seen": 1792605053.8478167,
+    "ast_hash": "1f5b9ace0cc42062a7c36e53868cd22a",
+    "semantic_hash": "1f5b9ace0cc42062a7c36e53868cd22a"
+  },
+  "frontend/src/App.tsx": {
+    "mtime": 1792588212.1303308,
+    "seen": 1792605053.8478167,
+    "ast_hash": "0c0c48caeb06827e5f6b22d7d687c523",
+    "semantic_hash": "0c0c48caeb06827e5f6b22d7d687c523"
+  },
+  "frontend/src/__tests__/app-auth-integration.spec.tsx": {
+    "mtime": 1792526735.2288637,
+    "seen": 1792605053.8478167,
+    "ast_hash": "69f79ef50e3ec96b2f3be3d18af1a019",
+    "semantic_hash": "69f79ef50e3ec96b2f3be3d18af1a019"
+  },
+  "frontend/src/__tests__/fundacao-frontend.spec.tsx": {
+    "mtime": 1792340568.3731809,
+    "seen": 1792605053.8478167,
+    "ast_hash": "b5f285dae58efe25255269f279bce1ff",
+    "semantic_hash": "b5f285dae58efe25255269f279bce1ff"
+  },
+  "frontend/src/components/layout/AppShell.tsx": {
+    "mtime": 1792439108.7940252,
+    "seen": 1792605053.8478167,
+    "ast_hash": "875e064896d3a5552267ab1071dca6b4",
+    "semantic_hash": "875e064896d3a5552267ab1071dca6b4"
+  },
+  "frontend/src/components/layout/BottomNav.tsx": {
+    "mtime": 1792527878.6531785,
+    "seen": 1792605053.8478167,
+    "ast_hash": "b2326d345f4ca0fcde0d810a9552a56e",
+    "semantic_hash": "b2326d345f4ca0fcde0d810a9552a56e"
+  },
+  "frontend/src/components/layout/DesktopSidebar.tsx": {
+    "mtime": 1792439081.5544086,
+    "seen": 1792605053.8478167,
+    "ast_hash": "36c57a851010a398990f8478bc0e1c8e",
+    "semantic_hash": "36c57a851010a398990f8478bc0e1c8e"
+  },
+  "frontend/src/components/layout/MoreMenuHub.tsx": {
+    "mtime": 1792439022.6541638,
+    "seen": 1792605053.8478167,
+    "ast_hash": "3f5d98bb32e5174360e3b1ad0caa1029",
+    "semantic_hash": "3f5d98bb32e5174360e3b1ad0caa1029"
+  },
+  "frontend/src/components/layout/TopBar.tsx": {
+    "mtime": 1792336924.4907193,
+    "seen": 1792605053.8478167,
+    "ast_hash": "40ed7b7c534877841fa3dee9e31a3e8d",
+    "semantic_hash": "40ed7b7c534877841fa3dee9e31a3e8d"
+  },
+  "frontend/src/db/__tests__/local-db.spec.ts": {
+    "mtime": 1792337456.0196576,
+    "seen": 1792605053.8478167,
+    "ast_hash": "56e541f8f5af5b0b01d881f40a4f6abc",
+    "semantic_hash": "56e541f8f5af5b0b01d881f40a4f6abc"
+  },
+  "frontend/src/db/local-db.ts": {
+    "mtime": 1792525960.582338,
+    "seen": 1792605053.8478167,
+    "ast_hash": "06d9c6c30f4b23edbd2f88c00b2cd7fc",
+    "semantic_hash": "06d9c6c30f4b23edbd2f88c00b2cd7fc"
+  },
+  "frontend/src/db/outbox.ts": {
+    "mtime": 1792337456.0207708,
+    "seen": 1792605053.8478167,
+    "ast_hash": "6f7cf29d7e0d58db5d7168b4f7243622",
+    "semantic_hash": "6f7cf29d7e0d58db5d7168b4f7243622"
+  },
+  "frontend/src/db/repositories/__tests__/auth-session-local-repository.spec.ts": {
+    "mtime": 1792525993.2557716,
+    "seen": 1792605053.8478167,
+    "ast_hash": "4e5b9f06352a6ea47a2bca667a76330d",
+    "semantic_hash": "4e5b9f06352a6ea47a2bca667a76330d"
+  },
+  "frontend/src/db/repositories/appointment-local-repository.ts": {
+    "mtime": 1792431402.862013,
+    "seen": 1792605053.8478167,
+    "ast_hash": "c8341b6700b06e390d3cb7b263492d99",
+    "semantic_hash": "c8341b6700b06e390d3cb7b263492d99"
+  },
+  "frontend/src/db/repositories/auth-session-local-repository.ts": {
+    "mtime": 1792533230.3699229,
+    "seen": 1792605053.8478167,
+    "ast_hash": "3e53813b225950aa21acd4522e36e889",
+    "semantic_hash": "3e53813b225950aa21acd4522e36e889"
+  },
+  "frontend/src/db/repositories/financial-local-repository.ts": {
+    "mtime": 1792587047.7279613,
+    "seen": 1792605053.8478167,
+    "ast_hash": "4e02c84e766457ab6507ec1bf7ecad67",
+    "semantic_hash": "4e02c84e766457ab6507ec1bf7ecad67"
+  },
+  "frontend/src/db/repositories/patient-local-repository.ts": {
+    "mtime": 1792537112.3803537,
+    "seen": 1792605053.8478167,
+    "ast_hash": "5ec5676bb9a1266da2aec2db9d478f85",
+    "semantic_hash": "5ec5676bb9a1266da2aec2db9d478f85"
+  },
+  "frontend/src/db/repositories/procedure-local-repository.ts": {
+    "mtime": 1792431248.1904662,
+    "seen": 1792605053.8478167,
+    "ast_hash": "ddb472ae376d1a9ddd7342d234bd6efc",
+    "semantic_hash": "ddb472ae376d1a9ddd7342d234bd6efc"
+  },
+  "frontend/src/db/repositories/settings-local-repository.ts": {
+    "mtime": 1792340568.3755233,
+    "seen": 1792605053.8478167,
+    "ast_hash": "8ec36e7af77c7aefddbd595bc4debb85",
+    "semantic_hash": "8ec36e7af77c7aefddbd595bc4debb85"
+  },
+  "frontend/src/db/types.ts": {
+    "mtime": 1792525942.6389117,
+    "seen": 1792605053.8478167,
+    "ast_hash": "4b12c5af58829bc7d749360ba558bd32",
+    "semantic_hash": "4b12c5af58829bc7d749360ba558bd32"
+  },
+  "frontend/src/features/agenda/__tests__/agenda-fixes-ui.spec.tsx": {
+    "mtime": 1792431609.4328313,
+    "seen": 1792605053.8478167,
+    "ast_hash": "7ab0d6f5cb6ef9d037bcfb3eb84e42d7",
+    "semantic_hash": "7ab0d6f5cb6ef9d037bcfb3eb84e42d7"
+  },
+  "frontend/src/features/agenda/__tests__/agenda-ui.spec.tsx": {
+    "mtime": 1792433126.3018713,
+    "seen": 1792605053.8478167,
+    "ast_hash": "fddd68347e2750d5291051ef4c74a985",
+    "semantic_hash": "fddd68347e2750d5291051ef4c74a985"
+  },
+  "frontend/src/features/agenda/__tests__/agenda-ux-reschedule.spec.tsx": {
+    "mtime": 1792433184.077978,
+    "seen": 1792605053.8478167,
+    "ast_hash": "f7c812693446f967d56fe1bd2121b20e",
+    "semantic_hash": "f7c812693446f967d56fe1bd2121b20e"
+  },
+  "frontend/src/features/agenda/__tests__/bloqueio-status-parcelamento.spec.tsx": {
+    "mtime": 1792437001.7959661,
+    "seen": 1792605053.8478167,
+    "ast_hash": "d1a6934c56ee311c4b6d6411a6131790",
+    "semantic_hash": "d1a6934c56ee311c4b6d6411a6131790"
+  },
+  "frontend/src/features/agenda/__tests__/card-procedures-layout.spec.tsx": {
+    "mtime": 1792434007.854916,
+    "seen": 1792605053.8478167,
+    "ast_hash": "13cf22f8607d30be297248464ad08082",
+    "semantic_hash": "13cf22f8607d30be297248464ad08082"
+  },
+  "frontend/src/features/agenda/__tests__/concluir-atendimento-checkout.spec.tsx": {
+    "mtime": 1792435812.718416,
+    "seen": 1792605053.8478167,
+    "ast_hash": "f66b8a7e1a85ff69227e0552dad07a98",
+    "semantic_hash": "f66b8a7e1a85ff69227e0552dad07a98"
+  },
+  "frontend/src/features/agenda/__tests__/melhorias-agendamento-duplicidade.spec.tsx": {
+    "mtime": 1792536831.8001332,
+    "seen": 1792605053.8478167,
+    "ast_hash": "1e6785726306c60832ee3b24bdf1b53e",
+    "semantic_hash": "1e6785726306c60832ee3b24bdf1b53e"
+  },
+  "frontend/src/features/agenda/__tests__/quick-appointment-date.spec.tsx": {
+    "mtime": 1792439992.1271179,
+    "seen": 1792605053.8478167,
+    "ast_hash": "4d6419f01c5b0a9f1e177ee66666a090",
+    "semantic_hash": "4d6419f01c5b0a9f1e177ee66666a090"
+  },
+  "frontend/src/features/agenda/__tests__/quick-appointment-preselected-patient.spec.tsx": {
+    "mtime": 1792441912.405651,
+    "seen": 1792605053.8478167,
+    "ast_hash": "fc157e2ad0220975420cbb7d4f01894c",
+    "semantic_hash": "fc157e2ad0220975420cbb7d4f01894c"
+  },
+  "frontend/src/features/agenda/components/AppointmentCard.tsx": {
+    "mtime": 1792434045.0419984,
+    "seen": 1792605053.8478167,
+    "ast_hash": "a46a2c8d7e629484b795a136ab04fdbc",
+    "semantic_hash": "a46a2c8d7e629484b795a136ab04fdbc"
+  },
+  "frontend/src/features/agenda/components/AppointmentDetailsDrawer.tsx": {
+    "mtime": 1792437136.4956987,
+    "seen": 1792605053.8478167,
+    "ast_hash": "c2bd3c5219fd28931f587df65b00b50e",
+    "semantic_hash": "c2bd3c5219fd28931f587df65b00b50e"
+  },
+  "frontend/src/features/agenda/components/InlinePatientForm.tsx": {
+    "mtime": 1792441094.830821,
+    "seen": 1792605053.8478167,
+    "ast_hash": "b918e2a7025c7672880739d3beb97258",
+    "semantic_hash": "b918e2a7025c7672880739d3beb97258"
+  },
+  "frontend/src/features/agenda/components/InlineProcedureForm.tsx": {
+    "mtime": 1792338279.2733412,
+    "seen": 1792605053.8478167,
+    "ast_hash": "d6b6cc5122e68d3c82587a98efe00281",
+    "semantic_hash": "d6b6cc5122e68d3c82587a98efe00281"
+  },
+  "frontend/src/features/agenda/components/QuickAppointmentDrawer.tsx": {
+    "mtime": 1792536310.3447113,
+    "seen": 1792605053.8478167,
+    "ast_hash": "4d5a0a8961fd0a9f6beab343e8fa169f",
+    "semantic_hash": "4d5a0a8961fd0a9f6beab343e8fa169f"
+  },
+  "frontend/src/features/agenda/components/RescheduleModal.tsx": {
+    "mtime": 1792432867.9007823,
+    "seen": 1792605053.8478167,
+    "ast_hash": "52446d23f108654053596e71f529bfcc",
+    "semantic_hash": "52446d23f108654053596e71f529bfcc"
+  },
+  "frontend/src/features/agenda/components/ScheduleGrid.tsx": {
+    "mtime": 1792431381.365686,
+    "seen": 1792605053.8478167,
+    "ast_hash": "301a2ad66e3a9f2aeee5bf8bf3a5b2b9",
+    "semantic_hash": "301a2ad66e3a9f2aeee5bf8bf3a5b2b9"
+  },
+  "frontend/src/features/agenda/components/ViewModeSelector.tsx": {
+    "mtime": 1792338279.2754738,
+    "seen": 1792605053.8478167,
+    "ast_hash": "81757eca20e38f6d61846984b742f8aa",
+    "semantic_hash": "81757eca20e38f6d61846984b742f8aa"
+  },
+  "frontend/src/features/agenda/hooks/useAgendaProcedures.ts": {
+    "mtime": 1792338279.2759917,
+    "seen": 1792605053.8478167,
+    "ast_hash": "9afe5d2a00c48070ec1f3a5075542fc9",
+    "semantic_hash": "9afe5d2a00c48070ec1f3a5075542fc9"
+  },
+  "frontend/src/features/agenda/types.ts": {
+    "mtime": 1792338279.2773874,
+    "seen": 1792605053.8478167,
+    "ast_hash": "15c37b701710d66ae783e75ba80dec81",
+    "semantic_hash": "15c37b701710d66ae783e75ba80dec81"
+  },
+  "frontend/src/features/agenda/utils/time-slots.ts": {
+    "mtime": 1792535723.732204,
+    "seen": 1792605053.8488314,
+    "ast_hash": "1dc9cdf50ac6620d32dd1bd9f521396e",
+    "semantic_hash": "1dc9cdf50ac6620d32dd1bd9f521396e"
+  },
+  "frontend/src/features/analytics/__tests__/analytics-ui.spec.tsx": {
+    "mtime": 1792428970.206814,
+    "seen": 1792605053.8488314,
+    "ast_hash": "8e030df7101f6a7f9e5dd8978983fd43",
+    "semantic_hash": "8e030df7101f6a7f9e5dd8978983fd43"
+  },
+  "frontend/src/features/analytics/__tests__/financeiro-relatorios.spec.tsx": {
+    "mtime": 1792601751.9239712,
+    "seen": 1792605053.8488314,
+    "ast_hash": "65e1877969ea5b19ab6b4f0f9f81a3e8",
+    "semantic_hash": "65e1877969ea5b19ab6b4f0f9f81a3e8"
+  },
+  "frontend/src/features/analytics/__tests__/melhorias-financeiro-agenda-gestao.spec.tsx": {
+    "mtime": 1792601658.8380394,
+    "seen": 1792605053.8488314,
+    "ast_hash": "0c387a9b76c621684448d53fafff6224",
+    "semantic_hash": "0c387a9b76c621684448d53fafff6224"
+  },
+  "frontend/src/features/analytics/__tests__/relatorios-fab-paciente.spec.tsx": {
+    "mtime": 1792438798.4744549,
+    "seen": 1792605053.8488314,
+    "ast_hash": "a3ad31167fb3d5d88a1e9cc7d16ae14b",
+    "semantic_hash": "a3ad31167fb3d5d88a1e9cc7d16ae14b"
+  },
+  "frontend/src/features/analytics/components/BatchSettleModal.tsx": {
+    "mtime": 1792580437.2335894,
+    "seen": 1792605053.8488314,
+    "ast_hash": "a9312373da798d02bfb3239fe2251f9c",
+    "semantic_hash": "a9312373da798d02bfb3239fe2251f9c"
+  },
+  "frontend/src/features/analytics/components/CashFlowDashboard.tsx": {
+    "mtime": 1792588180.984278,
+    "seen": 1792605053.8488314,
+    "ast_hash": "a2c828bc7c2c2662f9132212d4ac2a30",
+    "semantic_hash": "a2c828bc7c2c2662f9132212d4ac2a30"
+  },
+  "frontend/src/features/analytics/components/FinancialLedger.tsx": {
+    "mtime": 1792601704.7776995,
+    "seen": 1792605053.8488314,
+    "ast_hash": "3a270cbab90c910b83ce84f43920e351",
+    "semantic_hash": "3a270cbab90c910b83ce84f43920e351"
+  },
+  "frontend/src/features/analytics/components/InactivePatientsList.tsx": {
+    "mtime": 1792339483.9819155,
+    "seen": 1792605053.8488314,
+    "ast_hash": "594de5c52ce8dc9940c481ce2f77be2b",
+    "semantic_hash": "594de5c52ce8dc9940c481ce2f77be2b"
+  },
+  "frontend/src/features/analytics/components/ReceivablesList.tsx": {
+    "mtime": 1792580462.3327236,
+    "seen": 1792605053.8488314,
+    "ast_hash": "63ba00427d709cd9017eab49108ddb7c",
+    "semantic_hash": "63ba00427d709cd9017eab49108ddb7c"
+  },
+  "frontend/src/features/analytics/components/ReportsView.tsx": {
+    "mtime": 1792588228.280993,
+    "seen": 1792605053.8488314,
+    "ast_hash": "f84f8dc45cf59e2a92c6fe501a7bbac4",
+    "semantic_hash": "f84f8dc45cf59e2a92c6fe501a7bbac4"
+  },
+  "frontend/src/features/analytics/components/TransactionDetailModal.tsx": {
+    "mtime": 1792586461.7762725,
+    "seen": 1792605053.8488314,
+    "ast_hash": "2131f2daf672ced5ca32d0a84db7f1f6",
+    "semantic_hash": "2131f2daf672ced5ca32d0a84db7f1f6"
+  },
+  "frontend/src/features/analytics/components/WhatsAppAlertBanner.tsx": {
+    "mtime": 1792339483.983521,
+    "seen": 1792605053.8488314,
+    "ast_hash": "8b1aca7b50853d4e70333e47bf9e5f7e",
+    "semantic_hash": "8b1aca7b50853d4e70333e47bf9e5f7e"
+  },
+  "frontend/src/features/analytics/components/WhatsAppPairingView.tsx": {
+    "mtime": 1792416685.9056237,
+    "seen": 1792605053.8488314,
+    "ast_hash": "0a0777f04f20dd42fc5ac5a8f140d422",
+    "semantic_hash": "0a0777f04f20dd42fc5ac5a8f140d422"
+  },
+  "frontend/src/features/analytics/utils/cash-calculator.ts": {
+    "mtime": 1792339483.9851155,
+    "seen": 1792605053.8488314,
+    "ast_hash": "7645c9d234d5808d95e46341d1969f20",
+    "semantic_hash": "7645c9d234d5808d95e46341d1969f20"
+  },
+  "frontend/src/features/analytics/utils/inactive-finder.ts": {
+    "mtime": 1792339483.986379,
+    "seen": 1792605053.8488314,
+    "ast_hash": "32959a65b5eaf06d9d4db535d5777906",
+    "semantic_hash": "32959a65b5eaf06d9d4db535d5777906"
+  },
+  "frontend/src/features/analytics/utils/reports-calculator.ts": {
+    "mtime": 1792438879.3919878,
+    "seen": 1792605053.8488314,
+    "ast_hash": "75fcf55ed3cdfc924880ba65340b754c",
+    "semantic_hash": "75fcf55ed3cdfc924880ba65340b754c"
+  },
+  "frontend/src/features/auth/__tests__/auth-components.spec.tsx": {
+    "mtime": 1792533284.1976304,
+    "seen": 1792605053.8488314,
+    "ast_hash": "3d8f58f313ec76dac643dda194324088",
+    "semantic_hash": "3d8f58f313ec76dac643dda194324088"
+  },
+  "frontend/src/features/auth/components/AuthGate.tsx": {
+    "mtime": 1792526646.8798065,
+    "seen": 1792605053.8488314,
+    "ast_hash": "09fe2307107149694f3a657b155fcfe5",
+    "semantic_hash": "09fe2307107149694f3a657b155fcfe5"
+  },
+  "frontend/src/features/auth/components/ChangePasswordScreen.tsx": {
+    "mtime": 1792526619.5758357,
+    "seen": 1792605053.8488314,
+    "ast_hash": "13a16b2e292d120ce87a3350d2c5241c",
+    "semantic_hash": "13a16b2e292d120ce87a3350d2c5241c"
+  },
+  "frontend/src/features/auth/components/LoginScreen.tsx": {
+    "mtime": 1792526596.9171355,
+    "seen": 1792605053.8488314,
+    "ast_hash": "d4ac23b4df87c4687d8a5823c1145815",
+    "semantic_hash": "d4ac23b4df87c4687d8a5823c1145815"
+  },
+  "frontend/src/features/auth/components/LogoutConfirmDrawer.tsx": {
+    "mtime": 1792526635.2521791,
+    "seen": 1792605053.8488314,
+    "ast_hash": "fa808b108e3caceb82dd19cd7f038e1b",
+    "semantic_hash": "fa808b108e3caceb82dd19cd7f038e1b"
+  },
+  "frontend/src/features/auth/components/SessionSplash.tsx": {
+    "mtime": 1792526574.4313564,
+    "seen": 1792605053.8488314,
+    "ast_hash": "d8049563de1b97d1cbf87d0fe968bb33",
+    "semantic_hash": "d8049563de1b97d1cbf87d0fe968bb33"
+  },
+  "frontend/src/features/auth/hooks/AuthContext.tsx": {
+    "mtime": 1792533261.5197265,
+    "seen": 1792605053.8488314,
+    "ast_hash": "ebdff728e25d5e462dd41c638abee99f",
+    "semantic_hash": "ebdff728e25d5e462dd41c638abee99f"
+  },
+  "frontend/src/features/auth/hooks/__tests__/auth-context.spec.tsx": {
+    "mtime": 1792533300.9126425,
+    "seen": 1792605053.8488314,
+    "ast_hash": "53194eb10715e238a6ef84c370d8d8e3",
+    "semantic_hash": "53194eb10715e238a6ef84c370d8d8e3"
+  },
+  "frontend/src/features/auth/hooks/__tests__/use-login-form.spec.ts": {
+    "mtime": 1792526435.3273969,
+    "seen": 1792605053.8488314,
+    "ast_hash": "b916d6ba03a444743553718b1e73e574",
+    "semantic_hash": "b916d6ba03a444743553718b1e73e574"
+  },
+  "frontend/src/features/auth/hooks/useAuth.ts": {
+    "mtime": 1792526356.5632596,
+    "seen": 1792605053.8488314,
+    "ast_hash": "283cf1c744e40d27a44877dd7e1beb50",
+    "semantic_hash": "283cf1c744e40d27a44877dd7e1beb50"
+  },
+  "frontend/src/features/auth/hooks/useChangePasswordForm.ts": {
+    "mtime": 1792526469.0418406,
+    "seen": 1792605053.8488314,
+    "ast_hash": "9711faa535377401d8bf27d98f03cac3",
+    "semantic_hash": "9711faa535377401d8bf27d98f03cac3"
+  },
+  "frontend/src/features/auth/hooks/useLoginForm.ts": {
+    "mtime": 1792528057.7424648,
+    "seen": 1792605053.8488314,
+    "ast_hash": "066dac88c8e466a8c171b02a2135f4a0",
+    "semantic_hash": "066dac88c8e466a8c171b02a2135f4a0"
+  },
+  "frontend/src/features/checkout/__tests__/checkout-ui.spec.tsx": {
+    "mtime": 1792338936.6399448,
+    "seen": 1792605053.8488314,
+    "ast_hash": "8a0e1c50af7cabd0d371b28865acd2f4",
+    "semantic_hash": "8a0e1c50af7cabd0d371b28865acd2f4"
+  },
+  "frontend/src/features/checkout/components/CheckoutDrawer.tsx": {
+    "mtime": 1792600003.0586936,
+    "seen": 1792605053.8488314,
+    "ast_hash": "90f6a0e0a153597a0aa5e183b2627cca",
+    "semantic_hash": "90f6a0e0a153597a0aa5e183b2627cca"
+  },
+  "frontend/src/features/checkout/components/InstallmentsForm.tsx": {
+    "mtime": 1792599816.7373717,
+    "seen": 1792605053.8488314,
+    "ast_hash": "f6bb5cb262265e451fcbb06426736ec7",
+    "semantic_hash": "f6bb5cb262265e451fcbb06426736ec7"
+  },
+  "frontend/src/features/checkout/components/ItemPriceEditor.tsx": {
+    "mtime": 1792599873.1997576,
+    "seen": 1792605053.8488314,
+    "ast_hash": "5c2aa5b73594e7e1e452000d282ef016",
+    "semantic_hash": "5c2aa5b73594e7e1e452000d282ef016"
+  },
+  "frontend/src/features/checkout/components/QuickExpenseModal.tsx": {
+    "mtime": 1792586619.8091316,
+    "seen": 1792605053.8488314,
+    "ast_hash": "804aa58e36ea3dddd3dbaac5c281fbc5",
+    "semantic_hash": "804aa58e36ea3dddd3dbaac5c281fbc5"
+  },
+  "frontend/src/features/checkout/components/SmartReturnDrawer.tsx": {
+    "mtime": 1792432977.2251391,
+    "seen": 1792605053.8488314,
+    "ast_hash": "86699a55cbfff17ec92479ca9a584c4f",
+    "semantic_hash": "86699a55cbfff17ec92479ca9a584c4f"
+  },
+  "frontend/src/features/checkout/utils/discount-splitter.ts": {
+    "mtime": 1792338936.6441753,
+    "seen": 1792605053.8488314,
+    "ast_hash": "01fa3b9a9521251f77b9598b7f1310d6",
+    "semantic_hash": "01fa3b9a9521251f77b9598b7f1310d6"
+  },
+  "frontend/src/features/checkout/utils/smart-return.ts": {
+    "mtime": 1792338936.6452332,
+    "seen": 1792605053.8488314,
+    "ast_hash": "fd5b63fc39c1a6b2e5def30d918d5c65",
+    "semantic_hash": "fd5b63fc39c1a6b2e5def30d918d5c65"
+  },
+  "frontend/src/features/patients/__tests__/detalhes-edicao-paciente.spec.tsx": {
+    "mtime": 1792441206.1159222,
+    "seen": 1792605053.8488314,
+    "ast_hash": "40350cfd22e8e2aae701f19181278f5f",
+    "semantic_hash": "40350cfd22e8e2aae701f19181278f5f"
+  },
+  "frontend/src/features/patients/__tests__/exclusao-paciente.spec.tsx": {
+    "mtime": 1792442793.0678267,
+    "seen": 1792605053.8488314,
+    "ast_hash": "c7f1362de74824526252226622b6763d",
+    "semantic_hash": "c7f1362de74824526252226622b6763d"
+  },
+  "frontend/src/features/patients/components/ConfirmDeletePatientModal.tsx": {
+    "mtime": 1792442814.2536428,
+    "seen": 1792605053.8488314,
+    "ast_hash": "3ec1c044ee9f3580ba424b935774fd63",
+    "semantic_hash": "3ec1c044ee9f3580ba424b935774fd63"
+  },
+  "frontend/src/features/patients/components/CreatePatientModal.tsx": {
+    "mtime": 1792442621.2637603,
+    "seen": 1792605053.8488314,
+    "ast_hash": "4edd30b5701c8b5e724430f80c0a79bb",
+    "semantic_hash": "4edd30b5701c8b5e724430f80c0a79bb"
+  },
+  "frontend/src/features/patients/components/PatientCard.tsx": {
+    "mtime": 1792586676.9364276,
+    "seen": 1792605053.8488314,
+    "ast_hash": "64259ebd5b421d68c066ef21ab274a15",
+    "semantic_hash": "64259ebd5b421d68c066ef21ab274a15"
+  },
+  "frontend/src/features/patients/components/PatientFinancialDrawer.tsx": {
+    "mtime": 1792588200.7254767,
+    "seen": 1792605053.8488314,
+    "ast_hash": "8832701f96abe5ca1820509ab8c25be8",
+    "semantic_hash": "8832701f96abe5ca1820509ab8c25be8"
+  },
+  "frontend/src/features/patients/components/PatientList.tsx": {
+    "mtime": 1792586773.4118872,
+    "seen": 1792605053.8488314,
+    "ast_hash": "0704d56e277e8c57ea3c121eba822c63",
+    "semantic_hash": "0704d56e277e8c57ea3c121eba822c63"
+  },
+  "frontend/src/features/patients/types.ts": {
+    "mtime": 1792338279.278389,
+    "seen": 1792605053.8488314,
+    "ast_hash": "2c5925f05927717a73e22d496469df79",
+    "semantic_hash": "2c5925f05927717a73e22d496469df79"
+  },
+  "frontend/src/features/settings/__tests__/settings-ui.spec.tsx": {
+    "mtime": 1792340568.3777492,
+    "seen": 1792605053.8488314,
+    "ast_hash": "b9afade6ba417273302bc42c31e09d21",
+    "semantic_hash": "b9afade6ba417273302bc42c31e09d21"
+  },
+  "frontend/src/features/settings/__tests__/whatsapp-live-pairing-ui.spec.tsx": {
+    "mtime": 1792414627.394223,
+    "seen": 1792605053.8488314,
+    "ast_hash": "eca6d510cc394875407949da6d9fbf35",
+    "semantic_hash": "eca6d510cc394875407949da6d9fbf35"
+  },
+  "frontend/src/features/settings/__tests__/whatsapp-qrcode-resilience-ui.spec.tsx": {
+    "mtime": 1792416867.316126,
+    "seen": 1792605053.8488314,
+    "ast_hash": "6f8ad30fd0c33bbc9cf250e904785e69",
+    "semantic_hash": "6f8ad30fd0c33bbc9cf250e904785e69"
+  },
+  "frontend/src/features/settings/components/ClinicProfileCard.tsx": {
+    "mtime": 1792526758.2619836,
+    "seen": 1792605053.8488314,
+    "ast_hash": "1079da28b010dcc61677e764135ba2f7",
+    "semantic_hash": "1079da28b010dcc61677e764135ba2f7"
+  },
+  "frontend/src/features/settings/components/ScheduleBlocksManager.tsx": {
+    "mtime": 1792340568.3793776,
+    "seen": 1792605053.8488314,
+    "ast_hash": "3fea9b843b9c8024459e87bf72060c51",
+    "semantic_hash": "3fea9b843b9c8024459e87bf72060c51"
+  },
+  "frontend/src/features/settings/components/SettingsView.tsx": {
+    "mtime": 1792526798.4974484,
+    "seen": 1792605053.8488314,
+    "ast_hash": "98071963627b6451b7670da2fa381757",
+    "semantic_hash": "98071963627b6451b7670da2fa381757"
+  },
+  "frontend/src/hooks/useConnectionStatus.ts": {
+    "mtime": 1792337456.0244944,
+    "seen": 1792605053.8488314,
+    "ast_hash": "823541a0b58107043ad0f5b1f4c47b48",
+    "semantic_hash": "823541a0b58107043ad0f5b1f4c47b48"
+  },
+  "frontend/src/main.tsx": {
+    "mtime": 1792526981.4971166,
+    "seen": 1792605053.8488314,
+    "ast_hash": "74ac388b70e8219929927073ae044e2c",
+    "semantic_hash": "74ac388b70e8219929927073ae044e2c"
+  },
+  "frontend/src/services/__tests__/api-client.spec.ts": {
+    "mtime": 1792526062.0224066,
+    "seen": 1792605053.8488314,
+    "ast_hash": "e3174077d7c6a6962eb20f8f5399e604",
+    "semantic_hash": "e3174077d7c6a6962eb20f8f5399e604"
+  },
+  "frontend/src/services/__tests__/auth-api.spec.ts": {
+    "mtime": 1792526073.5730028,
+    "seen": 1792605053.8488314,
+    "ast_hash": "f4eb3364c2d88ab41c90e9f96becf0a1",
+    "semantic_hash": "f4eb3364c2d88ab41c90e9f96becf0a1"
+  },
+  "frontend/src/services/api-client.ts": {
+    "mtime": 1792526125.7736309,
+    "seen": 1792605053.8488314,
+    "ast_hash": "a81ba6180309539071938c5e3c3c9a10",
+    "semantic_hash": "a81ba6180309539071938c5e3c3c9a10"
+  },
+  "frontend/src/services/auth-api.ts": {
+    "mtime": 1792526104.4818943,
+    "seen": 1792605053.8488314,
+    "ast_hash": "e26a46b80f1a0f30c115ced162c17be4",
+    "semantic_hash": "e26a46b80f1a0f30c115ced162c17be4"
+  },
+  "frontend/src/services/reports-api.ts": {
+    "mtime": 1792586871.393586,
+    "seen": 1792605053.8488314,
+    "ast_hash": "34608e3eba80b61a804dc19dec705434",
+    "semantic_hash": "34608e3eba80b61a804dc19dec705434"
+  },
+  "frontend/src/sync/__tests__/sync-manager.spec.ts": {
+    "mtime": 1792533113.285098,
+    "seen": 1792605053.8488314,
+    "ast_hash": "5a716048db18a03a9b76c726aacc4dd2",
+    "semantic_hash": "5a716048db18a03a9b76c726aacc4dd2"
+  },
+  "frontend/src/sync/pruning.ts": {
+    "mtime": 1792337456.0255327,
+    "seen": 1792605053.8488314,
+    "ast_hash": "2e4a2ad5e7398d52884368ce2a6cd18a",
+    "semantic_hash": "2e4a2ad5e7398d52884368ce2a6cd18a"
+  },
+  "frontend/src/sync/sync-manager.ts": {
+    "mtime": 1792585768.3363316,
+    "seen": 1792605053.8488314,
+    "ast_hash": "5ba0e7162da1328a47641ee2b1d5eb8e",
+    "semantic_hash": "5ba0e7162da1328a47641ee2b1d5eb8e"
+  },
+  "frontend/src/test/setup.ts": {
+    "mtime": 1792340568.3813891,
+    "seen": 1792605053.8488314,
+    "ast_hash": "e9a595829c317eb88e832c4c8b3ab0ad",
+    "semantic_hash": "e9a595829c317eb88e832c4c8b3ab0ad"
+  },
+  "frontend/src/theme/tokens.ts": {
+    "mtime": 1792336924.4944656,
+    "seen": 1792605053.8488314,
+    "ast_hash": "b0c7009d1a5d5e5ef53ce772358055b4",
+    "semantic_hash": "b0c7009d1a5d5e5ef53ce772358055b4"
+  },
+  "frontend/tailwind.config.js": {
+    "mtime": 1792336924.4949987,
+    "seen": 1792605053.8488314,
+    "ast_hash": "3fc086557030a0d47d202e93cbefae81",
+    "semantic_hash": "3fc086557030a0d47d202e93cbefae81"
+  },
+  "frontend/test-results/.last-run.json": {
+    "mtime": 1792527912.2177782,
+    "seen": 1792605053.8488314,
+    "ast_hash": "f196824657d8858bc7fa44eecbba38b1",
+    "semantic_hash": "f196824657d8858bc7fa44eecbba38b1"
+  },
+  "frontend/tsconfig.json": {
+    "mtime": 1792340568.382982,
+    "seen": 1792605053.8488314,
+    "ast_hash": "b3aa4a1df2ca2ed940f4016d4b56a6cb",
+    "semantic_hash": "b3aa4a1df2ca2ed940f4016d4b56a6cb"
+  },
+  "frontend/vite.config.ts": {
+    "mtime": 1792336924.4965768,
+    "seen": 1792605053.8488314,
+    "ast_hash": "73c71646aaed95066ff36e327ee7f06d",
+    "semantic_hash": "73c71646aaed95066ff36e327ee7f06d"
+  },
+  "frontend/vitest.config.ts": {
+    "mtime": 1792336924.4975672,
+    "seen": 1792605053.8488314,
+    "ast_hash": "e19ecd7ec92d438cf35a8432cd64b430",
+    "semantic_hash": "e19ecd7ec92d438cf35a8432cd64b430"
+  },
+  "onpspec.config.json": {
+    "mtime": 1792264629.967633,
+    "seen": 1792605053.8488314,
+    "ast_hash": "fb746e292d090036e1670b96afd0c666",
+    "semantic_hash": "fb746e292d090036e1670b96afd0c666"
+  },
+  "package.json": {
+    "mtime": 1792503090.9241688,
+    "seen": 1792605053.8488314,
+    "ast_hash": "214e7706c53e90d9ec173f44dc092e31",
+    "semantic_hash": "214e7706c53e90d9ec173f44dc092e31"
+  },
+  "shared/package.json": {
+    "mtime": 1792335907.6242526,
+    "seen": 1792605053.8488314,
+    "ast_hash": "10399cc08da5f154f41475ede3c3fc47",
+    "semantic_hash": "10399cc08da5f154f41475ede3c3fc47"
+  },
+  "shared/src/__tests__/password-policy.spec.ts": {
+    "mtime": 1792525800.81521,
+    "seen": 1792605053.8488314,
+    "ast_hash": "1c5864d9a6b4f5014db570f56b3cf0d9",
+    "semantic_hash": "1c5864d9a6b4f5014db570f56b3cf0d9"
+  },
+  "shared/src/__tests__/shared-domain.spec.ts": {
+    "mtime": 1792335907.6252856,
+    "seen": 1792605053.8488314,
+    "ast_hash": "a5ad6ec21fd3959c947c6eb60e6ba1ef",
+    "semantic_hash": "a5ad6ec21fd3959c947c6eb60e6ba1ef"
+  },
+  "shared/src/domain/business-hours.ts": {
+    "mtime": 1792335907.62632,
+    "seen": 1792605053.8488314,
+    "ast_hash": "55341d3877f60b47e2fc9da71b9ee1f1",
+    "semantic_hash": "55341d3877f60b47e2fc9da71b9ee1f1"
+  },
+  "shared/src/domain/password-policy.ts": {
+    "mtime": 1792525824.8547897,
+    "seen": 1792605053.8488314,
+    "ast_hash": "e404238fa4baaaa147210d9e7a998011",
+    "semantic_hash": "e404238fa4baaaa147210d9e7a998011"
+  },
+  "shared/src/domain/smart-return.ts": {
+    "mtime": 1792335907.6273658,
+    "seen": 1792605053.8488314,
+    "ast_hash": "6b3410095f236b93e8dfedde812de673",
+    "semantic_hash": "6b3410095f236b93e8dfedde812de673"
+  },
+  "shared/src/financial/calculator.ts": {
+    "mtime": 1792335907.6284106,
+    "seen": 1792605053.8488314,
+    "ast_hash": "04efb81263c7386520edcd0d9169130f",
+    "semantic_hash": "04efb81263c7386520edcd0d9169130f"
+  },
+  "shared/src/financial/installments.ts": {
+    "mtime": 1792335907.6289299,
+    "seen": 1792605053.8488314,
+    "ast_hash": "a4d16fbd1e3e53947facbf4f4b655bc2",
+    "semantic_hash": "a4d16fbd1e3e53947facbf4f4b655bc2"
+  },
+  "shared/src/index.ts": {
+    "mtime": 1792525834.2836814,
+    "seen": 1792605053.8488314,
+    "ast_hash": "d787f095eae960aa7e144271a72243e8",
+    "semantic_hash": "d787f095eae960aa7e144271a72243e8"
+  },
+  "shared/src/types/appointment.ts": {
+    "mtime": 1792515446.4055681,
+    "seen": 1792605053.8488314,
+    "ast_hash": "42261b0648c3c07ef42e2916bd23cdff",
+    "semantic_hash": "42261b0648c3c07ef42e2916bd23cdff"
+  },
+  "shared/src/types/auth.ts": {
+    "mtime": 1792525815.5928848,
+    "seen": 1792605053.8488314,
+    "ast_hash": "323db36f13488898159b90f9004c04e6",
+    "semantic_hash": "323db36f13488898159b90f9004c04e6"
+  },
+  "shared/src/types/business-hours.ts": {
+    "mtime": 1792518812.7701454,
+    "seen": 1792605053.8488314,
+    "ast_hash": "cd8079d4267f4bc7526b23d45c82c5a5",
+    "semantic_hash": "cd8079d4267f4bc7526b23d45c82c5a5"
+  },
+  "shared/src/types/financial.ts": {
+    "mtime": 1792516862.0226552,
+    "seen": 1792605053.8488314,
+    "ast_hash": "500fdcd9ed5ffca5d99c982c21d6e6e9",
+    "semantic_hash": "500fdcd9ed5ffca5d99c982c21d6e6e9"
+  },
+  "shared/src/types/patient.ts": {
+    "mtime": 1792264629.9734993,
+    "seen": 1792605053.8488314,
+    "ast_hash": "44f794652b61979915057d0968d2606e",
+    "semantic_hash": "44f794652b61979915057d0968d2606e"
+  },
+  "shared/src/types/procedure.ts": {
+    "mtime": 1792515430.1071556,
+    "seen": 1792605053.8488314,
+    "ast_hash": "d74e9c8a534209ca6e1f10d6ee4265c4",
+    "semantic_hash": "d74e9c8a534209ca6e1f10d6ee4265c4"
+  },
+  "shared/src/types/report.ts": {
+    "mtime": 1792519908.328711,
+    "seen": 1792605053.8488314,
+    "ast_hash": "64908da60f47d9ba4ef43b1c0fe274a5",
+    "semantic_hash": "64908da60f47d9ba4ef43b1c0fe274a5"
+  },
+  "shared/src/types/whatsapp.ts": {
+    "mtime": 1792522736.2204442,
+    "seen": 1792605053.8488314,
+    "ast_hash": "1fba6f18e35711191f5493b13d5d15d3",
+    "semantic_hash": "1fba6f18e35711191f5493b13d5d15d3"
+  },
+  "shared/tsconfig.json": {
+    "mtime": 1792261321.64179,
+    "seen": 1792605053.8488314,
+    "ast_hash": "fd9b5d31cfe2e8866b8dae199d9cc00d",
+    "semantic_hash": "fd9b5d31cfe2e8866b8dae199d9cc00d"
+  },
+  "tsconfig.base.json": {
+    "mtime": 1792264629.9745696,
+    "seen": 1792605053.8488314,
+    "ast_hash": "17d22e8b9942075032f1432047d400d5",
+    "semantic_hash": "17d22e8b9942075032f1432047d400d5"
+  },
+  "vitest.config.ts": {
+    "mtime": 1792336924.500707,
+    "seen": 1792605053.8488314,
+    "ast_hash": "837a38afa179a61cc01cc16711be7d3e",
+    "semantic_hash": "837a38afa179a61cc01cc16711be7d3e"
+  }
+}

@@ -1,0 +1,199 @@
+{
+  "runId": "App-Agenda-Consultório-melhorias-financeiro-agenda-gestao-mvi34e0e",
+  "feature": "melhorias-financeiro-agenda-gestao",
+  "agent": "antigravity",
+  "modo": "paralelo",
+  "paralelizar": null,
+  "modeloForcado": null,
+  "esforcoForcado": null,
+  "geradoEm": "2026-10-21 12:24",
+  "branchTrabalho": "spec/melhorias-financeiro-agenda-gestao",
+  "baseDir": ".spec/features/melhorias-financeiro-agenda-gestao",
+  "specDir": ".spec",
+  "repoName": "App-Agenda-Consultório",
+  "logsDir": "../onp-worktrees/App-Agenda-Consultório-melhorias-financeiro-agenda-gestao-logs",
+  "ondas": [
+    [
+      "faixa-1",
+      "faixa-2",
+      "faixa-3"
+    ],
+    [
+      "faixa-4",
+      "faixa-5"
+    ]
+  ],
+  "faixas": [
+    {
+      "id": "faixa-1",
+      "branch": "spec/melhorias-financeiro-agenda-gestao-faixa-1",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-melhorias-financeiro-agenda-gestao-faixa-1",
+      "tarefas": [
+        {
+          "id": "T-001",
+          "titulo": "Navegação Temporal Coerente e Interação no Grid da Agenda",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "frontend/src/features/agenda/components/ScheduleGrid.tsx",
+            "frontend/src/App.tsx"
+          ],
+          "refs": [
+            "US-106",
+            "AC-183"
+          ]
+        },
+        {
+          "id": "T-007",
+          "titulo": "Alerta de Inadimplência, Isolamento Estrito de Dados, Persistência de Shell e Token em Relatórios",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "frontend/src/features/patients/components/PatientCard.tsx",
+            "frontend/src/features/patients/components/PatientList.tsx",
+            "frontend/src/features/patients/components/PatientFinancialDrawer.tsx",
+            "frontend/src/App.tsx",
+            "frontend/src/features/analytics/components/ReportsView.tsx",
+            "frontend/src/services/reports-api.ts"
+          ],
+          "refs": [
+            "US-110",
+            "US-111",
+            "AC-191",
+            "AC-192"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "faixa-2",
+      "branch": "spec/melhorias-financeiro-agenda-gestao-faixa-2",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-melhorias-financeiro-agenda-gestao-faixa-2",
+      "tarefas": [
+        {
+          "id": "T-002",
+          "titulo": "Blindagem de Sincronização Pull Contra Sobrescrita de Status Recentes",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "frontend/src/sync/sync-manager.ts"
+          ],
+          "refs": [
+            "US-106",
+            "AC-184"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "faixa-3",
+      "branch": "spec/melhorias-financeiro-agenda-gestao-faixa-3",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-melhorias-financeiro-agenda-gestao-faixa-3",
+      "tarefas": [
+        {
+          "id": "T-003",
+          "titulo": "Parcelamento no Cartão, Vencimentos Individuais e Edição Livre de Valores no Checkout",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "frontend/src/features/checkout/components/CheckoutDrawer.tsx",
+            "frontend/src/features/checkout/components/InstallmentsForm.tsx",
+            "frontend/src/features/checkout/components/ItemPriceEditor.tsx"
+          ],
+          "refs": [
+            "US-107",
+            "AC-185",
+            "AC-186"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "faixa-4",
+      "branch": "spec/melhorias-financeiro-agenda-gestao-faixa-4",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-melhorias-financeiro-agenda-gestao-faixa-4",
+      "tarefas": [
+        {
+          "id": "T-004",
+          "titulo": "Filtros Temporais Avançados, Busca Textual Normalizada e Exportação CSV Enriquecida",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "frontend/src/features/analytics/components/FinancialLedger.tsx"
+          ],
+          "refs": [
+            "US-108",
+            "AC-187",
+            "AC-188"
+          ]
+        },
+        {
+          "id": "T-005",
+          "titulo": "Modal de Detalhes, Edição, Estorno e Soft-Delete de Transações Financeiras",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "frontend/src/features/analytics/components/TransactionDetailModal.tsx",
+            "frontend/src/features/analytics/components/FinancialLedger.tsx",
+            "frontend/src/db/repositories/financial-local-repository.ts"
+          ],
+          "refs": [
+            "US-108",
+            "AC-189"
+          ]
+        },
+        {
+          "id": "T-006",
+          "titulo": "Gestão Avançada de Despesas: Reset de Formulário, Status Pendente, Parcelamento e Recorrência",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "frontend/src/features/checkout/components/QuickExpenseModal.tsx",
+            "frontend/src/db/repositories/financial-local-repository.ts"
+          ],
+          "refs": [
+            "US-109",
+            "AC-190"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "faixa-5",
+      "branch": "spec/melhorias-financeiro-agenda-gestao-faixa-5",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-melhorias-financeiro-agenda-gestao-faixa-5",
+      "tarefas": [
+        {
+          "id": "T-008",
+          "titulo": "Suíte de Testes Automatizados TDD Integrada e Prova Mecânica",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "frontend/src/features/analytics/__tests__/melhorias-financeiro-agenda-gestao.spec.tsx"
+          ],
+          "refs": [
+            "US-106",
+            "US-107",
+            "US-108",
+            "US-109",
+            "US-110",
+            "US-111",
+            "AC-183",
+            "AC-184",
+            "AC-185",
+            "AC-186",
+            "AC-187",
+            "AC-188",
+            "AC-189",
+            "AC-190",
+            "AC-191",
+            "AC-192"
+          ]
+        }
+      ]
+    }
+  ],
+  "sequenciais": [],
+  "concluidas": [],
+  "avisos": []
+}

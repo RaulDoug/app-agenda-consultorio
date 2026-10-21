@@ -1,0 +1,114 @@
+{
+  "runId": "App-Agenda-Consultório-financeiro-frontend-relatorios-mvi017t1",
+  "feature": "financeiro-frontend-relatorios",
+  "agent": "antigravity",
+  "modo": "sequencial",
+  "paralelizar": null,
+  "modeloForcado": null,
+  "esforcoForcado": null,
+  "geradoEm": "2026-10-21 10:58",
+  "branchTrabalho": "spec/financeiro-frontend-relatorios",
+  "baseDir": ".spec/features/financeiro-frontend-relatorios",
+  "specDir": ".spec",
+  "repoName": "App-Agenda-Consultório",
+  "logsDir": "../onp-worktrees/App-Agenda-Consultório-financeiro-frontend-relatorios-logs",
+  "ondas": [],
+  "faixas": [],
+  "sequenciais": [
+    {
+      "id": "T-001",
+      "titulo": "Extrato Financeiro Detalhado Mobile-First e Filtros Avançados (Ledger)",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "frontend/src/features/analytics/components/FinancialLedger.tsx",
+        "frontend/src/features/analytics/components/CashFlowDashboard.tsx"
+      ],
+      "refs": [
+        "US-101",
+        "AC-178"
+      ]
+    },
+    {
+      "id": "T-002",
+      "titulo": "Baixa em Lote com Ergonomia One-Thumb e Bottom Sheet de Confirmação",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "frontend/src/db/repositories/financial-local-repository.ts",
+        "frontend/src/features/analytics/components/ReceivablesList.tsx",
+        "frontend/src/features/analytics/components/BatchSettleModal.tsx"
+      ],
+      "refs": [
+        "US-102",
+        "AC-179"
+      ]
+    },
+    {
+      "id": "T-003",
+      "titulo": "Gestão Dinâmica e Seleção de Categorias Financeiras",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "frontend/src/features/checkout/components/QuickExpenseModal.tsx",
+        "frontend/src/db/repositories/financial-local-repository.ts"
+      ],
+      "refs": [
+        "US-103",
+        "AC-180"
+      ]
+    },
+    {
+      "id": "T-004",
+      "titulo": "Conector Híbrido de Relatórios e Revalidação Server-Side",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "frontend/src/services/reports-api.ts",
+        "frontend/src/features/analytics/components/ReportsView.tsx"
+      ],
+      "refs": [
+        "US-104",
+        "AC-181"
+      ]
+    },
+    {
+      "id": "T-005",
+      "titulo": "Prontuário Financeiro no Detalhe do Paciente via Bottom Drawer",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "frontend/src/features/patients/components/PatientFinancialDrawer.tsx",
+        "frontend/src/features/patients/components/PatientList.tsx",
+        "frontend/src/features/patients/components/PatientCard.tsx"
+      ],
+      "refs": [
+        "US-105",
+        "AC-182"
+      ]
+    },
+    {
+      "id": "T-006",
+      "titulo": "Suíte de Testes Automatizados TDD e Prova Mecânica",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "frontend/src/features/analytics/__tests__/financeiro-relatorios.spec.tsx"
+      ],
+      "refs": [
+        "US-101",
+        "US-102",
+        "US-103",
+        "US-104",
+        "US-105",
+        "AC-178",
+        "AC-179",
+        "AC-180",
+        "AC-181",
+        "AC-182"
+      ]
+    }
+  ],
+  "concluidas": [],
+  "avisos": []
+}

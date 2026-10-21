@@ -153,11 +153,17 @@ describe('Sprint FE-4: Gestão Financeira de Caixa, Conexão WhatsApp e Reativa�
     expect(row.textContent).toContain('Parcela 2/3 - Carlos');
     expect(row.textContent).toContain('R$ 200.00');
 
-    const markPaidBtn = screen.getByRole('button', { name: /Dar Baixa/i });
+    const markPaidBtn = screen.getByRole('button', { name: /Dar Baixa|Baixa/i });
     fireEvent.click(markPaidBtn);
 
+    // Modal abre para seleção de forma de pagamento e confirmação
+    expect(screen.getByTestId('batch-settle-modal')).toBeInTheDocument();
+    expect(screen.getByText('Baixa de Parcela')).toBeInTheDocument();
+    fireEvent.click(screen.getByTestId('btn-method-pix'));
+    fireEvent.click(screen.getByTestId('btn-confirm-batch-settle'));
+
     await waitFor(async () => {
-      expect(onMarkPaidMock).toHaveBeenCalledWith(pendingTx.id);
+      expect(onMarkPaidMock).toHaveBeenCalledWith(pendingTx.id, 'PIX', expect.any(String));
 
       // Confirma que o status no Dexie mudou para PAID
       const updatedInDb = await testDb.financial_transactions.get(pendingTx.id);

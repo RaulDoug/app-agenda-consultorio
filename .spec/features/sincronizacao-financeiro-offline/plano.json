@@ -1,0 +1,105 @@
+{
+  "runId": "App-Agenda-Consultório-sincronizacao-financeiro-offline-mvidkz6j",
+  "feature": "sincronizacao-financeiro-offline",
+  "agent": "antigravity",
+  "modo": "paralelo",
+  "paralelizar": null,
+  "modeloForcado": null,
+  "esforcoForcado": null,
+  "geradoEm": "2026-10-21 17:17",
+  "branchTrabalho": "spec/sincronizacao-financeiro-offline",
+  "baseDir": ".spec/features/sincronizacao-financeiro-offline",
+  "specDir": ".spec",
+  "repoName": "App-Agenda-Consultório",
+  "logsDir": "../onp-worktrees/App-Agenda-Consultório-sincronizacao-financeiro-offline-logs",
+  "ondas": [
+    [
+      "faixa-1",
+      "faixa-2",
+      "faixa-3"
+    ]
+  ],
+  "faixas": [
+    {
+      "id": "faixa-1",
+      "branch": "spec/sincronizacao-financeiro-offline-faixa-1",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-sincronizacao-financeiro-offline-faixa-1",
+      "tarefas": [
+        {
+          "id": "T-001",
+          "titulo": "Ingestão e Upsert de Transações Financeiras com LWW no Sync Batch",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "backend/src/routes/sync.ts"
+          ],
+          "refs": [
+            "US-112",
+            "AC-193",
+            "AC-194"
+          ]
+        },
+        {
+          "id": "T-002",
+          "titulo": "Suporte a Procedimentos Cadastrados Offline no Sync Batch",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "backend/src/routes/sync.ts"
+          ],
+          "refs": [
+            "US-112",
+            "AC-193"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "faixa-2",
+      "branch": "spec/sincronizacao-financeiro-offline-faixa-2",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-sincronizacao-financeiro-offline-faixa-2",
+      "tarefas": [
+        {
+          "id": "T-003",
+          "titulo": "Blindagem de Sincronização e Restauração no Frontend",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "frontend/src/sync/sync-manager.ts",
+            "frontend/src/features/auth/hooks/AuthContext.tsx"
+          ],
+          "refs": [
+            "US-113",
+            "AC-195"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "faixa-3",
+      "branch": "spec/sincronizacao-financeiro-offline-faixa-3",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-sincronizacao-financeiro-offline-faixa-3",
+      "tarefas": [
+        {
+          "id": "T-004",
+          "titulo": "Suíte de Testes Automatizados TDD Integrada e Prova Mecânica",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "backend/src/routes/__tests__/sincronizacao-financeiro-offline.spec.ts"
+          ],
+          "refs": [
+            "US-112",
+            "US-113",
+            "AC-193",
+            "AC-194",
+            "AC-195"
+          ]
+        }
+      ]
+    }
+  ],
+  "sequenciais": [],
+  "concluidas": [],
+  "avisos": []
+}

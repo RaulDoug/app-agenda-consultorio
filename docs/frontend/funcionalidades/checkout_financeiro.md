@@ -20,9 +20,17 @@ Fluxo de conclusão de consulta e baixa financeira realizado diretamente na cade
 ---
 
 ## 3. Regras de Interação e Negócio
-1. **Rateio Automático de Descontos:**
-   - Descontos aplicados (em R$ ou %) são distribuídos proporcionalmente entre os itens de procedimento da consulta para manter o custo individualizado.
-2. **Registro Financeiro Vinculado:**
-   - A finalização do checkout gera registros na tabela local `financial_transactions` com status pago e atualiza o status do agendamento para `COMPLETED`.
-3. **Persistência Atômica:**
-   - As alterações de status da consulta e a criação da receita/parcelas ocorrem em transação única no Dexie com gravação em lote na `sync_outbox`.
+1. **Preservação do Preço Base de Tabela dos Procedimentos:**
+   - O preço base dos procedimentos (`basePriceCents`) permanece fixo e inalterado na interface, representando fielmente o valor de tabela cadastrado.
+2. **Ajuste Direto pelo Total Final Cobrado:**
+   - A alteração do valor da consulta é realizada centralizadamente no campo **Total Final Cobrado**, evitando divergências ou modificações manuais conflitantes nos itens individuais.
+3. **Indicador de Variação Assinada (Desconto ou Acréscimo):**
+   - Se o valor final for superior ao subtotal: exibe indicador de **Acréscimo** com porcentagem positiva (ex: `+ R$ 50,00 (+14.3%)`) e destaque visual em verde.
+   - Se o valor final for inferior ao subtotal: exibe indicador de **Desconto** com porcentagem negativa (ex: `- R$ 50,00 (-14.3%)`) e destaque visual em âmbar.
+4. **Rateio Proporcional Ponderado (`effectivePriceCents`):**
+   - Tanto descontos quanto acréscimos são distribuídos proporcionalmente aos pesos de cada procedimento no subtotal, calculando o `effectivePriceCents` de cada item e mantendo `basePriceCents` intacto.
+5. **Formas de Pagamento e Parcelamento:**
+   - O método `CARTAO_CREDITO` é liquidado à vista em parcela única (sem opção de parcelamento direto no checkout).
+   - O parcelamento com múltiplos vencimentos é exclusivo da opção `PARCELADO` (carnê / promissória / parcelamento próprio).
+6. **Registro Financeiro Vinculado e Persistência Atômica:**
+   - A finalização do checkout gera registros na tabela local `financial_transactions` com status pago (ou pendente para parcelas futuras) e atualiza o agendamento para `COMPLETED` com gravação na `sync_outbox`.
