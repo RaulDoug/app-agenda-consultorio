@@ -227,11 +227,15 @@ describe('Feature: exclusao-cadastro-paciente', () => {
       const confirmDeleteBtn = screen.getByTestId('btn-confirm-delete-patient');
       await user.click(confirmDeleteBtn);
 
-      // 7. Confirma que Marcos Aurelio foi removido reativamente da interface
-      await waitFor(() => {
-        expect(screen.queryByText('Marcos Aurelio')).toBeNull();
-        expect(screen.getByText('Juliana Paes')).toBeDefined();
-      });
+      // 7. Confirma que Marcos Aurelio foi removido reativamente da interface e o modal fechou
+      await waitFor(
+        () => {
+          expect(screen.queryByTestId('confirm-delete-patient-modal')).toBeNull();
+          expect(screen.queryAllByText('Marcos Aurelio')).toHaveLength(0);
+          expect(screen.getByText('Juliana Paes')).toBeDefined();
+        },
+        { timeout: 3000 }
+      );
 
       // 8. Confirma que Marcos Aurelio está com is_active: false no banco local
       const dbRecord = await testDb.patients.get(p1.id);

@@ -4,7 +4,7 @@
 import 'fake-indexeddb/auto';
 import React from 'react';
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { CliniAssistLocalDB } from '../../../db/local-db';
 import { AppointmentLocalRepository } from '../../../db/repositories/appointment-local-repository';
@@ -130,8 +130,9 @@ describe('Feature: agendamento-atalho-paciente-preselecionado', () => {
 
       // 4. A gaveta deve abrir com Roberta selecionada
       await waitFor(() => {
-        expect(screen.getByText('Roberta Atalho')).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: /Trocar/i })).toBeInTheDocument();
+        const dialog = screen.getByRole('dialog');
+        expect(within(dialog).getByText('Roberta Atalho')).toBeInTheDocument();
+        expect(within(dialog).getByRole('button', { name: /Trocar/i })).toBeInTheDocument();
       });
 
       // 5. Fecha a gaveta

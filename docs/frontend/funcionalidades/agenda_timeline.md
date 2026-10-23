@@ -38,3 +38,6 @@ Interface principal do aplicativo onde o profissional de saúde gerencia a agend
    - A soma do tempo estimado dos procedimentos vinculados calcula o horário final previsto da consulta.
 5. **Persistência Local-First:**
    - As criações e alterações são salvas via `AppointmentLocalRepository`, gravando no Dexie e enfileirando mutações na `sync_outbox`.
+6. **Agendamento Rápido com Paciente Pré-Selecionado (`initialPatient`):**
+   - Ao acionar o atalho "+ Agendar" a partir do card de um cliente (ou da lista de inativos), a gaveta `QuickAppointmentDrawer` abre imediatamente com o paciente selecionado e suas observações clínicas visíveis, permitindo troca via botão "Trocar".
+   - Ao fechar a gaveta ou abrir um agendamento avulso (via grade ou botão "+"), o estado é resetado, abrindo o formulário limpo para busca.

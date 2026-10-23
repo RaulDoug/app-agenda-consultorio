@@ -124,6 +124,10 @@ O OdontoFlow foi concebido para o **"Dentista-Operador"** que utiliza o sistema 
    - Cobrir os estados fundamentais: **Carregando, Vazio, Sucesso e Erro**.
 4. **Vínculo com Especificações (@spec:AC-xxx):**
    - Todo teste de critério de aceite DEVE conter a marcação `@spec:AC-xxx` no título para auditoria mecânica.
+5. **Escopo de Queries em Testes Integrados (`within` e `queryAllByText`):**
+   - Como o `App.tsx` mantém as abas ativas/inativas montadas no DOM (alternadas via classe CSS `hidden`), consultas globais por texto (`getByText`) podem encontrar duplicatas entre a tela oculta e um modal/drawer aberto.
+   - Em testes integrados de modais e gavetas, restrinja o escopo utilizando `within(screen.getByRole('dialog'))`.
+   - Para asserções de remoção reativa de elementos da tela sob concorrência, prefira `expect(screen.queryAllByText('...')).toHaveLength(0)` com timeout explícito no `waitFor` para evitar falso-positivo de múltiplos elementos.
 
 ---
 

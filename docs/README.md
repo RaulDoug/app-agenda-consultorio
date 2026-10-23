@@ -11,6 +11,8 @@ Bem-vindo à documentação central do **OdontoFlow**. Toda a especificação fo
   Visão de negócio, persona do *Dentista-Operador*, requisitos não-funcionais, épicos e histórias de usuário (`US1.1` a `US4.4`) e diagrama conceitual de entidades.
 * 📄 **[historico-alinhamento-po.md](./historico-alinhamento-po.md)**  
   Memória de contexto completa da sessão de concepção/alinhamento com os POs (decisões tomadas, alternativas rejeitadas e justificativas).
+* 📄 **[Roadmap_Testes_Manuais.md](./Roadmap_Testes_Manuais.md)**  
+  Roteiro estruturado de validação funcional e QA manual com **51 casos de teste** divididos em 9 fases, cobrindo casos de uso principais, fluxos *Offline-First* e *edge cases*.
 
 ### 2. Backend (`backend/`)
 * 📄 **[backend/Arquitetura_Backend.md](./backend/Arquitetura_Backend.md)**  

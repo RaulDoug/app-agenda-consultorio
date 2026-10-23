@@ -29,3 +29,5 @@ Gerenciamento completo da base de pacientes cadastrados no consultório. Focado 
    - Observações e alergias são exibidas em destaque durante o fluxo de agendamento e detalhes da consulta.
 4. **Exclusão Lógica (Soft-Delete Local):**
    - Ao excluir um paciente, o registro é marcado com `is_active: false` e enfileirado na `sync_outbox` como `DELETE` (ou update com soft-delete), desaparecendo da listagem ativa sem violar o histórico de atendimentos e transações passadas.
+5. **Modal de Confirmação Segura de Exclusão:**
+   - A ação de exclusão no card expandido ou no modal de edição aciona obrigatoriamente o `ConfirmDeletePatientModal`. O modal detalha o nome do paciente e avisa sobre a manutenção do histórico financeiro e relatórios passados antes de confirmar a exclusão lógica no Dexie.
