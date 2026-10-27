@@ -552,6 +552,7 @@ export const App: React.FC<AppProps> = ({
           connectedNumber={connectedNumber}
           onRefreshWhatsApp={handleRefreshWhatsapp}
           onDisconnectWhatsApp={handleDisconnectWhatsapp}
+          token={session?.token}
         />
       </div>
 

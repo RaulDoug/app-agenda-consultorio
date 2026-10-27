@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { SettingsLocalRepository, settingsRepo as defaultRepo, type BusinessHoursInput } from '../../../db/repositories/settings-local-repository.js';
 import type { LocalBusinessHours } from '../../../db/types.js';
 import { ScheduleBlocksManager } from './ScheduleBlocksManager.js';
-import { WhatsAppPairingView } from '../../analytics/components/WhatsAppPairingView.js';
+import { WhatsAppPairingView, type AutoReplyScope } from '../../analytics/components/WhatsAppPairingView.js';
 import { ClinicProfileCard } from './ClinicProfileCard.js';
 import { Clock, Check, Save } from 'lucide-react';
 
@@ -27,6 +27,9 @@ interface SettingsViewProps {
   connectedNumber?: string | null;
   onRefreshWhatsApp?: () => Promise<void>;
   onDisconnectWhatsApp?: () => Promise<void>;
+  token?: string;
+  autoReplyScope?: AutoReplyScope;
+  onAutoReplyScopeChange?: (scope: AutoReplyScope) => Promise<void> | void;
 }
 
 export const SettingsView: React.FC<SettingsViewProps> = ({
@@ -40,6 +43,9 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
   connectedNumber,
   onRefreshWhatsApp,
   onDisconnectWhatsApp,
+  token,
+  autoReplyScope,
+  onAutoReplyScopeChange,
 }) => {
   const [hours, setHours] = useState<LocalBusinessHours[]>([]);
   const [isSaving, setIsSaving] = useState(false);
@@ -245,6 +251,9 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
           connectedNumber={connectedNumber}
           onRefreshQrCode={onRefreshWhatsApp}
           onDisconnect={onDisconnectWhatsApp}
+          token={token}
+          initialScope={autoReplyScope}
+          onScopeChange={onAutoReplyScopeChange}
         />
       </div>
     </div>
