@@ -1,0 +1,74 @@
+{
+  "runId": "App-Agenda-Consultório-gabarito-templates-whatsapp-mvr3f9p1",
+  "feature": "gabarito-templates-whatsapp",
+  "agent": "antigravity",
+  "modo": "paralelo",
+  "paralelizar": null,
+  "modeloForcado": null,
+  "esforcoForcado": null,
+  "geradoEm": "2026-10-27 19:43",
+  "branchTrabalho": "spec/gabarito-templates-whatsapp",
+  "baseDir": ".spec/features/gabarito-templates-whatsapp",
+  "specDir": ".spec",
+  "repoName": "App-Agenda-Consultório",
+  "logsDir": "../onp-worktrees/App-Agenda-Consultório-gabarito-templates-whatsapp-logs",
+  "ondas": [
+    [
+      "faixa-1"
+    ]
+  ],
+  "faixas": [
+    {
+      "id": "faixa-1",
+      "branch": "spec/gabarito-templates-whatsapp-faixa-1",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-gabarito-templates-whatsapp-faixa-1",
+      "tarefas": [
+        {
+          "id": "T-153",
+          "titulo": "Implementar card informativo com gabarito de variáveis e Spintax no Frontend",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "frontend/src/features/whatsapp/components/WhatsappTemplatesDrawer.tsx",
+            "frontend/src/features/whatsapp/__tests__/WhatsappTemplatesDrawer.spec.tsx"
+          ],
+          "refs": [
+            "US-128",
+            "AC-227"
+          ]
+        },
+        {
+          "id": "T-154",
+          "titulo": "Adicionar chips de inserção rápida de variáveis nos campos de template",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "frontend/src/features/whatsapp/components/WhatsappTemplatesDrawer.tsx",
+            "frontend/src/features/whatsapp/__tests__/WhatsappTemplatesDrawer.spec.tsx"
+          ],
+          "refs": [
+            "US-128",
+            "AC-228"
+          ]
+        },
+        {
+          "id": "T-155",
+          "titulo": "Implementar prévia simulada em tempo real com dados de exemplo",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "frontend/src/features/whatsapp/components/WhatsappTemplatesDrawer.tsx",
+            "frontend/src/features/whatsapp/__tests__/WhatsappTemplatesDrawer.spec.tsx"
+          ],
+          "refs": [
+            "US-128",
+            "AC-229"
+          ]
+        }
+      ]
+    }
+  ],
+  "sequenciais": [],
+  "concluidas": [],
+  "avisos": []
+}

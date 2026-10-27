@@ -93,6 +93,7 @@ export interface WhatsappQueueItem {
   last_inbound_at?: string | null;
   enqueued_job_id?: string | null;
   enqueued_delay_ms?: number | null;
+  is_replied?: boolean;
 }
 
 export interface WhatsappQueueListResponse {

@@ -68,3 +68,10 @@ O subsistema de Mensageria WhatsApp gerencia a comunicação automatizada entre 
    - O método `hasAutoReplySentToday` verifica se o paciente já recebeu réplica automática no dia civil corrente (`00:00:00` às `23:59:59` no fuso local).
    - Novas mensagens recebidas de um mesmo paciente no mesmo dia continuam sendo gravadas como `INBOUND` para acompanhamento no painel, mas o envio de réplica na Evolution API é suprimido (`reply_sent: false`), evitando mensagens robóticas maçantes e repetitivas.
    - Mensagens livres subsequentes de um paciente que já está em `RESCHEDULE_REQUESTED` ou `CONFIRMED` não rebaixam o status da consulta para `MESSAGE_RECEIVED`.
+
+8. **Resolução de Resposta e Aviso de Remarcação na Fila (`AC-224`, `AC-225`, `AC-226`):**
+   - A tabela `appointments` possui a coluna `whatsapp_inbound_resolved BOOLEAN DEFAULT FALSE`.
+   - O repositório calcula o estado `is_replied`: verdadeiro se `whatsapp_inbound_resolved = true` ou se houver mensagem `OUTBOUND` posterior ao último `INBOUND` (`last_outbound_at >= last_inbound_at`).
+   - Rota `POST /api/whatsapp/queue/:appointmentId/reply`:
+     - Ação `mark_resolved`: marca a resposta como atendida sem enviar mensagem adicional.
+     - Ação `send_notice`: dispara mensagem informando a nova data e horário remarcados, grava o registro `OUTBOUND` e marca a pendência como respondida.

@@ -18,6 +18,8 @@ describe('WhatsappQueueView — Componentes e Interações da Central de Fila (T
   const mockTriggerBatch = vi.fn();
   const mockSaveSettings = vi.fn();
   const mockResolveStatus = vi.fn();
+  const mockMarkInboundReplied = vi.fn();
+  const mockSendRescheduleNotice = vi.fn();
   const mockSetDateFilter = vi.fn();
   const mockSetCategoryFilter = vi.fn();
   const mockRefresh = vi.fn();
@@ -96,6 +98,8 @@ describe('WhatsappQueueView — Componentes e Interações da Central de Fila (T
       triggerBatch: mockTriggerBatch,
       saveSettings: mockSaveSettings,
       resolveStatus: mockResolveStatus,
+      markInboundReplied: mockMarkInboundReplied,
+      sendRescheduleNotice: mockSendRescheduleNotice,
     });
   });
 
@@ -318,6 +322,187 @@ describe('WhatsappQueueView — Componentes e Interações da Central de Fila (T
         })
       );
     });
+  });
+
+  it('AC-224: Ocultação do botão de reagendamento após conclusão da remarcação @spec:AC-224', () => {
+    const rescheduledConfirmedItem = {
+      appointment_id: 'app-rescheduled',
+      patient_id: 'pat-99',
+      patient_name: 'Roberto Silva',
+      phone: '11988887777',
+      appointment_start_time: '2026-10-29T10:00:00Z',
+      appointment_end_time: '2026-10-29T10:30:00Z',
+      appointment_status: 'CONFIRMED',
+      queue_category: 'CONFIRMED',
+      queue_order: 1,
+      queue_excluded: false,
+      preview_message: 'Olá Roberto, sua consulta está confirmada.',
+      custom_message: null,
+      last_outbound_at: null,
+      last_inbound_text: 'Quero remarcar para outro dia',
+      last_inbound_at: '2026-10-27T10:15:00Z',
+      is_replied: false,
+      enqueued_job_id: null,
+      enqueued_delay_ms: null,
+    };
+
+    (hookModule.useWhatsappQueue as any).mockReturnValue({
+      items: [rescheduledConfirmedItem],
+      allItems: [rescheduledConfirmedItem],
+      counts: { total: 1, pending_queue: 0, awaiting_reply: 0, confirmed: 1, reschedule_requested: 0, human_attention: 0 },
+      queuePaused: false,
+      pendingJobsCount: 0,
+      loading: false,
+      error: null,
+      dateFilter: 'today',
+      setDateFilter: mockSetDateFilter,
+      categoryFilter: 'ALL',
+      setCategoryFilter: mockSetCategoryFilter,
+      settings: null,
+      refresh: mockRefresh,
+      sendNow: mockSendNow,
+      exclude: mockExclude,
+      updateMessage: mockUpdateMessage,
+      reorder: mockReorder,
+      togglePause: mockTogglePause,
+      triggerBatch: mockTriggerBatch,
+      saveSettings: mockSaveSettings,
+      resolveStatus: mockResolveStatus,
+      markInboundReplied: mockMarkInboundReplied,
+      sendRescheduleNotice: mockSendRescheduleNotice,
+    });
+
+    render(<WhatsappQueueView token="test" />);
+
+    // O botão "Reagendar Consulta" NÃO deve existir, pois a consulta já está confirmada/reagendada
+    expect(screen.queryByTestId('btn-resolve-reschedule-app-rescheduled')).not.toBeInTheDocument();
+    // Em seu lugar, deve estar o botão de enviar aviso da nova data
+    expect(screen.getByTestId('btn-send-reschedule-notice-app-rescheduled')).toBeInTheDocument();
+  });
+
+  it('AC-225: Exibição de opções de resposta enquanto o paciente aguarda retorno @spec:AC-225', () => {
+    const awaitingReplyItem = {
+      appointment_id: 'app-awaiting',
+      patient_id: 'pat-100',
+      patient_name: 'Mariana Lima',
+      phone: '11988886666',
+      appointment_start_time: '2026-10-29T15:00:00Z',
+      appointment_end_time: '2026-10-29T15:30:00Z',
+      appointment_status: 'CONFIRMED',
+      queue_category: 'CONFIRMED',
+      queue_order: 1,
+      queue_excluded: false,
+      preview_message: 'Mensagem de confirmação',
+      custom_message: null,
+      last_outbound_at: null,
+      last_inbound_text: 'Remarca para às 15h por favor',
+      last_inbound_at: '2026-10-27T11:00:00Z',
+      is_replied: false,
+      enqueued_job_id: null,
+      enqueued_delay_ms: null,
+    };
+
+    (hookModule.useWhatsappQueue as any).mockReturnValue({
+      items: [awaitingReplyItem],
+      allItems: [awaitingReplyItem],
+      counts: { total: 1, pending_queue: 0, awaiting_reply: 0, confirmed: 1, reschedule_requested: 0, human_attention: 0 },
+      queuePaused: false,
+      pendingJobsCount: 0,
+      loading: false,
+      error: null,
+      dateFilter: 'today',
+      setDateFilter: mockSetDateFilter,
+      categoryFilter: 'ALL',
+      setCategoryFilter: mockSetCategoryFilter,
+      settings: null,
+      refresh: mockRefresh,
+      sendNow: mockSendNow,
+      exclude: mockExclude,
+      updateMessage: mockUpdateMessage,
+      reorder: mockReorder,
+      togglePause: mockTogglePause,
+      triggerBatch: mockTriggerBatch,
+      saveSettings: mockSaveSettings,
+      resolveStatus: mockResolveStatus,
+      markInboundReplied: mockMarkInboundReplied,
+      sendRescheduleNotice: mockSendRescheduleNotice,
+    });
+
+    render(<WhatsappQueueView token="test" />);
+
+    // Enquanto is_replied for false, deve exibir opções para responder
+    expect(screen.getByTestId('btn-send-reschedule-notice-app-awaiting')).toBeInTheDocument();
+    expect(screen.getByTestId('link-wa-chat-app-awaiting')).toBeInTheDocument();
+    expect(screen.getByTestId('btn-mark-replied-app-awaiting')).toBeInTheDocument();
+
+    // Ações acionam as funções correspondentes
+    fireEvent.click(screen.getByTestId('btn-send-reschedule-notice-app-awaiting'));
+    expect(mockSendRescheduleNotice).toHaveBeenCalledWith('app-awaiting');
+
+    fireEvent.click(screen.getByTestId('btn-mark-replied-app-awaiting'));
+    expect(mockMarkInboundReplied).toHaveBeenCalledWith('app-awaiting');
+  });
+
+  it('AC-226: Transição para estado de respondido e ocultação dos botões de resposta @spec:AC-226', () => {
+    const repliedItem = {
+      appointment_id: 'app-replied',
+      patient_id: 'pat-101',
+      patient_name: 'Mariana Lima',
+      phone: '11988886666',
+      appointment_start_time: '2026-10-29T15:00:00Z',
+      appointment_end_time: '2026-10-29T15:30:00Z',
+      appointment_status: 'CONFIRMED',
+      queue_category: 'CONFIRMED',
+      queue_order: 1,
+      queue_excluded: false,
+      preview_message: 'Mensagem de confirmação',
+      custom_message: null,
+      last_outbound_at: '2026-10-27T11:05:00Z',
+      last_inbound_text: 'Remarca para às 15h por favor',
+      last_inbound_at: '2026-10-27T11:00:00Z',
+      is_replied: true,
+      enqueued_job_id: null,
+      enqueued_delay_ms: null,
+    };
+
+    (hookModule.useWhatsappQueue as any).mockReturnValue({
+      items: [repliedItem],
+      allItems: [repliedItem],
+      counts: { total: 1, pending_queue: 0, awaiting_reply: 0, confirmed: 1, reschedule_requested: 0, human_attention: 0 },
+      queuePaused: false,
+      pendingJobsCount: 0,
+      loading: false,
+      error: null,
+      dateFilter: 'today',
+      setDateFilter: mockSetDateFilter,
+      categoryFilter: 'ALL',
+      setCategoryFilter: mockSetCategoryFilter,
+      settings: null,
+      refresh: mockRefresh,
+      sendNow: mockSendNow,
+      exclude: mockExclude,
+      updateMessage: mockUpdateMessage,
+      reorder: mockReorder,
+      togglePause: mockTogglePause,
+      triggerBatch: mockTriggerBatch,
+      saveSettings: mockSaveSettings,
+      resolveStatus: mockResolveStatus,
+      markInboundReplied: mockMarkInboundReplied,
+      sendRescheduleNotice: mockSendRescheduleNotice,
+    });
+
+    render(<WhatsappQueueView token="test" />);
+
+    // Os botões de resposta e reagendamento devem estar ocultos
+    expect(screen.queryByTestId('btn-send-reschedule-notice-app-replied')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('link-wa-chat-app-replied')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('btn-mark-replied-app-replied')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('btn-resolve-reschedule-app-replied')).not.toBeInTheDocument();
+
+    // Deve exibir o badge de Respondido
+    const badge = screen.getByTestId('badge-replied-app-replied');
+    expect(badge).toBeInTheDocument();
+    expect(badge).toHaveTextContent('Respondido');
   });
 });
 

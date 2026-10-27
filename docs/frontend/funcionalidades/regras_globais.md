@@ -231,6 +231,35 @@ O OdontoFlow foi concebido para o **"Dentista-Operador"** que utiliza o sistema 
 2. **Abertura do Modal de Remarcação Integrado:**
    - O acionamento do botão abre o `RescheduleModal` repassando os dados do agendamento, permitindo a seleção da nova data/horário e disparando a sincronização imediata (`runSync`) ao concluir a remarcação.
 
+---
 
+## 13. Resolução de Reagendamento e Estado de Resposta ao Paciente na Fila WhatsApp (AC-224, AC-225, AC-226)
 
+1. **Ocultação Imediata Pós-Remarcação (AC-224):**
+   - Ao concluir a remarcação de uma consulta no modal, o status transita para `CONFIRMED` e a opção 'Reagendar Consulta' é imediatamente ocultada do card.
+2. **Ações de Comunicação Disponíveis enquanto Não Respondido (AC-225):**
+   - Enquanto `is_replied = false`, o card disponibiliza botões para enviar aviso da nova data/horário em 1 clique (`btn-send-reschedule-notice`), abrir o WhatsApp Web (`link-wa-chat`) e marcar manualmente como respondido (`btn-mark-replied`).
+3. **Transição Visual para Estado Respondido (AC-226):**
+   - Ao registrar uma resposta (envio de aviso, detecção de outbound posterior ou marcação manual), todos os botões de resposta são ocultados e o card passa a exibir o badge permanente `✓ Respondido`.
 
+---
+
+## 14. Gabarito de Variáveis e Auxiliares de Spintax em Templates de WhatsApp (AC-227, AC-228, AC-229)
+
+1. **Gabarito Visual de Variáveis (AC-227):**
+   - Na gaveta de configuração de mensagens padrão (`WhatsappTemplatesDrawer`), exibir painel informativo de destaque explicando o uso de `{nome}`, `{data}`, `{horario}` e a sintaxe de Spintax `{opção1|opção2}` para prevenção de bloqueio por spam.
+2. **Atalhos de Inserção com 1 Clique (AC-228):**
+   - Cada área de texto deve dispor de chips clicáveis de inserção de tags para reduzir erros de sintaxe manual.
+3. **Prévia Simulada em Tempo Real (AC-229):**
+   - Apresentar balão com prévia imediata da mensagem interpolada com dados simulados para validação do usuário antes de salvar.
+
+---
+
+## 15. Cards Expansíveis (Accordion) e Salvamento Individual de Templates de WhatsApp (AC-230, AC-231, AC-232)
+
+1. **Estrutura em Accordion com Cards Expansíveis (AC-230):**
+   - Na gaveta de templates (`WhatsappTemplatesDrawer`), os modelos de mensagem são estruturados como cards individuais com cabeçalho clicável, ícone expansivo (`ChevronDown`/`ChevronUp`) e snippet resumido de texto quando recolhidos, permitindo alternar o foco visual em uma mensagem por vez.
+2. **Prévia Contextual dentro do Card Aberto (AC-231):**
+   - Cada card expandido renderiza sua própria simulação visual de balão do WhatsApp com resolução de variáveis simuladas (`Carlos`, `28/10`, `14:30`) e primeiro termo do Spintax.
+3. **Persistência Individual com Feedback Imediato (AC-232):**
+   - O botão `Salvar Mensagem` fica situado no rodapé de cada card expandido, disparando `onSave({ [template_field]: value })` apenas para a mensagem alterada, mantendo a gaveta aberta e exibindo badge verde de confirmação `✓ Salvo` por 3 segundos.

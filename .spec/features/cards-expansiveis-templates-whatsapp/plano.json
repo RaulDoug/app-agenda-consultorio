@@ -1,0 +1,74 @@
+{
+  "runId": "App-Agenda-Consultório-cards-expansiveis-templates-whatsapp-mvr3rliz",
+  "feature": "cards-expansiveis-templates-whatsapp",
+  "agent": "antigravity",
+  "modo": "paralelo",
+  "paralelizar": null,
+  "modeloForcado": null,
+  "esforcoForcado": null,
+  "geradoEm": "2026-10-27 19:52",
+  "branchTrabalho": "spec/cards-expansiveis-templates-whatsapp",
+  "baseDir": ".spec/features/cards-expansiveis-templates-whatsapp",
+  "specDir": ".spec",
+  "repoName": "App-Agenda-Consultório",
+  "logsDir": "../onp-worktrees/App-Agenda-Consultório-cards-expansiveis-templates-whatsapp-logs",
+  "ondas": [
+    [
+      "faixa-1"
+    ]
+  ],
+  "faixas": [
+    {
+      "id": "faixa-1",
+      "branch": "spec/cards-expansiveis-templates-whatsapp-faixa-1",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-cards-expansiveis-templates-whatsapp-faixa-1",
+      "tarefas": [
+        {
+          "id": "T-156",
+          "titulo": "Implementar accordion e cards expansíveis individuais no Frontend",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "frontend/src/features/whatsapp/components/WhatsappTemplatesDrawer.tsx",
+            "frontend/src/features/whatsapp/__tests__/WhatsappTemplatesDrawer.spec.tsx"
+          ],
+          "refs": [
+            "US-129",
+            "AC-230"
+          ]
+        },
+        {
+          "id": "T-157",
+          "titulo": "Exibir prévia contextual em tempo real dentro de cada card expandido",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "frontend/src/features/whatsapp/components/WhatsappTemplatesDrawer.tsx",
+            "frontend/src/features/whatsapp/__tests__/WhatsappTemplatesDrawer.spec.tsx"
+          ],
+          "refs": [
+            "US-129",
+            "AC-231"
+          ]
+        },
+        {
+          "id": "T-158",
+          "titulo": "Implementar botão de salvar individual com feedback visual por card",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "frontend/src/features/whatsapp/components/WhatsappTemplatesDrawer.tsx",
+            "frontend/src/features/whatsapp/__tests__/WhatsappTemplatesDrawer.spec.tsx"
+          ],
+          "refs": [
+            "US-129",
+            "AC-232"
+          ]
+        }
+      ]
+    }
+  ],
+  "sequenciais": [],
+  "concluidas": [],
+  "avisos": []
+}

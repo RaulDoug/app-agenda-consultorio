@@ -76,6 +76,7 @@ CREATE TABLE IF NOT EXISTS appointments (
     whatsapp_queue_excluded BOOLEAN DEFAULT FALSE,
     whatsapp_custom_message TEXT DEFAULT NULL,
     whatsapp_queue_order INT DEFAULT 0,
+    whatsapp_inbound_resolved BOOLEAN DEFAULT FALSE,
     deleted_at TIMESTAMP WITH TIME ZONE DEFAULT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP

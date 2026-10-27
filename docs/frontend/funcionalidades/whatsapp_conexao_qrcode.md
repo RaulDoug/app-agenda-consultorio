@@ -49,3 +49,29 @@ Interface de gestão da integração do consultório com a Evolution API via Wha
 2. **Integração com RescheduleModal (`AC-221`):**
    - Ao tocar em 'Reagendar Consulta', a interface aciona a abertura do `RescheduleModal` repassando o agendamento completo via prop `onOpenReschedule` (ou fallback interno no componente).
    - O profissional escolhe a nova data e horário, confirma a remarcação, e o sistema sincroniza a mutação no banco local e outbox, disparando `runSync` e atualizando a fila em tempo real.
+3. **Resolução de Reagendamento e Controle de Resposta ao Paciente (`AC-224`, `AC-225`, `AC-226`):**
+   - Após concluir a remarcação da consulta, o status do agendamento passa a `CONFIRMED`. A função `isRescheduleIntent` detecta que a consulta já está confirmada e oculta imediatamente o botão de reagendamento (`AC-224`).
+   - Enquanto o paciente não for avisado (`is_replied: false`), o card disponibiliza botões para envio de confirmação da nova data/horário em 1 clique (`btn-send-reschedule-notice`), link direto para WhatsApp Web (`link-wa-chat`) e botão de marcação manual (`btn-mark-replied`) (`AC-225`).
+   - Assim que respondido (`is_replied: true`), os botões de resposta somem e o card exibe o badge visual verde `✓ Respondido` (`badge-replied-${item.appointment_id}`) (`AC-226`).
+
+---
+
+## 6. Gabarito de Variáveis, Spintax e Prévia nos Templates (`AC-227`, `AC-228`, `AC-229`)
+1. **Card de Gabarito Informativo (`AC-227`):**
+   - A gaveta `WhatsappTemplatesDrawer` exibe no topo um painel explicativo com o gabarito das variáveis dinâmicas disponíveis (`{nome}`, `{data}`, `{horario}`) e regras de variação Spintax anti-bloqueio (`{opção1|opção2|opção3}`).
+2. **Chips de Inserção Rápida (`AC-228`):**
+   - Cada campo de template conta com botões/chips de inserção rápida para adicionar variáveis e modelos de Spintax sem digitação manual.
+3. **Prévia Simulada em Tempo Real (`AC-229`):**
+   - Exibição de balão de simulação do WhatsApp interpolando o texto em tempo real com dados de exemplo (Carlos • 28/10 às 14:30).
+
+---
+
+## 7. Cards Expansíveis (Accordion) e Salvamento Individual nos Templates (`AC-230`, `AC-231`, `AC-232`)
+1. **Layout Expansível / Accordion (`AC-230`):**
+   - Os quatro templates de WhatsApp (`confirmation`, `confirmation_reply`, `reschedule_reply`, `welcome_fallback`) são exibidos em formato de accordion. Clicar no cabeçalho de um card expande sua área de edição e prévia, recolhendo os demais cards ou recolhendo o próprio ao ser clicado novamente.
+   - Quando recolhido, o cabeçalho exibe uma linha resumida em itálico do texto configurado e um indicador chevron (`ChevronDown`/`ChevronUp`).
+2. **Prévia Contextual no Card Ativo (`AC-231`):**
+   - Ao alterar o texto dentro do card expandido, um balão de simulação do WhatsApp contextual é renderizado logo abaixo dos chips de tags, mostrando como a mensagem será recebida pelo paciente.
+3. **Botão de Salvamento Individual por Card (`AC-232`):**
+   - Cada card possui seu próprio botão `Salvar Mensagem` posicionado no rodapé interno do card expandido.
+   - Ao salvar, envia a mutação parcial via `onSave({ [card.field]: card.value })`, exibe o estado `Salvando...` e logo em seguida o badge `✓ Salvo` (no cabeçalho e na área de botões por 3 segundos), sem fechar a gaveta desnecessariamente.

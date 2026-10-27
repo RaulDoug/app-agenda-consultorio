@@ -140,5 +140,21 @@ export class WhatsappQueueApiClient {
     }
     return res.json();
   }
+
+  async replyQueueItem(
+    appointmentId: string,
+    action: 'mark_resolved' | 'send_notice',
+    message?: string
+  ): Promise<{ success: boolean; messageId?: string; messageText?: string }> {
+    const res = await fetch(`/api/whatsapp/queue/${appointmentId}/reply`, {
+      method: 'POST',
+      headers: this.headers,
+      body: JSON.stringify({ action, message }),
+    });
+    if (!res.ok) {
+      throw new Error('Falha ao processar resposta do agendamento.');
+    }
+    return res.json();
+  }
 }
 

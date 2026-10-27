@@ -1,0 +1,104 @@
+{
+  "runId": "App-Agenda-Consultório-fluxo-resposta-reagendamento-whatsapp-mvr2c4ry",
+  "feature": "fluxo-resposta-reagendamento-whatsapp",
+  "agent": "antigravity",
+  "modo": "paralelo",
+  "paralelizar": null,
+  "modeloForcado": null,
+  "esforcoForcado": null,
+  "geradoEm": "2026-10-27 19:12",
+  "branchTrabalho": "spec/fluxo-resposta-reagendamento-whatsapp",
+  "baseDir": ".spec/features/fluxo-resposta-reagendamento-whatsapp",
+  "specDir": ".spec",
+  "repoName": "App-Agenda-Consultório",
+  "logsDir": "../onp-worktrees/App-Agenda-Consultório-fluxo-resposta-reagendamento-whatsapp-logs",
+  "ondas": [
+    [
+      "faixa-1",
+      "faixa-2"
+    ]
+  ],
+  "faixas": [
+    {
+      "id": "faixa-1",
+      "branch": "spec/fluxo-resposta-reagendamento-whatsapp-faixa-1",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-fluxo-resposta-reagendamento-whatsapp-faixa-1",
+      "tarefas": [
+        {
+          "id": "T-149",
+          "titulo": "Suporte à resolução de inbound e disparo de aviso de novo horário no Backend",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "shared/src/types/whatsapp.ts",
+            "backend/src/db/schema.sql",
+            "backend/src/repositories/whatsapp-repository.ts",
+            "backend/src/services/whatsapp-service.ts",
+            "backend/src/controllers/whatsapp-controller.ts",
+            "backend/src/routes/whatsapp.routes.ts",
+            "backend/src/whatsapp/__tests__/whatsapp-queue-reply.spec.ts"
+          ],
+          "refs": [
+            "US-127",
+            "AC-225",
+            "AC-226"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "faixa-2",
+      "branch": "spec/fluxo-resposta-reagendamento-whatsapp-faixa-2",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-fluxo-resposta-reagendamento-whatsapp-faixa-2",
+      "tarefas": [
+        {
+          "id": "T-150",
+          "titulo": "Ocultação do botão de reagendamento após conclusão da remarcação no Frontend",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "frontend/src/features/whatsapp/components/WhatsappQueueView.tsx",
+            "frontend/src/features/whatsapp/components/__tests__/WhatsappQueueView.spec.tsx"
+          ],
+          "refs": [
+            "US-127",
+            "AC-224"
+          ]
+        },
+        {
+          "id": "T-151",
+          "titulo": "Exibição de opções de resposta e disparo de confirmação de reagendamento no Frontend",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "frontend/src/features/whatsapp/services/whatsapp-queue-api.ts",
+            "frontend/src/features/whatsapp/hooks/useWhatsappQueue.ts",
+            "frontend/src/features/whatsapp/components/WhatsappQueueView.tsx",
+            "frontend/src/features/whatsapp/components/__tests__/WhatsappQueueView.spec.tsx"
+          ],
+          "refs": [
+            "US-127",
+            "AC-225"
+          ]
+        },
+        {
+          "id": "T-152",
+          "titulo": "Transição visual para estado de respondido e ocultação dos botões no Frontend",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "frontend/src/features/whatsapp/components/WhatsappQueueView.tsx",
+            "frontend/src/features/whatsapp/components/__tests__/WhatsappQueueView.spec.tsx"
+          ],
+          "refs": [
+            "US-127",
+            "AC-226"
+          ]
+        }
+      ]
+    }
+  ],
+  "sequenciais": [],
+  "concluidas": [],
+  "avisos": []
+}

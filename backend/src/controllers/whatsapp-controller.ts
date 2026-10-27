@@ -236,4 +236,24 @@ export class WhatsappController {
     }
   }
 
+
+  async replyQueueItem(req: Request, res: Response): Promise<void> {
+    try {
+      const rawTenantId = req.tenantId!;
+      const tenantId = rawTenantId === 'tenant-default' ? '11111111-1111-1111-1111-111111111111' : rawTenantId;
+      const { appointmentId } = req.params;
+      const { action, message } = req.body || {};
+
+      if (action === 'send_notice') {
+        const result = await this.whatsappService.sendRescheduleNotice(tenantId, appointmentId, message);
+        res.status(200).json(result);
+        return;
+      }
+
+      await this.whatsappService.markQueueItemReplied(tenantId, appointmentId);
+      res.status(200).json({ success: true, message: 'Mensagem marcada como respondida.' });
+    } catch (err: any) {
+      res.status(500).json({ error: 'Erro ao processar resposta do agendamento.', details: err.message });
+    }
+  }
 }

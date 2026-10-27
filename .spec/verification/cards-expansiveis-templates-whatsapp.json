@@ -1,0 +1,27 @@
+{
+  "feature": "cards-expansiveis-templates-whatsapp",
+  "timestamp": "2026-10-27T19:57:21.076Z",
+  "gitRev": "dcbab6d",
+  "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
+  "reporter": "vitest-json",
+  "exitCode": 0,
+  "testsParsed": 535,
+  "results": {
+    "AC-230": {
+      "status": "pass",
+      "testName": "WhatsappTemplatesDrawer — Gabarito e Auxiliares de Templates (US-128) Cards Expansíveis e Salvamento Individual (US-129) AC-230: Expansão e recolhimento individual dos cards de template @spec:AC-230 AC-230: Expansão e recolhimento individual dos cards de template @spec:AC-230",
+      "method": "vitest-json"
+    },
+    "AC-231": {
+      "status": "pass",
+      "testName": "WhatsappTemplatesDrawer — Gabarito e Auxiliares de Templates (US-128) Cards Expansíveis e Salvamento Individual (US-129) AC-231: Exibição de prévia simulada contextual dentro do card expandido @spec:AC-231 AC-231: Exibição de prévia simulada contextual dentro do card expandido @spec:AC-231",
+      "method": "vitest-json"
+    },
+    "AC-232": {
+      "status": "pass",
+      "testName": "WhatsappTemplatesDrawer — Gabarito e Auxiliares de Templates (US-128) Cards Expansíveis e Salvamento Individual (US-129) AC-232: Botão de salvar individual por card de mensagem com feedback visual @spec:AC-232 AC-232: Botão de salvar individual por card de mensagem com feedback visual @spec:AC-232",
+      "method": "vitest-json"
+    }
+  },
+  "principles": {}
+}

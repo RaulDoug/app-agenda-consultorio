@@ -1,0 +1,27 @@
+{
+  "feature": "gabarito-templates-whatsapp",
+  "timestamp": "2026-10-27T19:46:58.748Z",
+  "gitRev": "dcbab6d",
+  "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
+  "reporter": "vitest-json",
+  "exitCode": 0,
+  "testsParsed": 532,
+  "results": {
+    "AC-227": {
+      "status": "pass",
+      "testName": "WhatsappTemplatesDrawer — Gabarito e Auxiliares de Templates (US-128) AC-227: Exibição do painel informativo com gabarito de variáveis e regras de Spintax @spec:AC-227 AC-227: Exibição do painel informativo com gabarito de variáveis e regras de Spintax @spec:AC-227",
+      "method": "vitest-json"
+    },
+    "AC-228": {
+      "status": "pass",
+      "testName": "WhatsappTemplatesDrawer — Gabarito e Auxiliares de Templates (US-128) AC-228: Inserção rápida de variáveis e Spintax via botões/chips @spec:AC-228 AC-228: Inserção rápida de variáveis e Spintax via botões/chips @spec:AC-228",
+      "method": "vitest-json"
+    },
+    "AC-229": {
+      "status": "pass",
+      "testName": "WhatsappTemplatesDrawer — Gabarito e Auxiliares de Templates (US-128) AC-229: Prévia simulada em tempo real da mensagem @spec:AC-229 AC-229: Prévia simulada em tempo real da mensagem @spec:AC-229",
+      "method": "vitest-json"
+    }
+  },
+  "principles": {}
+}

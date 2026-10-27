@@ -69,3 +69,7 @@ whatsappRoutes.post('/queue/pause', (req: Request, res: Response) =>
 whatsappRoutes.put('/queue/:appointmentId/status', (req: Request, res: Response) =>
   whatsappController.resolveStatus(req, res)
 );
+
+whatsappRoutes.post('/queue/:appointmentId/reply', (req: Request, res: Response) =>
+  whatsappController.replyQueueItem(req, res)
+);

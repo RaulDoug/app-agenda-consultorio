@@ -452,7 +452,8 @@ export class WhatsappRepository {
         ALTER TABLE appointments
         ADD COLUMN IF NOT EXISTS whatsapp_queue_excluded BOOLEAN DEFAULT FALSE,
         ADD COLUMN IF NOT EXISTS whatsapp_custom_message TEXT DEFAULT NULL,
-        ADD COLUMN IF NOT EXISTS whatsapp_queue_order INT DEFAULT 0;
+        ADD COLUMN IF NOT EXISTS whatsapp_queue_order INT DEFAULT 0,
+        ADD COLUMN IF NOT EXISTS whatsapp_inbound_resolved BOOLEAN DEFAULT FALSE;
       `);
     } catch {
       // Ignora erro se as colunas já existirem ou se emuladores em memória tiverem restrições
@@ -479,7 +480,8 @@ export class WhatsappRepository {
              a.status AS appointment_status,
              COALESCE(a.whatsapp_queue_order, 0) AS queue_order,
              COALESCE(a.whatsapp_queue_excluded, false) AS queue_excluded,
-             a.whatsapp_custom_message AS custom_message
+             a.whatsapp_custom_message AS custom_message,
+             COALESCE(a.whatsapp_inbound_resolved, false) AS inbound_resolved
       FROM appointments a
       JOIN patients p ON p.id = a.patient_id AND p.deleted_at IS NULL AND p.is_active = true
       WHERE a.tenant_id = $1
@@ -506,12 +508,13 @@ export class WhatsappRepository {
 
     // Busca as últimas mensagens para os agendamentos retornados
     const appointmentIds = rows.map((r: any) => r.appointment_id);
+    const placeholders = appointmentIds.map((_, i) => '$' + (i + 2)).join(', ');
     const msgsRes = await this.db.query(
       `SELECT appointment_id, direction, message_text, created_at
        FROM whatsapp_messages
-       WHERE tenant_id = $1 AND appointment_id = ANY($2)
+       WHERE tenant_id = $1 AND appointment_id IN (${placeholders})
        ORDER BY created_at DESC`,
-      [tenantId, appointmentIds]
+      [tenantId, ...appointmentIds]
     );
 
     const msgsByApp: Record<string, { lastOut?: any; lastIn?: any }> = {};
@@ -533,6 +536,10 @@ export class WhatsappRepository {
         last_outbound_at: msgs.lastOut?.created_at || null,
         last_inbound_text: msgs.lastIn?.message_text || null,
         last_inbound_at: msgs.lastIn?.created_at || null,
+        is_replied: Boolean(
+          r.inbound_resolved ||
+          (msgs.lastOut?.created_at && msgs.lastIn?.created_at && new Date(msgs.lastOut.created_at) >= new Date(msgs.lastIn.created_at))
+        ),
       };
     });
   }
@@ -575,4 +582,16 @@ export class WhatsappRepository {
     }
   }
 
+
+  /**
+   * Marca a resposta de um paciente como resolvida/respondida no agendamento.
+   */
+  async markInboundResolved(tenantId: string, appointmentId: string): Promise<void> {
+    await this.db.query(
+      `UPDATE appointments
+         SET whatsapp_inbound_resolved = true, updated_at = CURRENT_TIMESTAMP
+         WHERE id = $1 AND tenant_id = $2 AND deleted_at IS NULL`,
+      [appointmentId, tenantId]
+    );
+  }
 }

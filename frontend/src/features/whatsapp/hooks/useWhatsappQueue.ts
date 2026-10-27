@@ -133,6 +133,17 @@ export function useWhatsappQueue(token?: string) {
     await loadQueue();
   };
 
+  const handleMarkReplied = async (appointmentId: string) => {
+    await api.replyQueueItem(appointmentId, 'mark_resolved');
+    await loadQueue();
+  };
+
+  const handleSendRescheduleNotice = async (appointmentId: string, customNotice?: string) => {
+    const res = await api.replyQueueItem(appointmentId, 'send_notice', customNotice);
+    await loadQueue();
+    return res;
+  };
+
   const filteredItems = useMemo(() => {
     if (categoryFilter === 'ALL') return data.items;
     return data.items.filter((item) => item.queue_category === categoryFilter);
@@ -160,6 +171,8 @@ export function useWhatsappQueue(token?: string) {
     triggerBatch: handleTriggerBatch,
     saveSettings: handleSaveSettings,
     resolveStatus: handleResolveStatus,
+    markInboundReplied: handleMarkReplied,
+    sendRescheduleNotice: handleSendRescheduleNotice,
   };
 }
 

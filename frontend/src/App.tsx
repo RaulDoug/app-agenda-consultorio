@@ -228,6 +228,7 @@ export const App: React.FC<AppProps> = ({
   const [quickPatient, setQuickPatient] = useState<LocalPatient | null>(null);
   const [selectedAppointment, setSelectedAppointment] = useState<LocalAppointmentWithDetails | null>(null);
   const [rescheduleAppointment, setRescheduleAppointment] = useState<LocalAppointmentWithDetails | null>(null);
+  const [whatsappRefreshTrigger, setWhatsappRefreshTrigger] = useState(0);
 
   // Modais de Caixa / Checkout / Retorno / Pacientes
   const [checkoutAppointment, setCheckoutAppointment] = useState<LocalAppointmentWithDetails | null>(null);
@@ -579,6 +580,7 @@ export const App: React.FC<AppProps> = ({
         <WhatsappQueueView
           token={session?.token}
           onSync={runSync}
+          refreshTrigger={whatsappRefreshTrigger}
           onOpenReschedule={(app) => {
             setRescheduleAppointment(app);
           }}
@@ -644,6 +646,7 @@ export const App: React.FC<AppProps> = ({
           }
           setRescheduleAppointment(null);
           await runSync();
+          setWhatsappRefreshTrigger((prev) => prev + 1);
         }}
       />
 

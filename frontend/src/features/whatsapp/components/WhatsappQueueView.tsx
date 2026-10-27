@@ -28,9 +28,10 @@ interface WhatsappQueueViewProps {
   token?: string;
   onSync?: () => Promise<void>;
   onOpenReschedule?: (appointment: LocalAppointmentWithDetails) => void;
+  refreshTrigger?: number;
 }
 
-export const WhatsappQueueView: React.FC<WhatsappQueueViewProps> = ({ token, onSync, onOpenReschedule }) => {
+export const WhatsappQueueView: React.FC<WhatsappQueueViewProps> = ({ token, onSync, onOpenReschedule, refreshTrigger }) => {
   const queueData = useWhatsappQueue(token);
   const items = queueData?.items || [];
   const counts = queueData?.counts || {
@@ -58,6 +59,8 @@ export const WhatsappQueueView: React.FC<WhatsappQueueViewProps> = ({ token, onS
   const triggerBatch = queueData?.triggerBatch || (async () => {});
   const saveSettings = queueData?.saveSettings || (async () => {});
   const resolveStatus = queueData?.resolveStatus || (async () => {});
+  const markInboundReplied = queueData?.markInboundReplied || (async () => {});
+  const sendRescheduleNotice = queueData?.sendRescheduleNotice || (async () => {});
 
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [editingItem, setEditingItem] = useState<WhatsappQueueItem | null>(null);
@@ -65,7 +68,16 @@ export const WhatsappQueueView: React.FC<WhatsappQueueViewProps> = ({ token, onS
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
   const [internalRescheduleApp, setInternalRescheduleApp] = useState<LocalAppointmentWithDetails | null>(null);
 
+  React.useEffect(() => {
+    if (refreshTrigger !== undefined && refreshTrigger > 0) {
+      refresh();
+    }
+  }, [refreshTrigger, refresh]);
+
   const isRescheduleIntent = (item: WhatsappQueueItem): boolean => {
+    if (item.appointment_status === 'CONFIRMED' || item.queue_category === 'CONFIRMED') {
+      return false;
+    }
     if (item.queue_category === 'RESCHEDULE_REQUESTED' || item.appointment_status === 'RESCHEDULE_REQUESTED') {
       return true;
     }
@@ -498,41 +510,79 @@ export const WhatsappQueueView: React.FC<WhatsappQueueViewProps> = ({ token, onS
                       "{item.last_inbound_text}"
                     </p>
 
-                    {/* Botões de Resolução */}
-                    <div className="flex items-center gap-2 pt-1 flex-wrap">
-                      <a
-                        href={waLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        data-testid={`link-wa-chat-${item.appointment_id}`}
-                        className="px-2.5 py-1 text-xs font-semibold bg-emerald-600 text-white hover:bg-emerald-700 rounded-lg inline-flex items-center gap-1 min-h-[38px]"
+                    {item.is_replied ? (
+                      <div
+                        data-testid={`badge-replied-${item.appointment_id}`}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50 text-emerald-800 rounded-lg text-xs font-semibold border border-emerald-200 mt-1"
                       >
-                        <ExternalLink className="w-3 h-3" />
-                        Responder no WhatsApp
-                      </a>
+                        <CheckCircle className="w-4 h-4 text-emerald-600" />
+                        <span>Respondido</span>
+                      </div>
+                    ) : (
+                      /* Botões de Resolução */
+                      <div className="flex items-center gap-2 pt-1 flex-wrap">
+                        {(item.appointment_status === 'CONFIRMED' || item.queue_category === 'CONFIRMED') ? (
+                          <button
+                            type="button"
+                            data-testid={`btn-send-reschedule-notice-${item.appointment_id}`}
+                            onClick={async () => {
+                              await sendRescheduleNotice(item.appointment_id);
+                              if (onSync) await onSync();
+                            }}
+                            className="px-2.5 py-1 text-xs font-semibold bg-teal-600 hover:bg-teal-700 text-white rounded-lg inline-flex items-center gap-1 min-h-[38px] shadow-2xs transition-colors"
+                            title="Dispara aviso com novo dia e horário para o WhatsApp do paciente"
+                          >
+                            <Send className="w-3.5 h-3.5 text-white" />
+                            Enviar Confirmação de Novo Horário
+                          </button>
+                        ) : isRescheduleIntent(item) ? (
+                          <button
+                            type="button"
+                            data-testid={`btn-resolve-reschedule-${item.appointment_id}`}
+                            onClick={() => handleRescheduleClick(item)}
+                            className="px-2.5 py-1 text-xs font-semibold bg-amber-500 hover:bg-amber-600 text-white rounded-lg inline-flex items-center gap-1 min-h-[38px] shadow-2xs transition-colors"
+                          >
+                            <Calendar className="w-3.5 h-3.5 text-white" />
+                            Reagendar Consulta
+                          </button>
+                        ) : (
+                          <button
+                            type="button"
+                            data-testid={`btn-resolve-confirm-${item.appointment_id}`}
+                            onClick={() => resolveStatus(item.appointment_id, 'CONFIRMED')}
+                            className="px-2.5 py-1 text-xs font-semibold bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 rounded-lg inline-flex items-center gap-1 min-h-[38px]"
+                          >
+                            <CheckCircle className="w-3 h-3 text-emerald-600" />
+                            Confirmar Manualmente
+                          </button>
+                        )}
 
-                      {isRescheduleIntent(item) ? (
+                        <a
+                          href={waLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          data-testid={`link-wa-chat-${item.appointment_id}`}
+                          className="px-2.5 py-1 text-xs font-semibold bg-emerald-600 text-white hover:bg-emerald-700 rounded-lg inline-flex items-center gap-1 min-h-[38px]"
+                        >
+                          <ExternalLink className="w-3 h-3" />
+                          Responder no WhatsApp
+                        </a>
+
                         <button
                           type="button"
-                          data-testid={`btn-resolve-reschedule-${item.appointment_id}`}
-                          onClick={() => handleRescheduleClick(item)}
-                          className="px-2.5 py-1 text-xs font-semibold bg-amber-500 hover:bg-amber-600 text-white rounded-lg inline-flex items-center gap-1 min-h-[38px] shadow-2xs transition-colors"
+                          data-testid={`btn-mark-replied-${item.appointment_id}`}
+                          onClick={async () => {
+                            await markInboundReplied(item.appointment_id);
+                            if (onSync) await onSync();
+                          }}
+                          className="px-2.5 py-1 text-xs font-semibold bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 rounded-lg inline-flex items-center gap-1 min-h-[38px] transition-colors"
+                          title="Marca mensagem como respondida sem disparar novo WhatsApp"
                         >
-                          <Calendar className="w-3.5 h-3.5 text-white" />
-                          Reagendar Consulta
+                          <CheckCircle className="w-3.5 h-3.5 text-slate-400" />
+                          Marcar como Respondido
                         </button>
-                      ) : (
-                        <button
-                          type="button"
-                          data-testid={`btn-resolve-confirm-${item.appointment_id}`}
-                          onClick={() => resolveStatus(item.appointment_id, 'CONFIRMED')}
-                          className="px-2.5 py-1 text-xs font-semibold bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 rounded-lg inline-flex items-center gap-1 min-h-[38px]"
-                        >
-                          <CheckCircle className="w-3 h-3 text-emerald-600" />
-                          Confirmar Manualmente
-                        </button>
-                      )}
-                    </div>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>

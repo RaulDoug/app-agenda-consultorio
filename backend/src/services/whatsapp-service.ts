@@ -311,6 +311,7 @@ export class WhatsappService {
         last_inbound_at: app.last_inbound_at ? new Date(app.last_inbound_at).toISOString() : null,
         enqueued_job_id: job?.id || null,
         enqueued_delay_ms: job?.delay || null,
+        is_replied: Boolean(app.is_replied),
       };
     });
 
@@ -416,4 +417,50 @@ export class WhatsappService {
     await this.repo.updateAppointmentStatus(tenantId, appointmentId, newStatus);
   }
 
+
+  /**
+   * Marca a mensagem de entrada do paciente como respondida manualmente na fila.
+   */
+  async markQueueItemReplied(tenantId: string, appointmentId: string): Promise<void> {
+    await this.repo.markInboundResolved(tenantId, appointmentId);
+  }
+
+  /**
+   * Dispara confirmação de remarcação com nova data/horário para o WhatsApp do paciente e marca como respondido.
+   */
+  async sendRescheduleNotice(
+    tenantId: string,
+    appointmentId: string,
+    customNotice?: string
+  ): Promise<{ success: boolean; messageId: string; messageText: string }> {
+    const rawList = await this.repo.findQueueAppointments(tenantId, {});
+    const app = rawList.find((a: any) => a.appointment_id === appointmentId);
+    if (!app) {
+      throw new Error('Agendamento não encontrado na fila.');
+    }
+
+    let messageText = customNotice;
+    if (!messageText) {
+      const d = new Date(app.appointment_start_time);
+      const dataStr = d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', timeZone: 'America/Sao_Paulo' });
+      const horaStr = d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', timeZone: 'America/Sao_Paulo' });
+      const firstName = String(app.patient_name || '').trim().split(' ')[0];
+      messageText = `Olá ${firstName}, sua consulta foi reagendada para o dia ${dataStr} às ${horaStr}. Qualquer dúvida estamos à disposição!`;
+    }
+
+    const sendResult = await this.sendMessage(tenantId, {
+      number: app.phone,
+      text: messageText,
+      appointmentId: app.appointment_id,
+      patientId: app.patient_id,
+    });
+
+    await this.repo.markInboundResolved(tenantId, appointmentId);
+
+    return {
+      success: true,
+      messageId: sendResult.messageId,
+      messageText,
+    };
+  }
 }
