@@ -67,3 +67,44 @@ export interface BatchConfirmationTriggerResult {
     delayMs: number;
   }>;
 }
+
+export type WhatsappQueueItemCategory =
+  | 'PENDING_QUEUE'
+  | 'AWAITING_REPLY'
+  | 'CONFIRMED'
+  | 'RESCHEDULE_REQUESTED'
+  | 'HUMAN_ATTENTION';
+
+export interface WhatsappQueueItem {
+  appointment_id: string;
+  patient_id: string;
+  patient_name: string;
+  phone: string;
+  appointment_start_time: string;
+  appointment_end_time: string;
+  appointment_status: string;
+  queue_category: WhatsappQueueItemCategory;
+  queue_order: number;
+  queue_excluded: boolean;
+  custom_message?: string | null;
+  preview_message: string;
+  last_outbound_at?: string | null;
+  last_inbound_text?: string | null;
+  last_inbound_at?: string | null;
+  enqueued_job_id?: string | null;
+  enqueued_delay_ms?: number | null;
+}
+
+export interface WhatsappQueueListResponse {
+  items: WhatsappQueueItem[];
+  queue_paused: boolean;
+  pending_jobs_count: number;
+  counts: {
+    total: number;
+    pending_queue: number;
+    awaiting_reply: number;
+    confirmed: number;
+    reschedule_requested: number;
+    human_attention: number;
+  };
+}
