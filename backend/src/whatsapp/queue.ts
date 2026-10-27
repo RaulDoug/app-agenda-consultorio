@@ -31,6 +31,7 @@ export interface IConfirmationQueue {
   resume(): Promise<void>;
   isPaused(): Promise<boolean>;
   getPendingJobs(): Promise<EnqueuedJobRecord[]>;
+  removeJobByAppointmentId(appointmentId: string): Promise<boolean>;
   clear(): Promise<void>;
   close(): Promise<void>;
 }
@@ -73,6 +74,24 @@ export class InMemoryConfirmationQueue implements IConfirmationQueue {
 
   async getPendingJobs(): Promise<EnqueuedJobRecord[]> {
     return [...this.jobs];
+  }
+
+  async removeJobByAppointmentId(appointmentId: string): Promise<boolean> {
+    const idx = this.jobs.findIndex((j) => j.data.appointmentId === appointmentId);
+    if (idx !== -1) {
+      this.jobs.splice(idx, 1);
+      return true;
+    }
+    return false;
+  }
+
+  async removeJobByAppointmentId(appointmentId: string): Promise<boolean> {
+    const idx = this.jobs.findIndex((j) => j.data.appointmentId === appointmentId);
+    if (idx !== -1) {
+      this.jobs.splice(idx, 1);
+      return true;
+    }
+    return false;
   }
 
   async removeJob(id: string): Promise<boolean> {
@@ -181,6 +200,16 @@ export class BullMQConfirmationQueue implements IConfirmationQueue {
       delay: j.opts.delay || 0,
       enqueuedAt: j.timestamp,
     }));
+  }
+
+  async removeJobByAppointmentId(appointmentId: string): Promise<boolean> {
+    const jobs = await this.queue.getJobs(['delayed', 'waiting']);
+    const job = jobs.find((j) => j.data?.appointmentId === appointmentId);
+    if (job) {
+      await job.remove();
+      return true;
+    }
+    return false;
   }
 
   async clear(): Promise<void> {

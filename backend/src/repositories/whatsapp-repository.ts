@@ -184,6 +184,7 @@ export class WhatsappRepository {
       WHERE a.tenant_id = $1
         AND a.deleted_at IS NULL
         AND a.status = 'PENDING'
+        AND COALESCE(a.whatsapp_queue_excluded, false) = false
         AND a.start_time >= $2
         AND a.start_time <= $3
     `;
@@ -201,7 +202,7 @@ export class WhatsappRepository {
       `;
     }
 
-    sql += ` ORDER BY a.start_time ASC`;
+    sql += ` ORDER BY COALESCE(a.whatsapp_queue_order, 0) ASC, a.start_time ASC`;
 
     const res = await this.db.query(sql, params);
     return res.rows.map((r: any) => ({
@@ -372,4 +373,118 @@ export class WhatsappRepository {
     );
     return res.rows[0] || null;
   }
+
+  /**
+   * Lista itens elegíveis para a central de fila de WhatsApp com dados enriquecidos e isolamento multi-tenant.
+   */
+  async findQueueAppointments(
+    tenantId: string,
+    filters: { startDate?: Date; endDate?: Date }
+  ): Promise<any[]> {
+    const params: any[] = [tenantId];
+    let sql = `
+      SELECT a.id AS appointment_id,
+             a.patient_id,
+             p.name AS patient_name,
+             p.whatsapp AS phone,
+             a.start_time AS appointment_start_time,
+             a.end_time AS appointment_end_time,
+             a.status AS appointment_status,
+             COALESCE(a.whatsapp_queue_order, 0) AS queue_order,
+             COALESCE(a.whatsapp_queue_excluded, false) AS queue_excluded,
+             a.whatsapp_custom_message AS custom_message
+      FROM appointments a
+      JOIN patients p ON p.id = a.patient_id AND p.deleted_at IS NULL AND p.is_active = true
+      WHERE a.tenant_id = $1
+        AND a.deleted_at IS NULL
+        AND a.status IN ('PENDING', 'CONFIRMED', 'RESCHEDULE_REQUESTED', 'MESSAGE_RECEIVED')
+    `;
+
+    if (filters.startDate) {
+      params.push(filters.startDate.toISOString());
+      sql += " AND a.start_time >= $" + params.length;
+    }
+    if (filters.endDate) {
+      params.push(filters.endDate.toISOString());
+      sql += " AND a.start_time <= $" + params.length;
+    }
+
+    sql += ` ORDER BY COALESCE(a.whatsapp_queue_order, 0) ASC, a.start_time ASC`;
+
+    const res = await this.db.query(sql, params);
+    const rows = res.rows;
+
+    if (rows.length === 0) return [];
+
+    // Busca as últimas mensagens para os agendamentos retornados
+    const appointmentIds = rows.map((r: any) => r.appointment_id);
+    const msgsRes = await this.db.query(
+      `SELECT appointment_id, direction, message_text, created_at
+       FROM whatsapp_messages
+       WHERE tenant_id = $1 AND appointment_id = ANY($2)
+       ORDER BY created_at DESC`,
+      [tenantId, appointmentIds]
+    );
+
+    const msgsByApp: Record<string, { lastOut?: any; lastIn?: any }> = {};
+    for (const msg of msgsRes.rows) {
+      if (!msgsByApp[msg.appointment_id]) {
+        msgsByApp[msg.appointment_id] = {};
+      }
+      if (msg.direction === 'OUTBOUND' && !msgsByApp[msg.appointment_id].lastOut) {
+        msgsByApp[msg.appointment_id].lastOut = msg;
+      } else if (msg.direction === 'INBOUND' && !msgsByApp[msg.appointment_id].lastIn) {
+        msgsByApp[msg.appointment_id].lastIn = msg;
+      }
+    }
+
+    return rows.map((r: any) => {
+      const msgs = msgsByApp[r.appointment_id] || {};
+      return {
+        ...r,
+        last_outbound_at: msgs.lastOut?.created_at || null,
+        last_inbound_text: msgs.lastIn?.message_text || null,
+        last_inbound_at: msgs.lastIn?.created_at || null,
+      };
+    });
+  }
+
+  /**
+   * Exclusão lógica da fila de envio automático (mantendo o agendamento ativo).
+   */
+  async excludeFromQueue(tenantId: string, appointmentId: string): Promise<void> {
+    await this.db.query(
+      `UPDATE appointments
+         SET whatsapp_queue_excluded = true, updated_at = CURRENT_TIMESTAMP
+         WHERE id = $1 AND tenant_id = $2 AND deleted_at IS NULL`,
+      [appointmentId, tenantId]
+    );
+  }
+
+  /**
+   * Edita mensagem customizada para o agendamento na fila.
+   */
+  async updateCustomMessage(tenantId: string, appointmentId: string, customMessage: string | null): Promise<void> {
+    await this.db.query(
+      `UPDATE appointments
+         SET whatsapp_custom_message = $1, updated_at = CURRENT_TIMESTAMP
+         WHERE id = $2 AND tenant_id = $3 AND deleted_at IS NULL`,
+      [customMessage, appointmentId, tenantId]
+    );
+  }
+
+  /**
+   * Atualiza a ordem dos agendamentos na fila de envio.
+   */
+  async updateQueueOrder(tenantId: string, orderedAppointmentIds: string[]): Promise<void> {
+    for (let i = 0; i < orderedAppointmentIds.length; i++) {
+      await this.db.query(
+        `UPDATE appointments
+           SET whatsapp_queue_order = $1, updated_at = CURRENT_TIMESTAMP
+           WHERE id = $2 AND tenant_id = $3 AND deleted_at IS NULL`,
+        [i + 1, orderedAppointmentIds[i], tenantId]
+      );
+    }
+  }
+
 }

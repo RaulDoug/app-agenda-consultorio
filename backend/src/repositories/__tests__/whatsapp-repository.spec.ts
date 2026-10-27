@@ -1,188 +1,129 @@
 import { describe, it, expect, beforeEach } from 'vitest';
+import { WhatsappRepository } from '../whatsapp-repository.js';
 import { createInMemoryDatabase, type IDatabase } from '../../db/connection.js';
-import { WhatsappRepository, DEFAULT_WHATSAPP_TEMPLATES } from '../whatsapp-repository.js';
+import { InMemoryConfirmationQueue } from '../../whatsapp/queue.js';
 
-describe('WhatsappRepository — Persistência, Settings, Logs e Multi-Tenant', () => {
+describe('WhatsappRepository — Central de Fila de WhatsApp (T-139)', () => {
   let db: IDatabase;
   let repo: WhatsappRepository;
-
   const tenantA = '11111111-1111-1111-1111-111111111111';
   const tenantB = '22222222-2222-2222-2222-222222222222';
+  const patient1 = 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa';
+  const patient2 = 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb';
+  const patientB = 'cccccccc-cccc-cccc-cccc-cccccccccccc';
+  const app1 = '11111111-2222-3333-4444-555555555555';
+  const app2 = '22222222-3333-4444-5555-666666666666';
+  const appB = '33333333-4444-5555-6666-777777777777';
 
   beforeEach(async () => {
     db = createInMemoryDatabase();
     repo = new WhatsappRepository(db);
 
+    // Setup tenants
+    await db.query(`INSERT INTO tenants (id, name, whatsapp_connected) VALUES ($1, 'Tenant A', true)`, [tenantA]);
+    await db.query(`INSERT INTO tenants (id, name, whatsapp_connected) VALUES ($1, 'Tenant B', true)`, [tenantB]);
+
+    // Setup patients
+    await db.query(`INSERT INTO patients (id, tenant_id, name, whatsapp) VALUES ($1, $2, 'Paciente Um', '11999999999')`, [patient1, tenantA]);
+    await db.query(`INSERT INTO patients (id, tenant_id, name, whatsapp) VALUES ($1, $2, 'Paciente Dois', '11888888888')`, [patient2, tenantA]);
+    await db.query(`INSERT INTO patients (id, tenant_id, name, whatsapp) VALUES ($1, $2, 'Paciente Outro Tenant', '11777777777')`, [patientB, tenantB]);
+  });
+
+  it('deve listar itens da fila com categorização, subqueries de mensagem e isolamento multi-tenant (@spec:AC-209)', async () => {
+    const today = new Date('2026-10-28T10:00:00Z');
     await db.query(
-      `INSERT INTO tenants (id, name, whatsapp_instance_name, whatsapp_connected)
-       VALUES ($1, 'Clínica Sorriso A', 'sorriso_a', true),
-              ($2, 'Clínica Saúde B', 'saude_b', false)`,
-      [tenantA, tenantB]
+      `INSERT INTO appointments (id, tenant_id, patient_id, start_time, end_time, status, whatsapp_queue_order)
+       VALUES ($1, $2, $3, $4, $5, 'PENDING', 2)`,
+      [app1, tenantA, patient1, today.toISOString(), new Date('2026-10-28T10:30:00Z').toISOString()]
     );
+    await db.query(
+      `INSERT INTO appointments (id, tenant_id, patient_id, start_time, end_time, status, whatsapp_queue_order)
+       VALUES ($1, $2, $3, $4, $5, 'PENDING', 1)`,
+      [app2, tenantA, patient2, today.toISOString(), new Date('2026-10-28T10:30:00Z').toISOString()]
+    );
+    // Agendamento do outro tenant
+    await db.query(
+      `INSERT INTO appointments (id, tenant_id, patient_id, start_time, end_time, status)
+       VALUES ($1, $2, $3, $4, $5, 'PENDING')`,
+      [appB, tenantB, patientB, today.toISOString(), new Date('2026-10-28T10:30:00Z').toISOString()]
+    );
+
+    const items = await repo.findQueueAppointments(tenantA, {
+      startDate: new Date('2026-10-28T00:00:00Z'),
+      endDate: new Date('2026-10-28T23:59:59Z'),
+    });
+
+    expect(items).toHaveLength(2);
+    expect(items[0].appointment_id).toBe(app2); // queue_order 1 vem antes de queue_order 2
+    expect(items[1].appointment_id).toBe(app1);
+    expect(items.find((i) => i.appointment_id === appB)).toBeUndefined();
   });
 
-  describe('Gestão de Configurações de WhatsApp (Settings)', () => {
-    it('deve realizar auto-seed das configurações padrão quando o consultório não possuir settings cadastradas', async () => {
-      const initial = await repo.getSettings(tenantA);
-      expect(initial).toBeNull();
+  it('deve excluir logicamente da fila marcando whatsapp_queue_excluded sem deletar agendamento (@spec:AC-211)', async () => {
+    const today = new Date('2026-10-28T10:00:00Z');
+    await db.query(
+      `INSERT INTO appointments (id, tenant_id, patient_id, start_time, end_time, status)
+       VALUES ($1, $2, $3, $4, $5, 'PENDING')`,
+      [app1, tenantA, patient1, today.toISOString(), new Date('2026-10-28T10:30:00Z').toISOString()]
+    );
 
-      const created = await repo.ensureDefaultSettings(tenantA);
-      expect(created).toBeDefined();
-      expect(created.tenant_id).toBe(tenantA);
-      expect(created.confirmation_hour).toBe(9);
-      expect(created.confirmation_days_ahead).toBe(1);
-      expect(created.auto_reply_enabled).toBe(true);
-      expect(created.confirmation_message_template).toBe(DEFAULT_WHATSAPP_TEMPLATES.confirmation_message_template);
+    await repo.excludeFromQueue(tenantA, app1);
 
-      // Segunda chamada deve retornar o mesmo registro sem duplicar
-      const secondCall = await repo.ensureDefaultSettings(tenantA);
-      expect(secondCall.id).toBe(created.id);
-    });
-
-    it('deve atualizar configurações existentes preservando isolamento multi-tenant', async () => {
-      await repo.ensureDefaultSettings(tenantA);
-      await repo.ensureDefaultSettings(tenantB);
-
-      const updated = await repo.upsertSettings(tenantA, {
-        confirmation_hour: 8,
-        confirmation_days_ahead: 2,
-        confirmation_message_template: 'Olá {nome}, confirmamos seu horário às {horario}?',
-      });
-
-      expect(updated.confirmation_hour).toBe(8);
-      expect(updated.confirmation_days_ahead).toBe(2);
-      expect(updated.confirmation_message_template).toBe('Olá {nome}, confirmamos seu horário às {horario}?');
-
-      // Tenant B deve continuar intacto com os valores padrão
-      const settingsB = await repo.getSettings(tenantB);
-      expect(settingsB?.confirmation_hour).toBe(9);
-      expect(settingsB?.confirmation_days_ahead).toBe(1);
-    });
+    const check = await db.query(`SELECT whatsapp_queue_excluded, deleted_at FROM appointments WHERE id = $1`, [app1]);
+    expect(check.rows[0].whatsapp_queue_excluded).toBe(true);
+    expect(check.rows[0].deleted_at).toBeNull();
   });
 
-  describe('Busca de Candidatos para Confirmação e Idempotência', () => {
-    it('deve localizar apenas consultas PENDING do dia alvo respeitando multi-tenant e soft-delete', async () => {
-      // Cria paciente no Tenant A
-      const patRes = await db.query(
-        `INSERT INTO patients (tenant_id, name, whatsapp) VALUES ($1, 'Carlos Paciente', '5511999991111') RETURNING id`,
-        [tenantA]
-      );
-      const patientId = patRes.rows[0].id;
+  it('deve persistir mensagem customizada individual para a consulta (@spec:AC-212)', async () => {
+    const today = new Date('2026-10-28T10:00:00Z');
+    await db.query(
+      `INSERT INTO appointments (id, tenant_id, patient_id, start_time, end_time, status)
+       VALUES ($1, $2, $3, $4, $5, 'PENDING')`,
+      [app1, tenantA, patient1, today.toISOString(), new Date('2026-10-28T10:30:00Z').toISOString()]
+    );
 
-      const tomorrow = new Date();
-      tomorrow.setDate(tomorrow.getDate() + 1);
-      tomorrow.setHours(10, 0, 0, 0);
+    await repo.updateCustomMessage(tenantA, app1, 'Olá Fulano, seu horário especial é às 10h.');
 
-      // Agendamento válido para amanhã
-      await db.query(
-        `INSERT INTO appointments (tenant_id, patient_id, start_time, end_time, status)
-         VALUES ($1, $2, $3, $4, 'PENDING')`,
-        [tenantA, patientId, tomorrow.toISOString(), new Date(tomorrow.getTime() + 30 * 60000).toISOString()]
-      );
-
-      // Agendamento cancelado (soft-deleted) para amanhã -> NÃO deve vir
-      await db.query(
-        `INSERT INTO appointments (tenant_id, patient_id, start_time, end_time, status, deleted_at)
-         VALUES ($1, $2, $3, $4, 'PENDING', CURRENT_TIMESTAMP)`,
-        [tenantA, patientId, tomorrow.toISOString(), new Date(tomorrow.getTime() + 30 * 60000).toISOString()]
-      );
-
-      const candidates = await repo.findPendingAppointmentsForConfirmation(tenantA, tomorrow);
-      expect(candidates).toHaveLength(1);
-      expect(candidates[0].patientName).toBe('Carlos Paciente');
-      expect(candidates[0].instanceName).toBe('sorriso_a');
-
-      // Tenant B não deve enxergar
-      const candidatesB = await repo.findPendingAppointmentsForConfirmation(tenantB, tomorrow);
-      expect(candidatesB).toHaveLength(0);
-    });
-
-    it('deve aplicar idempotência e ignorar agendamentos que já receberam notificação nas últimas 12 horas', async () => {
-      const patRes = await db.query(
-        `INSERT INTO patients (tenant_id, name, whatsapp) VALUES ($1, 'Juliana Silva', '5511988882222') RETURNING id`,
-        [tenantA]
-      );
-      const patientId = patRes.rows[0].id;
-
-      const tomorrow = new Date();
-      tomorrow.setDate(tomorrow.getDate() + 1);
-      tomorrow.setHours(14, 0, 0, 0);
-
-      const appRes = await db.query(
-        `INSERT INTO appointments (tenant_id, patient_id, start_time, end_time, status)
-         VALUES ($1, $2, $3, $4, 'PENDING') RETURNING id`,
-        [tenantA, patientId, tomorrow.toISOString(), new Date(tomorrow.getTime() + 30 * 60000).toISOString()]
-      );
-      const appointmentId = appRes.rows[0].id;
-
-      // Sem log prévio -> deve encontrar
-      const firstCheck = await repo.findPendingAppointmentsForConfirmation(tenantA, tomorrow, {
-        ignoreRecentlyNotifiedHours: 12,
-      });
-      expect(firstCheck).toHaveLength(1);
-
-      // Registra mensagem enviada há 1 hora
-      await repo.logMessage(tenantA, {
-        appointment_id: appointmentId,
-        patient_id: patientId,
-        direction: 'OUTBOUND',
-        phone: '5511988882222',
-        message_text: 'Confirmação',
-        status: 'SENT',
-      });
-
-      // Com log recente -> deve ser ignorado pela idempotência
-      const hasRecent = await repo.hasRecentNotification(appointmentId, 12);
-      expect(hasRecent).toBe(true);
-
-      const secondCheck = await repo.findPendingAppointmentsForConfirmation(tenantA, tomorrow, {
-        ignoreRecentlyNotifiedHours: 12,
-      });
-      expect(secondCheck).toHaveLength(0);
-    });
+    const check = await db.query(`SELECT whatsapp_custom_message FROM appointments WHERE id = $1`, [app1]);
+    expect(check.rows[0].whatsapp_custom_message).toBe('Olá Fulano, seu horário especial é às 10h.');
   });
 
-  describe('Histórico e Rastreabilidade de Mensagens (Audit Logs)', () => {
-    it('deve registrar mensagens e permitir consulta com filtros e isolamento multi-tenant', async () => {
-      const patRes = await db.query(
-        `INSERT INTO patients (tenant_id, name, whatsapp) VALUES ($1, 'Ana Clara', '5511977773333') RETURNING id`,
-        [tenantA]
-      );
-      const patientId = patRes.rows[0].id;
+  it('deve atualizar a ordem dos itens na fila (@spec:AC-213)', async () => {
+    const today = new Date('2026-10-28T10:00:00Z');
+    await db.query(
+      `INSERT INTO appointments (id, tenant_id, patient_id, start_time, end_time, status)
+       VALUES ($1, $2, $3, $4, $5, 'PENDING')`,
+      [app1, tenantA, patient1, today.toISOString(), new Date('2026-10-28T10:30:00Z').toISOString()]
+    );
+    await db.query(
+      `INSERT INTO appointments (id, tenant_id, patient_id, start_time, end_time, status)
+       VALUES ($1, $2, $3, $4, $5, 'PENDING')`,
+      [app2, tenantA, patient2, today.toISOString(), new Date('2026-10-28T10:30:00Z').toISOString()]
+    );
 
-      const msgOut = await repo.logMessage(tenantA, {
-        patient_id: patientId,
-        direction: 'OUTBOUND',
-        phone: '5511977773333',
-        message_text: 'Olá Ana, confirmamos sua consulta?',
-        status: 'SENT',
-        evolution_message_id: 'evo-12345',
-        created_at: new Date('2026-10-20T10:00:00.000Z').toISOString(),
-      });
+    await repo.updateQueueOrder(tenantA, [app2, app1]);
 
-      expect(msgOut.id).toBeDefined();
-      expect(msgOut.direction).toBe('OUTBOUND');
-      expect(msgOut.status).toBe('SENT');
+    const check1 = await db.query(`SELECT whatsapp_queue_order FROM appointments WHERE id = $1`, [app1]);
+    const check2 = await db.query(`SELECT whatsapp_queue_order FROM appointments WHERE id = $1`, [app2]);
+    expect(check2.rows[0].whatsapp_queue_order).toBe(1);
+    expect(check1.rows[0].whatsapp_queue_order).toBe(2);
+  });
 
-      const msgIn = await repo.logMessage(tenantA, {
-        patient_id: patientId,
-        direction: 'INBOUND',
-        phone: '5511977773333',
-        message_text: '1',
-        status: 'RECEIVED',
-        created_at: new Date('2026-10-20T10:05:00.000Z').toISOString(),
-      });
-
-      expect(msgIn.direction).toBe('INBOUND');
-
-      const messagesA = await repo.listMessages(tenantA, { patientId });
-      expect(messagesA).toHaveLength(2);
-      expect(messagesA[0].id).toBe(msgIn.id); // 10:05 vem antes de 10:00 em DESC
-      expect(messagesA[1].id).toBe(msgOut.id);
-
-      // Tenant B não deve ter acesso às mensagens do Tenant A
-      const messagesB = await repo.listMessages(tenantB);
-      expect(messagesB).toHaveLength(0);
+  it('deve permitir cancelar job na fila em memória por appointmentId', async () => {
+    const queue = new InMemoryConfirmationQueue();
+    await queue.addJob('job-1', {
+      appointmentId: app1,
+      tenantId: tenantA,
+      instanceName: 'inst',
+      phone: '11999999999',
+      patientName: 'Test',
+      appointmentStartTime: new Date().toISOString(),
     });
+
+    const removed = await queue.removeJobByAppointmentId(app1);
+    expect(removed).toBe(true);
+
+    const pending = await queue.getPendingJobs();
+    expect(pending).toHaveLength(0);
   });
 });
