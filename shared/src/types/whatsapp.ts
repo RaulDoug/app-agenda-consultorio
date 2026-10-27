@@ -7,6 +7,8 @@ export type WhatsappMessageStatus =
   | 'FAILED'
   | 'RECEIVED';
 
+export type WhatsappAutoReplyScope = 'REGISTERED_ONLY' | 'ALL' | 'DISABLED';
+
 export interface TenantWhatsappSettings {
   id?: string;
   tenant_id: string;
@@ -17,6 +19,7 @@ export interface TenantWhatsappSettings {
   confirmation_hour: number; // Ex: 9 (09:00)
   confirmation_days_ahead: number; // Ex: 1 (D+1)
   auto_reply_enabled: boolean;
+  auto_reply_scope?: WhatsappAutoReplyScope;
   created_at?: string;
   updated_at?: string;
 }
@@ -29,6 +32,7 @@ export interface UpdateTenantWhatsappSettingsInput {
   confirmation_hour?: number;
   confirmation_days_ahead?: number;
   auto_reply_enabled?: boolean;
+  auto_reply_scope?: WhatsappAutoReplyScope;
 }
 
 export interface WhatsappMessageRecord {
