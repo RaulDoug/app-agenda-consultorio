@@ -1,6 +1,6 @@
 {
   "feature": "correcao-data-agendamento-rapido",
-  "timestamp": "2026-10-27T20:33:24.160Z",
+  "timestamp": "2026-10-27T20:36:18.594Z",
   "gitRev": "4cd4ffa",
   "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
