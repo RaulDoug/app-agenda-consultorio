@@ -347,4 +347,45 @@ describe('Sprint FE-3: Checkout Financeiro, Rateio de Descontos e Retorno Inteli
       expect(outboxEntries[0].operation).toBe('INSERT');
     });
   });
+
+  // AC-202
+  it('AC-202: Bloqueio estrito de entrada igual ou superior ao total no modo parcelado @spec:AC-202', async () => {
+    const user = userEvent.setup();
+    const onChangePlan = vi.fn();
+
+    render(
+      <InstallmentsForm
+        totalCents={50000} // R$ 500,00
+        onChangePlan={onChangePlan}
+        defaultFirstDueDate="2026-11-26"
+      />
+    );
+
+    const entryInput = screen.getByLabelText('Valor de entrada');
+
+    // 1. Testa entrada igual ao total (R$ 500,00)
+    await user.clear(entryInput);
+    await user.type(entryInput, '500');
+
+    expect(screen.getByTestId('entry-invalid-error')).toBeDefined();
+    expect(screen.getByTestId('entry-invalid-error')).toHaveTextContent('deve ser menor que o valor total cobrado');
+    expect(onChangePlan).toHaveBeenLastCalledWith([], false);
+
+    // 2. Testa entrada superior ao total (R$ 600,00)
+    await user.clear(entryInput);
+    await user.type(entryInput, '600');
+
+    expect(screen.getByTestId('entry-invalid-error')).toBeDefined();
+    expect(screen.getByTestId('entry-invalid-error')).toHaveTextContent('não pode ser superior ao valor total cobrado');
+    expect(onChangePlan).toHaveBeenLastCalledWith([], false);
+
+    // 3. Testa entrada válida menor que o total (R$ 200,00)
+    await user.clear(entryInput);
+    await user.type(entryInput, '200');
+
+    expect(screen.queryByTestId('entry-invalid-error')).toBeNull();
+    const lastCall = onChangePlan.mock.calls[onChangePlan.mock.calls.length - 1];
+    expect(lastCall[1]).toBe(true);
+    expect(lastCall[0].length).toBeGreaterThan(0);
+  });
 });

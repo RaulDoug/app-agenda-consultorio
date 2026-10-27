@@ -66,10 +66,12 @@ syncRouter.post('/batch', async (req, res) => {
     let ignoredCount = 0;
     const conflicts: any[] = [];
 
-    // 1. Sincronização de Pacientes
+    // 1. Sincronização de Pacientes (com Soft Delete e LWW)
     for (const patient of patients) {
       try {
-        if (!patient.id || !patient.name || !patient.whatsapp) continue;
+        if (!patient.id) continue;
+
+        const isDeleteOp = patient.operation === 'DELETE' || patient.is_active === false;
 
         const existingRes = await db.query(
           `SELECT id, updated_at FROM patients WHERE id = $1 AND tenant_id = $2`,
@@ -79,16 +81,19 @@ syncRouter.post('/batch', async (req, res) => {
         const incomingUpdatedAt = new Date(patient.updated_at || Date.now());
 
         if (existingRes.rows.length === 0) {
+          if (!patient.name || !patient.whatsapp) continue;
+
           await db.query(
-            `INSERT INTO patients (id, tenant_id, name, whatsapp, notes, is_active, created_at, updated_at)
-             VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
+            `INSERT INTO patients (id, tenant_id, name, whatsapp, notes, is_active, deleted_at, created_at, updated_at)
+             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
             [
               patient.id,
               tenantId,
               patient.name,
               patient.whatsapp,
               patient.notes || null,
-              patient.is_active !== undefined ? patient.is_active : true,
+              isDeleteOp ? false : (patient.is_active !== undefined ? patient.is_active : true),
+              isDeleteOp ? (patient.deleted_at || incomingUpdatedAt.toISOString()) : null,
               patient.created_at || new Date().toISOString(),
               incomingUpdatedAt.toISOString(),
             ]
@@ -97,20 +102,41 @@ syncRouter.post('/batch', async (req, res) => {
         } else {
           const existingUpdatedAt = new Date(existingRes.rows[0].updated_at || 0);
           if (incomingUpdatedAt.getTime() > existingUpdatedAt.getTime()) {
-            await db.query(
-              `UPDATE patients
-               SET name = $3, whatsapp = $4, notes = $5, is_active = $6, updated_at = $7
-               WHERE id = $1 AND tenant_id = $2`,
-              [
-                patient.id,
-                tenantId,
-                patient.name,
-                patient.whatsapp,
-                patient.notes || null,
-                patient.is_active !== undefined ? patient.is_active : true,
-                incomingUpdatedAt.toISOString(),
-              ]
-            );
+            if (isDeleteOp) {
+              await db.query(
+                `UPDATE patients
+                 SET is_active = false,
+                     deleted_at = COALESCE($3::timestamptz, CURRENT_TIMESTAMP),
+                     updated_at = $4::timestamptz
+                 WHERE id = $1 AND tenant_id = $2`,
+                [
+                  patient.id,
+                  tenantId,
+                  patient.deleted_at || incomingUpdatedAt.toISOString(),
+                  incomingUpdatedAt.toISOString(),
+                ]
+              );
+            } else {
+              await db.query(
+                `UPDATE patients
+                 SET name = COALESCE($3, name),
+                     whatsapp = COALESCE($4, whatsapp),
+                     notes = COALESCE($5, notes),
+                     is_active = $6,
+                     deleted_at = NULL,
+                     updated_at = $7
+                 WHERE id = $1 AND tenant_id = $2`,
+                [
+                  patient.id,
+                  tenantId,
+                  patient.name || null,
+                  patient.whatsapp || null,
+                  patient.notes || null,
+                  patient.is_active !== undefined ? patient.is_active : true,
+                  incomingUpdatedAt.toISOString(),
+                ]
+              );
+            }
             appliedCount++;
           } else {
             ignoredCount++;

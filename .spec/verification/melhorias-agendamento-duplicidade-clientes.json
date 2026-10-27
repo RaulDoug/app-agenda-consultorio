@@ -1,11 +1,11 @@
 {
   "feature": "melhorias-agendamento-duplicidade-clientes",
-  "timestamp": "2026-10-20T23:08:38.224Z",
-  "gitRev": "d0066c0",
+  "timestamp": "2026-10-26T20:39:37.039Z",
+  "gitRev": "4cd4ffa",
   "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
   "exitCode": 0,
-  "testsParsed": 466,
+  "testsParsed": 494,
   "results": {
     "AC-175": {
       "status": "pass",
@@ -22,6 +22,5 @@
       "testName": "Rotas de Pacientes (Clientes) — /api/patients deve retornar 409 Conflict ao tentar cadastrar paciente com WhatsApp duplicado @spec:AC-177 deve retornar 409 Conflict ao tentar cadastrar paciente com WhatsApp duplicado @spec:AC-177",
       "method": "vitest-json"
     }
-  },
-  "principles": {}
+  }
 }

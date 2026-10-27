@@ -10,18 +10,31 @@ export interface CreatePatientInput {
   notes?: string | null;
 }
 
+export function normalizePhoneForComparison(phone: string): string {
+  const digits = phone.replace(/\D/g, '');
+  if ((digits.length === 12 || digits.length === 13) && digits.startsWith('55')) {
+    return digits.slice(2);
+  }
+  return digits;
+}
+
 export class PatientLocalRepository {
   constructor(private db: CliniAssistLocalDB = localDb) {}
+
+  get database(): CliniAssistLocalDB {
+    return this.db;
+  }
 
   async createPatient(input: CreatePatientInput): Promise<LocalPatient> {
     const cleanPhone = input.whatsapp.replace(/\D/g, '');
     const tenantId = input.tenant_id || (input as any).tenantId || '';
 
     if (cleanPhone && tenantId) {
+      const normPhone = normalizePhoneForComparison(cleanPhone);
       const duplicate = await this.db.patients
         .where('tenant_id')
         .equals(tenantId)
-        .filter((p) => p.is_active && p.whatsapp.replace(/\D/g, '') === cleanPhone)
+        .filter((p) => p.is_active && normalizePhoneForComparison(p.whatsapp) === normPhone)
         .first();
 
       if (duplicate) {
@@ -37,6 +50,7 @@ export class PatientLocalRepository {
       whatsapp: cleanPhone,
       notes: input.notes || null,
       is_active: true,
+      deleted_at: null,
       created_at: now,
       updated_at: now,
     };
@@ -62,10 +76,11 @@ export class PatientLocalRepository {
 
     if (updates.whatsapp !== undefined) {
       const cleanPhone = updates.whatsapp.replace(/\D/g, '');
+      const normPhone = normalizePhoneForComparison(cleanPhone);
       const duplicate = await this.db.patients
         .where('tenant_id')
         .equals(existing.tenant_id)
-        .filter((p) => p.is_active && p.id !== id && p.whatsapp.replace(/\D/g, '') === cleanPhone)
+        .filter((p) => p.is_active && p.id !== id && normalizePhoneForComparison(p.whatsapp) === normPhone)
         .first();
 
       if (duplicate) {
@@ -130,6 +145,7 @@ export class PatientLocalRepository {
     const updated: LocalPatient = {
       ...existing,
       is_active: false,
+      deleted_at: now,
       updated_at: now,
     };
 
@@ -139,7 +155,14 @@ export class PatientLocalRepository {
         entity: 'patients',
         recordId: id,
         operation: 'DELETE',
-        payload: { id, is_active: false, updated_at: now },
+        payload: {
+          id,
+          name: existing.name,
+          whatsapp: existing.whatsapp,
+          is_active: false,
+          deleted_at: now,
+          updated_at: now,
+        },
       });
     });
   }

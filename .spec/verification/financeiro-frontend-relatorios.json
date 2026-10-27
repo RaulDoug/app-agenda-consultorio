@@ -1,11 +1,11 @@
 {
   "feature": "financeiro-frontend-relatorios",
-  "timestamp": "2026-10-21T16:57:06.498Z",
-  "gitRev": "b054d2e",
+  "timestamp": "2026-10-26T20:39:37.039Z",
+  "gitRev": "4cd4ffa",
   "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
-  "exitCode": 1,
-  "testsParsed": 481,
+  "exitCode": 0,
+  "testsParsed": 494,
   "results": {
     "AC-178": {
       "status": "pass",
@@ -32,6 +32,5 @@
       "testName": "Feature financeiro-frontend-relatorios — TDD Spec Anchor AC-182: Visualização de prontuário financeiro via Bottom Drawer com quitação pontual @spec:AC-182 AC-182: Visualização de prontuário financeiro via Bottom Drawer com quitação pontual @spec:AC-182",
       "method": "vitest-json"
     }
-  },
-  "principles": {}
+  }
 }

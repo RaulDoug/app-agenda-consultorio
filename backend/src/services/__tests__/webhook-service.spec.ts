@@ -85,6 +85,34 @@ describe('WebhookService — Processamento de Eventos e Réplicas', () => {
       expect(res.status).toBe('ignored_from_me');
     });
 
+    it('deve aceitar resposta em auto-teste (fromMe: true) quando o texto for "1" em conversa consigo mesmo', async () => {
+      mockRepo.getTenant.mockResolvedValue({ id: tenantId, whatsapp_instance_name: instanceName });
+      mockRepo.findPatientByPhone.mockResolvedValue({ id: 'pat-1', name: 'Rodrigo Alves' });
+      mockRepo.findRelevantAppointmentForPatient.mockResolvedValue({
+        id: 'app-1',
+        status: 'PENDING',
+        start_time: '2026-10-21T14:00:00.000Z',
+      });
+      mockRepo.ensureDefaultSettings.mockResolvedValue({
+        auto_reply_enabled: true,
+        confirmation_reply_template: 'Perfeito, {nome}!',
+      });
+
+      const payload = {
+        event: 'messages.upsert',
+        instance: instanceName,
+        data: {
+          key: { remoteJid: `${patientPhone}@s.whatsapp.net`, fromMe: true },
+          message: { conversation: '1' },
+        },
+      };
+
+      const res = await service.handleWebhook(payload);
+      expect(res.status).toBe('processed');
+      expect(res.data.new_status).toBe('CONFIRMED');
+      expect(mockRepo.updateAppointmentStatus).toHaveBeenCalledWith(tenantId, 'app-1', 'CONFIRMED');
+    });
+
     it('deve responder 200 silencioso quando o número não for reconhecido (AC-025)', async () => {
       mockRepo.getTenant.mockResolvedValue({ id: tenantId, whatsapp_instance_name: instanceName });
       mockRepo.findPatientByPhone.mockResolvedValue(null);

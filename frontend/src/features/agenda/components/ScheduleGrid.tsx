@@ -30,6 +30,7 @@ export const ScheduleGrid: React.FC<ScheduleGridProps> = ({
     const slots: {
       timeStr: string;
       isLunch: boolean;
+      isOutOfHours?: boolean;
       appointments: LocalAppointmentWithDetails[];
       spanningAppointments: LocalAppointmentWithDetails[];
     }[] = [];
@@ -38,7 +39,14 @@ export const ScheduleGrid: React.FC<ScheduleGridProps> = ({
     const startTotalMinutes = startHour * 60;
     const endTotalMinutes = endHour * 60;
 
-    const currentDateStr = currentDate.toISOString().split('T')[0];
+    const getLocalDateStr = (d: Date) => {
+      const y = d.getFullYear();
+      const m = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      return `${y}-${m}-${day}`;
+    };
+
+    const currentDateStr = getLocalDateStr(currentDate);
 
     for (let m = startTotalMinutes; m < endTotalMinutes; m += slotDurationMinutes) {
       const h = Math.floor(m / 60);
@@ -53,7 +61,7 @@ export const ScheduleGrid: React.FC<ScheduleGridProps> = ({
         if (app.status === 'CANCELLED') return false;
         try {
           const appDate = new Date(app.start_time);
-          const appDateStr = appDate.toISOString().split('T')[0];
+          const appDateStr = getLocalDateStr(appDate);
           if (appDateStr !== currentDateStr) return false;
 
           const appHours = appDate.getHours();
@@ -72,7 +80,7 @@ export const ScheduleGrid: React.FC<ScheduleGridProps> = ({
         try {
           const appStart = new Date(app.start_time);
           const appEnd = new Date(app.end_time);
-          const appDateStr = appStart.toISOString().split('T')[0];
+          const appDateStr = getLocalDateStr(appStart);
           if (appDateStr !== currentDateStr) return false;
 
           const appStartMin = appStart.getHours() * 60 + appStart.getMinutes();
@@ -87,12 +95,55 @@ export const ScheduleGrid: React.FC<ScheduleGridProps> = ({
       slots.push({
         timeStr,
         isLunch,
+        isOutOfHours: false,
         appointments: slotAppointments,
         spanningAppointments,
       });
     }
 
-    return slots;
+    // Identificar agendamentos do dia fora do expediente regular (AC-198)
+    const outOfHoursSlotsMap = new Map<number, {
+      timeStr: string;
+      isLunch: boolean;
+      isOutOfHours: boolean;
+      appointments: LocalAppointmentWithDetails[];
+      spanningAppointments: LocalAppointmentWithDetails[];
+    }>();
+
+    appointments.forEach((app) => {
+      if (app.status === 'CANCELLED') return;
+      try {
+        const appDate = new Date(app.start_time);
+        if (getLocalDateStr(appDate) !== currentDateStr) return;
+        const appTotalMin = appDate.getHours() * 60 + appDate.getMinutes();
+
+        // Se o agendamento inicia fora do expediente padrão
+        if (appTotalMin < startTotalMinutes || appTotalMin >= endTotalMinutes) {
+          const alignedSlotMin = Math.floor(appTotalMin / slotDurationMinutes) * slotDurationMinutes;
+          if (!outOfHoursSlotsMap.has(alignedSlotMin)) {
+            const h = Math.floor(alignedSlotMin / 60);
+            const min = alignedSlotMin % 60;
+            const timeStr = `${String(h).padStart(2, '0')}:${String(min).padStart(2, '0')}`;
+            outOfHoursSlotsMap.set(alignedSlotMin, {
+              timeStr,
+              isLunch: false,
+              isOutOfHours: true,
+              appointments: [],
+              spanningAppointments: [],
+            });
+          }
+          outOfHoursSlotsMap.get(alignedSlotMin)!.appointments.push(app);
+        }
+      } catch {}
+    });
+
+    const allSlots = [...slots, ...Array.from(outOfHoursSlotsMap.values())].sort((a, b) => {
+      const [hA, mA] = a.timeStr.split(':').map(Number);
+      const [hB, mB] = b.timeStr.split(':').map(Number);
+      return hA * 60 + mA - (hB * 60 + mB);
+    });
+
+    return allSlots;
   };
 
   // Renderização da Visão Diária (padrão)
@@ -127,11 +178,20 @@ export const ScheduleGrid: React.FC<ScheduleGridProps> = ({
           return (
             <div
               key={slot.timeStr}
-              data-testid={`schedule-slot-${slot.timeStr}`}
-              className="flex items-start gap-3 p-2 rounded-xl bg-white border border-slate-100 hover:border-slate-200 transition"
+              data-testid={slot.isOutOfHours ? `out-of-hours-slot-${slot.timeStr}` : `schedule-slot-${slot.timeStr}`}
+              className={`flex items-start gap-3 p-2 rounded-xl border transition ${
+                slot.isOutOfHours
+                  ? 'bg-amber-50/40 border-amber-200'
+                  : 'bg-white border-slate-100 hover:border-slate-200'
+              }`}
             >
-              <div className="w-14 shrink-0 pt-2 font-mono text-xs font-semibold text-slate-500">
-                {slot.timeStr}
+              <div className="w-16 shrink-0 pt-2 font-mono text-xs font-semibold text-slate-500 flex flex-col">
+                <span>{slot.timeStr}</span>
+                {slot.isOutOfHours && (
+                  <span className="text-[9px] font-sans font-bold text-amber-700 leading-tight mt-0.5">
+                    Extra
+                  </span>
+                )}
               </div>
 
               <div className="flex-1 min-h-[44px] flex flex-col justify-center gap-2">

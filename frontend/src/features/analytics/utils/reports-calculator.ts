@@ -105,8 +105,7 @@ export function calculateReceivablesProjection(
   transactions: LocalFinancialTransaction[],
   refDate: Date = new Date()
 ): ReceivablesProjection {
-  const refTime = refDate.getTime();
-  const dayMs = 24 * 60 * 60 * 1000;
+  const startOfRef = new Date(refDate.getFullYear(), refDate.getMonth(), refDate.getDate(), 0, 0, 0, 0);
 
   const activePending = transactions.filter(
     (t) => t.is_active && !t.deleted_at && t.type === 'INCOME' && t.status === 'PENDING'
@@ -116,19 +115,29 @@ export function calculateReceivablesProjection(
   let pendingNext60Cents = 0;
   let pendingNext90Cents = 0;
 
-  for (const t of activePending) {
-    const dueDate = new Date(t.due_date);
-    const diffDays = Math.ceil((dueDate.getTime() - refTime) / dayMs);
+  // Limites considerando tanto dias corridos quanto a progressão de meses de calendário (AC-203)
+  const limit30 = new Date(startOfRef.getFullYear(), startOfRef.getMonth() + 1, startOfRef.getDate() + 1, 23, 59, 59, 999);
+  const limit60 = new Date(startOfRef.getFullYear(), startOfRef.getMonth() + 2, startOfRef.getDate() + 2, 23, 59, 59, 999);
+  const limit90 = new Date(startOfRef.getFullYear(), startOfRef.getMonth() + 3, startOfRef.getDate() + 3, 23, 59, 59, 999);
 
-    // Considera apenas títulos com vencimento futuro ou hoje
-    if (diffDays >= 0) {
-      if (diffDays <= 30) {
+  const dayMs = 24 * 60 * 60 * 1000;
+  const maxTime30 = Math.max(limit30.getTime(), startOfRef.getTime() + 31 * dayMs);
+  const maxTime60 = Math.max(limit60.getTime(), startOfRef.getTime() + 62 * dayMs);
+  const maxTime90 = Math.max(limit90.getTime(), startOfRef.getTime() + 93 * dayMs);
+
+  for (const t of activePending) {
+    if (!t.due_date) continue;
+    const [yStr, mStr, dStr] = String(t.due_date).slice(0, 10).split('-');
+    const dueTime = new Date(parseInt(yStr, 10), parseInt(mStr, 10) - 1, parseInt(dStr, 10), 0, 0, 0, 0).getTime();
+
+    if (dueTime >= startOfRef.getTime()) {
+      if (dueTime <= maxTime30) {
         pendingNext30Cents += t.amount_cents;
       }
-      if (diffDays <= 60) {
+      if (dueTime <= maxTime60) {
         pendingNext60Cents += t.amount_cents;
       }
-      if (diffDays <= 90) {
+      if (dueTime <= maxTime90) {
         pendingNext90Cents += t.amount_cents;
       }
     }

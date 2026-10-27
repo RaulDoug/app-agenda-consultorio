@@ -18,6 +18,7 @@ export interface LocalPatient {
   whatsapp: string;
   notes?: string | null;
   is_active: boolean;
+  deleted_at?: string | null;
   created_at: string;
   updated_at: string;
 }

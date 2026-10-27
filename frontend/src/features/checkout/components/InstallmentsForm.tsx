@@ -30,7 +30,7 @@ export const InstallmentsForm: React.FC<InstallmentsFormProps> = ({
     return Math.max(0, Math.round(val * 100));
   }, [entryReais]);
 
-  const isEntryInvalid = entryCents > totalCents;
+  const isEntryInvalid = totalCents > 0 && entryCents >= totalCents;
 
   const plan = useMemo(() => {
     if (isEntryInvalid) return [];
@@ -104,7 +104,15 @@ export const InstallmentsForm: React.FC<InstallmentsFormProps> = ({
           data-testid="entry-invalid-error"
           className="p-2.5 bg-rose-50 border border-rose-300 text-rose-800 text-xs rounded-lg font-medium"
         >
-          O valor da entrada (R$ {(entryCents / 100).toFixed(2)}) não pode ser superior ao valor total cobrado (R$ {(totalCents / 100).toFixed(2)}).
+          {entryCents === totalCents ? (
+            <span>
+              No modo parcelado, o valor da entrada (R$ {(entryCents / 100).toFixed(2)}) deve ser menor que o valor total cobrado. Para quitar o valor integral hoje, selecione uma forma de pagamento à vista.
+            </span>
+          ) : (
+            <span>
+              O valor da entrada (R$ {(entryCents / 100).toFixed(2)}) não pode ser superior ao valor total cobrado (R$ {(totalCents / 100).toFixed(2)}).
+            </span>
+          )}
         </div>
       )}
 

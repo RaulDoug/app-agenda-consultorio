@@ -1,11 +1,11 @@
 {
   "feature": "agendamento-atalho-paciente-preselecionado",
-  "timestamp": "2026-10-22T19:10:30.327Z",
-  "gitRev": "af9dffd",
+  "timestamp": "2026-10-26T20:53:27.126Z",
+  "gitRev": "4cd4ffa",
   "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
   "exitCode": 0,
-  "testsParsed": 484,
+  "testsParsed": 494,
   "results": {
     "AC-114": {
       "status": "pass",

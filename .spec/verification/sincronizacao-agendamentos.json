@@ -1,11 +1,11 @@
 {
   "feature": "sincronizacao-agendamentos",
-  "timestamp": "2026-10-21T17:33:40.712Z",
-  "gitRev": "b054d2e",
+  "timestamp": "2026-10-26T20:39:37.039Z",
+  "gitRev": "4cd4ffa",
   "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
-  "exitCode": 1,
-  "testsParsed": 484,
+  "exitCode": 0,
+  "testsParsed": 494,
   "results": {
     "AC-166": {
       "status": "pass",
@@ -52,6 +52,5 @@
       "testName": "SyncManager — Autenticação via Bearer e Preservação de Outbox AC-174: Restauração completa de agendamentos e procedimentos pós-login @spec:AC-174 AC-174: Restauração completa de agendamentos e procedimentos pós-login @spec:AC-174",
       "method": "vitest-json"
     }
-  },
-  "principles": {}
+  }
 }

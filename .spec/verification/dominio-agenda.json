@@ -1,11 +1,11 @@
 {
   "feature": "dominio-agenda",
-  "timestamp": "2026-10-19T20:51:32.247Z",
-  "gitRev": "8f0eb3b409d5a18f9d1e5d9a6c1f95c12c6487ec",
+  "timestamp": "2026-10-26T20:39:37.039Z",
+  "gitRev": "4cd4ffa",
   "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
   "exitCode": 0,
-  "testsParsed": 100,
+  "testsParsed": 494,
   "results": {
     "AC-001": {
       "status": "pass",
@@ -57,6 +57,5 @@
       "testName": "Domínio de Agendamento — OdontoFlow US-006 — Consistência de Fuso Horário UTC-3 AC-010: Preservação da data civil no fuso America/Sao_Paulo @spec:AC-010 AC-010: Preservação da data civil no fuso America/Sao_Paulo @spec:AC-010",
       "method": "vitest-json"
     }
-  },
-  "principles": {}
+  }
 }

@@ -31,3 +31,18 @@ if (rootElement) {
     </React.StrictMode>
   );
 }
+
+// Registro do Service Worker para suporte PWA Offline-First (AC-196)
+if ('serviceWorker' in navigator && (window.location.protocol === 'https:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').then(
+      (reg) => {
+        console.log('[PWA] Service Worker registrado com escopo:', reg.scope);
+        reg.update().catch(() => {});
+      },
+      (err) => {
+        console.warn('[PWA] Falha ao registrar Service Worker:', err);
+      }
+    );
+  });
+}

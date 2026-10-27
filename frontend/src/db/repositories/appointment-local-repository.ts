@@ -108,7 +108,8 @@ export class AppointmentLocalRepository {
     id: string,
     newStartTime: string,
     newEndTime: string,
-    newStatus: AppointmentStatus = 'CONFIRMED'
+    newStatus: AppointmentStatus = 'CONFIRMED',
+    isExtraFit?: boolean
   ): Promise<LocalAppointment> {
     const existing = await this.db.appointments.get(id);
     if (!existing) {
@@ -121,6 +122,7 @@ export class AppointmentLocalRepository {
       start_time: newStartTime,
       end_time: newEndTime,
       status: newStatus,
+      is_extra_fit: isExtraFit !== undefined ? isExtraFit : existing.is_extra_fit,
       updated_at: now,
     };
 
@@ -135,6 +137,7 @@ export class AppointmentLocalRepository {
           start_time: newStartTime,
           end_time: newEndTime,
           status: newStatus,
+          is_extra_fit: updated.is_extra_fit,
           updated_at: now,
         },
       });

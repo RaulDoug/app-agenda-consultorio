@@ -115,8 +115,8 @@ export const App: React.FC<AppProps> = ({
 
   // Sincronização delta periódica em segundo plano (atualiza agendamentos confirmados via WhatsApp)
   const syncManager = useMemo(
-    () => new SyncManager({ tenantId, token: session?.token, db }),
-    [tenantId, session?.token, db]
+    () => new SyncManager({ tenantId, token: session?.token, db, onUnauthorized: onLogout }),
+    [tenantId, session?.token, db, onLogout]
   );
 
   const runSync = useCallback(async () => {
@@ -614,6 +614,7 @@ export const App: React.FC<AppProps> = ({
       <RescheduleModal
         isOpen={Boolean(rescheduleAppointment)}
         appointment={rescheduleAppointment}
+        existingAppointments={detailedAppointments}
         onClose={() => setRescheduleAppointment(null)}
         onRescheduled={(updated) => {
           if (updated?.start_time) {

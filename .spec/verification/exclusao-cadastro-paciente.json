@@ -1,11 +1,11 @@
 {
   "feature": "exclusao-cadastro-paciente",
-  "timestamp": "2026-10-22T19:10:49.052Z",
-  "gitRev": "af9dffd",
+  "timestamp": "2026-10-26T20:39:37.039Z",
+  "gitRev": "4cd4ffa",
   "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
   "exitCode": 0,
-  "testsParsed": 484,
+  "testsParsed": 494,
   "results": {
     "AC-116": {
       "status": "pass",
@@ -17,6 +17,5 @@
       "testName": "Feature: exclusao-cadastro-paciente US-071 — Exclusão Segura de Pacientes da Listagem Ativa AC-117: Ação de Exclusão no Card do Paciente e Modal com Confirmação Segura @spec:AC-117 AC-117: Ação de Exclusão no Card do Paciente e Modal com Confirmação Segura @spec:AC-117",
       "method": "vitest-json"
     }
-  },
-  "principles": {}
+  }
 }

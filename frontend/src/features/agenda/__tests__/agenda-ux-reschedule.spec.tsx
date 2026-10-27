@@ -253,5 +253,159 @@ describe('Feature: Controle de Encaixe, UX de Modais e Resiliência na Remarcaç
       expect(reloadedBtn).toBeDefined();
       expect(screen.queryByText('Remarcando...')).toBeNull();
     });
+
+    it('AC-199: Alerta de encaixe e autorização obrigatória na remarcação direta pelo card @spec:AC-199', async () => {
+      const user = userEvent.setup();
+
+      const baseDay = new Date(2026, 9, 26, 14, 0, 0);
+      const baseEnd = new Date(2026, 9, 26, 14, 30, 0);
+
+      const created = await appointmentRepo.createAppointment({
+        tenant_id: tenantId,
+        patient_id: 'pat-reschedule-1',
+        start_time: baseDay.toISOString(),
+        end_time: baseEnd.toISOString(),
+        status: 'CONFIRMED',
+        items: [],
+      });
+
+      const appointmentDetails: LocalAppointmentWithDetails = {
+        ...created.appointment,
+        patient_name: 'Paciente Remarcação Encaixe',
+      };
+
+      // Consulta conflitante existente às 10:00
+      const conflictStart = new Date(2026, 9, 26, 10, 0, 0);
+      const conflictEnd = new Date(2026, 9, 26, 10, 30, 0);
+
+      const conflictingApp: LocalAppointmentWithDetails = {
+        id: 'conflicting-app-1',
+        tenant_id: tenantId,
+        patient_id: 'pat-outro',
+        patient_name: 'Outro Paciente Marcado',
+        start_time: conflictStart.toISOString(),
+        end_time: conflictEnd.toISOString(),
+        status: 'CONFIRMED',
+      };
+
+      const onClose = vi.fn();
+      const onRescheduled = vi.fn();
+
+      render(
+        <RescheduleModal
+          isOpen={true}
+          appointment={appointmentDetails}
+          appointmentRepo={appointmentRepo}
+          existingAppointments={[conflictingApp]}
+          businessHours={{
+            startHour: 8,
+            endHour: 17,
+            lunchStartHour: 12,
+            lunchEndHour: 13,
+            slotDurationMinutes: 30,
+          }}
+          onClose={onClose}
+          onRescheduled={onRescheduled}
+        />
+      );
+
+      // Clica no horário conflitante de 10:00
+      const slot10 = await screen.findByRole('button', { name: '10:00' });
+      await user.click(slot10);
+
+      // Deve exibir o aviso de encaixe
+      const warning = await screen.findByTestId('reschedule-extra-fit-warning');
+      expect(warning).toBeInTheDocument();
+      expect(warning).toHaveTextContent('Choque de horário');
+
+      // Tenta submeter sem marcar o checkbox
+      const submitBtn = screen.getByRole('button', { name: 'Confirmar Remarcação' });
+      await user.click(submitBtn);
+
+      // Deve exibir mensagem de erro
+      const errorMsg = await screen.findByTestId('reschedule-error-msg');
+      expect(errorMsg).toHaveTextContent('É necessário autorizar o encaixe');
+      expect(onRescheduled).not.toHaveBeenCalled();
+
+      // Marca o checkbox de autorização
+      const checkbox = screen.getByTestId('reschedule-allow-extra-fit-checkbox');
+      await user.click(checkbox);
+
+      // Confirma agora com sucesso
+      await user.click(submitBtn);
+
+      await waitFor(() => {
+        expect(onRescheduled).toHaveBeenCalled();
+        expect(onClose).toHaveBeenCalled();
+      });
+    });
+
+    it('AC-199: Remarcação no sábado após as 12:00 detecta horário fora de expediente e exige autorização de encaixe @spec:AC-199', async () => {
+      const user = userEvent.setup();
+
+      const patient = await patientRepo.createPatient({
+        tenant_id: tenantId,
+        name: 'Paciente Sábado',
+        whatsapp: '11999990099',
+      });
+
+      // Cria agendamento inicial para um sábado às 09:00 (dentro do expediente de sábado 08-12h)
+      // 2026-10-24 foi um Sábado
+      const saturdayDate = new Date(2026, 9, 24, 9, 0, 0);
+
+      const created = await appointmentRepo.createAppointment({
+        tenant_id: tenantId,
+        patient_id: patient.id,
+        start_time: saturdayDate.toISOString(),
+        end_time: new Date(saturdayDate.getTime() + 30 * 60 * 1000).toISOString(),
+        status: 'RESCHEDULE_REQUESTED',
+        items: [],
+      });
+
+      const appointmentDetails: LocalAppointmentWithDetails = {
+        ...created.appointment,
+        patient_name: 'Paciente Sábado',
+      };
+
+      const onClose = vi.fn();
+      const onRescheduled = vi.fn();
+
+      render(
+        <RescheduleModal
+          isOpen={true}
+          appointment={appointmentDetails}
+          appointmentRepo={appointmentRepo}
+          onClose={onClose}
+          onRescheduled={onRescheduled}
+        />
+      );
+
+      // Clica no horário das 14:00 (após o meio-dia no sábado)
+      const slot14 = await screen.findByRole('button', { name: '14:00' });
+      await user.click(slot14);
+
+      // Deve exibir o aviso de encaixe por ser fora do expediente do sábado
+      const warning = await screen.findByTestId('reschedule-extra-fit-warning');
+      expect(warning).toBeInTheDocument();
+      expect(warning).toHaveTextContent(/fora do expediente de sábado/i);
+
+      // Tenta submeter sem marcar o checkbox
+      const submitBtn = screen.getByRole('button', { name: 'Confirmar Remarcação' });
+      await user.click(submitBtn);
+
+      const errorMsg = await screen.findByTestId('reschedule-error-msg');
+      expect(errorMsg).toHaveTextContent('É necessário autorizar o encaixe');
+      expect(onRescheduled).not.toHaveBeenCalled();
+
+      // Marca autorização de encaixe e confirma
+      const checkbox = screen.getByTestId('reschedule-allow-extra-fit-checkbox');
+      await user.click(checkbox);
+      await user.click(submitBtn);
+
+      await waitFor(() => {
+        expect(onRescheduled).toHaveBeenCalled();
+        expect(onClose).toHaveBeenCalled();
+      });
+    });
   });
 });

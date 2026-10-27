@@ -1,11 +1,11 @@
 {
   "feature": "correcoes-agenda-ux-reschedule",
-  "timestamp": "2026-10-19T20:51:32.247Z",
-  "gitRev": "8f0eb3b409d5a18f9d1e5d9a6c1f95c12c6487ec",
+  "timestamp": "2026-10-26T20:39:37.039Z",
+  "gitRev": "4cd4ffa",
   "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
   "exitCode": 0,
-  "testsParsed": 100,
+  "testsParsed": 494,
   "results": {
     "AC-093": {
       "status": "pass",
@@ -22,6 +22,5 @@
       "testName": "Feature: Controle de Encaixe, UX de Modais e Resiliência na Remarcação US-057 — Ciclo de Vida e Resiliência do Modal de Remarcação AC-095: Destravamento garantido e persistência de remarcação sem bloqueio de botão @spec:AC-095 AC-095: Destravamento garantido e persistência de remarcação sem bloqueio de botão @spec:AC-095",
       "method": "vitest-json"
     }
-  },
-  "principles": {}
+  }
 }

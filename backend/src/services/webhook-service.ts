@@ -110,20 +110,18 @@ export class WebhookService {
       const data = payload?.data || payload;
       const key = data?.key || {};
 
-      // Ignora mensagens enviadas pelo próprio consultório (fromMe)
-      if (key?.fromMe) {
-        return {
-          status: 'ignored_from_me',
-          statusCode: 200,
-          data: {},
-        };
-      }
-
       // Extrai número do remetente
       const remoteJid = key?.remoteJid || data?.remoteJid || '';
       const rawNumber = remoteJid.replace(/@.*$/, '').replace(/\D/g, '');
 
       if (!rawNumber) {
+        if (key?.fromMe) {
+          return {
+            status: 'ignored_from_me',
+            statusCode: 200,
+            data: {},
+          };
+        }
         return {
           status: 'ignored_no_phone',
           statusCode: 200,
@@ -141,12 +139,54 @@ export class WebhookService {
         data?.text ||
         '';
 
+      const messageId = key?.id || data?.id || payload?.data?.key?.id;
+
+      // Idempotência: ignora re-entregas duplicadas do mesmo evento/mensagem pela Evolution API
+      if (messageId) {
+        const isDuplicate = await (this.repo as any).db.query(
+          `SELECT id FROM whatsapp_messages WHERE evolution_message_id = $1 AND direction = 'INBOUND' LIMIT 1`,
+          [messageId]
+        );
+        if (isDuplicate?.rows && isDuplicate.rows.length > 0) {
+          return {
+            status: 'ignored_duplicate',
+            statusCode: 200,
+            data: { messageId },
+          };
+        }
+      }
+
       const parseResult = parsePatientMessage({
         text,
         messageType: isAudio ? 'audio' : 'text',
         mediaUrl: messageContent.audioMessage?.url || null,
         rawPayload: payload,
       });
+
+      // Ignora mensagens enviadas pelo próprio consultório (fromMe),
+      // EXCETO quando for auto-teste: usuário testando no próprio chat consigo mesmo e respondendo 1 ou 2
+      if (key?.fromMe) {
+        const isBotAutomatedMessage =
+          text.includes('Confirmamos seu agendamento') ||
+          text.includes('Olá ') ||
+          text.includes('agendamento está confirmado') ||
+          text.includes('remarcação foi registrado');
+
+        const isSelfTestResponse =
+          !isBotAutomatedMessage &&
+          (text.trim() === '1' ||
+            text.trim() === '2' ||
+            parseResult.intent === 'CONFIRM' ||
+            parseResult.intent === 'RESCHEDULE');
+
+        if (!isSelfTestResponse) {
+          return {
+            status: 'ignored_from_me',
+            statusCode: 200,
+            data: {},
+          };
+        }
+      }
 
       // Localiza o consultório (tenant) pela instância da Evolution
       let tenant = instanceName ? await this.repo.getTenant(instanceName, true) : null;
@@ -193,6 +233,7 @@ export class WebhookService {
         phone: rawNumber,
         message_text: text || (isAudio ? '[Mensagem de Áudio]' : '[Mídia/Arquivo]'),
         status: 'RECEIVED',
+        evolution_message_id: messageId || undefined,
       });
 
       let newStatus: string | null = null;

@@ -1,11 +1,11 @@
 {
   "feature": "correcoes-agenda-procedimentos",
-  "timestamp": "2026-10-19T20:51:32.247Z",
-  "gitRev": "8f0eb3b409d5a18f9d1e5d9a6c1f95c12c6487ec",
+  "timestamp": "2026-10-26T20:39:37.039Z",
+  "gitRev": "4cd4ffa",
   "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
   "exitCode": 0,
-  "testsParsed": 100,
+  "testsParsed": 494,
   "results": {
     "AC-089": {
       "status": "pass",
@@ -27,6 +27,5 @@
       "testName": "Feature: Correções e Edição de Procedimentos na Agenda US-054 — Ocupação Contínua de Horários e Edição de Procedimentos em Consulta Existente AC-092: Edição interativa de procedimentos vinculados na consulta com recálculo de duração @spec:AC-092 AC-092: Edição interativa de procedimentos vinculados na consulta com recálculo de duração @spec:AC-092",
       "method": "vitest-json"
     }
-  },
-  "principles": {}
+  }
 }

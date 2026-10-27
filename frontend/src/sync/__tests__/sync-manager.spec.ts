@@ -217,4 +217,57 @@ describe('SyncManager — Autenticação via Bearer e Preservação de Outbox', 
     expect(savedItem?.appointment_id).toBe('app-pulled-1');
     expect(savedItem?.procedure_id).toBe('proc-pulled-1');
   });
+
+  it('AC-196: Carregamento do App Shell em Modo Offline via Service Worker @spec:AC-196', async () => {
+    // Valida que o arquivo sw.js existe na pasta pública e implementa cache de navegação offline
+    const fs = await import('fs');
+    const path = await import('path');
+    const swPath = fs.existsSync(path.resolve(process.cwd(), 'public/sw.js'))
+      ? path.resolve(process.cwd(), 'public/sw.js')
+      : path.resolve(process.cwd(), 'frontend/public/sw.js');
+    expect(fs.existsSync(swPath)).toBe(true);
+    const swContent = fs.readFileSync(swPath, 'utf8');
+    expect(swContent).toContain("request.mode === 'navigate'");
+    expect(swContent).toContain('/index.html');
+  });
+
+  it('AC-197: Deslogar imediatamente quando a sincronização em lote receber 401 Unauthorized @spec:AC-197', async () => {
+    const onUnauthorizedMock = vi.fn();
+    const mockFetch = vi.fn().mockResolvedValue({
+      ok: false,
+      status: 401,
+      json: async () => ({ error: 'Token inválido ou expirado.' }),
+    });
+    vi.stubGlobal('fetch', mockFetch);
+
+    const syncManager = new SyncManager({
+      tenantId,
+      token: 'token_invalido_401',
+      db,
+      onUnauthorized: onUnauthorizedMock,
+    });
+
+    // 1. Testa via PULL
+    const pullRes = await syncManager.pull();
+    expect(pullRes.success).toBe(false);
+    expect(onUnauthorizedMock).toHaveBeenCalledTimes(1);
+
+    // 2. Testa via PUSH com item na outbox
+    await db.sync_outbox.add({
+      id: 'mut-401',
+      client_mutation_id: 'cmd-401',
+      entity: 'patients',
+      record_id: 'rec-401',
+      operation: 'UPDATE',
+      payload: { id: 'rec-401' },
+      status: 'PENDING',
+      retry_count: 0,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    });
+
+    const pushRes = await syncManager.push();
+    expect(pushRes.success).toBe(false);
+    expect(onUnauthorizedMock).toHaveBeenCalledTimes(2);
+  });
 });

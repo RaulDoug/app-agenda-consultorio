@@ -1,11 +1,11 @@
 {
   "feature": "whatsapp-bullmq",
-  "timestamp": "2026-10-19T20:51:32.247Z",
-  "gitRev": "8f0eb3b409d5a18f9d1e5d9a6c1f95c12c6487ec",
+  "timestamp": "2026-10-26T20:39:37.039Z",
+  "gitRev": "4cd4ffa",
   "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
   "exitCode": 0,
-  "testsParsed": 100,
+  "testsParsed": 494,
   "results": {
     "AC-019": {
       "status": "pass",
@@ -47,6 +47,5 @@
       "testName": "Motor WhatsApp, BullMQ e Webhook Evolution API — OdontoFlow US-014 — Webhook da Evolution API e Gerenciamento de Sessão AC-026: Pausa e retomada inteligente de fila em desconexão com salvaguarda de expiração @spec:AC-026 AC-026: Pausa e retomada inteligente de fila em desconexão com salvaguarda de expiração @spec:AC-026",
       "method": "vitest-json"
     }
-  },
-  "principles": {}
+  }
 }

@@ -1,0 +1,52 @@
+{
+  "feature": "correcoes-qa-testes-manuais",
+  "timestamp": "2026-10-26T21:27:57.567Z",
+  "gitRev": "4cd4ffa",
+  "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
+  "reporter": "vitest-json",
+  "exitCode": 0,
+  "testsParsed": 495,
+  "results": {
+    "AC-196": {
+      "status": "pass",
+      "testName": "SyncManager — Autenticação via Bearer e Preservação de Outbox AC-196: Carregamento do App Shell em Modo Offline via Service Worker @spec:AC-196 AC-196: Carregamento do App Shell em Modo Offline via Service Worker @spec:AC-196",
+      "method": "vitest-json"
+    },
+    "AC-197": {
+      "status": "pass",
+      "testName": "SyncManager — Autenticação via Bearer e Preservação de Outbox AC-197: Deslogar imediatamente quando a sincronização em lote receber 401 Unauthorized @spec:AC-197 AC-197: Deslogar imediatamente quando a sincronização em lote receber 401 Unauthorized @spec:AC-197",
+      "method": "vitest-json"
+    },
+    "AC-198": {
+      "status": "pass",
+      "testName": "ScheduleGrid — Encaixes Fora de Expediente AC-198: Renderização visível de agendamentos de encaixe fora do expediente na grade diária @spec:AC-198 AC-198: Renderização visível de agendamentos de encaixe fora do expediente na grade diária @spec:AC-198",
+      "method": "vitest-json"
+    },
+    "AC-199": {
+      "status": "pass",
+      "testName": "Feature: Controle de Encaixe, UX de Modais e Resiliência na Remarcação US-057 — Ciclo de Vida e Resiliência do Modal de Remarcação AC-199: Alerta de encaixe e autorização obrigatória na remarcação direta pelo card @spec:AC-199 AC-199: Alerta de encaixe e autorização obrigatória na remarcação direta pelo card @spec:AC-199",
+      "method": "vitest-json"
+    },
+    "AC-200": {
+      "status": "pass",
+      "testName": "Sync Patients — Soft-Delete e Preservação de deleted_at AC-200: Soft-delete de pacientes no endpoint /api/sync/batch preservando deleted_at e is_active no PostgreSQL @spec:AC-200 AC-200: Soft-delete de pacientes no endpoint /api/sync/batch preservando deleted_at e is_active no PostgreSQL @spec:AC-200",
+      "method": "vitest-json"
+    },
+    "AC-201": {
+      "status": "pass",
+      "testName": "PatientLocalRepository — Unicidade de WhatsApp e Soft-Delete AC-201: Prevenção de duplicidade de pacientes com e sem DDI 55 @spec:AC-201 AC-201: Prevenção de duplicidade de pacientes com e sem DDI 55 @spec:AC-201",
+      "method": "vitest-json"
+    },
+    "AC-202": {
+      "status": "pass",
+      "testName": "Sprint FE-3: Checkout Financeiro, Rateio de Descontos e Retorno Inteligente AC-202: Bloqueio estrito de entrada igual ou superior ao total no modo parcelado @spec:AC-202 AC-202: Bloqueio estrito de entrada igual ou superior ao total no modo parcelado @spec:AC-202",
+      "method": "vitest-json"
+    },
+    "AC-203": {
+      "status": "pass",
+      "testName": "ReportsCalculator — Projeção Trimestral de Recebíveis DRE AC-203: Projeção trimestral de recebíveis (30, 60 e 90 dias) considerando meses de 31 dias @spec:AC-203 AC-203: Projeção trimestral de recebíveis (30, 60 e 90 dias) considerando meses de 31 dias @spec:AC-203",
+      "method": "vitest-json"
+    }
+  },
+  "principles": {}
+}

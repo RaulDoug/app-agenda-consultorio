@@ -115,8 +115,8 @@ describe('Sprint FE-2: Agenda de Atendimentos e Gestão de Clientes', () => {
       tenant_id: tenantId,
       patient_id: `patient-${idx}`,
       patient_name: `Paciente ${status}`,
-      start_time: '2026-10-18T09:00:00.000Z',
-      end_time: '2026-10-18T09:30:00.000Z',
+      start_time: '2026-10-19T09:00:00.000Z',
+      end_time: '2026-10-19T09:30:00.000Z',
       status,
       is_extra_fit: idx === 0, // Primeiro como encaixe
       notes: 'Consulta Padrão',
@@ -334,8 +334,8 @@ describe('Sprint FE-2: Agenda de Atendimentos e Gestão de Clientes', () => {
     const created = await appointmentRepo.createAppointment({
       tenant_id: tenantId,
       patient_id: patient.id,
-      start_time: '2026-10-18T09:00:00.000Z',
-      end_time: '2026-10-18T09:30:00.000Z',
+      start_time: '2026-10-19T09:00:00.000Z',
+      end_time: '2026-10-19T09:30:00.000Z',
       status: 'RESCHEDULE_REQUESTED',
       items: [],
     });

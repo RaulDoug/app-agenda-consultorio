@@ -6,6 +6,7 @@ export interface SyncManagerConfig {
   tenantId: string;
   token?: string;
   db?: CliniAssistLocalDB;
+  onUnauthorized?: () => void;
 }
 
 export interface SyncPushResult {
@@ -27,6 +28,7 @@ export class SyncManager {
   private tenantId: string;
   private token?: string;
   private db: CliniAssistLocalDB;
+  private onUnauthorized?: () => void;
   private isSyncing = false;
 
   constructor(config: SyncManagerConfig) {
@@ -34,6 +36,7 @@ export class SyncManager {
     this.tenantId = config.tenantId;
     this.token = config.token;
     this.db = config.db || localDb;
+    this.onUnauthorized = config.onUnauthorized;
   }
 
   private getHeaders(): Record<string, string> {
@@ -85,6 +88,11 @@ export class SyncManager {
         body: JSON.stringify(batchPayload),
       });
 
+      if (res.status === 401) {
+        this.onUnauthorized?.();
+        throw new Error('Sessão expirada ou não autorizada (HTTP 401).');
+      }
+
       if (!res.ok) {
         throw new Error(`Falha no servidor ao sincronizar: HTTP ${res.status}`);
       }
@@ -129,6 +137,11 @@ export class SyncManager {
         method: 'GET',
         headers: this.getHeaders(),
       });
+
+      if (res.status === 401) {
+        this.onUnauthorized?.();
+        throw new Error('Sessão expirada ou não autorizada (HTTP 401).');
+      }
 
       if (!res.ok) {
         throw new Error(`Falha no servidor ao puxar deltas: HTTP ${res.status}`);

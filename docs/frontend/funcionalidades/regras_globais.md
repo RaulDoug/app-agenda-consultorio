@@ -157,8 +157,10 @@ O OdontoFlow foi concebido para o **"Dentista-Operador"** que utiliza o sistema 
    - Todas as requisições autenticadas para a API (inclusive sincronização via `SyncManager` e requisições do WhatsApp) DEVEM injetar o cabeçalho HTTP `Authorization: Bearer <token>`.
    - O uso do cabeçalho legado `x-tenant-id` está expressamente descontinuado no frontend.
 5. **Tratamento de 401 e Logout Seguro:**
-   - Respostas HTTP com status 401 disparam a limpeza da sessão e o retorno imediato à tela de login.
+   - Respostas HTTP com status 401 disparam a limpeza da sessão e o retorno imediato à tela de login. O `SyncManager` invoca `onUnauthorized` para deslogar imediatamente.
    - Ao executar logout pelo usuário, se houver mutações pendentes na `sync_outbox`, o sistema DEVE apresentar a gaveta de confirmação (`LogoutConfirmDrawer`) informando a quantidade de alterações pendentes antes da purga do banco local.
+6. **Suporte PWA Offline e Recarga via Service Worker (AC-196):**
+   - O arquivo `public/sw.js` intercepta requisições de navegação (`request.mode === 'navigate'`) e entrega o `/index.html` em cache quando a conexão de rede estiver indisponível, impedindo o erro de página inacessível no recarregamento (F5).
 
 ---
 
@@ -170,8 +172,12 @@ O OdontoFlow foi concebido para o **"Dentista-Operador"** que utiliza o sistema 
 2. **Exibição Estrita de Encaixe sob Demanda:**
    - Em horários normais livres, a opção ou checkbox de encaixe NÃO deve ser renderizada, reduzindo atrito e ruído visual.
    - O aviso destacado e a opção de autorizar encaixe extraordinário são exibidos estritamente sob conflito de sobreposição ou horário fora do expediente/almoço.
-3. **Bloqueio de Duplicidade de WhatsApp de Pacientes:**
-   - O repositório local `PatientLocalRepository` valida a unicidade dos dígitos numéricos do WhatsApp antes de inserir ou atualizar pacientes ativos no mesmo consultório (`tenant_id`).
+3. **Expansão Dinâmica da Grade Diária para Encaixes (AC-198):**
+   - Na visualização diária da agenda (`ScheduleGrid`), a grade expande dinamicamente para acomodar consultas de encaixe que ocorram antes da abertura ou após o encerramento do expediente, renderizando slots adicionais com o badge distintivo `Extra`.
+4. **Validações Estritas na Remarcação de Consulta (`RescheduleModal` — AC-199):**
+   - A remarcação direta via modal avalia choque com agendamentos ativos, intervalo de almoço, horários fora de expediente e domingos, exigindo autorização explícita via checkbox antes de habilitar a confirmação.
+5. **Bloqueio de Duplicidade de WhatsApp de Pacientes e Equivalência DDI 55 (AC-201):**
+   - O repositório local `PatientLocalRepository` valida a unicidade dos dígitos numéricos do WhatsApp antes de inserir ou atualizar pacientes ativos no mesmo consultório (`tenant_id`), tratando números com ou sem o prefixo internacional `55` como a mesma linha telefônica.
    - Tentativas com número duplicado disparam erro descritivo contendo o nome do paciente já cadastrado, exibindo alerta vermelho no formulário sem fechar a tela nem enfileirar mutações duplicadas.
 
 ---
@@ -187,5 +193,14 @@ O OdontoFlow foi concebido para o **"Dentista-Operador"** que utiliza o sistema 
    - Diferenças a menor são exibidas como **Desconto** com sinal negativo explícito (`- R$ X,XX (-Y.Y%)`) em âmbar.
 4. **Rateio Proporcional Ponderado:**
    - Tanto acréscimos quanto descontos são distribuídos proporcionalmente aos pesos de cada item no subtotal, calculando o `effectivePriceCents` sem sobrescrever `basePriceCents`.
+5. **Bloqueio Estrito de Entrada no Parcelamento (AC-202):**
+   - Na modalidade parcelada (`InstallmentsForm`), o valor da entrada não pode ser igual nem superior ao total cobrado (`entryCents >= totalCents`), orientando o usuário a utilizar a opção à vista se desejar liquidar a totalidade da cobrança.
+
+---
+
+## 10. Projeção Trimestral de Recebíveis DRE (AC-203)
+
+- A projeção de recebíveis futuros em 30, 60 e 90 dias (`calculateReceivablesProjection`) utiliza janelas de calendário completas (31, 62 e 93 dias no fuso local normalizado), assegurando que três parcelas mensais contratadas sejam integralmente computadas dentro do trimestre de 90 dias, mesmo em meses com 31 dias de duração.
+
 
 

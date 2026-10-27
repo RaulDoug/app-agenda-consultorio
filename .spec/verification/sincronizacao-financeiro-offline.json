@@ -1,11 +1,11 @@
 {
   "feature": "sincronizacao-financeiro-offline",
-  "timestamp": "2026-10-21T19:05:01.436Z",
-  "gitRev": "b054d2e",
+  "timestamp": "2026-10-26T20:39:37.039Z",
+  "gitRev": "4cd4ffa",
   "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
-  "exitCode": 1,
-  "testsParsed": 484,
+  "exitCode": 0,
+  "testsParsed": 494,
   "results": {
     "AC-193": {
       "status": "pass",
@@ -22,6 +22,5 @@
       "testName": "Feature sincronizacao-financeiro-offline — TDD Spec Anchor AC-195: Restauração íntegra de transações financeiras no GET /api/sync/pull após novo login @spec:AC-195 AC-195: Restauração íntegra de transações financeiras no GET /api/sync/pull após novo login @spec:AC-195",
       "method": "vitest-json"
     }
-  },
-  "principles": {}
+  }
 }

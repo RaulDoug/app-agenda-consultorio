@@ -315,7 +315,14 @@ export class WhatsappRepository {
          AND patient_id = $2
          AND deleted_at IS NULL
          AND status IN ('PENDING', 'CONFIRMED', 'MESSAGE_RECEIVED')
-       ORDER BY start_time ASC
+       ORDER BY 
+         CASE 
+           WHEN status = 'PENDING' THEN 0 
+           WHEN status = 'MESSAGE_RECEIVED' THEN 1 
+           ELSE 2 
+         END ASC,
+         created_at DESC,
+         start_time ASC
        LIMIT 1`,
       [tenantId, patientId]
     );

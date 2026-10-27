@@ -1,11 +1,11 @@
 {
   "feature": "autenticacao-login-frontend",
-  "timestamp": "2026-10-20T20:28:58.186Z",
-  "gitRev": "d0066c0",
+  "timestamp": "2026-10-26T20:54:53.882Z",
+  "gitRev": "4cd4ffa",
   "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
   "exitCode": 0,
-  "testsParsed": 442,
+  "testsParsed": 494,
   "results": {
     "AC-151": {
       "status": "pass",

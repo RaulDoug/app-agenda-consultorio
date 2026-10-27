@@ -227,7 +227,7 @@ describe('Sprint FE-4: Gestão Financeira de Caixa, Conexão WhatsApp e Reativa�
 
   // AC-073
   it('AC-073: Lista de Pacientes Inativos (>180 dias) com Atalho Direto de WhatsApp @spec:AC-073', () => {
-    const now = new Date(2026, 9, 18, 12, 0, 0, 0); // 18 de Outubro de 2026
+    const now = new Date();
     const nowTime = now.getTime();
 
     // Paciente A: Consulta há 200 dias (>180d) e SEM agendamento futuro -> DEVE APARECER

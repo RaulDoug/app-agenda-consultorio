@@ -1,11 +1,11 @@
 {
   "feature": "replica-confirmacao-whatsapp",
-  "timestamp": "2026-10-19T20:51:32.247Z",
-  "gitRev": "8f0eb3b409d5a18f9d1e5d9a6c1f95c12c6487ec",
+  "timestamp": "2026-10-26T20:39:37.039Z",
+  "gitRev": "4cd4ffa",
   "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
   "exitCode": 0,
-  "testsParsed": 100,
+  "testsParsed": 494,
   "results": {
     "AC-086": {
       "status": "pass",
@@ -22,6 +22,5 @@
       "testName": "Feature: Réplica Automática de Confirmação e Remarcação no WhatsApp — Backend US-052 — Réplica Automática de Confirmação e Remarcação para o Paciente AC-088: Resiliência no envio da réplica sem impactar a gravação no banco de dados @spec:AC-088 AC-088: Resiliência no envio da réplica sem impactar a gravação no banco de dados @spec:AC-088",
       "method": "vitest-json"
     }
-  },
-  "principles": {}
+  }
 }
