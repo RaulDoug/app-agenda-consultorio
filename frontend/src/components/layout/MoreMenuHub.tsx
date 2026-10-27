@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavTabId } from './BottomNav';
-import { Users, Settings, ChevronRight, Activity, Calendar, ShieldCheck } from 'lucide-react';
+import { Users, Settings, ChevronRight, MessageCircle, ShieldCheck } from 'lucide-react';
 
 interface MoreMenuHubProps {
   onSelectSection: (tab: NavTabId) => void;
@@ -16,11 +16,39 @@ export const MoreMenuHub: React.FC<MoreMenuHubProps> = ({
       <div>
         <h2 className="text-xl font-bold text-slate-800">Mais Recursos</h2>
         <p className="text-xs text-slate-500 mt-0.5">
-          Acesse a base de clientes, configurações da clínica e parâmetros do sistema.
+          Acesse a central de mensagens, base de clientes e ajustes da clínica.
         </p>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {/* Card Fila de WhatsApp */}
+        <button
+          type="button"
+          data-testid="more-card-whatsapp"
+          onClick={() => onSelectSection('whatsapp')}
+          className="flex items-center justify-between p-5 bg-white rounded-2xl border border-slate-200 shadow-2xs hover:border-teal-500 hover:shadow-xs transition text-left group sm:col-span-2"
+        >
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-2xl bg-teal-50 text-teal-700 flex items-center justify-center group-hover:scale-105 transition-transform">
+              <MessageCircle className="w-6 h-6 stroke-2" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <h3 className="font-bold text-slate-900 text-sm sm:text-base">
+                  Fila de Envios WhatsApp
+                </h3>
+                <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-teal-100 text-teal-800">
+                  Automação
+                </span>
+              </div>
+              <p className="text-xs text-slate-500 mt-0.5">
+                Acompanhe confirmações, edite mensagens, reordene a fila e faça envios manuais.
+              </p>
+            </div>
+          </div>
+          <ChevronRight className="w-5 h-5 text-slate-400 group-hover:text-teal-600 transition" />
+        </button>
+
         {/* Card Clientes */}
         <button
           type="button"
@@ -29,7 +57,7 @@ export const MoreMenuHub: React.FC<MoreMenuHubProps> = ({
           className="flex items-center justify-between p-5 bg-white rounded-2xl border border-slate-200 shadow-2xs hover:border-teal-500 hover:shadow-xs transition text-left group"
         >
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-2xl bg-teal-50 text-teal-700 flex items-center justify-center group-hover:scale-105 transition-transform">
+            <div className="w-12 h-12 rounded-2xl bg-blue-50 text-blue-700 flex items-center justify-center group-hover:scale-105 transition-transform">
               <Users className="w-6 h-6 stroke-2" />
             </div>
             <div>
@@ -57,7 +85,7 @@ export const MoreMenuHub: React.FC<MoreMenuHubProps> = ({
             </div>
             <div>
               <h3 className="font-bold text-slate-900 text-sm sm:text-base">
-                Ajustes & WhatsApp
+                Ajustes & Conexão
               </h3>
               <p className="text-xs text-slate-500 mt-0.5">
                 Horário de expediente, QR Code e dados da clínica

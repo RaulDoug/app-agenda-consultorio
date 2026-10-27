@@ -18,6 +18,7 @@ import { QuickAppointmentDrawer } from './features/agenda/components/QuickAppoin
 import { AppointmentDetailsDrawer } from './features/agenda/components/AppointmentDetailsDrawer.js';
 import { RescheduleModal } from './features/agenda/components/RescheduleModal.js';
 import { type ViewMode, type LocalAppointmentWithDetails } from './features/agenda/types.js';
+import { getAgendaPeriodRange, countAppointmentsInPeriod } from './features/agenda/utils/date-formatters.js';
 
 import { PatientList } from './features/patients/components/PatientList.js';
 import { PatientFinancialDrawer } from './features/patients/components/PatientFinancialDrawer.js';
@@ -32,9 +33,11 @@ import { SmartReturnDrawer } from './features/checkout/components/SmartReturnDra
 import { SettingsView } from './features/settings/components/SettingsView.js';
 import { ReportsView } from './features/analytics/components/ReportsView.js';
 import { MoreMenuHub } from './components/layout/MoreMenuHub.js';
+import { WhatsappQueueView } from './features/whatsapp/components/WhatsappQueueView.js';
 import { CreatePatientModal } from './features/patients/components/CreatePatientModal.js';
 import { ConfirmDeletePatientModal } from './features/patients/components/ConfirmDeletePatientModal.js';
 import { LogoutConfirmDrawer } from './features/auth/components/LogoutConfirmDrawer.js';
+import { useAuth } from './features/auth/hooks/useAuth.js';
 import { SyncManager } from './sync/sync-manager.js';
 import { type LocalAuthSession } from './db/types.js';
 import { ApiClient } from './services/api-client.js';
@@ -285,6 +288,12 @@ export const App: React.FC<AppProps> = ({
     });
   }, [appointments, allPatients, procedures, appointmentItems]);
 
+  // Contagem de atendimentos no período atual da agenda (AC-205)
+  const periodAppointmentsCount = useMemo(() => {
+    const range = getAgendaPeriodRange(currentDate, viewMode);
+    return countAppointmentsInPeriod(detailedAppointments, range);
+  }, [detailedAppointments, currentDate, viewMode]);
+
   // Manipuladores de Slot e Agendamento
   const handleSlotClick = (date: Date, timeStr: string) => {
     setCurrentDate(date);
@@ -428,7 +437,7 @@ export const App: React.FC<AppProps> = ({
             className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-white bg-teal-700 hover:bg-teal-800 rounded-lg shadow-xs transition-colors self-start sm:self-auto"
           >
             <Plus className="w-4 h-4" />
-            + Novo Agendamento
+            Novo Agendamento
           </button>
         </div>
 
@@ -439,6 +448,7 @@ export const App: React.FC<AppProps> = ({
           onPrevDate={handlePrevDate}
           onNextDate={handleNextDate}
           onToday={handleToday}
+          appointmentsCount={periodAppointmentsCount}
         />
 
         <ScheduleGrid
@@ -563,6 +573,12 @@ export const App: React.FC<AppProps> = ({
           patientCount={activePatients.length}
         />
       </div>
+
+      {/* ABA 7: FILA DE ENVIOS WHATSAPP */}
+      <div data-testid="whatsapp-tab-content" className={activeTab === 'whatsapp' ? 'block' : 'hidden'}>
+        <WhatsappQueueView token={session?.token} />
+      </div>
+
 
       {/* Gaveta de Criação Rápida */}
       <QuickAppointmentDrawer
@@ -723,6 +739,18 @@ export const App: React.FC<AppProps> = ({
         onClose={() => setPatientForFinancial(null)}
       />
     </AppShell>
+  );
+};
+
+export const AuthenticatedApp: React.FC = () => {
+  const { session, apiClient, logout } = useAuth();
+  return (
+    <App
+      session={session}
+      apiClient={apiClient}
+      onLogout={logout}
+      tenantId={session?.tenant?.id}
+    />
   );
 };
 

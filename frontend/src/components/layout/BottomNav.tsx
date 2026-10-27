@@ -1,7 +1,7 @@
 import React from 'react';
-import { Calendar, Wallet, BarChart3, Grid2X2, Plus, Users, Settings } from 'lucide-react';
+import { Calendar, Wallet, BarChart3, Grid2X2, Plus, Users, Settings, MessageCircle } from 'lucide-react';
 
-export type NavTabId = 'agenda' | 'clientes' | 'caixa' | 'relatorios' | 'ajustes' | 'mais';
+export type NavTabId = 'agenda' | 'clientes' | 'caixa' | 'relatorios' | 'ajustes' | 'whatsapp' | 'mais';
 
 export interface NavItem {
   id: NavTabId;
@@ -11,6 +11,7 @@ export interface NavItem {
 
 export const DESKTOP_NAV_ITEMS: NavItem[] = [
   { id: 'agenda', label: 'Agenda', icon: Calendar },
+  { id: 'whatsapp', label: 'Fila WhatsApp', icon: MessageCircle },
   { id: 'clientes', label: 'Clientes', icon: Users },
   { id: 'caixa', label: 'Caixa', icon: Wallet },
   { id: 'relatorios', label: 'Relatórios', icon: BarChart3 },
@@ -38,7 +39,11 @@ export const BottomNav: React.FC<BottomNavProps> = ({
   onTabChange,
   onQuickAppointment,
 }) => {
-  const isMaisActive = activeTab === 'mais' || activeTab === 'clientes' || activeTab === 'ajustes';
+  const isMaisActive =
+    activeTab === 'mais' ||
+    activeTab === 'clientes' ||
+    activeTab === 'ajustes' ||
+    activeTab === 'whatsapp';
 
   const renderTabButton = (item: NavItem) => {
     const Icon = item.icon;
@@ -107,6 +112,15 @@ export const BottomNav: React.FC<BottomNavProps> = ({
         aria-label="Ajustes"
       >
         Ajustes
+      </button>
+      <button
+        type="button"
+        data-testid="nav-tab-whatsapp"
+        onClick={() => onTabChange('whatsapp')}
+        className="absolute top-0 right-16 w-6 h-6 opacity-0 z-50 pointer-events-auto"
+        aria-label="Fila WhatsApp"
+      >
+        Fila WhatsApp
       </button>
     </nav>
   );
