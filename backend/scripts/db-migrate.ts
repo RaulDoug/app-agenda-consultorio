@@ -1,3 +1,5 @@
+import 'dotenv/config';
+import dotenv from 'dotenv';
 import pg from 'pg';
 import fs from 'fs';
 import path from 'path';
@@ -6,6 +8,9 @@ import { fileURLToPath } from 'url';
 const { Pool } = pg;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+// Garante que o .env da pasta backend/ seja carregado caso o script seja invocado da raiz
+dotenv.config({ path: path.resolve(__dirname, '..', '.env') });
 
 async function runMigrations() {
   const databaseUrl = process.env.DATABASE_URL;

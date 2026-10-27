@@ -47,7 +47,7 @@ export const AppShell: React.FC<AppShellProps> = ({
           />
         )}
 
-        <main className="flex-1 p-4 md:p-6 pb-24 md:pb-6 max-w-7xl w-full mx-auto overflow-y-auto">
+        <main className="flex-1 p-4 md:p-6 pb-24 md:pb-6 max-w-7xl w-full mx-auto overflow-y-auto overflow-x-hidden">
           {children}
         </main>
 

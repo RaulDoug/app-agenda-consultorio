@@ -66,12 +66,27 @@ describe('WhatsappRepository — Central de Fila de WhatsApp (T-139)', () => {
        VALUES ($1, $2, $3, $4, $5, 'PENDING')`,
       [app1, tenantA, patient1, today.toISOString(), new Date('2026-10-28T10:30:00Z').toISOString()]
     );
+    await db.query(
+      `INSERT INTO appointments (id, tenant_id, patient_id, start_time, end_time, status)
+       VALUES ($1, $2, $3, $4, $5, 'PENDING')`,
+      [app2, tenantA, patient2, today.toISOString(), new Date('2026-10-28T10:30:00Z').toISOString()]
+    );
 
     await repo.excludeFromQueue(tenantA, app1);
 
     const check = await db.query(`SELECT whatsapp_queue_excluded, deleted_at FROM appointments WHERE id = $1`, [app1]);
     expect(check.rows[0].whatsapp_queue_excluded).toBe(true);
     expect(check.rows[0].deleted_at).toBeNull();
+
+    // Valida que o item excluído logicamente não retorna na lista da fila
+    const queueItems = await repo.findQueueAppointments(tenantA, {});
+    expect(queueItems).toHaveLength(1);
+    expect(queueItems[0].appointment_id).toBe(app2);
+    expect(queueItems.find((i) => i.appointment_id === app1)).toBeUndefined();
+  });
+
+  it('deve garantir colunas de fila de forma idempotente via ensureQueueColumns', async () => {
+    await expect(repo.ensureQueueColumns()).resolves.toBeUndefined();
   });
 
   it('deve persistir mensagem customizada individual para a consulta (@spec:AC-212)', async () => {

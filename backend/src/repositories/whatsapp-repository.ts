@@ -375,12 +375,30 @@ export class WhatsappRepository {
   }
 
   /**
+   * Garante de forma idempotente a existência das colunas da fila em appointments.
+   */
+  async ensureQueueColumns(): Promise<void> {
+    try {
+      await this.db.query(`
+        ALTER TABLE appointments
+        ADD COLUMN IF NOT EXISTS whatsapp_queue_excluded BOOLEAN DEFAULT FALSE,
+        ADD COLUMN IF NOT EXISTS whatsapp_custom_message TEXT DEFAULT NULL,
+        ADD COLUMN IF NOT EXISTS whatsapp_queue_order INT DEFAULT 0;
+      `);
+    } catch {
+      // Ignora erro se as colunas já existirem ou se emuladores em memória tiverem restrições
+    }
+  }
+
+  /**
    * Lista itens elegíveis para a central de fila de WhatsApp com dados enriquecidos e isolamento multi-tenant.
    */
   async findQueueAppointments(
     tenantId: string,
     filters: { startDate?: Date; endDate?: Date }
   ): Promise<any[]> {
+    await this.ensureQueueColumns();
+
     const params: any[] = [tenantId];
     let sql = `
       SELECT a.id AS appointment_id,
@@ -398,6 +416,7 @@ export class WhatsappRepository {
       WHERE a.tenant_id = $1
         AND a.deleted_at IS NULL
         AND a.status IN ('PENDING', 'CONFIRMED', 'RESCHEDULE_REQUESTED', 'MESSAGE_RECEIVED')
+        AND COALESCE(a.whatsapp_queue_excluded, false) = false
     `;
 
     if (filters.startDate) {

@@ -1,0 +1,76 @@
+{
+  "runId": "App-Agenda-Consultório-agenda-visualizacao-periodos-mvqnwhxi",
+  "feature": "agenda-visualizacao-periodos",
+  "agent": "antigravity",
+  "modo": "sequencial",
+  "paralelizar": null,
+  "modeloForcado": null,
+  "esforcoForcado": null,
+  "geradoEm": "2026-10-27 12:28",
+  "branchTrabalho": "spec/agenda-visualizacao-periodos",
+  "baseDir": ".spec/features/agenda-visualizacao-periodos",
+  "specDir": ".spec",
+  "repoName": "App-Agenda-Consultório",
+  "logsDir": "../onp-worktrees/App-Agenda-Consultório-agenda-visualizacao-periodos-logs",
+  "ondas": [],
+  "faixas": [],
+  "sequenciais": [
+    {
+      "id": "T-133",
+      "titulo": "Criar utilitário de formatação de período e contagem de agendamentos",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "frontend/src/features/agenda/utils/date-formatters.ts"
+      ],
+      "refs": [
+        "US-118",
+        "AC-204",
+        "AC-205"
+      ]
+    },
+    {
+      "id": "T-134",
+      "titulo": "Atualizar ViewModeSelector com suporte a período dinâmico e contador",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "frontend/src/features/agenda/components/ViewModeSelector.tsx"
+      ],
+      "refs": [
+        "US-118",
+        "AC-204",
+        "AC-205"
+      ]
+    },
+    {
+      "id": "T-135",
+      "titulo": "Integrar contador reativo e ajuste visual do botão em App.tsx",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "frontend/src/App.tsx"
+      ],
+      "refs": [
+        "US-118",
+        "AC-205"
+      ]
+    },
+    {
+      "id": "T-136",
+      "titulo": "Implementar testes automatizados com prova mecânica",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "frontend/src/features/agenda/__tests__/agenda-visualizacao-periodos.spec.tsx"
+      ],
+      "refs": [
+        "US-118",
+        "AC-204",
+        "AC-205"
+      ]
+    }
+  ],
+  "concluidas": [],
+  "avisos": []
+}

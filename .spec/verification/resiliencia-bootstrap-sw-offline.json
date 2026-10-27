@@ -1,0 +1,22 @@
+{
+  "feature": "resiliencia-bootstrap-sw-offline",
+  "timestamp": "2026-10-27T17:11:58.094Z",
+  "gitRev": "367f040",
+  "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
+  "reporter": "vitest-json",
+  "exitCode": 0,
+  "testsParsed": 500,
+  "results": {
+    "AC-207": {
+      "status": "pass",
+      "testName": "Resiliência de Bootstrap e Service Worker Offline (US-119) AC-207: Isolamento de AuthenticatedApp em App.tsx e Montagem Idempotente do React Root @spec:AC-207 AC-207: Isolamento de AuthenticatedApp em App.tsx e Montagem Idempotente do React Root @spec:AC-207",
+      "method": "vitest-json"
+    },
+    "AC-208": {
+      "status": "pass",
+      "testName": "Resiliência de Bootstrap e Service Worker Offline (US-119) AC-208: Estratégia Network-First com Fallback Offline e Filtro de Segurança no Service Worker @spec:AC-208 AC-208: Estratégia Network-First com Fallback Offline e Filtro de Segurança no Service Worker @spec:AC-208",
+      "method": "vitest-json"
+    }
+  },
+  "principles": {}
+}

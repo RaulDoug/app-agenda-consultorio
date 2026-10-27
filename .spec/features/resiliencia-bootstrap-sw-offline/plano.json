@@ -1,0 +1,51 @@
+{
+  "runId": "App-Agenda-Consultório-resiliencia-bootstrap-sw-offline-mvqpd8cf",
+  "feature": "resiliencia-bootstrap-sw-offline",
+  "agent": "antigravity",
+  "modo": "sequencial",
+  "paralelizar": null,
+  "modeloForcado": null,
+  "esforcoForcado": null,
+  "geradoEm": "2026-10-27 13:09",
+  "branchTrabalho": "spec/resiliencia-bootstrap-sw-offline",
+  "baseDir": ".spec/features/resiliencia-bootstrap-sw-offline",
+  "specDir": ".spec",
+  "repoName": "App-Agenda-Consultório",
+  "logsDir": "../onp-worktrees/App-Agenda-Consultório-resiliencia-bootstrap-sw-offline-logs",
+  "ondas": [],
+  "faixas": [],
+  "sequenciais": [
+    {
+      "id": "T-001",
+      "titulo": "Mover AuthenticatedApp para App.tsx e implementar mountApp idempotente em main.tsx",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "frontend/src/App.tsx",
+        "frontend/src/main.tsx",
+        "frontend/src/__tests__/bootstrap-sw-resilience.spec.tsx"
+      ],
+      "refs": [
+        "US-119",
+        "AC-207"
+      ]
+    },
+    {
+      "id": "T-002",
+      "titulo": "Refatorar sw.js para Network-First com trava de segurança GET e atualizar documentação",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "frontend/public/sw.js",
+        "frontend/src/__tests__/bootstrap-sw-resilience.spec.tsx",
+        "docs/frontend/funcionalidades/regras_globais.md"
+      ],
+      "refs": [
+        "US-119",
+        "AC-208"
+      ]
+    }
+  ],
+  "concluidas": [],
+  "avisos": []
+}

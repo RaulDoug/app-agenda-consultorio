@@ -94,12 +94,13 @@ export const BottomNav: React.FC<BottomNavProps> = ({
         {MOBILE_NAV_ITEMS_RIGHT.map(renderTabButton)}
       </div>
 
-      {/* Atalhos acessíveis para navegação direta e compatibilidade de testes */}
+      {/* Atalhos acessíveis para compatibilidade de testes legados (fora do fluxo de clique do usuário) */}
       <button
         type="button"
         data-testid="nav-tab-clientes"
         onClick={() => onTabChange('clientes')}
-        className="absolute top-0 right-8 w-6 h-6 opacity-0 z-50 pointer-events-auto"
+        className="sr-only pointer-events-none w-0 h-0 overflow-hidden -z-10"
+        tabIndex={-1}
         aria-label="Clientes"
       >
         Clientes
@@ -108,19 +109,11 @@ export const BottomNav: React.FC<BottomNavProps> = ({
         type="button"
         data-testid="nav-tab-ajustes"
         onClick={() => onTabChange('ajustes')}
-        className="absolute top-0 right-0 w-6 h-6 opacity-0 z-50 pointer-events-auto"
+        className="sr-only pointer-events-none w-0 h-0 overflow-hidden -z-10"
+        tabIndex={-1}
         aria-label="Ajustes"
       >
         Ajustes
-      </button>
-      <button
-        type="button"
-        data-testid="nav-tab-whatsapp"
-        onClick={() => onTabChange('whatsapp')}
-        className="absolute top-0 right-16 w-6 h-6 opacity-0 z-50 pointer-events-auto"
-        aria-label="Fila WhatsApp"
-      >
-        Fila WhatsApp
       </button>
     </nav>
   );

@@ -109,6 +109,9 @@ O OdontoFlow foi concebido para o **"Dentista-Operador"** que utiliza o sistema 
      - 📱 **Status do WhatsApp** (Verde = Conectado, Amarelo/Vermelho = Ação necessária).
 4. **Prevenção de Duplo Clique (Double-Tap Protection):**
    - Todo botão de submissão ou conclusão deve desabilitar imediatamente e exibir feedback visual enquanto a operação de persistência é concluída.
+5. **Contenção Rígida de Largura e Prevenção de Rolagem Lateral (No Horizontal Scroll):**
+   - O viewport mobile nunca deve permitir arrasto ou rolagem lateral indesejada (`overflow-x-hidden` no contêiner principal);
+   - Em layouts Flexbox (`flex-row`), contêineres filhos com textos ou cartões truncados (`truncate`) DEVEM OBRIGATORIAMENTE possuir a classe `min-w-0` (e `flex-1`), prevenindo que o cálculo de largura intrínseca (`min-content`) estufe o card além da largura da tela (ex: cards de apoio de atendimento contínuo na grade de horários).
 
 ---
 
@@ -159,8 +162,11 @@ O OdontoFlow foi concebido para o **"Dentista-Operador"** que utiliza o sistema 
 5. **Tratamento de 401 e Logout Seguro:**
    - Respostas HTTP com status 401 disparam a limpeza da sessão e o retorno imediato à tela de login. O `SyncManager` invoca `onUnauthorized` para deslogar imediatamente.
    - Ao executar logout pelo usuário, se houver mutações pendentes na `sync_outbox`, o sistema DEVE apresentar a gaveta de confirmação (`LogoutConfirmDrawer`) informando a quantidade de alterações pendentes antes da purga do banco local.
-6. **Suporte PWA Offline e Recarga via Service Worker (AC-196):**
-   - O arquivo `public/sw.js` intercepta requisições de navegação (`request.mode === 'navigate'`) e entrega o `/index.html` em cache quando a conexão de rede estiver indisponível, impedindo o erro de página inacessível no recarregamento (F5).
+6. **Suporte PWA Offline, Bootstrap Idempotente e Service Worker (AC-196, AC-207, AC-208):**
+   - O arquivo `main.tsx` atua exclusivamente como ponto de entrada imperativo (bootstrap), sendo expressamente proibido declarar componentes React nele (o `AuthenticatedApp` reside em `App.tsx`) para preservar o funcionamento do *React Fast Refresh*.
+   - A montagem da árvore React via `mountApp` deve ser estritamente idempotente (reaproveitando a referência existente de `ReactDOM.Root` no container `#root`), prevenindo advertências de `createRoot` duplicado e vazamentos de memória sob HMR ou recargas.
+   - O arquivo `public/sw.js` adota a estratégia **Network-First com Fallback Offline** tanto para navegação quanto para ativos estáticos/módulos, garantindo código sempre atualizado e compatível com o HMR do Vite quando online, e servindo o cache imediatamente quando desconectado (F5 offline).
+   - O Service Worker deve aplicar trava de segurança aceitando estritamente requisições `GET` (`request.method !== 'GET'`) e bypass inegociável de rotas `/api` (`url.pathname.startsWith('/api')`), assegurando que dados clínicos e tokens de autenticação multi-tenant permaneçam confinados ao `IndexedDB` (Dexie).
 
 ---
 
@@ -201,6 +207,21 @@ O OdontoFlow foi concebido para o **"Dentista-Operador"** que utiliza o sistema 
 ## 10. Projeção Trimestral de Recebíveis DRE (AC-203)
 
 - A projeção de recebíveis futuros em 30, 60 e 90 dias (`calculateReceivablesProjection`) utiliza janelas de calendário completas (31, 62 e 93 dias no fuso local normalizado), assegurando que três parcelas mensais contratadas sejam integralmente computadas dentro do trimestre de 90 dias, mesmo em meses com 31 dias de duração.
+
+---
+
+## 11. Formatação Contextual de Período e Resumo de Atendimentos (AC-204, AC-205)
+
+1. **Formatação Dinâmica de Período (Abordagem Direta e Limpa):**
+   - O cabeçalho de navegação na agenda (`ViewModeSelector`) ajusta o formato da data conforme o modo:
+     - **Dia:** Formato limpo com primeira letra maiúscula e preposições minúsculas (ex: `Ter., 27 de out. de 2026`), sem aplicar CSS `capitalize` que quebra preposições;
+     - **Semana:** Intervalo de segunda a domingo, tratando mesma semana no mês (`19 – 25 de out. de 2026`), virada de mês (`26 de out. – 01 de nov. de 2026`) e virada de ano (`28 de dez. de 2026 – 03 de jan. de 2027`);
+     - **Mês:** Mês por extenso capitalizado e ano (ex: `Outubro de 2026`).
+2. **Contador Reativo de Atendimentos:**
+   - Exibição de subtítulo informativo abaixo da data indicando a contagem de agendamentos não cancelados no intervalo visível (`Nenhum atendimento`, `1 atendimento`, `X atendimentos`).
+3. **Limpeza de Duplicidade em Ações:**
+   - O botão superior de novo agendamento exibe o texto limpo `Novo Agendamento` acompanhado de seu ícone, sem duplicidade de sinal `+`.
+
 
 
 

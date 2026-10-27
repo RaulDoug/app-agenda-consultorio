@@ -1,5 +1,5 @@
 // CliniAssist Service Worker — PWA Offline Shell Cache
-const CACHE_NAME = 'cliniassist-app-shell-v4';
+const CACHE_NAME = 'cliniassist-app-shell-v5';
 
 const STATIC_ASSETS = [
   '/',
@@ -42,6 +42,11 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
+  // Trava de segurança: intercepta estritamente requisições de leitura (GET)
+  if (event.request.method !== 'GET') {
+    return;
+  }
+
   const url = new URL(event.request.url);
 
   // Ignora protocolos não-HTTP (ex: ws://, wss://, chrome-extension://)
@@ -49,12 +54,12 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Não intercepta chamadas de API do backend (controladas pelo SyncManager / Dexie)
+  // Não intercepta chamadas de API do backend (controladas pelo SyncManager / Dexie - isolamento Multi-Tenant)
   if (url.pathname.startsWith('/api')) {
     return;
   }
 
-  // 1. Requisição de navegação de página (HTML / F5)
+  // 1. Requisição de navegação de página (HTML / F5) - Network-First com Fallback Offline
   if (event.request.mode === 'navigate') {
     event.respondWith(
       fetch(event.request)
@@ -79,34 +84,13 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // 2. Requisição de assets estáticos (JS, CSS, imagens, fontes e módulos Vite)
+  // 2. Requisição de assets estáticos (JS, CSS, imagens, fontes e módulos Vite) - Network-First com Fallback Offline
   event.respondWith(
     (async () => {
       const cleanUrl = url.origin + url.pathname;
       const cache = await caches.open(CACHE_NAME);
 
-      // Tenta buscar no cache pelo request exato ou pela URL limpa sem query param (?t=... / ?v=...)
-      let cached =
-        (await cache.match(event.request, { ignoreSearch: true })) ||
-        (await cache.match(cleanUrl, { ignoreSearch: true }));
-
-      // Se encontrado em cache:
-      if (cached) {
-        // Se estiver online, atualiza o cache em segundo plano (Stale-While-Revalidate)
-        if (self.navigator.onLine) {
-          fetch(event.request)
-            .then((networkResponse) => {
-              if (networkResponse && networkResponse.status === 200) {
-                cache.put(event.request, networkResponse.clone());
-                cache.put(cleanUrl, networkResponse);
-              }
-            })
-            .catch(() => {});
-        }
-        return cached;
-      }
-
-      // Se não está em cache e está online: tenta buscar na rede
+      // Quando online: tenta buscar da rede primeiro (evita módulos obsoletos e colisões de HMR)
       try {
         const response = await fetch(event.request);
         if (response && response.status === 200) {
@@ -115,10 +99,12 @@ self.addEventListener('fetch', (event) => {
         }
         return response;
       } catch (err) {
-        // Fallback offline se a rede falhou
+        // Fallback offline se a rede falhou: recupera do Cache Storage
         const fallback =
-          (await cache.match(event.request, { ignoreSearch: true })) ||
-          (await cache.match(cleanUrl, { ignoreSearch: true }));
+          (await cache.match(event.request)) ||
+          (await cache.match(cleanUrl, { ignoreSearch: true })) ||
+          (await cache.match(event.request, { ignoreSearch: true }));
+
         if (fallback) {
           return fallback;
         }

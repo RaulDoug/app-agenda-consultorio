@@ -1,11 +1,11 @@
 {
   "feature": "central-fila-whatsapp",
-  "timestamp": "2026-10-27T14:49:01.256Z",
-  "gitRev": "ed55e24",
+  "timestamp": "2026-10-27T17:11:58.094Z",
+  "gitRev": "b680ba5",
   "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
   "exitCode": 0,
-  "testsParsed": 514,
+  "testsParsed": 517,
   "results": {
     "AC-209": {
       "status": "pass",
@@ -15,6 +15,11 @@
     "AC-210": {
       "status": "pass",
       "testName": "WhatsappQueueView — Componentes e Interações da Central de Fila (T-141) deve exibir balão com última resposta do paciente e link wa.me (@spec:AC-210) deve exibir balão com última resposta do paciente e link wa.me (@spec:AC-210)",
+      "method": "vitest-json"
+    },
+    "AC-218": {
+      "status": "pass",
+      "testName": "WhatsappQueueView — Componentes e Interações da Central de Fila (T-141) deve disparar sincronização e recarregar a lista ao clicar no botão Recarregar Lista (@spec:AC-218) deve disparar sincronização e recarregar a lista ao clicar no botão Recarregar Lista (@spec:AC-218)",
       "method": "vitest-json"
     },
     "AC-211": {

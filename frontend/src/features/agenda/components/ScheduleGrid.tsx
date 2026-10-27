@@ -194,7 +194,7 @@ export const ScheduleGrid: React.FC<ScheduleGridProps> = ({
                 )}
               </div>
 
-              <div className="flex-1 min-h-[44px] flex flex-col justify-center gap-2">
+              <div className="flex-1 min-w-0 min-h-[44px] flex flex-col justify-center gap-2">
                 {hasStarting &&
                   slot.appointments.map((app) => (
                     <AppointmentCard
@@ -207,24 +207,47 @@ export const ScheduleGrid: React.FC<ScheduleGridProps> = ({
                   ))}
 
                 {hasSpanning &&
-                  slot.spanningAppointments.map((app) => (
-                    <div
-                      key={`spanning-${app.id}-${slot.timeStr}`}
-                      onClick={() => onAppointmentClick?.(app)}
-                      className="flex items-center justify-between p-2.5 rounded-lg border border-teal-200 bg-teal-50/70 text-teal-900 cursor-pointer hover:bg-teal-100/70 transition"
-                      title={`Em atendimento contínuo: ${app.patient_name}`}
-                    >
-                      <div className="flex items-center gap-2 truncate">
-                        <span className="w-2 h-2 rounded-full bg-teal-500 shrink-0"></span>
-                        <span className="text-xs font-medium truncate">
-                          Em atendimento: <strong className="font-bold">{app.patient_name}</strong>
+                  slot.spanningAppointments.map((app) => {
+                    const isCompleted = app.status === 'COMPLETED';
+                    return (
+                      <div
+                        key={`spanning-${app.id}-${slot.timeStr}`}
+                        onClick={() => onAppointmentClick?.(app)}
+                        className={`flex items-center justify-between p-2.5 rounded-lg border transition w-full min-w-0 cursor-pointer ${
+                          isCompleted
+                            ? 'border-slate-200 bg-slate-50 text-slate-700 hover:bg-slate-100/80'
+                            : 'border-teal-200 bg-teal-50/70 text-teal-900 hover:bg-teal-100/70'
+                        }`}
+                        title={
+                          isCompleted
+                            ? `Atendimento concluído: ${app.patient_name}`
+                            : `Em atendimento contínuo: ${app.patient_name}`
+                        }
+                        data-status={app.status}
+                      >
+                        <div className="flex items-center gap-2 min-w-0 flex-1 mr-2">
+                          <span
+                            className={`w-2 h-2 rounded-full shrink-0 ${
+                              isCompleted ? 'bg-slate-400' : 'bg-teal-500'
+                            }`}
+                          />
+                          <span className="text-xs font-medium truncate">
+                            {isCompleted ? 'Concluído: ' : 'Em atendimento: '}
+                            <strong className={`font-bold ${isCompleted ? 'text-slate-800' : ''}`}>
+                              {app.patient_name}
+                            </strong>
+                          </span>
+                        </div>
+                        <span
+                          className={`text-[11px] font-mono shrink-0 whitespace-nowrap ${
+                            isCompleted ? 'text-slate-500' : 'text-teal-700'
+                          }`}
+                        >
+                          até {new Date(app.end_time).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
                         </span>
                       </div>
-                      <span className="text-[11px] font-mono text-teal-700 shrink-0 ml-2">
-                        até {new Date(app.end_time).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
-                      </span>
-                    </div>
-                  ))}
+                    );
+                  })}
 
                 {!isOccupied && (
                   <button

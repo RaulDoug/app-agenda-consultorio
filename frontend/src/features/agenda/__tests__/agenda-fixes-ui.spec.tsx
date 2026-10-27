@@ -174,6 +174,33 @@ describe('Feature: Correções e Edição de Procedimentos na Agenda', () => {
       expect(slot1130).toBeDefined();
       expect(slot1130.textContent).not.toContain('+ Horário Vago');
       expect(slot1130.textContent).toMatch(/Em atendimento: Paciente Longo/i);
+
+      // Card de apoio deve ter classes de contenção de largura (min-w-0 e w-full) para evitar quebra de layout mobile
+      const spanningCard = within(slot1130).getByTitle(/Em atendimento contínuo: Paciente Longo/i);
+      expect(spanningCard.className).toContain('min-w-0');
+      expect(spanningCard.className).toContain('w-full');
+      expect(spanningCard.className).toContain('bg-teal-50/70');
+
+      // Re-renderiza com a consulta em estado COMPLETED
+      const completedAppointment: LocalAppointmentWithDetails = {
+        ...longAppointment,
+        status: 'COMPLETED',
+      };
+
+      const { unmount } = render(
+        <ScheduleGrid
+          currentDate={targetDate}
+          viewMode="day"
+          appointments={[completedAppointment]}
+          onSlotClick={vi.fn()}
+        />
+      );
+
+      const slot1130Completed = screen.getAllByTestId('schedule-slot-11:30')[1];
+      const spanningCompleted = within(slot1130Completed).getByTitle(/Atendimento concluído: Paciente Longo/i);
+      expect(spanningCompleted.textContent).toMatch(/Concluído: Paciente Longo/i);
+      expect(spanningCompleted.className).toContain('bg-slate-50');
+      expect(spanningCompleted.className).toContain('border-slate-200');
     });
 
     it('AC-092: Edição interativa de procedimentos vinculados na consulta com recálculo de duração @spec:AC-092', async () => {

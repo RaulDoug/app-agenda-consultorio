@@ -25,6 +25,12 @@ Como dentista ou recepcionista, quero visualizar em uma tela dedicada todos os p
 - **Quando** o card da consulta for renderizado na tela da fila
 - **Então** o sistema deve exibir a última mensagem recebida do paciente e disponibilizar ações para abrir a conversa direta no WhatsApp via wa.me ou confirmar/resolver manualmente.
 
+#### AC-218 — Recarregamento manual e sincronização imediata da fila
+
+- **Dado** que novos agendamentos foram criados ou sincronizados
+- **Quando** o usuário clicar no botão "Recarregar Lista" na Central de Fila
+- **Então** o sistema deve forçar a sincronização de dados locais pendentes, recarregar a listagem da fila a partir do backend e atualizar os contadores em tela com indicador de carregamento.
+
 ### US-121 — Gestão da Fila: Exclusão, Edição de Mensagem e Reordenação
 
 Como recepcionista, quero poder retirar um paciente da fila sem desmarcar a consulta, personalizar o texto que será enviado para um paciente específico e reordenar a sequência de envios por arrastar e soltar (Drag & Drop), para adaptar os envios à rotina do consultório.

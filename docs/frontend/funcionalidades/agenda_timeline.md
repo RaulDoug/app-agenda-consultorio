@@ -41,3 +41,16 @@ Interface principal do aplicativo onde o profissional de saúde gerencia a agend
 6. **Agendamento Rápido com Paciente Pré-Selecionado (`initialPatient`):**
    - Ao acionar o atalho "+ Agendar" a partir do card de um cliente (ou da lista de inativos), a gaveta `QuickAppointmentDrawer` abre imediatamente com o paciente selecionado e suas observações clínicas visíveis, permitindo troca via botão "Trocar".
    - Ao fechar a gaveta ou abrir um agendamento avulso (via grade ou botão "+"), o estado é resetado, abrindo o formulário limpo para busca.
+7. **Formatação Dinâmica de Período, Contador e Disposição em Coluna do Cabeçalho:**
+   - O `ViewModeSelector` adota uma disposição em coluna vertical de 3 níveis:
+     - **Nível 1 (Topo):** Botões de navegação `<` `>` com botão de retorno contextual centralizado (`Hoje` no modo Dia, `Esta semana` no modo Semana e `Este mês` no modo Mês);
+     - **Nível 2 (Meio):** Título do período em destaque (`Ter., 27 de out. de 2026`, `26 de out. – 01 de nov. de 2026`, `Outubro de 2026`) com subtítulo do contador de atendimentos ativos (`Nenhum atendimento`, `1 atendimento`, `X atendimentos`), ambos centralizados com total aproveitamento da largura horizontal;
+     - **Nível 3 (Abaixo):** Pílula seletora de abas `[ Dia ] [ Semana ] [ Mês ]` centralizada na base.
+   - O botão de ação rápida no topo da agenda exibe o rótulo limpo `Novo Agendamento` acompanhado do ícone `+`, sem duplicações textuais.
+
+8. **Contenção e Responsividade dos Cards de Apoio (Atendimento Contínuo):**
+   - Agendamentos com duração superior a 30 minutos geram cards de apoio nos slots subsequentes (`Em atendimento: [Nome do Paciente] até [HH:mm]`).
+   - Esses cards de apoio utilizam estritamente contenção de largura via `min-w-0`, `w-full` e `truncate` no texto do paciente, além de `overflow-x-hidden` no layout da aplicação, assegurando que nomes longos nunca ultrapassem o limite do card em dispositivos móveis nem provoquem rolagem ou arrasto horizontal indesejado.
+   - **Sincronização de Estado Concluído (`COMPLETED`):** Quando a consulta é concluída, o card de apoio reflete o encerramento do atendimento: substitui o prefixo "Em atendimento:" por "Concluído:", o ponto indicador torna-se cinza (`bg-slate-400`), e a estilização visual transiciona de verde/teal para o padrão cinza suave neutro (`border-slate-200 bg-slate-50 text-slate-700`), harmonizando com o card principal.
+   - **Sincronização de Estado Concluído (`COMPLETED`):** Quando a consulta é concluída, o card de apoio reflete o encerramento do atendimento: substitui o prefixo "Em atendimento:" por "Concluído:", o ponto indicador torna-se cinza (`bg-slate-400`), e a estilização visual transiciona de verde/teal para o padrão cinza suave neutro (`border-slate-200 bg-slate-50 text-slate-700`), harmonizando com o card principal.
+

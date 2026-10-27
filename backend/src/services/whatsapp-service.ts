@@ -181,7 +181,7 @@ export class WhatsappService {
     }
 
     const tenant = await this.repo.getTenant(tenantId);
-    const instanceName = input.instanceName || tenant?.whatsapp_instance_name || 'cliniassist_default';
+    const instanceName = input.instanceName || tenant?.whatsapp_instance_name || `cliniassist_${String(tenant?.id || tenantId).slice(0, 8)}`;
 
     const cleanNumber = String(input.number).replace(/\D/g, '');
     const formattedNumber = cleanNumber.startsWith('55') ? cleanNumber : `55${cleanNumber}`;

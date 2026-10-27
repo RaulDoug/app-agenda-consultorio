@@ -13,6 +13,7 @@ import {
   AlertCircle,
   MessageCircle,
   Sparkles,
+  RefreshCw,
 } from 'lucide-react';
 import type { WhatsappQueueItem, WhatsappQueueItemCategory } from '@cliniassist/shared';
 import { useWhatsappQueue, type DateFilterPreset } from '../hooks/useWhatsappQueue.js';
@@ -21,9 +22,10 @@ import { WhatsappTemplatesDrawer } from './WhatsappTemplatesDrawer.js';
 
 interface WhatsappQueueViewProps {
   token?: string;
+  onSync?: () => Promise<void>;
 }
 
-export const WhatsappQueueView: React.FC<WhatsappQueueViewProps> = ({ token }) => {
+export const WhatsappQueueView: React.FC<WhatsappQueueViewProps> = ({ token, onSync }) => {
   const queueData = useWhatsappQueue(token);
   const items = queueData?.items || [];
   const counts = queueData?.counts || {
@@ -42,6 +44,7 @@ export const WhatsappQueueView: React.FC<WhatsappQueueViewProps> = ({ token }) =
   const categoryFilter = queueData?.categoryFilter || 'ALL';
   const setCategoryFilter = queueData?.setCategoryFilter || (() => {});
   const settings = queueData?.settings || null;
+  const refresh = queueData?.refresh || (async () => {});
   const sendNow = queueData?.sendNow || (async () => {});
   const exclude = queueData?.exclude || (async () => {});
   const updateMessage = queueData?.updateMessage || (async () => {});
@@ -51,9 +54,22 @@ export const WhatsappQueueView: React.FC<WhatsappQueueViewProps> = ({ token }) =
   const saveSettings = queueData?.saveSettings || (async () => {});
   const resolveStatus = queueData?.resolveStatus || (async () => {});
 
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const [editingItem, setEditingItem] = useState<WhatsappQueueItem | null>(null);
   const [isTemplatesOpen, setIsTemplatesOpen] = useState(false);
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
+
+  const handleManualRefresh = async () => {
+    setIsRefreshing(true);
+    try {
+      if (onSync) {
+        await onSync();
+      }
+      await refresh();
+    } finally {
+      setIsRefreshing(false);
+    }
+  };
 
   const handleDragStart = (index: number) => {
     setDraggedIndex(index);
@@ -127,6 +143,18 @@ export const WhatsappQueueView: React.FC<WhatsappQueueViewProps> = ({ token }) =
 
         {/* Global Controls */}
         <div className="flex items-center gap-2 flex-wrap">
+          <button
+            type="button"
+            data-testid="btn-refresh-queue"
+            onClick={handleManualRefresh}
+            disabled={isRefreshing || loading}
+            className="px-3 py-2 text-xs font-semibold bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 rounded-xl inline-flex items-center gap-1.5 min-h-[44px] transition-colors shadow-xs"
+            title="Sincronizar dados locais e recarregar a fila"
+          >
+            <RefreshCw className={`w-4 h-4 ${isRefreshing || loading ? 'animate-spin text-teal-600' : 'text-slate-500'}`} />
+            <span>Recarregar Lista</span>
+          </button>
+
           <button
             type="button"
             data-testid="btn-toggle-pause"

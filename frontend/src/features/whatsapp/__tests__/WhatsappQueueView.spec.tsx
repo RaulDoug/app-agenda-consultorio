@@ -20,6 +20,7 @@ describe('WhatsappQueueView — Componentes e Interações da Central de Fila (T
   const mockResolveStatus = vi.fn();
   const mockSetDateFilter = vi.fn();
   const mockSetCategoryFilter = vi.fn();
+  const mockRefresh = vi.fn();
 
   const sampleItems = [
     {
@@ -86,6 +87,7 @@ describe('WhatsappQueueView — Componentes e Interações da Central de Fila (T
       settings: {
         confirmation_message_template: 'Oi {nome}',
       },
+      refresh: mockRefresh,
       sendNow: mockSendNow,
       exclude: mockExclude,
       updateMessage: mockUpdateMessage,
@@ -165,6 +167,22 @@ describe('WhatsappQueueView — Componentes e Interações da Central de Fila (T
     const btnBatch = screen.getByTestId('btn-trigger-batch-now');
     fireEvent.click(btnBatch);
     expect(mockTriggerBatch).toHaveBeenCalled();
+  });
+
+  it('deve disparar sincronização e recarregar a lista ao clicar no botão Recarregar Lista (@spec:AC-218)', async () => {
+    const mockSync = vi.fn().mockResolvedValue(undefined);
+    render(<WhatsappQueueView token="test" onSync={mockSync} />);
+
+    const btnRefresh = screen.getByTestId('btn-refresh-queue');
+    expect(btnRefresh).toBeInTheDocument();
+    expect(screen.getByText('Recarregar Lista')).toBeInTheDocument();
+
+    fireEvent.click(btnRefresh);
+
+    await waitFor(() => {
+      expect(mockSync).toHaveBeenCalledTimes(1);
+      expect(mockRefresh).toHaveBeenCalledTimes(1);
+    });
   });
 });
 

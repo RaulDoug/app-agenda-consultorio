@@ -576,7 +576,7 @@ export const App: React.FC<AppProps> = ({
 
       {/* ABA 7: FILA DE ENVIOS WHATSAPP */}
       <div data-testid="whatsapp-tab-content" className={activeTab === 'whatsapp' ? 'block' : 'hidden'}>
-        <WhatsappQueueView token={session?.token} />
+        <WhatsappQueueView token={session?.token} onSync={runSync} />
       </div>
 
 

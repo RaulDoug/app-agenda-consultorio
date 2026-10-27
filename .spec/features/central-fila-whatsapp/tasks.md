@@ -26,3 +26,8 @@
 - Refs: US-124, AC-217
 - Arquivos: frontend/src/components/layout/BottomNav.tsx, frontend/src/components/layout/MoreMenuHub.tsx, frontend/src/App.tsx, frontend/src/features/whatsapp/__tests__/WhatsappNavigation.spec.tsx, docs/backend/funcionalidades/whatsapp_evolution.md, docs/frontend/funcionalidades/whatsapp_conexao_qrcode.md
 - Notas: Card na aba Mais, navegação, documentação e gate de auditoria.
+
+## T-143 — Botão de Recarregar Lista e Sincronização Sob Demanda na Fila WhatsApp [concluida]
+- Refs: US-120, AC-218
+- Arquivos: frontend/src/features/whatsapp/components/WhatsappQueueView.tsx, frontend/src/App.tsx, frontend/src/features/whatsapp/__tests__/WhatsappQueueView.spec.tsx
+- Notas: Botão de recarregamento manual com animação de spinner, flush da sincronização Dexie outbox e atualização da query REST.
