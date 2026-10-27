@@ -368,4 +368,107 @@ describe('Sprint FE-5: Ajustes do Consultório, Integração do Shell e Suíte E
 
     expect(remainingPending).toBe(0);
   });
+
+  // AC-233
+  it('AC-233: Seletor de escopo de resposta automática junto ao card de QR Code do WhatsApp @spec:AC-233', async () => {
+    let lastPutBody: any = null;
+    const originalFetch = globalThis.fetch;
+
+    globalThis.fetch = vi.fn().mockImplementation((url: string, init?: RequestInit) => {
+      if (url.includes('/api/whatsapp/settings')) {
+        if (init?.method === 'PUT') {
+          lastPutBody = JSON.parse((init.body as string) || '{}');
+          return Promise.resolve({
+            ok: true,
+            json: async () => ({
+              auto_reply_scope: lastPutBody.auto_reply_scope,
+              auto_reply_enabled: lastPutBody.auto_reply_enabled,
+            }),
+          });
+        }
+        return Promise.resolve({
+          ok: true,
+          json: async () => ({
+            auto_reply_scope: 'REGISTERED_ONLY',
+            auto_reply_enabled: true,
+          }),
+        });
+      }
+      return Promise.resolve({ ok: true, json: async () => ({}) });
+    });
+
+    try {
+      // 1. Renderiza SettingsView no estado desconectado (com QR Code)
+      const { rerender } = render(
+        <SettingsView
+          tenantId={tenantId}
+          repo={settingsRepo}
+          whatsappConnected={false}
+          qrCodeBase64="sample-qr-base64"
+        />
+      );
+
+      // Valida presença da seção e do seletor
+      expect(screen.getByTestId('whatsapp-auto-reply-section')).toBeInTheDocument();
+      expect(screen.getByTestId('auto-reply-scope-selector')).toBeInTheDocument();
+
+      // Valida as 3 opções
+      const btnRegistered = screen.getByTestId('scope-btn-registered-only');
+      const btnAll = screen.getByTestId('scope-btn-all');
+      const btnDisabled = screen.getByTestId('scope-btn-disabled');
+
+      expect(btnRegistered).toHaveTextContent('Apenas Cadastrados');
+      expect(btnAll).toHaveTextContent('Todos os Contatos');
+      expect(btnDisabled).toHaveTextContent('Desativado');
+
+      // Padrão: "Apenas Cadastrados" selecionado
+      expect(btnRegistered).toHaveAttribute('data-selected', 'true');
+      expect(btnAll).toHaveAttribute('data-selected', 'false');
+      expect(btnDisabled).toHaveAttribute('data-selected', 'false');
+
+      // 2. Altera para "Todos os Contatos"
+      fireEvent.click(btnAll);
+
+      // Confirmação visual imediata
+      await waitFor(() => {
+        expect(screen.getByTestId('scope-save-feedback')).toBeInTheDocument();
+      });
+      expect(btnAll).toHaveAttribute('data-selected', 'true');
+      expect(btnRegistered).toHaveAttribute('data-selected', 'false');
+
+      // Verifica envio de PUT /api/whatsapp/settings com auto_reply_scope = ALL
+      expect(lastPutBody).toEqual({
+        auto_reply_scope: 'ALL',
+        auto_reply_enabled: true,
+      });
+
+      // 3. Altera para "Desativado"
+      fireEvent.click(btnDisabled);
+
+      await waitFor(() => {
+        expect(btnDisabled).toHaveAttribute('data-selected', 'true');
+      });
+      expect(lastPutBody).toEqual({
+        auto_reply_scope: 'DISABLED',
+        auto_reply_enabled: false,
+      });
+
+      // 4. Também deve ser exibido quando conectado (tanto conectado quanto exibindo QR Code)
+      rerender(
+        <SettingsView
+          tenantId={tenantId}
+          repo={settingsRepo}
+          whatsappConnected={true}
+          connectedNumber="5511999998888"
+        />
+      );
+
+      expect(screen.getByTestId('auto-reply-scope-selector')).toBeInTheDocument();
+      expect(screen.getByTestId('scope-btn-registered-only')).toBeInTheDocument();
+      expect(screen.getByTestId('scope-btn-all')).toBeInTheDocument();
+      expect(screen.getByTestId('scope-btn-disabled')).toBeInTheDocument();
+    } finally {
+      globalThis.fetch = originalFetch;
+    }
+  });
 });
