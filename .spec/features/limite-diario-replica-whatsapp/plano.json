@@ -1,0 +1,75 @@
+{
+  "runId": "App-Agenda-Consultório-limite-diario-replica-whatsapp-mvr1pkjm",
+  "feature": "limite-diario-replica-whatsapp",
+  "agent": "antigravity",
+  "modo": "paralelo",
+  "paralelizar": [
+    "T-147",
+    "T-148"
+  ],
+  "modeloForcado": null,
+  "esforcoForcado": null,
+  "geradoEm": "2026-10-27 18:55",
+  "branchTrabalho": "spec/limite-diario-replica-whatsapp",
+  "baseDir": ".spec/features/limite-diario-replica-whatsapp",
+  "specDir": ".spec",
+  "repoName": "App-Agenda-Consultório",
+  "logsDir": "../onp-worktrees/App-Agenda-Consultório-limite-diario-replica-whatsapp-logs",
+  "ondas": [
+    [
+      "faixa-1",
+      "faixa-2"
+    ]
+  ],
+  "faixas": [
+    {
+      "id": "faixa-1",
+      "branch": "spec/limite-diario-replica-whatsapp-faixa-1",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-limite-diario-replica-whatsapp-faixa-1",
+      "tarefas": [
+        {
+          "id": "T-147",
+          "titulo": "Implementar verificação de limite diário de réplicas automáticas no Repositório e Parser",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "backend/src/db/schema.sql",
+            "backend/src/repositories/whatsapp-repository.ts",
+            "backend/src/whatsapp/parser.ts"
+          ],
+          "refs": [
+            "US-126",
+            "AC-222",
+            "AC-223"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "faixa-2",
+      "branch": "spec/limite-diario-replica-whatsapp-faixa-2",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-limite-diario-replica-whatsapp-faixa-2",
+      "tarefas": [
+        {
+          "id": "T-148",
+          "titulo": "Aplicar trava diária de réplica no WebhookService e suíte de testes automatizados",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "backend/src/services/webhook-service.ts",
+            "backend/src/whatsapp/__tests__/whatsapp-auto-reply.spec.ts",
+            "backend/src/services/__tests__/webhook-service.spec.ts"
+          ],
+          "refs": [
+            "US-126",
+            "AC-222",
+            "AC-223"
+          ]
+        }
+      ]
+    }
+  ],
+  "sequenciais": [],
+  "concluidas": [],
+  "avisos": []
+}

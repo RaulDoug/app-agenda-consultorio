@@ -1,0 +1,64 @@
+{
+  "runId": "App-Agenda-Consultório-reagendamento-mensagem-whatsapp-mvr0f5lu",
+  "feature": "reagendamento-mensagem-whatsapp",
+  "agent": "antigravity",
+  "modo": "sequencial",
+  "paralelizar": null,
+  "modeloForcado": null,
+  "esforcoForcado": null,
+  "geradoEm": "2026-10-27 18:19",
+  "branchTrabalho": "spec/reagendamento-mensagem-whatsapp",
+  "baseDir": ".spec/features/reagendamento-mensagem-whatsapp",
+  "specDir": ".spec",
+  "repoName": "App-Agenda-Consultório",
+  "logsDir": "../onp-worktrees/App-Agenda-Consultório-reagendamento-mensagem-whatsapp-logs",
+  "ondas": [],
+  "faixas": [],
+  "sequenciais": [
+    {
+      "id": "T-144",
+      "titulo": "Atualizar parser semântico de WhatsApp no Backend",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "backend/src/whatsapp/parser.ts",
+        "backend/src/whatsapp/__tests__/whatsapp.spec.ts"
+      ],
+      "refs": [
+        "US-125",
+        "AC-219"
+      ]
+    },
+    {
+      "id": "T-145",
+      "titulo": "Alternar botão de confirmação manual para reagendamento na Central de WhatsApp",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "frontend/src/features/whatsapp/components/WhatsappQueueView.tsx",
+        "frontend/src/features/whatsapp/__tests__/WhatsappQueueView.spec.tsx"
+      ],
+      "refs": [
+        "US-125",
+        "AC-220"
+      ]
+    },
+    {
+      "id": "T-146",
+      "titulo": "Integrar abertura do RescheduleModal e sincronização na Fila WhatsApp",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "frontend/src/App.tsx",
+        "frontend/src/features/whatsapp/components/WhatsappQueueView.tsx",
+        "frontend/src/features/whatsapp/__tests__/WhatsappQueueView.spec.tsx"
+      ],
+      "refs": [
+        "US-125",
+        "AC-221"
+      ]
+    }
+  ],
+  "concluidas": [],
+  "avisos": []
+}

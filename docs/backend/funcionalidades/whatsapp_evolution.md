@@ -60,3 +60,11 @@ O subsistema de Mensageria WhatsApp gerencia a comunicação automatizada entre 
    - Remove com segurança qualquer job correspondente pendente na fila BullMQ (`queue.removeJobByAppointmentId`).
 5. **Fallback de Instância Multi-Tenant:**
    - No método `sendMessage`, caso o consultório não possua `whatsapp_instance_name` explicitamente configurado, o fallback determinístico é derivado do ID do tenant: `cliniassist_${tenantId.slice(0, 8)}`, mantendo estrito isolamento operacional.
+6. **Classificação Semântica de Pedido de Agendamento e Reagendamento (`AC-219`):**
+   - O parser semântico (`parser.ts`) reconhece padrões canônicos de agendamento e reagendamento (`"pedido de agendamento"`, `"pedido de reagendamento"`, `"reagendamento"`, `"remarcação"`, `"novo agendamento"`, `"agendar outro dia"`, `"trocar data"`, etc.), direcionando deterministicamente o status para `RESCHEDULE_REQUESTED`.
+   - Garante precedência segura para confirmações legítimas (ex.: `"Sim, confirmo o agendamento"`), prevenindo falsos positivos.
+7. **Limite Diário de Réplicas Automáticas por Paciente (`AC-222`, `AC-223`):**
+   - Na tabela `whatsapp_messages`, réplicas automáticas enviadas via webhook são registradas com a flag `is_auto_reply = true`, diferenciando-as dos lembretes ativos enviados pela fila (`is_auto_reply = false`).
+   - O método `hasAutoReplySentToday` verifica se o paciente já recebeu réplica automática no dia civil corrente (`00:00:00` às `23:59:59` no fuso local).
+   - Novas mensagens recebidas de um mesmo paciente no mesmo dia continuam sendo gravadas como `INBOUND` para acompanhamento no painel, mas o envio de réplica na Evolution API é suprimido (`reply_sent: false`), evitando mensagens robóticas maçantes e repetitivas.
+   - Mensagens livres subsequentes de um paciente que já está em `RESCHEDULE_REQUESTED` ou `CONFIRMED` não rebaixam o status da consulta para `MESSAGE_RECEIVED`.

@@ -49,7 +49,7 @@ const CONFIRMATION_PATTERNS = [
 // Expressões canônicas de remarcação / cancelamento
 const RESCHEDULE_PATTERNS = [
   /^2\b/,
-  /\b(remarcar|reagendar|não posso|nao posso|não poderei|nao poderei|não consigo|nao consigo|cancelar|desmarcar|trocar|mudar|adiar|outro dia|outro horário|outro horario|infelizmente não|infelizmente nao)\b/i,
+  /\b(pedido de agendamento|pedido de reagendamento|reagendamento|reagendar|remarcar|remarcação|remarcacao|novo agendamento|novo horário|novo horario|nova data|outro dia|outro horário|outro horario|agendar outro|agendar outra|agendar para outro|trocar data|trocar dia|trocar horário|trocar horario|mudar data|mudar dia|mudar horário|mudar horario|não posso|nao posso|não poderei|nao poderei|não consigo|nao consigo|cancelar|desmarcar|trocar|mudar|adiar|outro dia|outro horário|outro horario|infelizmente não|infelizmente nao)\b/i,
   /[👎❌]/u,
 ];
 
@@ -168,6 +168,16 @@ export function resolveStatusTransition(
       newStatus: 'RESCHEDULE_REQUESTED',
       changedMind: false,
       requiresAttention: true,
+    };
+  }
+
+  // Se o agendamento já está confirmado ou com reagendamento solicitado, mensagens complementares não rebaixam o status
+  if (currentStatus === 'CONFIRMED' || currentStatus === 'RESCHEDULE_REQUESTED') {
+    return {
+      newStatus: currentStatus,
+      changedMind: false,
+      requiresAttention: currentStatus === 'RESCHEDULE_REQUESTED',
+      reason: 'Mensagem complementar recebida mantendo o status ' + currentStatus,
     };
   }
 

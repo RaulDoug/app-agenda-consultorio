@@ -160,5 +160,125 @@ describe('Feature: Réplica Automática de Confirmação e Remarcação no Whats
       const checkDb = await db.query(`SELECT status FROM appointments WHERE id = $1`, [appointmentId]);
       expect(checkDb.rows[0].status).toBe('CONFIRMED');
     });
+
+    it('AC-222: Bloqueio de réplicas automáticas repetidas no mesmo dia para o mesmo paciente @spec:AC-222', async () => {
+      // 1. Paciente envia 1ª mensagem hoje (dúvida)
+      const payload1 = {
+        event: 'messages.upsert',
+        instance: instanceName,
+        data: {
+          key: {
+            remoteJid: `${patientPhone}@s.whatsapp.net`,
+            fromMe: false,
+          },
+          message: {
+            conversation: 'Olá, qual o valor da limpeza?',
+          },
+        },
+      };
+
+      const res1 = await request(testApp)
+        .post('/api/webhooks/whatsapp')
+        .send(payload1);
+
+      expect(res1.status).toBe(200);
+      expect(res1.body.reply_sent).toBe(true);
+      expect(res1.body.reply_suppressed_daily_limit).toBe(false);
+      expect(mockClient.sentMessages.length).toBe(1);
+
+      // 2. Paciente envia 2ª mensagem 1 minuto depois no mesmo dia
+      const payload2 = {
+        event: 'messages.upsert',
+        instance: instanceName,
+        data: {
+          key: {
+            remoteJid: `${patientPhone}@s.whatsapp.net`,
+            fromMe: false,
+          },
+          message: {
+            conversation: 'Vocês atendem Unimed também?',
+          },
+        },
+      };
+
+      const res2 = await request(testApp)
+        .post('/api/webhooks/whatsapp')
+        .send(payload2);
+
+      expect(res2.status).toBe(200);
+      expect(res2.body.reply_sent).toBe(false);
+      expect(res2.body.reply_suppressed_daily_limit).toBe(true);
+      // O mockClient NÃO deve ter recebido nenhuma nova mensagem enviada (continua 1)
+      expect(mockClient.sentMessages.length).toBe(1);
+
+      // 3. Valida que a 2ª mensagem recebida foi gravada normalmente no histórico (INBOUND)
+      const msgsInbound = await db.query(
+        `SELECT message_text FROM whatsapp_messages WHERE patient_id = $1 AND direction = 'INBOUND' ORDER BY created_at ASC`,
+        [patientId]
+      );
+      expect(msgsInbound.rows.length).toBe(2);
+      expect(msgsInbound.rows[1].message_text).toBe('Vocês atendem Unimed também?');
+    });
+
+    it('AC-223: Liberação do envio de réplica automática no dia seguinte e distinção de lembrete da fila @spec:AC-223', async () => {
+      // 1. Simula que a clínica enviou o lembrete da fila hoje (OUTBOUND com is_auto_reply = false)
+      await db.query(
+        `INSERT INTO whatsapp_messages (tenant_id, patient_id, appointment_id, direction, phone, message_text, status, is_auto_reply)
+         VALUES ($1, $2, $3, 'OUTBOUND', $4, 'Confirmamos seu agendamento?', 'SENT', false)`,
+        [tenantId, patientId, appointmentId, patientPhone]
+      );
+
+      // 2. Paciente responde ao lembrete pela 1ª vez hoje pedindo reagendamento
+      const payloadReschedule = {
+        event: 'messages.upsert',
+        instance: instanceName,
+        data: {
+          key: {
+            remoteJid: `${patientPhone}@s.whatsapp.net`,
+            fromMe: false,
+          },
+          message: {
+            conversation: 'Não poderei ir, preciso remarcar',
+          },
+        },
+      };
+
+      const resReschedule = await request(testApp)
+        .post('/api/webhooks/whatsapp')
+        .send(payloadReschedule);
+
+      expect(resReschedule.status).toBe(200);
+      expect(resReschedule.body.new_status).toBe('RESCHEDULE_REQUESTED');
+      // Deve ter enviado a réplica normalmente mesmo após o lembrete da fila
+      expect(resReschedule.body.reply_sent).toBe(true);
+      expect(mockClient.sentMessages.length).toBe(1);
+
+      // 3. Paciente envia nova mensagem complementar em seguida ("Pode ser na próxima semana?")
+      const payloadFollowUp = {
+        event: 'messages.upsert',
+        instance: instanceName,
+        data: {
+          key: {
+            remoteJid: `${patientPhone}@s.whatsapp.net`,
+            fromMe: false,
+          },
+          message: {
+            conversation: 'Pode ser na próxima semana?',
+          },
+        },
+      };
+
+      const resFollowUp = await request(testApp)
+        .post('/api/webhooks/whatsapp')
+        .send(payloadFollowUp);
+
+      expect(resFollowUp.status).toBe(200);
+      // Status permanece RESCHEDULE_REQUESTED (não sofre downgrade)
+      expect(resFollowUp.body.new_status).toBe('RESCHEDULE_REQUESTED');
+      // Réplica suprimida pelo limite diário
+      expect(resFollowUp.body.reply_sent).toBe(false);
+      expect(resFollowUp.body.reply_suppressed_daily_limit).toBe(true);
+      expect(mockClient.sentMessages.length).toBe(1);
+    });
   });
 });

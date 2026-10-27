@@ -184,5 +184,140 @@ describe('WhatsappQueueView — Componentes e Interações da Central de Fila (T
       expect(mockRefresh).toHaveBeenCalledTimes(1);
     });
   });
+
+  it('deve substituir o botão de confirmação manual por reagendamento quando o cliente enviar pedido de agendamento (@spec:AC-220)', () => {
+    const rescheduleItem = {
+      appointment_id: 'app-reschedule',
+      patient_id: 'pat-reschedule',
+      patient_name: 'Roberto Silva',
+      phone: '11966665555',
+      appointment_start_time: '2026-10-28T14:00:00Z',
+      appointment_end_time: '2026-10-28T14:30:00Z',
+      appointment_status: 'RESCHEDULE_REQUESTED',
+      queue_category: 'RESCHEDULE_REQUESTED',
+      queue_order: 1,
+      queue_excluded: false,
+      preview_message: 'Olá Roberto, confirmamos seu horário?',
+      custom_message: null,
+      last_outbound_at: '2026-10-27T09:00:00Z',
+      last_inbound_text: 'Olá, é um pedido de agendamento para outro dia',
+      last_inbound_at: '2026-10-27T10:30:00Z',
+      enqueued_job_id: null,
+      enqueued_delay_ms: null,
+    };
+
+    (hookModule.useWhatsappQueue as any).mockReturnValue({
+      items: [rescheduleItem],
+      allItems: [rescheduleItem],
+      counts: {
+        total: 1,
+        pending_queue: 0,
+        awaiting_reply: 0,
+        confirmed: 0,
+        reschedule_requested: 1,
+        human_attention: 0,
+      },
+      queuePaused: false,
+      pendingJobsCount: 0,
+      loading: false,
+      error: null,
+      dateFilter: 'today',
+      setDateFilter: mockSetDateFilter,
+      categoryFilter: 'ALL',
+      setCategoryFilter: mockSetCategoryFilter,
+      settings: null,
+      refresh: mockRefresh,
+      sendNow: mockSendNow,
+      exclude: mockExclude,
+      updateMessage: mockUpdateMessage,
+      reorder: mockReorder,
+      togglePause: mockTogglePause,
+      triggerBatch: mockTriggerBatch,
+      saveSettings: mockSaveSettings,
+      resolveStatus: mockResolveStatus,
+    });
+
+    render(<WhatsappQueueView token="test" />);
+
+    // Botão de confirmação manual NÃO deve existir
+    expect(screen.queryByTestId('btn-resolve-confirm-app-reschedule')).toBeNull();
+    expect(screen.queryByText('Confirmar Manualmente')).toBeNull();
+
+    // Botão de reagendamento DEVE existir com destaque
+    const btnReschedule = screen.getByTestId('btn-resolve-reschedule-app-reschedule');
+    expect(btnReschedule).toBeInTheDocument();
+    expect(btnReschedule).toHaveTextContent('Reagendar Consulta');
+  });
+
+  it('deve acionar o fluxo de remarcação com os dados da consulta ao clicar no botão de reagendamento (@spec:AC-221)', async () => {
+    const mockOnOpenReschedule = vi.fn();
+    const rescheduleItem = {
+      appointment_id: 'app-reschedule',
+      patient_id: 'pat-reschedule',
+      patient_name: 'Roberto Silva',
+      phone: '11966665555',
+      appointment_start_time: '2026-10-28T14:00:00Z',
+      appointment_end_time: '2026-10-28T14:30:00Z',
+      appointment_status: 'RESCHEDULE_REQUESTED',
+      queue_category: 'RESCHEDULE_REQUESTED',
+      queue_order: 1,
+      queue_excluded: false,
+      preview_message: 'Olá Roberto, confirmamos seu horário?',
+      custom_message: null,
+      last_outbound_at: '2026-10-27T09:00:00Z',
+      last_inbound_text: 'reagendamento por favor',
+      last_inbound_at: '2026-10-27T10:30:00Z',
+      enqueued_job_id: null,
+      enqueued_delay_ms: null,
+    };
+
+    (hookModule.useWhatsappQueue as any).mockReturnValue({
+      items: [rescheduleItem],
+      allItems: [rescheduleItem],
+      counts: {
+        total: 1,
+        pending_queue: 0,
+        awaiting_reply: 0,
+        confirmed: 0,
+        reschedule_requested: 1,
+        human_attention: 0,
+      },
+      queuePaused: false,
+      pendingJobsCount: 0,
+      loading: false,
+      error: null,
+      dateFilter: 'today',
+      setDateFilter: mockSetDateFilter,
+      categoryFilter: 'ALL',
+      setCategoryFilter: mockSetCategoryFilter,
+      settings: null,
+      refresh: mockRefresh,
+      sendNow: mockSendNow,
+      exclude: mockExclude,
+      updateMessage: mockUpdateMessage,
+      reorder: mockReorder,
+      togglePause: mockTogglePause,
+      triggerBatch: mockTriggerBatch,
+      saveSettings: mockSaveSettings,
+      resolveStatus: mockResolveStatus,
+    });
+
+    render(<WhatsappQueueView token="test" onOpenReschedule={mockOnOpenReschedule} />);
+
+    const btnReschedule = screen.getByTestId('btn-resolve-reschedule-app-reschedule');
+    fireEvent.click(btnReschedule);
+
+    await waitFor(() => {
+      expect(mockOnOpenReschedule).toHaveBeenCalledTimes(1);
+      expect(mockOnOpenReschedule).toHaveBeenCalledWith(
+        expect.objectContaining({
+          id: 'app-reschedule',
+          patient_name: 'Roberto Silva',
+          start_time: '2026-10-28T14:00:00Z',
+          end_time: '2026-10-28T14:30:00Z',
+        })
+      );
+    });
+  });
 });
 

@@ -222,6 +222,15 @@ O OdontoFlow foi concebido para o **"Dentista-Operador"** que utiliza o sistema 
 3. **Limpeza de Duplicidade em Ações:**
    - O botão superior de novo agendamento exibe o texto limpo `Novo Agendamento` acompanhado de seu ícone, sem duplicidade de sinal `+`.
 
+---
+
+## 12. Alternância de Confirmação Manual para Reagendamento na Fila WhatsApp (AC-220, AC-221)
+
+1. **Substituição Contextual do Botão de Resolução:**
+   - Na Central de Fila de WhatsApp (`WhatsappQueueView`), mensagens recebidas com intenção de novo agendamento ou reagendamento (`RESCHEDULE_REQUESTED` ou termos semânticos no balão do paciente) substituem o botão padrão `Confirmar Manualmente` pelo botão de ação destacada `Reagendar Consulta` com ícone de calendário.
+2. **Abertura do Modal de Remarcação Integrado:**
+   - O acionamento do botão abre o `RescheduleModal` repassando os dados do agendamento, permitindo a seleção da nova data/horário e disparando a sincronização imediata (`runSync`) ao concluir a remarcação.
+
 
 
 

@@ -14,18 +14,23 @@ import {
   MessageCircle,
   Sparkles,
   RefreshCw,
+  Calendar,
 } from 'lucide-react';
 import type { WhatsappQueueItem, WhatsappQueueItemCategory } from '@cliniassist/shared';
 import { useWhatsappQueue, type DateFilterPreset } from '../hooks/useWhatsappQueue.js';
 import { EditQueueMessageDrawer } from './EditQueueMessageDrawer.js';
 import { WhatsappTemplatesDrawer } from './WhatsappTemplatesDrawer.js';
+import { RescheduleModal } from '../../agenda/components/RescheduleModal.js';
+import { appointmentLocalRepo } from '../../../db/repositories/appointment-local-repository.js';
+import type { LocalAppointmentWithDetails } from '../../agenda/types.js';
 
 interface WhatsappQueueViewProps {
   token?: string;
   onSync?: () => Promise<void>;
+  onOpenReschedule?: (appointment: LocalAppointmentWithDetails) => void;
 }
 
-export const WhatsappQueueView: React.FC<WhatsappQueueViewProps> = ({ token, onSync }) => {
+export const WhatsappQueueView: React.FC<WhatsappQueueViewProps> = ({ token, onSync, onOpenReschedule }) => {
   const queueData = useWhatsappQueue(token);
   const items = queueData?.items || [];
   const counts = queueData?.counts || {
@@ -58,6 +63,83 @@ export const WhatsappQueueView: React.FC<WhatsappQueueViewProps> = ({ token, onS
   const [editingItem, setEditingItem] = useState<WhatsappQueueItem | null>(null);
   const [isTemplatesOpen, setIsTemplatesOpen] = useState(false);
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
+  const [internalRescheduleApp, setInternalRescheduleApp] = useState<LocalAppointmentWithDetails | null>(null);
+
+  const isRescheduleIntent = (item: WhatsappQueueItem): boolean => {
+    if (item.queue_category === 'RESCHEDULE_REQUESTED' || item.appointment_status === 'RESCHEDULE_REQUESTED') {
+      return true;
+    }
+    if (!item.last_inbound_text) return false;
+    const text = item.last_inbound_text.toLowerCase();
+    return (
+      text.includes('reagend') ||
+      text.includes('remarc') ||
+      text.includes('pedido de agendamento') ||
+      text.includes('novo agendamento') ||
+      text.includes('outro dia') ||
+      text.includes('outro horário') ||
+      text.includes('outro horario') ||
+      text.includes('trocar data') ||
+      text.includes('trocar horário') ||
+      text.includes('trocar horario') ||
+      text.includes('mudar data') ||
+      text.includes('mudar horário') ||
+      text.includes('mudar horario') ||
+      text.includes('não posso') ||
+      text.includes('nao posso') ||
+      text.includes('não consigo') ||
+      text.includes('nao consigo') ||
+      text.startsWith('2')
+    );
+  };
+
+  const handleRescheduleClick = async (item: WhatsappQueueItem) => {
+    let appToReschedule: LocalAppointmentWithDetails | null = null;
+    try {
+      if (appointmentLocalRepo?.db?.appointments) {
+        const found = await appointmentLocalRepo.db.appointments.get(item.appointment_id);
+        if (found) {
+          const patient = found.patient_id && appointmentLocalRepo?.db?.patients
+            ? await appointmentLocalRepo.db.patients.get(found.patient_id)
+            : null;
+          appToReschedule = {
+            id: found.id,
+            tenant_id: found.tenant_id,
+            patient_id: found.patient_id,
+            patient_name: patient?.name || item.patient_name,
+            patient_whatsapp: patient?.whatsapp || item.phone,
+            start_time: found.start_time,
+            end_time: found.end_time,
+            status: found.status,
+            is_extra_fit: Boolean(found.is_extra_fit),
+            notes: found.notes,
+          };
+        }
+      }
+    } catch {
+      // Fallback em caso de indisponibilidade momentânea do repositório local
+    }
+
+    if (!appToReschedule) {
+      appToReschedule = {
+        id: item.appointment_id,
+        tenant_id: 'default',
+        patient_id: item.patient_id,
+        patient_name: item.patient_name,
+        patient_whatsapp: item.phone,
+        start_time: item.appointment_start_time,
+        end_time: item.appointment_end_time,
+        status: (item.appointment_status as any) || 'RESCHEDULE_REQUESTED',
+        is_extra_fit: false,
+      };
+    }
+
+    if (onOpenReschedule) {
+      onOpenReschedule(appToReschedule);
+    } else {
+      setInternalRescheduleApp(appToReschedule);
+    }
+  };
 
   const handleManualRefresh = async () => {
     setIsRefreshing(true);
@@ -429,15 +511,27 @@ export const WhatsappQueueView: React.FC<WhatsappQueueViewProps> = ({ token, onS
                         Responder no WhatsApp
                       </a>
 
-                      <button
-                        type="button"
-                        data-testid={`btn-resolve-confirm-${item.appointment_id}`}
-                        onClick={() => resolveStatus(item.appointment_id, 'CONFIRMED')}
-                        className="px-2.5 py-1 text-xs font-semibold bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 rounded-lg inline-flex items-center gap-1 min-h-[38px]"
-                      >
-                        <CheckCircle className="w-3 h-3 text-emerald-600" />
-                        Confirmar Manualmente
-                      </button>
+                      {isRescheduleIntent(item) ? (
+                        <button
+                          type="button"
+                          data-testid={`btn-resolve-reschedule-${item.appointment_id}`}
+                          onClick={() => handleRescheduleClick(item)}
+                          className="px-2.5 py-1 text-xs font-semibold bg-amber-500 hover:bg-amber-600 text-white rounded-lg inline-flex items-center gap-1 min-h-[38px] shadow-2xs transition-colors"
+                        >
+                          <Calendar className="w-3.5 h-3.5 text-white" />
+                          Reagendar Consulta
+                        </button>
+                      ) : (
+                        <button
+                          type="button"
+                          data-testid={`btn-resolve-confirm-${item.appointment_id}`}
+                          onClick={() => resolveStatus(item.appointment_id, 'CONFIRMED')}
+                          className="px-2.5 py-1 text-xs font-semibold bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 rounded-lg inline-flex items-center gap-1 min-h-[38px]"
+                        >
+                          <CheckCircle className="w-3 h-3 text-emerald-600" />
+                          Confirmar Manualmente
+                        </button>
+                      )}
                     </div>
                   </div>
                 )}
@@ -462,6 +556,22 @@ export const WhatsappQueueView: React.FC<WhatsappQueueViewProps> = ({ token, onS
         onClose={() => setIsTemplatesOpen(false)}
         onSave={saveSettings}
       />
+
+      {/* Modal de Remarcação quando aberto internamente na Central */}
+      {internalRescheduleApp && (
+        <RescheduleModal
+          isOpen={Boolean(internalRescheduleApp)}
+          appointment={internalRescheduleApp}
+          onClose={() => setInternalRescheduleApp(null)}
+          onRescheduled={async () => {
+            setInternalRescheduleApp(null);
+            if (onSync) {
+              await onSync();
+            }
+            await refresh();
+          }}
+        />
+      )}
     </div>
   );
 };

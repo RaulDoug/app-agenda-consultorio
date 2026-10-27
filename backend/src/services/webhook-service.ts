@@ -249,62 +249,79 @@ export class WebhookService {
         await this.repo.updateAppointmentStatus(tenantId, appointment.id, transition.newStatus);
       }
 
-      // Dispara réplica humanizada de feedback ao paciente
+      // Dispara réplica humanizada de feedback ao paciente com limite diário
       const settings = await this.repo.ensureDefaultSettings(tenantId);
       let replySent = false;
+      let replySuppressedDailyLimit = false;
 
       if (settings.auto_reply_enabled) {
-        let replyTemplate: string | null = null;
-        let formattedDateStr = '';
-        let formattedTimeStr = '';
+        // Verifica se o paciente já recebeu réplica automática hoje (AC-222, AC-223)
+        const alreadyRepliedToday = this.repo.hasAutoReplySentToday
+          ? await this.repo.hasAutoReplySentToday(tenantId, patient.id, rawNumber)
+          : false;
 
-        if (appointment?.start_time) {
-          const d = new Date(appointment.start_time);
-          formattedDateStr = d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', timeZone: 'America/Sao_Paulo' });
-          formattedTimeStr = d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', timeZone: 'America/Sao_Paulo' });
-        }
+        // Opção A: Mensagens que avisam que a equipe entrará em contato (MESSAGE_RECEIVED e RESCHEDULE_REQUESTED)
+        // têm limite estrito de 1x por dia. Se for CONFIRMED de consulta PENDING, permite confirmar 1x.
+        const isContactNotice =
+          parseResult.classification === 'MESSAGE_RECEIVED' ||
+          parseResult.classification === 'RESCHEDULE_REQUESTED';
 
-        const firstName = patient.name.trim().split(' ')[0] || patient.name;
+        if (alreadyRepliedToday && (isContactNotice || parseResult.classification === 'CONFIRMED')) {
+          replySuppressedDailyLimit = true;
+        } else {
+          let replyTemplate: string | null = null;
+          let formattedDateStr = '';
+          let formattedTimeStr = '';
 
-        if (parseResult.classification === 'CONFIRMED') {
-          replyTemplate = settings.confirmation_reply_template;
-        } else if (parseResult.classification === 'RESCHEDULE_REQUESTED') {
-          replyTemplate = settings.reschedule_reply_template;
-        } else if (parseResult.classification === 'MESSAGE_RECEIVED') {
-          // Réplica humanizada de acolhimento para dúvidas ou áudios
-          replyTemplate = settings.welcome_fallback_reply_template;
-        }
+          if (appointment?.start_time) {
+            const d = new Date(appointment.start_time);
+            formattedDateStr = d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', timeZone: 'America/Sao_Paulo' });
+            formattedTimeStr = d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', timeZone: 'America/Sao_Paulo' });
+          }
 
-        if (replyTemplate) {
-          const replyText = processSpintax(replyTemplate, {
-            nome: firstName,
-            data: formattedDateStr,
-            horario: formattedTimeStr,
-          });
+          const firstName = patient.name.trim().split(' ')[0] || patient.name;
 
-          try {
-            const targetInstance = instanceName || tenant.whatsapp_instance_name || 'cliniassist_default';
-            const sendRes = await this.evolutionClient.sendTextMessage({
-              instanceName: targetInstance,
-              number: rawNumber,
-              text: replyText,
+          if (parseResult.classification === 'CONFIRMED') {
+            replyTemplate = settings.confirmation_reply_template;
+          } else if (parseResult.classification === 'RESCHEDULE_REQUESTED') {
+            replyTemplate = settings.reschedule_reply_template;
+          } else if (parseResult.classification === 'MESSAGE_RECEIVED') {
+            // Réplica humanizada de acolhimento para dúvidas ou áudios
+            replyTemplate = settings.welcome_fallback_reply_template;
+          }
+
+          if (replyTemplate) {
+            const replyText = processSpintax(replyTemplate, {
+              nome: firstName,
+              data: formattedDateStr,
+              horario: formattedTimeStr,
             });
 
-            replySent = true;
+            try {
+              const targetInstance = instanceName || tenant.whatsapp_instance_name || 'cliniassist_default';
+              const sendRes = await this.evolutionClient.sendTextMessage({
+                instanceName: targetInstance,
+                number: rawNumber,
+                text: replyText,
+              });
 
-            // Grava log da réplica enviada (OUTBOUND)
-            await this.repo.logMessage(tenantId, {
-              appointment_id: appointment?.id || null,
-              patient_id: patient.id,
-              direction: 'OUTBOUND',
-              phone: rawNumber,
-              message_text: replyText,
-              status: 'SENT',
-              evolution_message_id: sendRes.id,
-            });
-          } catch (err: any) {
-            // AC-088: Falhas no envio da réplica não prejudicam a persistência da consulta
-            console.warn('[WebhookService] Falha ao enviar réplica automática ao paciente:', err.message);
+              replySent = true;
+
+              // Grava log da réplica enviada (OUTBOUND) com is_auto_reply = true
+              await this.repo.logMessage(tenantId, {
+                appointment_id: appointment?.id || null,
+                patient_id: patient.id,
+                direction: 'OUTBOUND',
+                phone: rawNumber,
+                message_text: replyText,
+                status: 'SENT',
+                evolution_message_id: sendRes.id,
+                is_auto_reply: true,
+              } as any);
+            } catch (err: any) {
+              // AC-088: Falhas no envio da réplica não prejudicam a persistência da consulta
+              console.warn('[WebhookService] Falha ao enviar réplica automática ao paciente:', err.message);
+            }
           }
         }
       }
@@ -320,6 +337,7 @@ export class WebhookService {
           requires_attention: requiresAttention,
           classification: parseResult.classification,
           reply_sent: replySent,
+          reply_suppressed_daily_limit: replySuppressedDailyLimit,
         },
       };
     }

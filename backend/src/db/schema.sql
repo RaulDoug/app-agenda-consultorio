@@ -194,6 +194,7 @@ CREATE TABLE IF NOT EXISTS whatsapp_messages (
     message_text TEXT NOT NULL,
     status VARCHAR(20) NOT NULL,
     evolution_message_id VARCHAR(100),
+    is_auto_reply BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 CREATE INDEX IF NOT EXISTS idx_whatsapp_messages_tenant ON whatsapp_messages(tenant_id, created_at DESC);

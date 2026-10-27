@@ -576,7 +576,13 @@ export const App: React.FC<AppProps> = ({
 
       {/* ABA 7: FILA DE ENVIOS WHATSAPP */}
       <div data-testid="whatsapp-tab-content" className={activeTab === 'whatsapp' ? 'block' : 'hidden'}>
-        <WhatsappQueueView token={session?.token} onSync={runSync} />
+        <WhatsappQueueView
+          token={session?.token}
+          onSync={runSync}
+          onOpenReschedule={(app) => {
+            setRescheduleAppointment(app);
+          }}
+        />
       </div>
 
 
@@ -632,11 +638,12 @@ export const App: React.FC<AppProps> = ({
         appointment={rescheduleAppointment}
         existingAppointments={detailedAppointments}
         onClose={() => setRescheduleAppointment(null)}
-        onRescheduled={(updated) => {
+        onRescheduled={async (updated) => {
           if (updated?.start_time) {
             setCurrentDate(new Date(updated.start_time));
           }
           setRescheduleAppointment(null);
+          await runSync();
         }}
       />
 

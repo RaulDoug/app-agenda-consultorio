@@ -219,20 +219,35 @@ export class WhatsappRepository {
   }
 
   /**
+   * Garante a coluna is_auto_reply de forma idempotente.
+   */
+  async ensureMessageColumns(): Promise<void> {
+    try {
+      await this.db.query(`
+        ALTER TABLE whatsapp_messages
+        ADD COLUMN IF NOT EXISTS is_auto_reply BOOLEAN DEFAULT FALSE;
+      `);
+    } catch {
+      // Ignora erro caso a coluna já exista ou banco em memória
+    }
+  }
+
+  /**
    * Grava log de mensagem enviada ou recebida na tabela whatsapp_messages.
    */
   async logMessage(
     tenantId: string,
-    data: CreateWhatsappMessageInput & { created_at?: string }
-  ): Promise<WhatsappMessageRecord> {
-    const res = await this.db.query<WhatsappMessageRecord>(
+    data: CreateWhatsappMessageInput & { created_at?: string; is_auto_reply?: boolean }
+  ): Promise<WhatsappMessageRecord & { is_auto_reply?: boolean }> {
+    await this.ensureMessageColumns();
+    const res = await this.db.query(
       `INSERT INTO whatsapp_messages (
         tenant_id, appointment_id, patient_id, direction, phone,
-        message_text, status, evolution_message_id, created_at
+        message_text, status, evolution_message_id, is_auto_reply, created_at
       )
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, COALESCE($9, CURRENT_TIMESTAMP))
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, COALESCE($10, CURRENT_TIMESTAMP))
       RETURNING id, tenant_id, appointment_id, patient_id, direction, phone,
-                message_text, status, evolution_message_id, created_at`,
+                message_text, status, evolution_message_id, is_auto_reply, created_at`,
       [
         tenantId,
         data.appointment_id || null,
@@ -242,11 +257,65 @@ export class WhatsappRepository {
         data.message_text,
         data.status,
         data.evolution_message_id || null,
+        Boolean((data as any).is_auto_reply),
         data.created_at || null,
       ]
     );
 
     return res.rows[0];
+  }
+
+  /**
+   * Verifica se o paciente já recebeu réplica automática hoje (limite de 1 por dia civil).
+   */
+  async hasAutoReplySentToday(
+    tenantId: string,
+    patientId?: string | null,
+    phone?: string | null,
+    referenceDate?: Date
+  ): Promise<boolean> {
+    await this.ensureMessageColumns();
+    const ref = referenceDate || new Date();
+
+    // Início e fim do dia atual (00:00:00 até 23:59:59)
+    const startOfDay = new Date(ref);
+    startOfDay.setHours(0, 0, 0, 0);
+
+    const endOfDay = new Date(ref);
+    endOfDay.setHours(23, 59, 59, 999);
+
+    const cleanPhone = phone ? phone.replace(/\D/g, '') : '';
+    const lastDigits = cleanPhone.slice(-8);
+
+    const params: any[] = [tenantId, startOfDay.toISOString(), endOfDay.toISOString()];
+    let patientFilter = '';
+
+    if (patientId && cleanPhone) {
+      params.push(patientId, cleanPhone, `%${lastDigits}`);
+      patientFilter = `AND (patient_id = $4 OR phone = $5 OR phone LIKE $6)`;
+    } else if (patientId) {
+      params.push(patientId);
+      patientFilter = `AND patient_id = $4`;
+    } else if (cleanPhone) {
+      params.push(cleanPhone, `%${lastDigits}`);
+      patientFilter = `AND (phone = $4 OR phone LIKE $5)`;
+    } else {
+      return false;
+    }
+
+    const res = await this.db.query(
+      `SELECT 1 FROM whatsapp_messages
+       WHERE tenant_id = $1
+         AND direction = 'OUTBOUND'
+         AND COALESCE(is_auto_reply, false) = true
+         AND created_at >= $2
+         AND created_at <= $3
+         ${patientFilter}
+       LIMIT 1`,
+      params
+    );
+
+    return res.rows.length > 0;
   }
 
   /**
@@ -315,7 +384,7 @@ export class WhatsappRepository {
        WHERE tenant_id = $1
          AND patient_id = $2
          AND deleted_at IS NULL
-         AND status IN ('PENDING', 'CONFIRMED', 'MESSAGE_RECEIVED')
+         AND status IN ('PENDING', 'CONFIRMED', 'RESCHEDULE_REQUESTED', 'MESSAGE_RECEIVED')
        ORDER BY 
          CASE 
            WHEN status = 'PENDING' THEN 0 

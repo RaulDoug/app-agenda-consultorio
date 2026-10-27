@@ -38,3 +38,14 @@ Interface de gestão da integração do consultório com a Evolution API via Wha
    - A barra `BottomNav` mantém seus botões de navegação com touch targets acessíveis (mínimo de 44x44px) livres de elementos sobrepostos invisíveis que possam interceptar cliques (`pointer-events-none` e `sr-only` para nós de compatibilidade de testes legados).
 2. **Fluxo Desktop:**
    - Em telas maiores (>= 768px), a `DesktopSidebar` exibe o item dedicado "Fila WhatsApp" (`sidebar-tab-whatsapp`), permitindo acesso direto sem transitar pelo menu intermediário.
+
+---
+
+## 5. Ações de Resolução de Mensagens e Reagendamento (`WhatsappQueueView.tsx`)
+1. **Alternância Dinâmica entre Confirmação e Reagendamento (`AC-220`):**
+   - Ao exibir a resposta do paciente no balão de interação:
+     - Se o paciente enviou pedido de reagendamento ou agendamento (`RESCHEDULE_REQUESTED` ou texto com intenção de novo horário), o botão 'Confirmar Manualmente' é substituído pelo botão de ação destacada 'Reagendar Consulta' (`btn-resolve-reschedule-${item.appointment_id}`) com ícone de calendário.
+     - Se a resposta for uma dúvida comum ou mensagem genérica (`HUMAN_ATTENTION`), o botão permanece como 'Confirmar Manualmente'.
+2. **Integração com RescheduleModal (`AC-221`):**
+   - Ao tocar em 'Reagendar Consulta', a interface aciona a abertura do `RescheduleModal` repassando o agendamento completo via prop `onOpenReschedule` (ou fallback interno no componente).
+   - O profissional escolhe a nova data e horário, confirma a remarcação, e o sistema sincroniza a mutação no banco local e outbox, disparando `runSync` e atualizando a fila em tempo real.

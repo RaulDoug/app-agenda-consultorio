@@ -71,6 +71,36 @@ describe('Motor WhatsApp, BullMQ e Webhook Evolution API — OdontoFlow', () => 
       expect(audioRes.isAudioOrMedia).toBe(true);
     });
 
+    it('AC-219: Reconhecimento semântico de pedido de agendamento e reagendamento no parser @spec:AC-219', () => {
+      const rescheduleRequests = [
+        'Olá, gostaria de fazer um pedido de agendamento',
+        'pedido de agendamento para semana que vem',
+        'pedido de reagendamento',
+        'reagendamento por favor',
+        'quero agendar outro dia',
+        'preciso de uma remarcação',
+        'novo agendamento para sexta',
+        'quero agendar para outro horário',
+        'trocar data da consulta',
+      ];
+      for (const text of rescheduleRequests) {
+        const res = parsePatientMessage(text);
+        expect(res.classification).toBe('RESCHEDULE_REQUESTED');
+        expect(res.isAudioOrMedia).toBe(false);
+      }
+
+      const legitimateConfirmations = [
+        'Sim, confirmo meu agendamento',
+        'Confirmo o agendamento de amanhã',
+        'confirmado o agendamento',
+        'positivo, agendamento confirmado',
+      ];
+      for (const text of legitimateConfirmations) {
+        const res = parsePatientMessage(text);
+        expect(res.classification).toBe('CONFIRMED');
+      }
+    });
+
     it('AC-020: Transição de status quando paciente muda de ideia @spec:AC-020', () => {
       // 1. Paciente confirma a consulta inicialmente a partir de PENDING
       const firstTransition = resolveStatusTransition('PENDING', 'CONFIRMED');
