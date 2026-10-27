@@ -1,3 +1,6 @@
+/**
+ * @vitest-environment jsdom
+ */
 import React from 'react';
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
@@ -16,3 +19,4 @@ describe('Navegação para a Central de Fila WhatsApp — MoreMenuHub (T-142)', 
     expect(handleSelectSection).toHaveBeenCalledWith('whatsapp');
   });
 });
+

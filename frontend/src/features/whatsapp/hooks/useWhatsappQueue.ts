@@ -162,3 +162,4 @@ export function useWhatsappQueue(token?: string) {
     resolveStatus: handleResolveStatus,
   };
 }
+

@@ -159,3 +159,4 @@ describe('Rotas da Central de Fila de WhatsApp — /api/whatsapp/queue (T-140)',
     expect(appUpdated.rows[0].status).toBe('CONFIRMED');
   });
 });
+

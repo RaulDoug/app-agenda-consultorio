@@ -1,0 +1,57 @@
+{
+  "feature": "central-fila-whatsapp",
+  "timestamp": "2026-10-27T14:49:01.256Z",
+  "gitRev": "ed55e24",
+  "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
+  "reporter": "vitest-json",
+  "exitCode": 0,
+  "testsParsed": 514,
+  "results": {
+    "AC-209": {
+      "status": "pass",
+      "testName": "WhatsappRepository — Central de Fila de WhatsApp (T-139) deve listar itens da fila com categorização, subqueries de mensagem e isolamento multi-tenant (@spec:AC-209) deve listar itens da fila com categorização, subqueries de mensagem e isolamento multi-tenant (@spec:AC-209)",
+      "method": "vitest-json"
+    },
+    "AC-210": {
+      "status": "pass",
+      "testName": "WhatsappQueueView — Componentes e Interações da Central de Fila (T-141) deve exibir balão com última resposta do paciente e link wa.me (@spec:AC-210) deve exibir balão com última resposta do paciente e link wa.me (@spec:AC-210)",
+      "method": "vitest-json"
+    },
+    "AC-211": {
+      "status": "pass",
+      "testName": "WhatsappRepository — Central de Fila de WhatsApp (T-139) deve excluir logicamente da fila marcando whatsapp_queue_excluded sem deletar agendamento (@spec:AC-211) deve excluir logicamente da fila marcando whatsapp_queue_excluded sem deletar agendamento (@spec:AC-211)",
+      "method": "vitest-json"
+    },
+    "AC-212": {
+      "status": "pass",
+      "testName": "WhatsappRepository — Central de Fila de WhatsApp (T-139) deve persistir mensagem customizada individual para a consulta (@spec:AC-212) deve persistir mensagem customizada individual para a consulta (@spec:AC-212)",
+      "method": "vitest-json"
+    },
+    "AC-213": {
+      "status": "pass",
+      "testName": "WhatsappRepository — Central de Fila de WhatsApp (T-139) deve atualizar a ordem dos itens na fila (@spec:AC-213) deve atualizar a ordem dos itens na fila (@spec:AC-213)",
+      "method": "vitest-json"
+    },
+    "AC-214": {
+      "status": "pass",
+      "testName": "Rotas da Central de Fila de WhatsApp — /api/whatsapp/queue (T-140) POST /api/whatsapp/queue/:appointmentId/send-now dispara envio manual instantâneo e cancela job da fila (@spec:AC-214) POST /api/whatsapp/queue/:appointmentId/send-now dispara envio manual instantâneo e cancela job da fila (@spec:AC-214)",
+      "method": "vitest-json"
+    },
+    "AC-215": {
+      "status": "pass",
+      "testName": "Rotas da Central de Fila de WhatsApp — /api/whatsapp/queue (T-140) POST /api/webhooks/whatsapp processa resposta do paciente após envio manual (@spec:AC-215) POST /api/webhooks/whatsapp processa resposta do paciente após envio manual (@spec:AC-215)",
+      "method": "vitest-json"
+    },
+    "AC-216": {
+      "status": "pass",
+      "testName": "Rotas da Central de Fila de WhatsApp — /api/whatsapp/queue (T-140) POST /api/whatsapp/queue/pause pausa e retoma a fila global (@spec:AC-216) POST /api/whatsapp/queue/pause pausa e retoma a fila global (@spec:AC-216)",
+      "method": "vitest-json"
+    },
+    "AC-217": {
+      "status": "pass",
+      "testName": "Navegação para a Central de Fila WhatsApp — MoreMenuHub (T-142) deve exibir o card de Fila de Envios WhatsApp na aba Mais e disparar transição de aba (@spec:AC-217) deve exibir o card de Fila de Envios WhatsApp na aba Mais e disparar transição de aba (@spec:AC-217)",
+      "method": "vitest-json"
+    }
+  },
+  "principles": {}
+}

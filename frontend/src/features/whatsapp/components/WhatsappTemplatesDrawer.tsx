@@ -152,3 +152,4 @@ export const WhatsappTemplatesDrawer: React.FC<WhatsappTemplatesDrawerProps> = (
     </div>
   );
 };
+

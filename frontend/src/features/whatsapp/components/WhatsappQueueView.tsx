@@ -24,27 +24,32 @@ interface WhatsappQueueViewProps {
 }
 
 export const WhatsappQueueView: React.FC<WhatsappQueueViewProps> = ({ token }) => {
-  const {
-    items,
-    allItems,
-    counts,
-    queuePaused,
-    loading,
-    error,
-    dateFilter,
-    setDateFilter,
-    categoryFilter,
-    setCategoryFilter,
-    settings,
-    sendNow,
-    exclude,
-    updateMessage,
-    reorder,
-    togglePause,
-    triggerBatch,
-    saveSettings,
-    resolveStatus,
-  } = useWhatsappQueue(token);
+  const queueData = useWhatsappQueue(token);
+  const items = queueData?.items || [];
+  const counts = queueData?.counts || {
+    total: 0,
+    pending_queue: 0,
+    awaiting_reply: 0,
+    confirmed: 0,
+    reschedule_requested: 0,
+    human_attention: 0,
+  };
+  const queuePaused = queueData?.queuePaused || false;
+  const loading = queueData?.loading || false;
+  const error = queueData?.error || null;
+  const dateFilter = queueData?.dateFilter || 'today';
+  const setDateFilter = queueData?.setDateFilter || (() => {});
+  const categoryFilter = queueData?.categoryFilter || 'ALL';
+  const setCategoryFilter = queueData?.setCategoryFilter || (() => {});
+  const settings = queueData?.settings || null;
+  const sendNow = queueData?.sendNow || (async () => {});
+  const exclude = queueData?.exclude || (async () => {});
+  const updateMessage = queueData?.updateMessage || (async () => {});
+  const reorder = queueData?.reorder || (async () => {});
+  const togglePause = queueData?.togglePause || (async () => {});
+  const triggerBatch = queueData?.triggerBatch || (async () => {});
+  const saveSettings = queueData?.saveSettings || (async () => {});
+  const resolveStatus = queueData?.resolveStatus || (async () => {});
 
   const [editingItem, setEditingItem] = useState<WhatsappQueueItem | null>(null);
   const [isTemplatesOpen, setIsTemplatesOpen] = useState(false);
@@ -432,3 +437,4 @@ export const WhatsappQueueView: React.FC<WhatsappQueueViewProps> = ({ token }) =
     </div>
   );
 };
+
