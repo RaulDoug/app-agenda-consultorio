@@ -4,6 +4,7 @@ import type {
   UpdateTenantWhatsappSettingsInput,
   WhatsappMessageRecord,
   CreateWhatsappMessageInput,
+  WhatsappAutoReplyScope,
 } from '@cliniassist/shared';
 import type { AppointmentConfirmationCandidate } from '../whatsapp/scheduler.js';
 
@@ -19,6 +20,7 @@ export const DEFAULT_WHATSAPP_TEMPLATES = {
   confirmation_hour: 9,
   confirmation_days_ahead: 1,
   auto_reply_enabled: true,
+  auto_reply_scope: 'REGISTERED_ONLY' as WhatsappAutoReplyScope,
 };
 
 export class WhatsappRepository {
@@ -33,25 +35,46 @@ export class WhatsappRepository {
   }
 
   /**
+   * Garante a coluna auto_reply_scope de forma idempotente em whatsapp_settings.
+   */
+  async ensureSettingsColumns(): Promise<void> {
+    try {
+      await this.db.query(`
+        ALTER TABLE whatsapp_settings
+        ADD COLUMN IF NOT EXISTS auto_reply_scope VARCHAR(20) DEFAULT 'REGISTERED_ONLY';
+      `);
+    } catch {
+      // Ignora erro caso a coluna já exista ou banco em memória
+    }
+  }
+
+  /**
    * Obtém as configurações de WhatsApp do consultório ou null se ainda não existirem.
    */
   async getSettings(tenantId: string): Promise<TenantWhatsappSettings | null> {
+    await this.ensureSettingsColumns();
     const res = await this.db.query<TenantWhatsappSettings>(
       `SELECT id, tenant_id, confirmation_message_template, confirmation_reply_template,
               reschedule_reply_template, welcome_fallback_reply_template, confirmation_hour,
-              confirmation_days_ahead, auto_reply_enabled, created_at, updated_at
+              confirmation_days_ahead, auto_reply_enabled, auto_reply_scope, created_at, updated_at
        FROM whatsapp_settings
        WHERE tenant_id = $1`,
       [tenantId]
     );
 
-    return res.rows[0] || null;
+    if (!res.rows[0]) return null;
+    const row = res.rows[0];
+    if (!row.auto_reply_scope) {
+      row.auto_reply_scope = row.auto_reply_enabled === false ? 'DISABLED' : 'REGISTERED_ONLY';
+    }
+    return row;
   }
 
   /**
    * Garante a existência das configurações padrão com auto-seed.
    */
   async ensureDefaultSettings(tenantId: string): Promise<TenantWhatsappSettings> {
+    await this.ensureSettingsColumns();
     const existing = await this.getSettings(tenantId);
     if (existing) {
       return existing;
@@ -61,13 +84,13 @@ export class WhatsappRepository {
       `INSERT INTO whatsapp_settings (
         tenant_id, confirmation_message_template, confirmation_reply_template,
         reschedule_reply_template, welcome_fallback_reply_template, confirmation_hour,
-        confirmation_days_ahead, auto_reply_enabled
+        confirmation_days_ahead, auto_reply_enabled, auto_reply_scope
       )
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
       ON CONFLICT (tenant_id) DO UPDATE SET updated_at = CURRENT_TIMESTAMP
       RETURNING id, tenant_id, confirmation_message_template, confirmation_reply_template,
                 reschedule_reply_template, welcome_fallback_reply_template, confirmation_hour,
-                confirmation_days_ahead, auto_reply_enabled, created_at, updated_at`,
+                confirmation_days_ahead, auto_reply_enabled, auto_reply_scope, created_at, updated_at`,
       [
         tenantId,
         DEFAULT_WHATSAPP_TEMPLATES.confirmation_message_template,
@@ -77,10 +100,15 @@ export class WhatsappRepository {
         DEFAULT_WHATSAPP_TEMPLATES.confirmation_hour,
         DEFAULT_WHATSAPP_TEMPLATES.confirmation_days_ahead,
         DEFAULT_WHATSAPP_TEMPLATES.auto_reply_enabled,
+        DEFAULT_WHATSAPP_TEMPLATES.auto_reply_scope,
       ]
     );
 
-    return res.rows[0];
+    const row = res.rows[0];
+    if (row && !row.auto_reply_scope) {
+      row.auto_reply_scope = row.auto_reply_enabled === false ? 'DISABLED' : 'REGISTERED_ONLY';
+    }
+    return row;
   }
 
   /**
@@ -90,6 +118,7 @@ export class WhatsappRepository {
     tenantId: string,
     input: UpdateTenantWhatsappSettingsInput
   ): Promise<TenantWhatsappSettings> {
+    await this.ensureSettingsColumns();
     await this.ensureDefaultSettings(tenantId);
 
     const fields: string[] = [];
@@ -120,9 +149,21 @@ export class WhatsappRepository {
       fields.push(`confirmation_days_ahead = $${paramIndex++}`);
       values.push(input.confirmation_days_ahead);
     }
+    if (input.auto_reply_scope !== undefined) {
+      fields.push(`auto_reply_scope = $${paramIndex++}`);
+      values.push(input.auto_reply_scope);
+      if (input.auto_reply_enabled === undefined) {
+        fields.push(`auto_reply_enabled = $${paramIndex++}`);
+        values.push(input.auto_reply_scope !== 'DISABLED');
+      }
+    }
     if (input.auto_reply_enabled !== undefined) {
       fields.push(`auto_reply_enabled = $${paramIndex++}`);
       values.push(input.auto_reply_enabled);
+      if (input.auto_reply_scope === undefined && !input.auto_reply_enabled) {
+        fields.push(`auto_reply_scope = $${paramIndex++}`);
+        values.push('DISABLED');
+      }
     }
 
     fields.push(`updated_at = CURRENT_TIMESTAMP`);
@@ -133,11 +174,15 @@ export class WhatsappRepository {
       WHERE tenant_id = $1
       RETURNING id, tenant_id, confirmation_message_template, confirmation_reply_template,
                 reschedule_reply_template, welcome_fallback_reply_template, confirmation_hour,
-                confirmation_days_ahead, auto_reply_enabled, created_at, updated_at
+                confirmation_days_ahead, auto_reply_enabled, auto_reply_scope, created_at, updated_at
     `;
 
     const res = await this.db.query<TenantWhatsappSettings>(sql, values);
-    return res.rows[0];
+    const row = res.rows[0];
+    if (row && !row.auto_reply_scope) {
+      row.auto_reply_scope = row.auto_reply_enabled === false ? 'DISABLED' : 'REGISTERED_ONLY';
+    }
+    return row;
   }
 
   /**
@@ -328,7 +373,7 @@ export class WhatsappRepository {
     const params: any[] = [tenantId];
     let sql = `
       SELECT id, tenant_id, appointment_id, patient_id, direction, phone,
-             message_text, status, evolution_message_id, created_at
+              message_text, status, evolution_message_id, created_at
       FROM whatsapp_messages
       WHERE tenant_id = $1
     `;
@@ -581,7 +626,6 @@ export class WhatsappRepository {
       );
     }
   }
-
 
   /**
    * Marca a resposta de um paciente como resolvida/respondida no agendamento.

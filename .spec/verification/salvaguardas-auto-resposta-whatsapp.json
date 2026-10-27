@@ -1,0 +1,32 @@
+{
+  "feature": "salvaguardas-auto-resposta-whatsapp",
+  "timestamp": "2026-10-27T20:33:24.160Z",
+  "gitRev": "b947b81",
+  "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
+  "reporter": "vitest-json",
+  "exitCode": 0,
+  "testsParsed": 540,
+  "results": {
+    "AC-233": {
+      "status": "pass",
+      "testName": "Sprint FE-5: Ajustes do Consultório, Integração do Shell e Suíte E2E Playwright AC-233: Seletor de escopo de resposta automática junto ao card de QR Code do WhatsApp @spec:AC-233 AC-233: Seletor de escopo de resposta automática junto ao card de QR Code do WhatsApp @spec:AC-233",
+      "method": "vitest-json"
+    },
+    "AC-234": {
+      "status": "pass",
+      "testName": "Feature: Salvaguardas de Resposta Automática no WhatsApp (US-130) US-130 — Configuração de Escopo e Salvaguardas de Resposta Automática no WhatsApp AC-234: Salvaguarda para modo Apenas Cadastrados (REGISTERED_ONLY) e modo Desativado (DISABLED) @spec:AC-234 AC-234: Salvaguarda para modo Apenas Cadastrados (REGISTERED_ONLY) e modo Desativado (DISABLED) @spec:AC-234",
+      "method": "vitest-json"
+    },
+    "AC-235": {
+      "status": "pass",
+      "testName": "Feature: Salvaguardas de Resposta Automática no WhatsApp (US-130) US-130 — Configuração de Escopo e Salvaguardas de Resposta Automática no WhatsApp AC-235: Acolhimento automático para não cadastrados no modo ALL com limpeza de {nome} e limite diário @spec:AC-235 AC-235: Acolhimento automático para não cadastrados no modo ALL com limpeza de {nome} e limite diário @spec:AC-235",
+      "method": "vitest-json"
+    },
+    "AC-236": {
+      "status": "pass",
+      "testName": "Feature: Salvaguardas de Resposta Automática no WhatsApp (US-130) US-130 — Configuração de Escopo e Salvaguardas de Resposta Automática no WhatsApp AC-236: Bloqueio estrito de resposta automática para grupos, listas de transmissão e status @spec:AC-236 AC-236: Bloqueio estrito de resposta automática para grupos, listas de transmissão e status @spec:AC-236",
+      "method": "vitest-json"
+    }
+  },
+  "principles": {}
+}

@@ -9,7 +9,7 @@ export interface SpintaxVariables {
 
 /**
  * Processa uma string Spintax, selecionando estocasticamente uma opção para cada bloco.
- * Suporta blocos aninhados e variáveis dinâmicas.
+ * Suporta blocos aninhados e variáveis dinâmicas com limpeza de pontuação para tags omitidas/vazias.
  */
 export function processSpintax(template: string, variables?: SpintaxVariables): string {
   // 1. Resolve blocos spintax mais internos recursivamente
@@ -37,12 +37,24 @@ export function processSpintax(template: string, variables?: SpintaxVariables): 
   // 2. Interpolação de variáveis
   if (variables) {
     for (const [key, val] of Object.entries(variables)) {
-      if (val !== undefined && val !== null) {
+      if (val !== undefined && val !== null && String(val).trim() !== '') {
         const varRegex = new RegExp(`\\{${key}\\}`, 'gi');
         result = result.replace(varRegex, String(val));
       }
     }
   }
+
+  // 3. Limpeza de variáveis residuais não preenchidas (especialmente {nome}) e pontuações órfãs
+  result = result
+    .replace(/,\s*\{nome\}\s*([!?.])/gi, '$1')
+    .replace(/\{nome\}\s*([!?.])/gi, '$1')
+    .replace(/,\s*\{nome\}/gi, '')
+    .replace(/\{nome\}\s*,\s*/gi, ', ')
+    .replace(/\{nome\}/gi, '')
+    .replace(/\s+,\s*/g, ', ')
+    .replace(/,\s*([!?.])/g, '$1')
+    .replace(/\s+([!?.])/g, '$1')
+    .replace(/\s{2,}/g, ' ');
 
   return result.trim();
 }

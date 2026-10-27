@@ -111,7 +111,25 @@ export class WebhookService {
       const key = data?.key || {};
 
       // Extrai número do remetente
-      const remoteJid = key?.remoteJid || data?.remoteJid || '';
+      const remoteJid = key?.remoteJid || data?.remoteJid || payload?.remoteJid || '';
+
+      // AC-236: Bloqueio estrito de resposta automática para grupos, listas de transmissão e canais
+      const isGroupOrBroadcast =
+        remoteJid.includes('@g.us') ||
+        remoteJid.includes('@broadcast') ||
+        remoteJid.includes('@newsletter');
+
+      if (isGroupOrBroadcast) {
+        return {
+          status: 'ignored_group_or_broadcast',
+          statusCode: 200,
+          data: {
+            remoteJid,
+            reason: 'Mensagens de grupos, status/transmissões ou canais são ignoradas por salvaguarda de privacidade.',
+          },
+        };
+      }
+
       const rawNumber = remoteJid.replace(/@.*$/, '').replace(/\D/g, '');
 
       if (!rawNumber) {
@@ -208,21 +226,118 @@ export class WebhookService {
 
       const tenantId = tenant.id;
 
+      // Localiza configurações e escopo de réplica automática do consultório
+      let settings: any = null;
+      try {
+        settings = await this.repo.ensureDefaultSettings(tenantId);
+      } catch {
+        // Fallback defensivo
+      }
+      const autoReplyScope =
+        settings?.auto_reply_scope || (settings?.auto_reply_enabled === false ? 'DISABLED' : 'REGISTERED_ONLY');
+      const isAutoReplyGloballyActive = Boolean(settings?.auto_reply_enabled && autoReplyScope !== 'DISABLED');
+
       // Busca paciente cadastrado pelo telefone
       const patient = await this.repo.findPatientByPhone(tenantId, rawNumber);
+
+      // Tratamento para contatos NÃO cadastrados (AC-234 e AC-235)
       if (!patient) {
-        // AC-025: Número desconhecido -> Retorna 200 OK silenciosamente sem erro
+        // Se o escopo for REGISTERED_ONLY ou DISABLED, ignora silenciosamente sem disparar réplica (AC-234)
+        if (!isAutoReplyGloballyActive || autoReplyScope !== 'ALL') {
+          return {
+            status: 'ignored_unknown_number',
+            statusCode: 200,
+            data: {
+              phone: rawNumber,
+              message: 'Mensagem recebida de número não cadastrado. Ignorado com sucesso.',
+            },
+          };
+        }
+
+        // Modo ALL ("Todos os Contatos") com respostas ativas (AC-235)
+        // Grava log da mensagem recebida (INBOUND)
+        await this.repo.logMessage(tenantId, {
+          appointment_id: null,
+          patient_id: null,
+          direction: 'INBOUND',
+          phone: rawNumber,
+          message_text: text || (isAudio ? '[Mensagem de Áudio]' : '[Mídia/Arquivo]'),
+          status: 'RECEIVED',
+          evolution_message_id: messageId || undefined,
+        });
+
+        // Limite diário estrito: 1 resposta automática por dia civil por número (AC-235)
+        const alreadyRepliedToday = await this.repo.hasAutoReplySentToday(tenantId, null, rawNumber);
+        if (alreadyRepliedToday) {
+          return {
+            status: 'processed',
+            statusCode: 200,
+            data: {
+              appointment_id: null,
+              patient_id: null,
+              new_status: null,
+              changed_mind: false,
+              requires_attention: false,
+              classification: 'MESSAGE_RECEIVED',
+              reply_sent: false,
+              reply_suppressed_daily_limit: true,
+            },
+          };
+        }
+
+        // Envia réplica de acolhimento omitindo a tag {nome} com limpeza de pontuação adjacente (ASM-078)
+        const replyTemplate =
+          settings?.welcome_fallback_reply_template ||
+          '{Olá|Oi}, {nome}! Recebemos sua mensagem. Como sua solicitação requer atenção da nossa equipe, entraremos em contato em breve para esclarecer suas dúvidas e te atender da melhor forma! 😊';
+        const replyText = processSpintax(replyTemplate, {
+          nome: '',
+          data: '',
+          horario: '',
+        });
+
+        let replySent = false;
+        try {
+          const targetInstance = instanceName || tenant.whatsapp_instance_name || 'cliniassist_default';
+          const sendRes = await this.evolutionClient.sendTextMessage({
+            instanceName: targetInstance,
+            number: rawNumber,
+            text: replyText,
+          });
+
+          replySent = true;
+
+          // Grava log da réplica enviada (OUTBOUND) com patient_id = null e is_auto_reply = true
+          await this.repo.logMessage(tenantId, {
+            appointment_id: null,
+            patient_id: null,
+            direction: 'OUTBOUND',
+            phone: rawNumber,
+            message_text: replyText,
+            status: 'SENT',
+            evolution_message_id: sendRes?.id || null,
+            is_auto_reply: true,
+          } as any);
+        } catch (err: any) {
+          console.warn('[WebhookService] Falha ao enviar acolhimento ao contato não cadastrado:', err.message);
+        }
+
         return {
-          status: 'ignored_unknown_number',
+          status: 'processed',
           statusCode: 200,
           data: {
-            phone: rawNumber,
-            message: 'Mensagem recebida de número não cadastrado. Ignorado com sucesso.',
+            appointment_id: null,
+            patient_id: null,
+            new_status: null,
+            changed_mind: false,
+            requires_attention: false,
+            classification: 'MESSAGE_RECEIVED',
+            reply_sent: replySent,
+            reply_suppressed_daily_limit: false,
           },
         };
       }
 
-      // Busca agendamento mais relevante para o paciente
+      // Busca agendamento mais relevante para o paciente cadastrado
       const appointment = await this.repo.findRelevantAppointmentForPatient(tenantId, patient.id);
 
       // Grava log da mensagem recebida (INBOUND)
@@ -249,18 +364,17 @@ export class WebhookService {
         await this.repo.updateAppointmentStatus(tenantId, appointment.id, transition.newStatus);
       }
 
-      // Dispara réplica humanizada de feedback ao paciente com limite diário
-      const settings = await this.repo.ensureDefaultSettings(tenantId);
+      // Dispara réplica humanizada de feedback ao paciente com limite diário (se ativo)
       let replySent = false;
       let replySuppressedDailyLimit = false;
 
-      if (settings.auto_reply_enabled) {
+      if (isAutoReplyGloballyActive) {
         // Verifica se o paciente já recebeu réplica automática hoje (AC-222, AC-223)
         const alreadyRepliedToday = this.repo.hasAutoReplySentToday
           ? await this.repo.hasAutoReplySentToday(tenantId, patient.id, rawNumber)
           : false;
 
-        // Opção A: Mensagens que avisam que a equipe entrará em contato (MESSAGE_RECEIVED e RESCHEDULE_REQUESTED)
+        // Mensagens que avisam que a equipe entrará em contato (MESSAGE_RECEIVED e RESCHEDULE_REQUESTED)
         // têm limite estrito de 1x por dia. Se for CONFIRMED de consulta PENDING, permite confirmar 1x.
         const isContactNotice =
           parseResult.classification === 'MESSAGE_RECEIVED' ||
@@ -282,12 +396,12 @@ export class WebhookService {
           const firstName = patient.name.trim().split(' ')[0] || patient.name;
 
           if (parseResult.classification === 'CONFIRMED') {
-            replyTemplate = settings.confirmation_reply_template;
+            replyTemplate = settings?.confirmation_reply_template;
           } else if (parseResult.classification === 'RESCHEDULE_REQUESTED') {
-            replyTemplate = settings.reschedule_reply_template;
+            replyTemplate = settings?.reschedule_reply_template;
           } else if (parseResult.classification === 'MESSAGE_RECEIVED') {
             // Réplica humanizada de acolhimento para dúvidas ou áudios
-            replyTemplate = settings.welcome_fallback_reply_template;
+            replyTemplate = settings?.welcome_fallback_reply_template;
           }
 
           if (replyTemplate) {

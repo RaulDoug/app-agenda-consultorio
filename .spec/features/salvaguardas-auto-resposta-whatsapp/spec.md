@@ -1,7 +1,7 @@
 # Spec: Salvaguardas auto resposta whatsapp
 
 > feature: salvaguardas-auto-resposta-whatsapp
-> status: rascunho
+> status: pronta
 
 ## Contexto
 
