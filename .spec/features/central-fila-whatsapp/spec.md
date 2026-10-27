@@ -1,7 +1,7 @@
 # Spec: Central fila whatsapp
 
 > feature: central-fila-whatsapp
-> status: rascunho
+> status: pronta
 
 ## Contexto
 
