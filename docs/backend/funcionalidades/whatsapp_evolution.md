@@ -75,3 +75,9 @@ O subsistema de Mensageria WhatsApp gerencia a comunicação automatizada entre 
    - Rota `POST /api/whatsapp/queue/:appointmentId/reply`:
      - Ação `mark_resolved`: marca a resposta como atendida sem enviar mensagem adicional.
      - Ação `send_notice`: dispara mensagem informando a nova data e horário remarcados, grava o registro `OUTBOUND` e marca a pendência como respondida.
+
+9. **Configuração de Escopo e Salvaguardas de Resposta Automática (`AC-234`, `AC-235`, `AC-236`):**
+   - A tabela `whatsapp_settings` contém a coluna `auto_reply_scope VARCHAR(30) DEFAULT 'REGISTERED_ONLY'` com auto-seed e suporte aos valores `'REGISTERED_ONLY'`, `'ALL'` e `'DISABLED'`.
+   - **Bloqueio de Grupos e Status (`AC-236`):** No `WebhookService`, eventos com remetentes `@g.us`, `@broadcast` ou `@newsletter` são descartados imediatamente (`ignored_group_or_broadcast`).
+   - **Modo Apenas Cadastrados (`AC-234`):** Caso o contato não possua cadastro em `patients`, a requisição é ignorada silenciosamente (`ignored_unknown_number`) sem envio de mensagens. No modo `DISABLED`, nenhuma réplica é disparada.
+   - **Modo Todos os Contatos com Omissão Limpa de `{nome}` (`AC-235`):** Contatos não cadastrados recebem exclusivamente a réplica humanizada de acolhimento (`welcome_fallback_reply_template`). O motor `processSpintax` limpa vírgulas e espaços órfãos quando `{nome}` está vazio. A réplica é gravada em `whatsapp_messages` (`patient_id = null`, `is_auto_reply = true`) com limite de 1 disparo por dia civil por telefone (`hasAutoReplySentToday`).

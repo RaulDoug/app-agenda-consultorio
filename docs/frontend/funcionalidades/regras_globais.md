@@ -263,3 +263,12 @@ O OdontoFlow foi concebido para o **"Dentista-Operador"** que utiliza o sistema 
    - Cada card expandido renderiza sua própria simulação visual de balão do WhatsApp com resolução de variáveis simuladas (`Carlos`, `28/10`, `14:30`) e primeiro termo do Spintax.
 3. **Persistência Individual com Feedback Imediato (AC-232):**
    - O botão `Salvar Mensagem` fica situado no rodapé de cada card expandido, disparando `onSave({ [template_field]: value })` apenas para a mensagem alterada, mantendo a gaveta aberta e exibindo badge verde de confirmação `✓ Salvo` por 3 segundos.
+
+---
+
+## 16. Seletor de Escopo de Resposta Automática no Card de Conexão WhatsApp (AC-233)
+
+1. **Audiência Configurável (One-Thumb Ergonomics):**
+   - O card de pareamento e conexão (`WhatsAppPairingView.tsx`) exibe no terço inferior um seletor visual em 3 segmentos: "Apenas Cadastrados" (`REGISTERED_ONLY`), "Todos os Contatos" (`ALL`) e "Desativado" (`DISABLED`).
+2. **Reatividade e Persistência Direta via API:**
+   - A troca de opção dispara `PUT /api/whatsapp/settings`, exibindo indicador de salvamento e confirmação visual sem exigir botões adicionais de formulário.

@@ -75,3 +75,15 @@ Interface de gestão da integração do consultório com a Evolution API via Wha
 3. **Botão de Salvamento Individual por Card (`AC-232`):**
    - Cada card possui seu próprio botão `Salvar Mensagem` posicionado no rodapé interno do card expandido.
    - Ao salvar, envia a mutação parcial via `onSave({ [card.field]: card.value })`, exibe o estado `Salvando...` e logo em seguida o badge `✓ Salvo` (no cabeçalho e na área de botões por 3 segundos), sem fechar a gaveta desnecessariamente.
+
+---
+
+## 8. Seletor de Escopo de Resposta Automática no Card de Conexão WhatsApp (`AC-233`)
+1. **Controle de Audiência Integrado (`WhatsAppPairingView.tsx`):**
+   - O card de integração do WhatsApp (renderizado tanto no estado pareado quanto no estado exibindo QR Code) inclui um seletor visual com 3 botões estilizados:
+     - **Apenas Cadastrados** (`REGISTERED_ONLY` — Padrão Recomendado): responde apenas a pacientes que possuem ficha no consultório;
+     - **Todos os Contatos** (`ALL`): acolhe automaticamente novos contatos com mensagem personalizada;
+     - **Desativado** (`DISABLED`): pausa todas as réplicas automáticas instantaneamente.
+2. **Persistência Imediata com Feedback Visual:**
+   - A alteração do seletor dispara requisição `PUT /api/whatsapp/settings` persistindo `auto_reply_scope` (e `auto_reply_enabled`).
+   - Exibe estado de salvamento (`Gravando...`) e badge de sucesso visual (`✓ Configuração atualizada com sucesso!`) com descrição contextual explicativa.

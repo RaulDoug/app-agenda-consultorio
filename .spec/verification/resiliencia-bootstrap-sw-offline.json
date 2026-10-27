@@ -1,6 +1,6 @@
 {
   "feature": "resiliencia-bootstrap-sw-offline",
-  "timestamp": "2026-10-27T17:11:58.094Z",
+  "timestamp": "2026-10-27T20:33:24.160Z",
   "gitRev": "367f040",
   "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
