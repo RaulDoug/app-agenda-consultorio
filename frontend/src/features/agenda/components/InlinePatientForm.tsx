@@ -26,6 +26,7 @@ export const InlinePatientForm: React.FC<InlinePatientFormProps> = ({
   const [inactiveInlinePatient, setInactiveInlinePatient] = useState<LocalPatient | null>(null);
 
   useEffect(() => {
+    if (isCreatingNew) return;
     let active = true;
     const search = async () => {
       if (!query.trim()) {
@@ -34,21 +35,82 @@ export const InlinePatientForm: React.FC<InlinePatientFormProps> = ({
           const sorted = [...all].sort((a, b) => a.name.localeCompare(b.name));
           setResults(sorted);
           setVisibleCount(15);
+          setInactiveInlinePatient(null);
         }
         return;
       }
       const found = await patientRepo.searchPatients(tenantId, query);
+      let matchedInactive: LocalPatient | null = null;
+      const cleanDigits = query.replace(/\D/g, '');
+      if (cleanDigits.length >= 10 && typeof patientRepo.findPatientByPhone === 'function') {
+        try {
+          const byPhone = await patientRepo.findPatientByPhone(tenantId, cleanDigits);
+          if (byPhone) {
+            const isInactive =
+              !byPhone.is_active || (Boolean(byPhone.deleted_at) && byPhone.deleted_at !== 'null');
+            if (isInactive) {
+              matchedInactive = byPhone;
+            }
+          }
+        } catch {
+          // Ignora falha silenciosa de busca auxiliar
+        }
+      }
       if (active) {
         const sorted = [...found].sort((a, b) => a.name.localeCompare(b.name));
         setResults(sorted);
         setVisibleCount(15);
+        setInactiveInlinePatient(matchedInactive);
       }
     };
     search();
     return () => {
       active = false;
     };
-  }, [query, tenantId, patientRepo]);
+  }, [query, tenantId, patientRepo, isCreatingNew]);
+
+  // Validação em tempo real ao preencher o campo de contato no sub-formulário rápido
+  useEffect(() => {
+    if (!isCreatingNew) return;
+    const cleanPhone = newWhatsapp.replace(/\D/g, '');
+    if (cleanPhone.length < 10) {
+      setInactiveInlinePatient(null);
+      return;
+    }
+
+    let active = true;
+    const checkInlinePhone = async () => {
+      try {
+        if (typeof patientRepo.findPatientByPhone !== 'function') return;
+        const existingByPhone = await patientRepo.findPatientByPhone(tenantId, cleanPhone);
+        if (!active) return;
+
+        if (!existingByPhone) {
+          setInactiveInlinePatient(null);
+          return;
+        }
+
+        const isInactive =
+          !existingByPhone.is_active ||
+          (Boolean(existingByPhone.deleted_at) && existingByPhone.deleted_at !== 'null');
+
+        if (isInactive) {
+          setInactiveInlinePatient(existingByPhone);
+          setErrorMsg('');
+        } else {
+          setInactiveInlinePatient(null);
+          setErrorMsg(`Já existe um paciente cadastrado com este WhatsApp: "${existingByPhone.name}".`);
+        }
+      } catch {
+        // Ignora falha silenciosa em background
+      }
+    };
+
+    checkInlinePhone();
+    return () => {
+      active = false;
+    };
+  }, [newWhatsapp, isCreatingNew, tenantId, patientRepo]);
 
   const handleCreatePatient = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -65,7 +127,9 @@ export const InlinePatientForm: React.FC<InlinePatientFormProps> = ({
     try {
       const existingByPhone = await patientRepo.findPatientByPhone(tenantId, cleanPhone);
       if (existingByPhone) {
-        const isInactive = !existingByPhone.is_active || (Boolean(existingByPhone.deleted_at) && existingByPhone.deleted_at !== 'null');
+        const isInactive =
+          !existingByPhone.is_active ||
+          (Boolean(existingByPhone.deleted_at) && existingByPhone.deleted_at !== 'null');
         if (isInactive) {
           setInactiveInlinePatient(existingByPhone);
           setErrorMsg('');
@@ -95,9 +159,8 @@ export const InlinePatientForm: React.FC<InlinePatientFormProps> = ({
   const handleReactivateInline = async () => {
     if (!inactiveInlinePatient) return;
     try {
-      const reactivated = await patientRepo.reactivatePatient(inactiveInlinePatient.id, {
-        name: newName.trim() || inactiveInlinePatient.name,
-      });
+      // Preserva o nome original do cadastro antes da inativação
+      const reactivated = await patientRepo.reactivatePatient(inactiveInlinePatient.id);
       onSelectPatient(reactivated);
       setIsCreatingNew(false);
       setInactiveInlinePatient(null);
@@ -176,13 +239,51 @@ export const InlinePatientForm: React.FC<InlinePatientFormProps> = ({
             aria-label="Buscar paciente"
           />
 
-          {query.trim().length > 0 && !hasExactMatch && (
+          {inactiveInlinePatient && (
+            <div
+              data-testid="inline-inactive-patient-alert"
+              className="p-2.5 bg-amber-50 border border-amber-200 rounded-lg space-y-2 text-xs mt-1"
+            >
+              <div className="text-amber-900 font-medium leading-snug">
+                O cadastro vinculado a este número pertence a{' '}
+                <strong className="font-bold">{inactiveInlinePatient.name}</strong> e está inativo. Deseja reativar este cliente?
+              </div>
+              <div className="flex items-center gap-2 pt-0.5">
+                <button
+                  type="button"
+                  data-testid="btn-inline-reactivate-patient"
+                  onClick={handleReactivateInline}
+                  className="inline-flex items-center gap-1 px-2.5 py-1 bg-teal-700 hover:bg-teal-800 text-white rounded text-xs font-semibold transition"
+                >
+                  <RotateCcw className="w-3.5 h-3.5" />
+                  Reativar e Selecionar
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setInactiveInlinePatient(null)}
+                  className="px-2 py-1 text-slate-500 hover:text-slate-700 text-xs font-medium"
+                >
+                  Cancelar
+                </button>
+              </div>
+            </div>
+          )}
+
+          {query.trim().length > 0 && !hasExactMatch && !inactiveInlinePatient && (
             <div className="mt-1">
               <button
                 type="button"
                 data-testid="btn-open-inline-new-patient"
                 onClick={() => {
-                  setNewName(query.trim());
+                  const trimmed = query.trim();
+                  const isPhoneOnly = /^[\d\s()+-]+$/.test(trimmed) && trimmed.replace(/\D/g, '').length >= 8;
+                  if (isPhoneOnly) {
+                    setNewName('');
+                    setNewWhatsapp(trimmed);
+                  } else {
+                    setNewName(trimmed);
+                    setNewWhatsapp('');
+                  }
                   setIsCreatingNew(true);
                   setErrorMsg('');
                   setInactiveInlinePatient(null);

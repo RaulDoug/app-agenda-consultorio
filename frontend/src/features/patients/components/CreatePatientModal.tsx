@@ -62,6 +62,54 @@ export const CreatePatientModal: React.FC<CreatePatientModalProps> = ({
     }
   }, [isOpen]);
 
+  // Validação em tempo real ao preencher o campo de contato (WhatsApp)
+  useEffect(() => {
+    if (!isOpen) return;
+    const cleanPhone = whatsapp.replace(/\D/g, '');
+    if (cleanPhone.length < 10) {
+      setInactivePatient(null);
+      return;
+    }
+
+    let active = true;
+    const checkPhone = async () => {
+      try {
+        if (typeof patientRepo.findPatientByPhone !== 'function') return;
+        const existingByPhone = await patientRepo.findPatientByPhone(tenantId, cleanPhone);
+        if (!active) return;
+
+        if (!existingByPhone) {
+          setInactivePatient(null);
+          return;
+        }
+
+        if (isEditing && patientToEdit && existingByPhone.id === patientToEdit.id) {
+          setInactivePatient(null);
+          return;
+        }
+
+        const isInactive =
+          !existingByPhone.is_active ||
+          (Boolean(existingByPhone.deleted_at) && existingByPhone.deleted_at !== 'null');
+
+        if (isInactive && !isEditing) {
+          setInactivePatient(existingByPhone);
+          setErrorMsg('');
+        } else {
+          setInactivePatient(null);
+          setErrorMsg(`Já existe um paciente cadastrado com este WhatsApp: "${existingByPhone.name}".`);
+        }
+      } catch {
+        // Ignora falhas de leitura em background
+      }
+    };
+
+    checkPhone();
+    return () => {
+      active = false;
+    };
+  }, [whatsapp, tenantId, isOpen, isEditing, patientToEdit, patientRepo]);
+
   if (!isOpen) return null;
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -136,10 +184,7 @@ export const CreatePatientModal: React.FC<CreatePatientModalProps> = ({
     setErrorMsg('');
 
     try {
-      const reactivated = await patientRepo.reactivatePatient(inactivePatient.id, {
-        name: name.trim() || inactivePatient.name,
-        notes: notes.trim() || inactivePatient.notes || undefined,
-      });
+      const reactivated = await patientRepo.reactivatePatient(inactivePatient.id);
 
       onPatientCreated?.(reactivated);
       onPatientSaved?.(reactivated);

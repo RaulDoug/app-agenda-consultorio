@@ -49,12 +49,12 @@ Como desenvolvedor da API, quero que o repositório e serviços de pacientes no 
 
 Como usuário cadastrando um cliente na tela de clientes ou na gaveta de agendamento rápido, quero que o sistema me avise caso o número informado pertença a um cliente inativo e me ofereça a reativação imediata com 1 clique, para evitar cadastros duplicados e recuperar o histórico do paciente.
 
-#### AC-250 — Validação de WhatsApp com proposta de reativação de cliente inativo
+#### AC-250 — Validação imediata de WhatsApp com proposta de reativação de cliente inativo e preservação do nome original
 
-- **Dado** que existe um cliente previamente inativado no consultório
-- **Quando** o usuário preenche o número de WhatsApp desse cliente no modal de novo paciente ou no cadastro rápido da agenda e tenta submeter ou valida o campo
-- **Então** o sistema identifica que o número pertence a um cliente inativo, exibe um alerta claro com o nome do cliente inativo e um botão para "Reativar Cadastro"
-- **E** ao confirmar a reativação, o cliente é reativado no banco local e selecionado diretamente para o agendamento em curso (no agendamento rápido) ou salvo/exibido (na tela de clientes), enquanto números pertencentes a clientes já ativos mantêm o aviso padrão de duplicidade impedindo a criação.
+- **Dado** que existe um cliente previamente inativado ou ativo no consultório
+- **Quando** o usuário preenche o número de WhatsApp no campo de contato (modal de clientes ou cadastro rápido da agenda) ou digita o número na barra de pesquisa de pacientes na tela de agendamento
+- **Então** o sistema identifica imediatamente (sem exigir clique em Salvar) se o número pertence a um cliente ativo (exibindo o aviso padrão de duplicidade) ou a um cliente inativo (exibindo alerta com o nome do cliente inativo e perguntando se deseja reativar)
+- **E** ao confirmar a reativação, o cliente é reativado mantendo seu nome original inalterado e selecionado diretamente para o agendamento em curso (na agenda) ou salvo/exibido (na tela de clientes).
 
 ### US-141 — Busca e Listagem Dinâmica com Rolagem Infinita de Pacientes na Agenda
 
@@ -86,5 +86,5 @@ Como dentista selecionando um paciente para agendamento, quero visualizar a list
 | ID | Pergunta | Status | Resposta |
 |---|---|---|---|
 | Q-070 | Clientes inativos devem aparecer nas opções de busca para novo agendamento rápido na agenda? | respondida | Não, no agendamento rápido apenas clientes ativos devem estar disponíveis para seleção. |
-| Q-071 | Caso o usuário altere o nome durante o cadastro de um telefone de cliente inativo e clique em reativar, o nome existente deve ser preservado ou atualizado? | respondida | O sistema preserva o histórico ou atualiza com o novo nome informado se preenchido, garantindo flexibilidade. |
+| Q-071 | Caso o usuário tenha preenchido outro nome durante o cadastro de um telefone de cliente inativo e clique em reativar, o nome existente deve ser preservado ou alterado? | respondida | O nome original existente no cadastro antes da inativação deve sempre ser mantido inalterado ao reativar. |
 | Q-072 | O card de rolagem dinâmica deve exibir o contador de pacientes carregados/totais? | respondida | Sim, exibir de forma sutil no topo ou rodapé do card para dar transparência ao usuário. |

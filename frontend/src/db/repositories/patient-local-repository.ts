@@ -115,16 +115,20 @@ export class PatientLocalRepository {
 
   /**
    * Localiza paciente (ativo ou inativo) pelo número de telefone no consultório.
+   * Prioriza registros ativos caso existam múltiplos com o mesmo número.
    */
   async findPatientByPhone(tenantId: string, phone: string): Promise<LocalPatient | undefined> {
     const cleanPhone = phone.replace(/\D/g, '');
     if (!cleanPhone || !tenantId) return undefined;
     const normPhone = normalizePhoneForComparison(cleanPhone);
-    return await this.db.patients
+    const matches = await this.db.patients
       .where('tenant_id')
       .equals(tenantId)
       .filter((p) => normalizePhoneForComparison(p.whatsapp) === normPhone)
-      .first();
+      .toArray();
+    if (matches.length === 0) return undefined;
+    const activeMatch = matches.find((p) => p.is_active && (!p.deleted_at || p.deleted_at === 'null'));
+    return activeMatch || matches[0];
   }
 
   async listPatients(tenantId: string, options?: { includeInactive?: boolean }): Promise<LocalPatient[]> {

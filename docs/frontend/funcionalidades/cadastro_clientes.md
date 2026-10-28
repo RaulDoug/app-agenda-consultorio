@@ -38,13 +38,14 @@ A tela de Clientes e Pacientes centraliza o gerenciamento da base de contatos do
 
 ---
 
-## 4. Reativação Assistida nos Cadastros (`CreatePatientModal` e `InlinePatientForm`)
+## 4. Reativação Assistida em Tempo Real (`CreatePatientModal` e `InlinePatientForm`)
 
-Ao preencher o WhatsApp em formulários de novo cliente:
-1. **Cliente Ativo Já Existente:** Bloqueia a submissão e exibe o alerta padrão de duplicidade:  
+Assim que o usuário preenche o campo de contato (WhatsApp com DDD) ou digita o número na barra de pesquisa da tela de agendamento (sem exigir clique em Salvar):
+1. **Cliente Ativo Já Existente:** Exibe imediatamente o alerta padrão de duplicidade:  
    `Já existe um paciente cadastrado com este WhatsApp: "[Nome]".`
-2. **Cliente Inativo Já Existente:** Detecta o cadastro desativado e exibe um card com proposta amigável:  
+2. **Cliente Inativo Já Existente:** Detecta em tempo real o cadastro desativado (tanto no campo de contato quanto na barra de busca de pacientes da agenda) e exibe um card com proposta amigável:  
    `Existe um cadastro inativo para este WhatsApp pertencente a [Nome]. Deseja reativar este cliente?`
+   - **Preservação do Nome Original:** Ao reativar o cliente, o sistema mantém inalterado o nome e as observações originais que já estavam no cadastro antes da inativação.
    - No modal de clientes: botão "Reativar Cadastro" reativa o cliente e fecha o modal.
    - Na gaveta de agendamento rápido: botão "Reativar e Selecionar" reativa o cliente e o seleciona imediatamente para a consulta em curso.
 
