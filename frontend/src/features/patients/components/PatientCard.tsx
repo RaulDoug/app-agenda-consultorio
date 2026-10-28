@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { LocalPatient } from '../../../db/types';
 import { PatientWithHistoryStatus } from '../types';
-import { FileText, ChevronDown, ChevronUp, Pencil, Trash2, DollarSign } from 'lucide-react';
+import { FileText, ChevronDown, ChevronUp, Pencil, Trash2, DollarSign, RotateCcw } from 'lucide-react';
 
 interface PatientCardProps {
   item: PatientWithHistoryStatus;
@@ -9,6 +9,7 @@ interface PatientCardProps {
   onSchedule?: (patient: PatientWithHistoryStatus) => void;
   onEdit?: (patient: LocalPatient) => void;
   onDelete?: (patient: LocalPatient) => void;
+  onReactivate?: (patient: LocalPatient) => void;
   onClick?: (patient: PatientWithHistoryStatus) => void;
   onOpenFinancial?: (patient: LocalPatient) => void;
 }
@@ -19,12 +20,14 @@ export const PatientCard: React.FC<PatientCardProps> = ({
   onSchedule,
   onEdit,
   onDelete,
+  onReactivate,
   onClick,
   onOpenFinancial,
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const { patient, nextAppointment, lastCancelledWithoutReschedule, hasNoHistory } = item;
 
+  const isInactive = !patient.is_active || (Boolean(patient.deleted_at) && patient.deleted_at !== 'null');
   const hasNotes = Boolean(patient.notes && patient.notes.trim().length > 0);
 
   const formatNextDate = (isoString?: string | null) => {
@@ -45,15 +48,33 @@ export const PatientCard: React.FC<PatientCardProps> = ({
   return (
     <div
       onClick={handleCardClick}
-      className={`p-3.5 bg-white border rounded-xl transition shadow-xs flex flex-col justify-between gap-3 cursor-pointer ${
-        isExpanded ? 'border-teal-400 ring-1 ring-teal-400/30' : 'border-slate-200 hover:border-slate-300'
+      className={`p-3.5 border rounded-xl transition shadow-xs flex flex-col justify-between gap-3 cursor-pointer ${
+        isInactive
+          ? 'bg-slate-50/80 border-dashed border-slate-300 opacity-90'
+          : isExpanded
+          ? 'bg-white border-teal-400 ring-1 ring-teal-400/30'
+          : 'bg-white border-slate-200 hover:border-slate-300'
       }`}
       data-testid={`patient-card-${patient.id}`}
     >
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0">
           <div className="flex items-center gap-2 flex-wrap">
-            <h4 className="font-bold text-slate-900 text-sm truncate">{patient.name}</h4>
+            <h4
+              className={`font-bold text-sm truncate ${
+                isInactive ? 'text-slate-500 line-through' : 'text-slate-900'
+              }`}
+            >
+              {patient.name}
+            </h4>
+            {isInactive && (
+              <span
+                data-testid={`badge-inactive-${patient.id}`}
+                className="inline-flex items-center gap-1 text-[11px] font-semibold text-rose-700 bg-rose-50 border border-rose-200 px-1.5 py-0.5 rounded-md shrink-0"
+              >
+                Inativo
+              </span>
+            )}
             {hasNotes && (
               <span
                 data-testid={`badge-notes-${patient.id}`}
@@ -71,7 +92,7 @@ export const PatientCard: React.FC<PatientCardProps> = ({
         {/* Badges de Histórico, Pendência e Retorno + Chevron */}
         <div className="flex items-center gap-2 shrink-0">
           <div className="flex flex-col items-end gap-1">
-            {pendingAmountCents > 0 && (
+            {pendingAmountCents > 0 && !isInactive && (
               <span
                 data-testid={`badge-pending-${patient.id}`}
                 className="inline-block px-2 py-0.5 rounded-full text-[11px] font-bold bg-amber-100 text-amber-800 border border-amber-200"
@@ -80,7 +101,7 @@ export const PatientCard: React.FC<PatientCardProps> = ({
               </span>
             )}
 
-            {hasNoHistory && (
+            {hasNoHistory && !isInactive && (
               <span
                 data-testid="badge-sem-historico"
                 className="inline-block px-2 py-0.5 rounded-full text-[11px] font-semibold bg-sky-100 text-sky-800"
@@ -89,7 +110,7 @@ export const PatientCard: React.FC<PatientCardProps> = ({
               </span>
             )}
 
-            {nextAppointment && (
+            {nextAppointment && !isInactive && (
               <span
                 data-testid="badge-proxima-consulta"
                 className="inline-block px-2 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-100 text-emerald-800"
@@ -98,7 +119,7 @@ export const PatientCard: React.FC<PatientCardProps> = ({
               </span>
             )}
 
-            {lastCancelledWithoutReschedule && !nextAppointment && (
+            {lastCancelledWithoutReschedule && !nextAppointment && !isInactive && (
               <span
                 data-testid="badge-cancelada-sem-reagendamento"
                 className="inline-block px-2 py-0.5 rounded-full text-[11px] font-semibold bg-rose-100 text-rose-800"
@@ -162,20 +183,35 @@ export const PatientCard: React.FC<PatientCardProps> = ({
             </div>
           </div>
 
-          {/* Botões de Ação: Excluir e Editar */}
+          {/* Botões de Ação: Excluir/Reativar e Editar */}
           <div className="flex items-center justify-between pt-1">
-            <button
-              type="button"
-              data-testid={`btn-delete-patient-${patient.id}`}
-              onClick={(e) => {
-                e.stopPropagation();
-                onDelete?.(patient);
-              }}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-rose-700 bg-rose-50 hover:bg-rose-100 hover:text-rose-800 rounded-lg transition"
-            >
-              <Trash2 className="w-3.5 h-3.5 text-rose-600" />
-              Excluir
-            </button>
+            {isInactive ? (
+              <button
+                type="button"
+                data-testid={`btn-reactivate-patient-expanded-${patient.id}`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onReactivate?.(patient);
+                }}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100 rounded-lg transition"
+              >
+                <RotateCcw className="w-3.5 h-3.5 text-teal-600" />
+                Reativar Cadastro
+              </button>
+            ) : (
+              <button
+                type="button"
+                data-testid={`btn-delete-patient-${patient.id}`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onDelete?.(patient);
+                }}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-rose-700 bg-rose-50 hover:bg-rose-100 hover:text-rose-800 rounded-lg transition"
+              >
+                <Trash2 className="w-3.5 h-3.5 text-rose-600" />
+                Excluir
+              </button>
+            )}
 
             <button
               type="button"
@@ -223,7 +259,20 @@ export const PatientCard: React.FC<PatientCardProps> = ({
             </button>
           )}
 
-          {onSchedule && (
+          {isInactive ? (
+            <button
+              type="button"
+              data-testid={`btn-reactivate-patient-${patient.id}`}
+              onClick={(e) => {
+                e.stopPropagation();
+                onReactivate?.(patient);
+              }}
+              className="min-h-[44px] px-3 py-1 text-xs font-semibold rounded-lg bg-teal-50 text-teal-700 hover:bg-teal-100 border border-teal-200 transition inline-flex items-center gap-1.5"
+            >
+              <RotateCcw className="w-3.5 h-3.5 text-teal-600" />
+              <span>Reativar</span>
+            </button>
+          ) : onSchedule ? (
             <button
               type="button"
               onClick={(e) => {
@@ -234,7 +283,7 @@ export const PatientCard: React.FC<PatientCardProps> = ({
             >
               + Agendar
             </button>
-          )}
+          ) : null}
         </div>
       </div>
     </div>

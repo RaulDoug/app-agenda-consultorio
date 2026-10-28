@@ -272,6 +272,14 @@ export const App: React.FC<AppProps> = ({
     await procedureRepo.reactivateProcedure(proc.id);
   };
 
+  const handleReactivatePatient = async (patient: LocalPatient) => {
+    try {
+      await patientRepo.reactivatePatient(patient.id);
+    } catch (err: any) {
+      alert(err.message || 'Erro ao reativar cliente.');
+    }
+  };
+
   const handleConfirmDeletePatient = async (patient: LocalPatient) => {
     await patientRepo.deletePatient(patient.id);
     setIsDeletePatientOpen(false);
@@ -503,7 +511,7 @@ export const App: React.FC<AppProps> = ({
 
         <PatientList
           tenantId={tenantId}
-          patients={activePatients}
+          patients={allPatients}
           appointments={appointments}
           transactions={transactions}
           onOpenCreateModal={() => {
@@ -518,6 +526,7 @@ export const App: React.FC<AppProps> = ({
             setPatientToDelete(patient);
             setIsDeletePatientOpen(true);
           }}
+          onReactivatePatient={handleReactivatePatient}
           onOpenFinancial={(patient) => {
             setPatientForFinancial(patient);
           }}
