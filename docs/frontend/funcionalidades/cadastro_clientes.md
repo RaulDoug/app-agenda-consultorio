@@ -56,3 +56,4 @@ Ao preencher o WhatsApp em formulários de novo cliente:
 - Carrega a lista completa de pacientes ativos ordenada alfabeticamente por nome.
 - **Rolagem Incremental (Infinite Scroll):** Exibe inicialmente 15 pacientes e incrementa dinamicamente blocos de 15 registros conforme o usuário rola o card.
 - **Indicador:** Exibe a contagem atual ("Exibindo X de Y pacientes").
+

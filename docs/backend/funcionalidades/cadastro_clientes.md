@@ -32,3 +32,4 @@ A gestão de pacientes no backend do **OdontoFlow** provê persistência relacio
   - Ao atualizar ou reativar um paciente (`updatePatient`), valida se outro paciente ativo já possui o mesmo número normalizado no mesmo consultório, lançando `HTTP 409 Conflict` se houver colisão.
 - **Sincronização Bidirecional (`sync.ts`):**
   - O endpoint de batch sync suporta mutações `UPDATE` contendo `is_active: true` e `deleted_at: null`, aplicando resolução *Last-Write-Wins* (LWW) baseada em `updated_at`.
+

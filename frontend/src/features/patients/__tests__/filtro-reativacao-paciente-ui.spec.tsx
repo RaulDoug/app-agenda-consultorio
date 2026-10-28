@@ -130,3 +130,4 @@ describe('Feature: filtro-reativacao-clientes — UI PatientList e PatientCard',
     expect((reactivatedPatient as any)?.id).toBe('patient-inact-1');
   });
 });
+
