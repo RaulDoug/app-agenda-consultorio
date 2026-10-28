@@ -1,7 +1,7 @@
 import React from 'react';
-import { Calendar, Wallet, BarChart3, Grid2X2, Plus, Users, Settings, MessageCircle } from 'lucide-react';
+import { Calendar, Wallet, BarChart3, Grid2X2, Plus, Users, Settings, MessageCircle, Sparkles } from 'lucide-react';
 
-export type NavTabId = 'agenda' | 'clientes' | 'caixa' | 'relatorios' | 'ajustes' | 'whatsapp' | 'mais';
+export type NavTabId = 'agenda' | 'clientes' | 'caixa' | 'relatorios' | 'ajustes' | 'whatsapp' | 'mais' | 'procedimentos';
 
 export interface NavItem {
   id: NavTabId;
@@ -13,6 +13,7 @@ export const DESKTOP_NAV_ITEMS: NavItem[] = [
   { id: 'agenda', label: 'Agenda', icon: Calendar },
   { id: 'whatsapp', label: 'Fila WhatsApp', icon: MessageCircle },
   { id: 'clientes', label: 'Clientes', icon: Users },
+  { id: 'procedimentos', label: 'Procedimentos', icon: Sparkles },
   { id: 'caixa', label: 'Caixa', icon: Wallet },
   { id: 'relatorios', label: 'Relatórios', icon: BarChart3 },
   { id: 'ajustes', label: 'Ajustes', icon: Settings },
@@ -43,7 +44,8 @@ export const BottomNav: React.FC<BottomNavProps> = ({
     activeTab === 'mais' ||
     activeTab === 'clientes' ||
     activeTab === 'ajustes' ||
-    activeTab === 'whatsapp';
+    activeTab === 'whatsapp' ||
+    activeTab === 'procedimentos';
 
   const renderTabButton = (item: NavItem) => {
     const Icon = item.icon;

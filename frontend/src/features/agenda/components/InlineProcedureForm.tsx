@@ -20,6 +20,7 @@ export const InlineProcedureForm: React.FC<InlineProcedureFormProps> = ({
   const [newName, setNewName] = useState('');
   const [newDuration, setNewDuration] = useState('30');
   const [newPriceReais, setNewPriceReais] = useState('150');
+  const [newCostReais, setNewCostReais] = useState('0');
   const [errorMsg, setErrorMsg] = useState('');
 
   useEffect(() => {
@@ -58,6 +59,20 @@ export const InlineProcedureForm: React.FC<InlineProcedureFormProps> = ({
 
     const duration = parseInt(newDuration, 10) || 30;
     const priceCents = Math.round(parseFloat(newPriceReais || '0') * 100);
+    const costCents = Math.max(0, Math.round(parseFloat(newCostReais || '0') * 100));
+
+    if (duration <= 0) {
+      setErrorMsg('A duração padrão deve ser maior que zero minutos.');
+      return;
+    }
+    if (priceCents < 0) {
+      setErrorMsg('O preço padrão não pode ser negativo.');
+      return;
+    }
+    if (costCents < 0) {
+      setErrorMsg('O custo operacional não pode ser negativo.');
+      return;
+    }
 
     try {
       const created = await procedureRepo.createProcedure({
@@ -65,6 +80,7 @@ export const InlineProcedureForm: React.FC<InlineProcedureFormProps> = ({
         name: newName.trim(),
         default_duration_minutes: duration,
         default_price_cents: priceCents,
+        cost_cents: costCents,
       });
 
       const updatedList = await procedureRepo.listProcedures(tenantId);
@@ -75,6 +91,9 @@ export const InlineProcedureForm: React.FC<InlineProcedureFormProps> = ({
 
       setIsCreatingNew(false);
       setNewName('');
+      setNewDuration('30');
+      setNewPriceReais('150');
+      setNewCostReais('0');
       setErrorMsg('');
     } catch (err: any) {
       setErrorMsg(err.message || 'Erro ao criar procedimento');
@@ -95,7 +114,11 @@ export const InlineProcedureForm: React.FC<InlineProcedureFormProps> = ({
         {!isCreatingNew && (
           <button
             type="button"
-            onClick={() => setIsCreatingNew(true)}
+            data-testid="btn-add-inline-procedure"
+            onClick={() => {
+              setIsCreatingNew(true);
+              setErrorMsg('');
+            }}
             className="text-xs text-teal-600 hover:text-teal-800 font-medium"
           >
             + Novo Procedimento
@@ -111,6 +134,7 @@ export const InlineProcedureForm: React.FC<InlineProcedureFormProps> = ({
             <button
               key={proc.id}
               type="button"
+              data-testid={`btn-select-proc-${proc.id}`}
               onClick={() => handleToggleProcedure(proc)}
               className={`p-2 text-left rounded-md border text-xs transition flex flex-col justify-between ${
                 isSelected
@@ -133,27 +157,30 @@ export const InlineProcedureForm: React.FC<InlineProcedureFormProps> = ({
 
       {/* Criação Inline de Novo Procedimento */}
       {isCreatingNew && (
-        <div className="p-3 bg-slate-50 border border-slate-200 rounded-lg space-y-2">
+        <div data-testid="inline-procedure-create-box" className="p-3 bg-slate-50 border border-slate-200 rounded-lg space-y-2">
           <div className="text-xs font-semibold text-slate-800">Novo Procedimento Inline</div>
-          {errorMsg && <div className="text-xs text-rose-600">{errorMsg}</div>}
+          {errorMsg && <div data-testid="inline-procedure-error" className="text-xs text-rose-600 font-medium">{errorMsg}</div>}
           <div>
+            <label className="text-[10px] text-slate-500 font-medium">Nome do Procedimento</label>
             <input
               type="text"
+              data-testid="input-inline-procedure-name"
               value={newName}
               onChange={(e) => setNewName(e.target.value)}
               placeholder="Nome do procedimento"
-              className="w-full px-2.5 py-1.5 text-xs border border-slate-300 rounded focus:ring-1 focus:ring-teal-500"
+              className="w-full px-2.5 py-1.5 text-xs border border-slate-300 rounded focus:ring-1 focus:ring-teal-500 bg-white"
             />
           </div>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-3 gap-2">
             <div>
               <label className="text-[10px] text-slate-500 font-medium">Duração (min)</label>
               <input
                 type="number"
+                data-testid="input-inline-procedure-duration"
                 value={newDuration}
                 onChange={(e) => setNewDuration(e.target.value)}
                 placeholder="30"
-                className="w-full px-2 py-1 text-xs border border-slate-300 rounded"
+                className="w-full px-2 py-1 text-xs border border-slate-300 rounded bg-white"
               />
             </div>
             <div>
@@ -161,16 +188,30 @@ export const InlineProcedureForm: React.FC<InlineProcedureFormProps> = ({
               <input
                 type="number"
                 step="0.01"
+                data-testid="input-inline-procedure-price"
                 value={newPriceReais}
                 onChange={(e) => setNewPriceReais(e.target.value)}
                 placeholder="150.00"
-                className="w-full px-2 py-1 text-xs border border-slate-300 rounded"
+                className="w-full px-2 py-1 text-xs border border-slate-300 rounded bg-white"
+              />
+            </div>
+            <div>
+              <label className="text-[10px] text-slate-500 font-medium">Custo (R$)</label>
+              <input
+                type="number"
+                step="0.01"
+                data-testid="input-inline-procedure-cost"
+                value={newCostReais}
+                onChange={(e) => setNewCostReais(e.target.value)}
+                placeholder="0.00"
+                className="w-full px-2 py-1 text-xs border border-slate-300 rounded bg-white"
               />
             </div>
           </div>
           <div className="flex items-center justify-end gap-2 pt-1">
             <button
               type="button"
+              data-testid="btn-cancel-inline-procedure"
               onClick={() => setIsCreatingNew(false)}
               className="px-2.5 py-1 text-xs text-slate-600 hover:text-slate-800"
             >
@@ -178,6 +219,7 @@ export const InlineProcedureForm: React.FC<InlineProcedureFormProps> = ({
             </button>
             <button
               type="button"
+              data-testid="btn-save-inline-procedure"
               onClick={handleCreateProcedure}
               className="px-3 py-1 bg-teal-600 text-white rounded text-xs font-semibold hover:bg-teal-700 transition"
             >

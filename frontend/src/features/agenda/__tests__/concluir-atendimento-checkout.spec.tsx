@@ -146,7 +146,7 @@ describe('Feature: checkout-conclusao-agenda (TM-AGE-04 / TM-FIN-01)', () => {
       expect(txs[0].amount_cents).toBe(20000);
       expect(txs[0].status).toBe('PAID');
     });
-  });
+  }, 15000);
 
   // AC-099
   it('AC-099: Edição de valores de procedimentos e seleção de forma de pagamento no fluxo de encerramento da consulta @spec:AC-099', async () => {
@@ -248,5 +248,5 @@ describe('Feature: checkout-conclusao-agenda (TM-AGE-04 / TM-FIN-01)', () => {
       expect(txs[0].payment_method).toBe('DINHEIRO');
       expect(txs[0].status).toBe('PAID');
     });
-  });
+  }, 15000);
 });

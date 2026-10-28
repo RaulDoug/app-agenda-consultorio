@@ -1,11 +1,11 @@
 {
   "feature": "autenticacao-login-frontend",
-  "timestamp": "2026-10-27T20:36:18.594Z",
-  "gitRev": "4cd4ffa",
+  "timestamp": "2026-10-28T14:52:12.636Z",
+  "gitRev": "b782559",
   "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
   "exitCode": 0,
-  "testsParsed": 494,
+  "testsParsed": 552,
   "results": {
     "AC-151": {
       "status": "pass",
@@ -69,7 +69,7 @@
     },
     "AC-163": {
       "status": "pass",
-      "testName": "ApiClient — Injeção de Bearer Token e Interceptores de Sessão AC-163: Anexa cabeçalho Authorization Bearer e não envia x-tenant-id @spec:AC-163 AC-163: Anexa cabeçalho Authorization Bearer e não envia x-tenant-id @spec:AC-163",
+      "testName": "SyncManager — Autenticação via Bearer e Preservação de Outbox AC-163: SyncManager envia cabeçalho Authorization Bearer e nunca envia x-tenant-id @spec:AC-163 AC-163: SyncManager envia cabeçalho Authorization Bearer e nunca envia x-tenant-id @spec:AC-163",
       "method": "vitest-json"
     },
     "AC-164": {

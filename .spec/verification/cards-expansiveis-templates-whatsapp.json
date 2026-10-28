@@ -1,11 +1,11 @@
 {
   "feature": "cards-expansiveis-templates-whatsapp",
-  "timestamp": "2026-10-27T20:36:18.594Z",
-  "gitRev": "b947b81",
+  "timestamp": "2026-10-28T14:52:12.636Z",
+  "gitRev": "b782559",
   "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
   "exitCode": 0,
-  "testsParsed": 540,
+  "testsParsed": 552,
   "results": {
     "AC-230": {
       "status": "pass",

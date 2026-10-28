@@ -3,7 +3,10 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { AppShell } from './components/layout/AppShell.js';
 import { type NavTabId } from './components/layout/BottomNav.js';
 import { CliniAssistLocalDB, localDb } from './db/local-db.js';
-import { type LocalPatient } from './db/types.js';
+import { type LocalPatient, type LocalProcedure } from './db/types.js';
+import { ProcedureList } from './features/procedures/components/ProcedureList.js';
+import { ProcedureFormModal } from './features/procedures/components/ProcedureFormModal.js';
+import { ConfirmDeleteProcedureModal } from './features/procedures/components/ConfirmDeleteProcedureModal.js';
 import { AppointmentLocalRepository } from './db/repositories/appointment-local-repository.js';
 import { PatientLocalRepository } from './db/repositories/patient-local-repository.js';
 import { ProcedureLocalRepository } from './db/repositories/procedure-local-repository.js';
@@ -212,6 +215,10 @@ export const App: React.FC<AppProps> = ({
   const appointments = useLiveQuery(() => db.appointments.toArray(), [db]) || [];
   const appointmentItems = useLiveQuery(() => db.appointment_items.toArray(), [db]) || [];
   const procedures = useLiveQuery(() => db.procedures.toArray(), [db]) || [];
+  const activeProcedures = useMemo(
+    () => procedures.filter((p) => p.is_active !== false && !p.deleted_at),
+    [procedures]
+  );
   const allTransactions = useLiveQuery(() => db.financial_transactions.toArray(), [db]) || [];
   const transactions = useMemo(
     () => allTransactions.filter((tx) => tx.is_active !== false && !tx.deleted_at),
@@ -244,6 +251,26 @@ export const App: React.FC<AppProps> = ({
     preferredTimeStr: string;
   } | null>(null);
   const [patientForFinancial, setPatientForFinancial] = useState<LocalPatient | null>(null);
+
+  // Modais de Procedimentos
+  const [isProcedureModalOpen, setIsProcedureModalOpen] = useState(false);
+  const [editingProcedure, setEditingProcedure] = useState<LocalProcedure | null>(null);
+  const [isDeleteProcedureOpen, setIsDeleteProcedureOpen] = useState(false);
+  const [procedureToDelete, setProcedureToDelete] = useState<LocalProcedure | null>(null);
+
+  const handleConfirmDeleteProcedure = async (proc: LocalProcedure) => {
+    await procedureRepo.deleteProcedure(proc.id);
+    setIsDeleteProcedureOpen(false);
+    setProcedureToDelete(null);
+    if (editingProcedure?.id === proc.id) {
+      setIsProcedureModalOpen(false);
+      setEditingProcedure(null);
+    }
+  };
+
+  const handleReactivateProcedure = async (proc: LocalProcedure) => {
+    await procedureRepo.reactivateProcedure(proc.id);
+  };
 
   const handleConfirmDeletePatient = async (patient: LocalPatient) => {
     await patientRepo.deletePatient(patient.id);
@@ -573,6 +600,28 @@ export const App: React.FC<AppProps> = ({
         <MoreMenuHub
           onSelectSection={(tab) => setActiveTab(tab)}
           patientCount={activePatients.length}
+          procedureCount={activeProcedures.length}
+        />
+      </div>
+
+      {/* ABA PROCEDIMENTOS */}
+      <div data-testid="procedimentos-tab-content" className={activeTab === 'procedimentos' ? 'space-y-4' : 'hidden'}>
+        <ProcedureList
+          tenantId={tenantId}
+          procedures={procedures}
+          onOpenCreateModal={() => {
+            setEditingProcedure(null);
+            setIsProcedureModalOpen(true);
+          }}
+          onEditProcedure={(proc) => {
+            setEditingProcedure(proc);
+            setIsProcedureModalOpen(true);
+          }}
+          onDeleteProcedure={(proc) => {
+            setProcedureToDelete(proc);
+            setIsDeleteProcedureOpen(true);
+          }}
+          onReactivateProcedure={handleReactivateProcedure}
         />
       </div>
 
@@ -729,6 +778,33 @@ export const App: React.FC<AppProps> = ({
           setPatientToDelete(null);
         }}
         onConfirm={handleConfirmDeletePatient}
+      />
+
+      {/* Modal de Cadastro / Edição de Procedimento */}
+      <ProcedureFormModal
+        isOpen={isProcedureModalOpen}
+        onClose={() => {
+          setIsProcedureModalOpen(false);
+          setEditingProcedure(null);
+        }}
+        tenantId={tenantId}
+        procedureRepo={procedureRepo}
+        procedureToEdit={editingProcedure}
+        onProcedureSaved={() => {
+          setIsProcedureModalOpen(false);
+          setEditingProcedure(null);
+        }}
+      />
+
+      {/* Modal de Confirmação de Exclusão de Procedimento */}
+      <ConfirmDeleteProcedureModal
+        isOpen={isDeleteProcedureOpen}
+        procedure={procedureToDelete}
+        onClose={() => {
+          setIsDeleteProcedureOpen(false);
+          setProcedureToDelete(null);
+        }}
+        onConfirm={handleConfirmDeleteProcedure}
       />
 
       {/* Gaveta de Confirmação de Logout */}

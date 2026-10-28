@@ -29,7 +29,9 @@ export interface LocalProcedure {
   name: string;
   default_duration_minutes: number;
   default_price_cents: number;
+  cost_cents?: number;
   is_active: boolean;
+  deleted_at?: string | null;
   created_at: string;
   updated_at: string;
 }

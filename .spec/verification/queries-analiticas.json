@@ -1,11 +1,11 @@
 {
   "feature": "queries-analiticas",
-  "timestamp": "2026-10-27T20:36:18.594Z",
-  "gitRev": "4cd4ffa",
+  "timestamp": "2026-10-28T14:52:12.636Z",
+  "gitRev": "b782559",
   "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
   "exitCode": 0,
-  "testsParsed": 494,
+  "testsParsed": 552,
   "results": {
     "AC-035": {
       "status": "pass",
@@ -37,5 +37,6 @@
       "testName": "Queries Analíticas e Relatórios Gerenciais — OdontoFlow US-020 — Inteligência Comercial e Retenção de Pacientes AC-040: Identificação de pacientes inativos há mais de 180 dias sem agendamento futuro @spec:AC-040 AC-040: Identificação de pacientes inativos há mais de 180 dias sem agendamento futuro @spec:AC-040",
       "method": "vitest-json"
     }
-  }
+  },
+  "principles": {}
 }

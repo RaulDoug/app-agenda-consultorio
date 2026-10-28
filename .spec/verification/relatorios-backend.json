@@ -1,11 +1,11 @@
 {
   "feature": "relatorios-backend",
-  "timestamp": "2026-10-27T20:36:18.594Z",
-  "gitRev": "4cd4ffa",
+  "timestamp": "2026-10-28T14:52:12.636Z",
+  "gitRev": "b782559",
   "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
   "exitCode": 0,
-  "testsParsed": 494,
+  "testsParsed": 552,
   "results": {
     "AC-137": {
       "status": "pass",
@@ -42,5 +42,6 @@
       "testName": "Rotas de Relatórios Gerenciais — /api/reports AC-143: Resolução determinística dos períodos hoje, este mês, últimos 30 dias e todos @spec:AC-143 AC-143: Resolução determinística dos períodos hoje, este mês, últimos 30 dias e todos @spec:AC-143",
       "method": "vitest-json"
     }
-  }
+  },
+  "principles": {}
 }

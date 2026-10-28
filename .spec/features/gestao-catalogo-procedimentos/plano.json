@@ -1,0 +1,61 @@
+{
+  "runId": "App-Agenda-Consultório-gestao-catalogo-procedimentos-mvs795p9",
+  "feature": "gestao-catalogo-procedimentos",
+  "agent": "antigravity",
+  "modo": "sequencial",
+  "paralelizar": null,
+  "modeloForcado": null,
+  "esforcoForcado": null,
+  "geradoEm": "2026-10-28 14:18",
+  "branchTrabalho": "spec/gestao-catalogo-procedimentos",
+  "baseDir": ".spec/features/gestao-catalogo-procedimentos",
+  "specDir": ".spec",
+  "repoName": "App-Agenda-Consultório",
+  "logsDir": "../onp-worktrees/App-Agenda-Consultório-gestao-catalogo-procedimentos-logs",
+  "ondas": [],
+  "faixas": [],
+  "sequenciais": [
+    {
+      "id": "T-166",
+      "titulo": "Filtro de Procedimentos Inativos e Ação de Reativação no Frontend",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "frontend/src/features/procedures/components/ProcedureList.tsx",
+        "frontend/src/features/procedures/components/ProcedureCard.tsx",
+        "frontend/src/db/repositories/procedure-local-repository.ts",
+        "frontend/src/App.tsx",
+        "frontend/src/features/procedures/__tests__/gestao-procedimentos-ui.spec.tsx"
+      ],
+      "refs": [
+        "US-135",
+        "AC-244"
+      ]
+    },
+    {
+      "id": "T-167",
+      "titulo": "Auto-Seed de Procedimentos Padrões no PostgreSQL e Sincronização Outbox",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "backend/src/repositories/procedure-repository.ts",
+        "backend/src/routes/sync.ts",
+        "backend/src/repositories/__tests__/procedure-repository.spec.ts",
+        "frontend/src/db/repositories/procedure-local-repository.ts",
+        "frontend/src/sync/__tests__/sync-manager.spec.ts"
+      ],
+      "refs": [
+        "US-136",
+        "AC-245"
+      ]
+    }
+  ],
+  "concluidas": [
+    "T-161",
+    "T-162",
+    "T-163",
+    "T-164",
+    "T-165"
+  ],
+  "avisos": []
+}

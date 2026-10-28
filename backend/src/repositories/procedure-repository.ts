@@ -1,6 +1,38 @@
 import type { Procedure, CreateProcedureDTO, UpdateProcedureDTO } from '@cliniassist/shared';
 import { getDatabase, type IDatabase } from '../db/connection.js';
 
+export const DEFAULT_PROCEDURES_SEEDS: {
+  name: string;
+  default_duration_minutes: number;
+  default_price_cents: number;
+  cost_cents: number;
+}[] = [
+  {
+    name: 'Consulta Inicial / Avaliação',
+    default_duration_minutes: 30,
+    default_price_cents: 15000, // R$ 150,00
+    cost_cents: 0,
+  },
+  {
+    name: 'Atendimento Padrão',
+    default_duration_minutes: 30,
+    default_price_cents: 20000, // R$ 200,00
+    cost_cents: 2000,
+  },
+  {
+    name: 'Retorno / Revisão',
+    default_duration_minutes: 30,
+    default_price_cents: 0, // Cortesia / Retorno
+    cost_cents: 0,
+  },
+  {
+    name: 'Procedimento Especializado',
+    default_duration_minutes: 60,
+    default_price_cents: 35000, // R$ 350,00
+    cost_cents: 5000,
+  },
+];
+
 export class ProcedureRepository {
   private customDb?: IDatabase;
 
@@ -10,6 +42,36 @@ export class ProcedureRepository {
 
   private get db(): IDatabase {
     return this.customDb || getDatabase();
+  }
+
+  async ensureDefaultProcedures(tenantId: string): Promise<Procedure[]> {
+    const checkSql = `SELECT count(*) as count FROM procedures WHERE tenant_id = $1`;
+    const checkRes = await this.db.query(checkSql, [tenantId]);
+    const count = parseInt(checkRes.rows[0]?.count || '0', 10);
+
+    if (count === 0) {
+      const results: Procedure[] = [];
+      for (const seed of DEFAULT_PROCEDURES_SEEDS) {
+        const id = crypto.randomUUID();
+        const query = `
+          INSERT INTO procedures (id, tenant_id, name, default_duration_minutes, default_price_cents, cost_cents, is_active, created_at, updated_at)
+          VALUES ($1, $2, $3, $4, $5, $6, true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+          RETURNING *
+        `;
+        const res = await this.db.query<Procedure>(query, [
+          id,
+          tenantId,
+          seed.name,
+          seed.default_duration_minutes,
+          seed.default_price_cents,
+          seed.cost_cents,
+        ]);
+        results.push(res.rows[0]);
+      }
+      return results;
+    }
+
+    return [];
   }
 
   async create(tenantId: string, data: CreateProcedureDTO, customId?: string): Promise<Procedure> {
@@ -41,14 +103,16 @@ export class ProcedureRepository {
   }
 
   async findAll(tenantId: string, options?: { search?: string; includeInactive?: boolean }): Promise<Procedure[]> {
+    await this.ensureDefaultProcedures(tenantId);
+
     let sql = `
       SELECT * FROM procedures
-      WHERE tenant_id = $1 AND deleted_at IS NULL
+      WHERE tenant_id = $1
     `;
     const params: any[] = [tenantId];
 
     if (!options?.includeInactive) {
-      sql += ` AND is_active = true`;
+      sql += ` AND is_active = true AND deleted_at IS NULL`;
     }
 
     if (options?.search && options.search.trim()) {
@@ -85,6 +149,17 @@ export class ProcedureRepository {
     if (data.is_active !== undefined) {
       params.push(data.is_active);
       updates.push(`is_active = $${params.length}`);
+      if (data.is_active === true) {
+        updates.push(`deleted_at = NULL`);
+      }
+    }
+    if ((data as any).deleted_at !== undefined) {
+      if ((data as any).deleted_at === null) {
+        updates.push(`deleted_at = NULL`);
+      } else {
+        params.push((data as any).deleted_at);
+        updates.push(`deleted_at = $${params.length}`);
+      }
     }
 
     if (updates.length === 0) {
@@ -96,7 +171,7 @@ export class ProcedureRepository {
     const sql = `
       UPDATE procedures
       SET ${updates.join(', ')}
-      WHERE id = $1 AND tenant_id = $2 AND deleted_at IS NULL
+      WHERE id = $1 AND tenant_id = $2
       RETURNING *
     `;
 

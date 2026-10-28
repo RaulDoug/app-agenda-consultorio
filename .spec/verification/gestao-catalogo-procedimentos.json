@@ -1,0 +1,52 @@
+{
+  "feature": "gestao-catalogo-procedimentos",
+  "timestamp": "2026-10-28T17:08:37.455Z",
+  "gitRev": "b782559",
+  "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
+  "reporter": "vitest-json",
+  "exitCode": 0,
+  "testsParsed": 552,
+  "results": {
+    "AC-238": {
+      "status": "pass",
+      "testName": "Feature: Gestão do Catálogo de Procedimentos e Serviços (F-06) AC-238: Acesso à tela de procedimentos pela seção Mais e navegação consistente @spec:AC-238 AC-238: Acesso à tela de procedimentos pela seção Mais e navegação consistente @spec:AC-238",
+      "method": "vitest-json"
+    },
+    "AC-239": {
+      "status": "pass",
+      "testName": "Feature: Gestão do Catálogo de Procedimentos e Serviços (F-06) AC-239: Visualização, contadores e busca reativa por nome de procedimentos @spec:AC-239 AC-239: Visualização, contadores e busca reativa por nome de procedimentos @spec:AC-239",
+      "method": "vitest-json"
+    },
+    "AC-240": {
+      "status": "pass",
+      "testName": "Feature: Gestão do Catálogo de Procedimentos e Serviços (F-06) AC-240: Cadastro e edição de procedimentos com validação de regras de negócio @spec:AC-240 AC-240: Cadastro e edição de procedimentos com validação de regras de negócio @spec:AC-240",
+      "method": "vitest-json"
+    },
+    "AC-241": {
+      "status": "pass",
+      "testName": "Feature: Gestão do Catálogo de Procedimentos e Serviços (F-06) AC-241: Exclusão com soft-delete e modal de confirmação de segurança @spec:AC-241 AC-241: Exclusão com soft-delete e modal de confirmação de segurança @spec:AC-241",
+      "method": "vitest-json"
+    },
+    "AC-242": {
+      "status": "pass",
+      "testName": "InlineProcedureForm — Custo Operacional no Cadastro Rápido de Procedimento AC-242: Preenchimento de custo no cadastro rápido direto pela tela de agendamento @spec:AC-242 AC-242: Preenchimento de custo no cadastro rápido direto pela tela de agendamento @spec:AC-242",
+      "method": "vitest-json"
+    },
+    "AC-243": {
+      "status": "pass",
+      "testName": "ProcedureLocalRepository — Catálogo, Custos, Edição e Soft-Delete AC-243: Métodos de update e soft-delete com outbox no repositório de procedimentos @spec:AC-243 AC-243: Métodos de update e soft-delete com outbox no repositório de procedimentos @spec:AC-243",
+      "method": "vitest-json"
+    },
+    "AC-244": {
+      "status": "pass",
+      "testName": "Feature: Gestão do Catálogo de Procedimentos e Serviços (F-06) AC-244: Filtro de procedimentos inativos e reativação em um clique @spec:AC-244 AC-244: Filtro de procedimentos inativos e reativação em um clique @spec:AC-244",
+      "method": "vitest-json"
+    },
+    "AC-245": {
+      "status": "pass",
+      "testName": "ProcedureRepository — Persistência, Custo/Preço e Isolamento Multi-Tenant AC-245: Auto-seed de procedimentos padrões no PostgreSQL e suporte a listagem com inativos @spec:AC-245 AC-245: Auto-seed de procedimentos padrões no PostgreSQL e suporte a listagem com inativos @spec:AC-245",
+      "method": "vitest-json"
+    }
+  },
+  "principles": {}
+}

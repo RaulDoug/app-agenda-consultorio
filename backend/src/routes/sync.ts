@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { authMiddleware } from '../middlewares/auth.js';
 import { getDatabase } from '../db/connection.js';
+import { ProcedureRepository } from '../repositories/procedure-repository.js';
 
 export const syncRouter = Router();
 
@@ -474,28 +475,42 @@ syncRouter.post('/batch', async (req, res) => {
         } else {
           const existingUpdatedAt = new Date(existingRes.rows[0].updated_at || 0);
           if (incomingUpdatedAt.getTime() > existingUpdatedAt.getTime()) {
-            await db.query(
-              `UPDATE procedures
-               SET name = COALESCE($3, name),
-                   default_duration_minutes = COALESCE($4, default_duration_minutes),
-                   default_price_cents = COALESCE($5, default_price_cents),
-                   cost_cents = COALESCE($6, cost_cents),
-                   is_active = COALESCE($7, is_active),
-                   deleted_at = COALESCE($8, deleted_at),
-                   updated_at = $9
-               WHERE id = $1 AND tenant_id = $2`,
-              [
-                proc.id,
-                tenantId,
-                proc.name || null,
-                durationMinutes,
-                defaultPrice,
-                costPrice,
-                proc.is_active !== undefined ? proc.is_active : (isDeleteOp ? false : null),
-                proc.deleted_at !== undefined ? proc.deleted_at : (isDeleteOp ? incomingUpdatedAt.toISOString() : null),
-                incomingUpdatedAt.toISOString(),
-              ]
-            );
+            if (isDeleteOp) {
+              await db.query(
+                `UPDATE procedures
+                 SET is_active = false,
+                     deleted_at = COALESCE($3::timestamptz, CURRENT_TIMESTAMP),
+                     updated_at = $4::timestamptz
+                 WHERE id = $1 AND tenant_id = $2`,
+                [
+                  proc.id,
+                  tenantId,
+                  proc.deleted_at || incomingUpdatedAt.toISOString(),
+                  incomingUpdatedAt.toISOString(),
+                ]
+              );
+            } else {
+              await db.query(
+                `UPDATE procedures
+                 SET name = COALESCE($3, name),
+                     default_duration_minutes = COALESCE($4, default_duration_minutes),
+                     default_price_cents = COALESCE($5, default_price_cents),
+                     cost_cents = COALESCE($6, cost_cents),
+                     is_active = true,
+                     deleted_at = NULL,
+                     updated_at = $7::timestamptz
+                 WHERE id = $1 AND tenant_id = $2`,
+                [
+                  proc.id,
+                  tenantId,
+                  proc.name || null,
+                  durationMinutes,
+                  defaultPrice,
+                  costPrice,
+                  incomingUpdatedAt.toISOString(),
+                ]
+              );
+            }
             appliedCount++;
           } else {
             ignoredCount++;
@@ -566,7 +581,10 @@ syncRouter.get('/pull', async (req, res): Promise<void> => {
       [tenantId, sinceIso]
     );
 
-    // 3. Procedures
+    // 3. Procedures (Auto-seed procedimentos padrão se o tenant ainda não tiver nenhum)
+    const procedureRepo = new ProcedureRepository(db);
+    await procedureRepo.ensureDefaultProcedures(tenantId);
+
     const proceduresRes = await db.query(
       `SELECT * FROM procedures
        WHERE tenant_id = $1 AND (updated_at > $2 OR (updated_at IS NULL AND created_at > $2))

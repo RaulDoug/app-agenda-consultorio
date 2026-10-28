@@ -1,11 +1,11 @@
 {
   "feature": "motor-financeiro",
-  "timestamp": "2026-10-27T20:36:18.594Z",
-  "gitRev": "4cd4ffa",
+  "timestamp": "2026-10-28T14:52:12.636Z",
+  "gitRev": "b782559",
   "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
   "exitCode": 0,
-  "testsParsed": 494,
+  "testsParsed": 552,
   "results": {
     "AC-027": {
       "status": "pass",
@@ -47,5 +47,6 @@
       "testName": "Motor Financeiro, Rateio de Descontos e Parcelamento — OdontoFlow US-017 — Baixa de Parcelas e Gestão de Despesas Rápidas AC-034: Soft Delete e integridade contábil em cancelamento de transações @spec:AC-034 AC-034: Soft Delete e integridade contábil em cancelamento de transações @spec:AC-034",
       "method": "vitest-json"
     }
-  }
+  },
+  "principles": {}
 }

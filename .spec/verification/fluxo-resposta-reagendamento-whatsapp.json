@@ -1,11 +1,11 @@
 {
   "feature": "fluxo-resposta-reagendamento-whatsapp",
-  "timestamp": "2026-10-27T20:36:18.594Z",
-  "gitRev": "dcbab6d",
+  "timestamp": "2026-10-28T14:52:12.636Z",
+  "gitRev": "b782559",
   "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
-  "exitCode": 1,
-  "testsParsed": 529,
+  "exitCode": 0,
+  "testsParsed": 552,
   "results": {
     "AC-224": {
       "status": "pass",

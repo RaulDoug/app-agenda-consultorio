@@ -101,4 +101,71 @@ describe('ProcedureRepository — Persistência, Custo/Preço e Isolamento Multi
     expect(rawRes.rows[0].is_active).toBe(false);
     expect(rawRes.rows[0].deleted_at).not.toBeNull();
   });
+
+  it('AC-245: Auto-seed de procedimentos padrões no PostgreSQL e suporte a listagem com inativos @spec:AC-245', async () => {
+    const sC = await seedTestTenant(db);
+    const tenantC = sC.id;
+
+    // 1. Tenant novo sem procedimentos: findAll deve acionar o auto-seed dos 4 procedimentos padrões
+    const seededList = await repo.findAll(tenantC);
+    expect(seededList).toHaveLength(4);
+
+    const names = seededList.map((p) => p.name);
+    expect(names).toContain('Consulta Inicial / Avaliação');
+    expect(names).toContain('Atendimento Padrão');
+    expect(names).toContain('Retorno / Revisão');
+    expect(names).toContain('Procedimento Especializado');
+
+    // Valida propriedades e custos dos procedimentos semeados
+    const consulta = seededList.find((p) => p.name === 'Consulta Inicial / Avaliação')!;
+    expect(consulta.default_duration_minutes).toBe(30);
+    expect(consulta.default_price_cents).toBe(15000);
+    expect(consulta.cost_cents).toBe(0);
+    expect(consulta.is_active).toBe(true);
+
+    const atendimento = seededList.find((p) => p.name === 'Atendimento Padrão')!;
+    expect(atendimento.default_duration_minutes).toBe(30);
+    expect(atendimento.default_price_cents).toBe(20000);
+    expect(atendimento.cost_cents).toBe(2000);
+
+    const retorno = seededList.find((p) => p.name === 'Retorno / Revisão')!;
+    expect(retorno.default_price_cents).toBe(0);
+    expect(retorno.cost_cents).toBe(0);
+
+    const especializado = seededList.find((p) => p.name === 'Procedimento Especializado')!;
+    expect(especializado.default_duration_minutes).toBe(60);
+    expect(especializado.default_price_cents).toBe(35000);
+    expect(especializado.cost_cents).toBe(5000);
+
+    // 2. Chamadas subsequentes são idempotentes
+    const secondCall = await repo.ensureDefaultProcedures(tenantC);
+    expect(secondCall).toHaveLength(0);
+    const totalCountRes = await db.query('SELECT count(*) as count FROM procedures WHERE tenant_id = $1', [tenantC]);
+    expect(parseInt(totalCountRes.rows[0].count, 10)).toBe(4);
+
+    // 3. Soft-delete de um procedimento
+    await repo.softDelete(tenantC, consulta.id);
+
+    // Listagem padrão (apenas ativos) retorna 3
+    const activeOnly = await repo.findAll(tenantC);
+    expect(activeOnly).toHaveLength(3);
+    expect(activeOnly.find((p) => p.id === consulta.id)).toBeUndefined();
+
+    // Listagem com includeInactive: true retorna os 4
+    const withInactive = await repo.findAll(tenantC, { includeInactive: true });
+    expect(withInactive).toHaveLength(4);
+    const softDeleted = withInactive.find((p) => p.id === consulta.id)!;
+    expect(softDeleted.is_active).toBe(false);
+    expect(softDeleted.deleted_at).toBeDefined();
+
+    // 4. Reativação do procedimento: atualiza is_active = true e limpa deleted_at
+    const reactivated = await repo.update(tenantC, consulta.id, { is_active: true });
+    expect(reactivated).not.toBeNull();
+    expect(reactivated?.is_active).toBe(true);
+    expect(reactivated?.deleted_at).toBeNull();
+
+    const activeAfterReactivate = await repo.findAll(tenantC);
+    expect(activeAfterReactivate).toHaveLength(4);
+    expect(activeAfterReactivate.find((p) => p.id === consulta.id)).toBeDefined();
+  });
 });

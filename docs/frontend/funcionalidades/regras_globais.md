@@ -272,3 +272,27 @@ O OdontoFlow foi concebido para o **"Dentista-Operador"** que utiliza o sistema 
    - O card de pareamento e conexão (`WhatsAppPairingView.tsx`) exibe no terço inferior um seletor visual em 3 segmentos: "Apenas Cadastrados" (`REGISTERED_ONLY`), "Todos os Contatos" (`ALL`) e "Desativado" (`DISABLED`).
 2. **Reatividade e Persistência Direta via API:**
    - A troca de opção dispara `PUT /api/whatsapp/settings`, exibindo indicador de salvamento e confirmação visual sem exigir botões adicionais de formulário.
+
+---
+
+## 17. Gestão de Procedimentos e Catálogo de Serviços Clínicos (AC-238 a AC-245)
+
+1. **Acesso Centralizado e Navegação Híbrida (AC-238):**
+   - O catálogo de serviços é acessível tanto pelo hub mobile **"Mais"** (`MoreMenuHub`) quanto pelo menu lateral desktop (`DesktopSidebar`) através da aba `'procedimentos'`.
+2. **Visualização Detalhada com Margem Bruta Estimada (AC-239):**
+   - Os cards de procedimento (`ProcedureCard`) exibem nome, duração em minutos, preço de tabela, custo operacional de insumos/laboratório (`cost_cents`) e margem bruta estimada calculada em tempo real (`preço - custo`).
+   - A listagem é filtrável de forma reativa pelo nome com busca instantânea.
+3. **Validações Estritas de Criação e Edição (AC-240):**
+   - Duração padrão deve ser estritamente positiva (`> 0`);
+   - Preço cobrado e custo de insumos devem ser não-negativos (`>= 0`), permitindo R$ 0,00 para procedimentos cortesia / avaliação.
+4. **Soft-Delete Seguro Inegociável (AC-241, AC-243):**
+   - A exclusão de um procedimento marca `is_active: false` e `deleted_at: now`, gerando mutação `DELETE` na `sync_outbox`;
+   - O modal de confirmação alerta expressamente que o histórico e agendamentos anteriores permanecem 100% preservados em `appointment_items`.
+5. **Custo Operacional no Cadastro Rápido da Agenda (AC-242):**
+   - O formulário inline de procedimentos na gaveta de novo agendamento rápido (`InlineProcedureForm`) disponibiliza o campo de custo (R$), persistindo `cost_cents` no banco local e na outbox logo no momento da criação on-the-fly.
+6. **Filtro de Inativos e Reativação em 1 Clique (AC-244):**
+   - A tela de catálogo disponibiliza filtros segmentados ("Ativos", "Inativos" e "Todos") com contadores dinâmicos;
+   - Procedimentos inativados recebem badge visual "Inativo", estilização atenuada com texto tachado e ação de reativação imediata (`reactivateProcedure`), restaurando `is_active: true`, limpando `deleted_at: null` e despachando mutação `UPDATE` para a `sync_outbox`.
+7. **Auto-Seed e Consistência Multi-Dispositivo (AC-245):**
+   - Os procedimentos padrões da clínica possuem sementes consistentes no cliente e no servidor PostgreSQL;
+   - O repositório backend auto-semeia os 4 procedimentos padrões (`Consulta Inicial / Avaliação`, `Atendimento Padrão`, `Retorno / Revisão` e `Procedimento Especializado`) caso o tenant esteja vazio, entregando-os no lote `/api/sync/batch` para acesso instantâneo em múltiplos dispositivos.

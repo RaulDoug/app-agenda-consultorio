@@ -132,4 +132,97 @@ describe('Rotas de Procedimentos — /api/procedures', () => {
 
     expect(getRes.status).toBe(404);
   });
+
+  it('deve reativar procedimento soft-deleted via PUT /api/procedures/:id limpando deleted_at para null e atualizando updated_at', async () => {
+    const postRes = await request(app)
+      .post('/api/procedures')
+      .set('Authorization', `Bearer ${token}`)
+      .send({
+        name: 'Procedimento Para Reativar',
+        default_duration_minutes: 30,
+        default_price_cents: 8000,
+      });
+
+    const procId = postRes.body.id;
+
+    // Desativa (soft-delete)
+    await request(app)
+      .delete(`/api/procedures/${procId}`)
+      .set('Authorization', `Bearer ${token}`);
+
+    // Reativa com is_active: true
+    const putRes = await request(app)
+      .put(`/api/procedures/${procId}`)
+      .set('Authorization', `Bearer ${token}`)
+      .send({
+        is_active: true,
+      });
+
+    expect(putRes.status).toBe(200);
+    expect(putRes.body.is_active).toBe(true);
+    expect(putRes.body.deleted_at).toBeNull();
+
+    // Consulta direta no banco PostgreSQL para certificar que deleted_at é null
+    const rawDbRes = await db.query('SELECT is_active, deleted_at, updated_at FROM procedures WHERE id = $1', [procId]);
+    expect(rawDbRes.rows[0].is_active).toBe(true);
+    expect(rawDbRes.rows[0].deleted_at).toBeNull();
+  });
+
+  it('deve sincronizar reativação via POST /api/sync/batch limpando deleted_at para null no PostgreSQL', async () => {
+    const procId = crypto.randomUUID();
+    const now = new Date();
+    const deletedTime = new Date(now.getTime() - 60000).toISOString();
+    const reactivatedTime = now.toISOString();
+
+    // 1. Cria procedimento inativo diretamente
+    await db.query(
+      `INSERT INTO procedures (id, tenant_id, name, default_duration_minutes, default_price_cents, cost_cents, is_active, deleted_at, created_at, updated_at)
+       VALUES ($1, $2, $3, 30, 10000, 0, false, $4, $4, $4)`,
+      [procId, tenantId, 'Procedimento Sync Inativo', deletedTime]
+    );
+
+    // 2. Envia mutação de reativação pelo sync batch
+    const syncRes = await request(app)
+      .post('/api/sync/batch')
+      .set('Authorization', `Bearer ${token}`)
+      .send({
+        mutations: [
+          {
+            entity: 'procedures',
+            record_id: procId,
+            operation: 'UPDATE',
+            payload: {
+              id: procId,
+              name: 'Procedimento Sync Inativo',
+              default_duration_minutes: 30,
+              default_price_cents: 10000,
+              cost_cents: 0,
+              is_active: true,
+              deleted_at: null,
+              updated_at: reactivatedTime,
+            },
+            updated_at: reactivatedTime,
+          },
+        ],
+      });
+
+    expect(syncRes.status).toBe(200);
+    expect(syncRes.body.applied).toBe(1);
+
+    // 3. Valida que no banco PostgreSQL online deleted_at é null e is_active é true
+    const checkDb = await db.query('SELECT is_active, deleted_at, updated_at FROM procedures WHERE id = $1', [procId]);
+    expect(checkDb.rows[0].is_active).toBe(true);
+    expect(checkDb.rows[0].deleted_at).toBeNull();
+
+    // 4. Valida que o pull de procedures no retorno de GET /api/sync/pull entrega deleted_at como null
+    const pullRes = await request(app)
+      .get('/api/sync/pull')
+      .set('Authorization', `Bearer ${token}`);
+
+    expect(pullRes.status).toBe(200);
+    const pulledProc = pullRes.body.procedures.find((p: any) => p.id === procId);
+    expect(pulledProc).toBeDefined();
+    expect(pulledProc.is_active).toBe(true);
+    expect(pulledProc.deleted_at).toBeNull();
+  });
 });

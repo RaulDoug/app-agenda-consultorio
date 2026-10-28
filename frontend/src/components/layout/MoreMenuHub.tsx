@@ -1,22 +1,24 @@
 import React from 'react';
 import { NavTabId } from './BottomNav';
-import { Users, Settings, ChevronRight, MessageCircle, ShieldCheck } from 'lucide-react';
+import { Users, Settings, ChevronRight, MessageCircle, ShieldCheck, Sparkles } from 'lucide-react';
 
 interface MoreMenuHubProps {
   onSelectSection: (tab: NavTabId) => void;
   patientCount?: number;
+  procedureCount?: number;
 }
 
 export const MoreMenuHub: React.FC<MoreMenuHubProps> = ({
   onSelectSection,
   patientCount = 0,
+  procedureCount = 0,
 }) => {
   return (
     <div className="space-y-6" data-testid="more-menu-hub">
       <div>
         <h2 className="text-xl font-bold text-slate-800">Mais Recursos</h2>
         <p className="text-xs text-slate-500 mt-0.5">
-          Acesse a central de mensagens, base de clientes e ajustes da clínica.
+          Acesse a central de mensagens, catálogo de serviços, base de clientes e ajustes da clínica.
         </p>
       </div>
 
@@ -43,6 +45,34 @@ export const MoreMenuHub: React.FC<MoreMenuHubProps> = ({
               </div>
               <p className="text-xs text-slate-500 mt-0.5">
                 Acompanhe confirmações, edite mensagens, reordene a fila e faça envios manuais.
+              </p>
+            </div>
+          </div>
+          <ChevronRight className="w-5 h-5 text-slate-400 group-hover:text-teal-600 transition" />
+        </button>
+
+        {/* Card Procedimentos & Serviços */}
+        <button
+          type="button"
+          data-testid="more-card-procedimentos"
+          onClick={() => onSelectSection('procedimentos')}
+          className="flex items-center justify-between p-5 bg-white rounded-2xl border border-slate-200 shadow-2xs hover:border-teal-500 hover:shadow-xs transition text-left group"
+        >
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-2xl bg-amber-50 text-amber-700 flex items-center justify-center group-hover:scale-105 transition-transform">
+              <Sparkles className="w-6 h-6 stroke-2" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <h3 className="font-bold text-slate-900 text-sm sm:text-base">
+                  Procedimentos & Serviços
+                </h3>
+                <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-amber-100 text-amber-800">
+                  Catálogo
+                </span>
+              </div>
+              <p className="text-xs text-slate-500 mt-0.5">
+                {procedureCount} {procedureCount === 1 ? 'procedimento cadastrado' : 'procedimentos cadastrados'}
               </p>
             </div>
           </div>
@@ -77,7 +107,7 @@ export const MoreMenuHub: React.FC<MoreMenuHubProps> = ({
           type="button"
           data-testid="more-card-ajustes"
           onClick={() => onSelectSection('ajustes')}
-          className="flex items-center justify-between p-5 bg-white rounded-2xl border border-slate-200 shadow-2xs hover:border-teal-500 hover:shadow-xs transition text-left group"
+          className="flex items-center justify-between p-5 bg-white rounded-2xl border border-slate-200 shadow-2xs hover:border-teal-500 hover:shadow-xs transition text-left group sm:col-span-2"
         >
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 rounded-2xl bg-slate-100 text-slate-700 flex items-center justify-center group-hover:scale-105 transition-transform">
@@ -98,9 +128,10 @@ export const MoreMenuHub: React.FC<MoreMenuHubProps> = ({
 
       {/* Info Card / Segurança */}
       <div className="p-4 bg-slate-100/60 rounded-2xl border border-slate-200/80 flex items-center gap-3 text-xs text-slate-600">
-        <ShieldCheck className="w-5 h-5 text-teal-600 shrink-0" />
+        <ShieldCheck className="w-5 h-5 text-teal-700 shrink-0" />
         <span>
-          Todos os dados de agendamentos, caixa e pacientes são protegidos e salvos no seu dispositivo com suporte completo a modo offline.
+          Seus dados operam no modo <strong>Local-First</strong> com criptografia de ponta a ponta e
+          sincronização automática com a nuvem.
         </span>
       </div>
     </div>

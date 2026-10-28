@@ -1,11 +1,11 @@
 {
   "feature": "cruds-backend",
-  "timestamp": "2026-10-27T20:36:18.594Z",
-  "gitRev": "4cd4ffa",
+  "timestamp": "2026-10-28T14:52:12.636Z",
+  "gitRev": "b782559",
   "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
   "exitCode": 0,
-  "testsParsed": 494,
+  "testsParsed": 552,
   "results": {
     "AC-128": {
       "status": "pass",
@@ -52,5 +52,6 @@
       "testName": "Rotas Financeiras — /api/financial (Checkout, Categorias, Despesas, Métricas e Proteções) D-07: GET /api/financial/metrics deve retornar faturamento recebido, despesas e saldo líquido em Regime de Caixa @spec:AC-136 D-07: GET /api/financial/metrics deve retornar faturamento recebido, despesas e saldo líquido em Regime de Caixa @spec:AC-136",
       "method": "vitest-json"
     }
-  }
+  },
+  "principles": {}
 }
