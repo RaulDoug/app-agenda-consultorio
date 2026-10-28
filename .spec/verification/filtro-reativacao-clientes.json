@@ -1,6 +1,6 @@
 {
   "feature": "filtro-reativacao-clientes",
-  "timestamp": "2026-10-28T17:47:47.580Z",
+  "timestamp": "2026-10-28T17:46:25.210Z",
   "gitRev": "249f070",
   "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
