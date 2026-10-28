@@ -75,6 +75,38 @@ describe('PatientLocalRepository — Reativação, Busca por Telefone e Soft-Del
     );
   });
 
+  it('AC-201: Prevenção de duplicidade de pacientes com e sem DDI 55 @spec:AC-201', async () => {
+    // 1. Cadastra o primeiro paciente com WhatsApp nacional sem DDI 55
+    await repo.createPatient({
+      tenant_id: tenantId,
+      name: 'Mariana Nacional',
+      whatsapp: '3798231077',
+    });
+
+    // 2. Tenta cadastrar um segundo paciente informando o mesmo número com prefixo 55
+    await expect(
+      repo.createPatient({
+        tenant_id: tenantId,
+        name: 'Mariana Internacional',
+        whatsapp: '553798231077',
+      })
+    ).rejects.toThrow('Já existe um paciente cadastrado com este WhatsApp');
+
+    // 3. Cadastra outro paciente com número diferente
+    const outro = await repo.createPatient({
+      tenant_id: tenantId,
+      name: 'Carlos Diferente',
+      whatsapp: '11988887777',
+    });
+
+    // 4. Tenta editar o número do Carlos para o número da Mariana (com 55)
+    await expect(
+      repo.updatePatient(outro.id, {
+        whatsapp: '553798231077',
+      })
+    ).rejects.toThrow('Já existe outro paciente cadastrado com este WhatsApp');
+  });
+
   it('deve localizar paciente ativo ou inativo via findPatientByPhone', async () => {
     const created = await repo.createPatient({
       tenant_id: tenantId,
