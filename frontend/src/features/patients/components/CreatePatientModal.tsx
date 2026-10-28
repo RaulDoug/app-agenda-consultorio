@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { LocalPatient } from '../../../db/types';
 import { PatientLocalRepository, patientLocalRepo } from '../../../db/repositories/patient-local-repository';
-import { User, Phone, FileText, X, Trash2 } from 'lucide-react';
+import { User, Phone, FileText, X, Trash2, RotateCcw } from 'lucide-react';
 
 export interface CreatePatientModalProps {
   isOpen: boolean;
@@ -29,6 +29,7 @@ export const CreatePatientModal: React.FC<CreatePatientModalProps> = ({
   const [notes, setNotes] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+  const [inactivePatient, setInactivePatient] = useState<LocalPatient | null>(null);
 
   const isEditing = Boolean(patientToEdit);
 
@@ -45,6 +46,7 @@ export const CreatePatientModal: React.FC<CreatePatientModalProps> = ({
         setNotes('');
       }
       setErrorMsg('');
+      setInactivePatient(null);
       setIsSubmitting(false);
     }
   }, [isOpen, patientToEdit]);
@@ -79,8 +81,25 @@ export const CreatePatientModal: React.FC<CreatePatientModalProps> = ({
 
     setIsSubmitting(true);
     setErrorMsg('');
+    setInactivePatient(null);
 
     try {
+      if (!isEditing) {
+        const existingByPhone = await patientRepo.findPatientByPhone(tenantId, cleanPhone);
+        if (existingByPhone) {
+          const isInactive = !existingByPhone.is_active || (Boolean(existingByPhone.deleted_at) && existingByPhone.deleted_at !== 'null');
+          if (isInactive) {
+            setInactivePatient(existingByPhone);
+            setIsSubmitting(false);
+            return;
+          } else {
+            setErrorMsg(`Já existe um paciente cadastrado com este WhatsApp: "${existingByPhone.name}".`);
+            setIsSubmitting(false);
+            return;
+          }
+        }
+      }
+
       let savedPatient: LocalPatient;
       if (isEditing && patientToEdit) {
         savedPatient = await patientRepo.updatePatient(patientToEdit.id, {
@@ -106,6 +125,27 @@ export const CreatePatientModal: React.FC<CreatePatientModalProps> = ({
         err.message ||
           (isEditing ? 'Erro ao salvar alterações do paciente.' : 'Erro ao cadastrar paciente.')
       );
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleReactivateInactive = async () => {
+    if (!inactivePatient) return;
+    setIsSubmitting(true);
+    setErrorMsg('');
+
+    try {
+      const reactivated = await patientRepo.reactivatePatient(inactivePatient.id, {
+        name: name.trim() || inactivePatient.name,
+        notes: notes.trim() || inactivePatient.notes || undefined,
+      });
+
+      onPatientCreated?.(reactivated);
+      onPatientSaved?.(reactivated);
+      onClose();
+    } catch (err: any) {
+      setErrorMsg(err.message || 'Erro ao reativar cadastro do paciente.');
     } finally {
       setIsSubmitting(false);
     }
@@ -147,8 +187,42 @@ export const CreatePatientModal: React.FC<CreatePatientModalProps> = ({
         {/* Formulário */}
         <form onSubmit={handleSubmit} className="p-4 space-y-4">
           {errorMsg && (
-            <div className="p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-xl">
+            <div
+              data-testid="alert-error-patient"
+              className="p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-xl"
+            >
               {errorMsg}
+            </div>
+          )}
+
+          {inactivePatient && (
+            <div
+              data-testid="alert-inactive-patient"
+              className="p-3 bg-amber-50 border border-amber-200 rounded-xl space-y-2 text-xs"
+            >
+              <div className="text-amber-900 font-medium">
+                Existe um cadastro inativo para este WhatsApp pertencente a{' '}
+                <strong className="font-bold">{inactivePatient.name}</strong>. Deseja reativar este cliente?
+              </div>
+              <div className="flex items-center gap-2 pt-1">
+                <button
+                  type="button"
+                  data-testid="btn-reactivate-from-modal"
+                  onClick={handleReactivateInactive}
+                  disabled={isSubmitting}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-teal-700 hover:bg-teal-800 text-white font-semibold rounded-lg shadow-xs transition"
+                >
+                  <RotateCcw className="w-3.5 h-3.5" />
+                  Reativar Cadastro
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setInactivePatient(null)}
+                  className="px-2.5 py-1.5 text-slate-600 hover:text-slate-800 font-medium"
+                >
+                  Cancelar
+                </button>
+              </div>
             </div>
           )}
 
@@ -163,7 +237,10 @@ export const CreatePatientModal: React.FC<CreatePatientModalProps> = ({
                 type="text"
                 aria-label="Nome Completo"
                 value={name}
-                onChange={(e) => setName(e.target.value)}
+                onChange={(e) => {
+                  setName(e.target.value);
+                  setErrorMsg('');
+                }}
                 placeholder="Ex: Maria Oliveira"
                 className="w-full text-xs text-slate-900 bg-transparent focus:outline-none font-medium"
               />
@@ -181,7 +258,11 @@ export const CreatePatientModal: React.FC<CreatePatientModalProps> = ({
                 type="tel"
                 aria-label="WhatsApp"
                 value={whatsapp}
-                onChange={(e) => setWhatsapp(e.target.value)}
+                onChange={(e) => {
+                  setWhatsapp(e.target.value);
+                  setInactivePatient(null);
+                  setErrorMsg('');
+                }}
                 placeholder="Ex: 11 99999-8888"
                 className="w-full text-xs font-mono text-slate-900 bg-transparent focus:outline-none"
               />
@@ -218,33 +299,27 @@ export const CreatePatientModal: React.FC<CreatePatientModalProps> = ({
                   }}
                   className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-rose-700 bg-rose-50 hover:bg-rose-100 rounded-xl transition"
                 >
-                  <Trash2 className="w-3.5 h-3.5 text-rose-600" />
-                  Excluir Paciente
+                  <Trash2 className="w-4 h-4" />
+                  Excluir
                 </button>
               )}
             </div>
+
             <div className="flex items-center gap-2">
               <button
                 type="button"
                 onClick={onClose}
-                disabled={isSubmitting}
-                className="px-4 py-2 text-xs font-semibold text-slate-600 hover:text-slate-800"
+                className="px-3.5 py-2 text-xs font-semibold text-slate-600 hover:text-slate-800 transition"
               >
                 Cancelar
               </button>
               <button
                 type="submit"
-                data-testid={isEditing ? 'btn-save-patient' : 'btn-submit-patient'}
                 disabled={isSubmitting}
-                className="px-5 py-2.5 bg-teal-600 hover:bg-teal-700 text-white text-xs font-bold rounded-xl shadow-xs transition active:scale-95 disabled:opacity-50 min-h-[44px]"
+                data-testid="btn-save-patient"
+                className="px-4 py-2 bg-teal-700 hover:bg-teal-800 disabled:opacity-50 text-white font-semibold text-xs rounded-xl shadow-xs transition"
               >
-                {isSubmitting
-                  ? isEditing
-                    ? 'Salvando...'
-                    : 'Cadastrando...'
-                  : isEditing
-                  ? 'Salvar Alterações'
-                  : 'Cadastrar Paciente'}
+                {isSubmitting ? 'Salvando...' : isEditing ? 'Salvar Alterações' : 'Salvar Paciente'}
               </button>
             </div>
           </div>
