@@ -29,11 +29,14 @@ export class PatientRepository {
     return res.rows[0];
   }
 
-  async findById(tenantId: string, id: string): Promise<Patient | null> {
-    const query = `
+  async findById(tenantId: string, id: string, options?: { includeInactive?: boolean }): Promise<Patient | null> {
+    let query = `
       SELECT * FROM patients
-      WHERE id = $1 AND tenant_id = $2 AND deleted_at IS NULL
+      WHERE id = $1 AND tenant_id = $2
     `;
+    if (!options?.includeInactive) {
+      query += ` AND deleted_at IS NULL`;
+    }
     const res = await this.db.query<Patient>(query, [id, tenantId]);
     return res.rows[0] || null;
   }
@@ -52,12 +55,12 @@ export class PatientRepository {
   async findAll(tenantId: string, options?: { search?: string; includeInactive?: boolean }): Promise<Patient[]> {
     let sql = `
       SELECT * FROM patients
-      WHERE tenant_id = $1 AND deleted_at IS NULL
+      WHERE tenant_id = $1
     `;
     const params: any[] = [tenantId];
 
     if (!options?.includeInactive) {
-      sql += ` AND is_active = true`;
+      sql += ` AND is_active = true AND deleted_at IS NULL`;
     }
 
     if (options?.search && options.search.trim()) {
@@ -90,10 +93,21 @@ export class PatientRepository {
     if (data.is_active !== undefined) {
       params.push(data.is_active);
       updates.push(`is_active = $${params.length}`);
+      if (data.is_active === true) {
+        updates.push(`deleted_at = NULL`);
+      }
+    }
+    if ((data as any).deleted_at !== undefined) {
+      if ((data as any).deleted_at === null) {
+        updates.push(`deleted_at = NULL`);
+      } else {
+        params.push((data as any).deleted_at);
+        updates.push(`deleted_at = $${params.length}`);
+      }
     }
 
     if (updates.length === 0) {
-      return this.findById(tenantId, id);
+      return this.findById(tenantId, id, { includeInactive: true });
     }
 
     updates.push(`updated_at = CURRENT_TIMESTAMP`);
@@ -101,7 +115,7 @@ export class PatientRepository {
     const sql = `
       UPDATE patients
       SET ${updates.join(', ')}
-      WHERE id = $1 AND tenant_id = $2 AND deleted_at IS NULL
+      WHERE id = $1 AND tenant_id = $2
       RETURNING *
     `;
 

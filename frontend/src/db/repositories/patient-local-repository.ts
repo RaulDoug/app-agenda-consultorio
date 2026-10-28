@@ -113,12 +113,32 @@ export class PatientLocalRepository {
     return await this.db.patients.get(id);
   }
 
-  async listPatients(tenantId: string): Promise<LocalPatient[]> {
+  /**
+   * Localiza paciente (ativo ou inativo) pelo número de telefone no consultório.
+   */
+  async findPatientByPhone(tenantId: string, phone: string): Promise<LocalPatient | undefined> {
+    const cleanPhone = phone.replace(/\D/g, '');
+    if (!cleanPhone || !tenantId) return undefined;
+    const normPhone = normalizePhoneForComparison(cleanPhone);
     return await this.db.patients
       .where('tenant_id')
       .equals(tenantId)
-      .filter((p) => p.is_active)
-      .sortBy('name');
+      .filter((p) => normalizePhoneForComparison(p.whatsapp) === normPhone)
+      .first();
+  }
+
+  async listPatients(tenantId: string, options?: { includeInactive?: boolean }): Promise<LocalPatient[]> {
+    const collection = this.db.patients
+      .where('tenant_id')
+      .equals(tenantId);
+
+    if (!options?.includeInactive) {
+      return await collection
+        .filter((p) => p.is_active && (!p.deleted_at || p.deleted_at === 'null'))
+        .sortBy('name');
+    }
+
+    return await collection.sortBy('name');
   }
 
   async searchPatients(tenantId: string, query: string): Promise<LocalPatient[]> {
@@ -128,8 +148,62 @@ export class PatientLocalRepository {
     return await this.db.patients
       .where('tenant_id')
       .equals(tenantId)
-      .filter((p) => p.is_active && (p.name.toLowerCase().includes(q) || p.whatsapp.includes(q)))
+      .filter((p) => p.is_active && (!p.deleted_at || p.deleted_at === 'null') && (p.name.toLowerCase().includes(q) || p.whatsapp.includes(q)))
       .toArray();
+  }
+
+  /**
+   * Reativa um paciente inativado, validando se outro paciente ativo já possui o mesmo WhatsApp.
+   */
+  async reactivatePatient(id: string, updates?: { name?: string; notes?: string }): Promise<LocalPatient> {
+    const existing = await this.db.patients.get(id);
+    if (!existing) {
+      throw new Error(`Paciente com id ${id} não encontrado no banco local.`);
+    }
+
+    const normPhone = normalizePhoneForComparison(existing.whatsapp);
+    const duplicate = await this.db.patients
+      .where('tenant_id')
+      .equals(existing.tenant_id)
+      .filter(
+        (p) =>
+          p.id !== id &&
+          p.is_active &&
+          (!p.deleted_at || p.deleted_at === 'null') &&
+          normalizePhoneForComparison(p.whatsapp) === normPhone
+      )
+      .first();
+
+    if (duplicate) {
+      throw new Error(`Já existe outro paciente ativo cadastrado com este WhatsApp: "${duplicate.name}".`);
+    }
+
+    const now = new Date().toISOString();
+    const updated: LocalPatient = {
+      ...existing,
+      name: updates?.name?.trim() ? updates.name.trim() : existing.name,
+      notes: updates?.notes !== undefined ? (updates.notes?.trim() || null) : existing.notes,
+      is_active: true,
+      deleted_at: null,
+      updated_at: now,
+    };
+
+    await this.db.transaction('rw', [this.db.patients, this.db.sync_outbox], async () => {
+      await this.db.patients.put(updated);
+      await enqueueMutation(this.db, {
+        entity: 'patients',
+        recordId: id,
+        operation: 'UPDATE',
+        payload: {
+          ...updated,
+          is_active: true,
+          deleted_at: null,
+          updated_at: now,
+        },
+      });
+    });
+
+    return updated;
   }
 
   /**

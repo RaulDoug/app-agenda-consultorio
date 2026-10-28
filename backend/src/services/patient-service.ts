@@ -103,6 +103,19 @@ export class PatientService {
 
     if (data.is_active !== undefined) {
       updates.is_active = Boolean(data.is_active);
+      if (updates.is_active) {
+        const current = await this.patientRepo.findById(tenantId, id, { includeInactive: true });
+        const phone = updates.whatsapp || current?.whatsapp;
+        if (phone) {
+          const cleanPhone = phone.replace(/\D/g, '');
+          const existing = await this.patientRepo.findByWhatsapp(tenantId, cleanPhone);
+          if (existing && existing.id !== id) {
+            const error: any = new Error(`Já existe outro paciente ativo cadastrado com este WhatsApp: "${existing.name}".`);
+            error.statusCode = 409;
+            throw error;
+          }
+        }
+      }
     }
 
     return this.patientRepo.update(tenantId, id, updates);

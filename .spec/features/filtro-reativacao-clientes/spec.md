@@ -1,7 +1,7 @@
 # Spec: Filtro e Reativação de Clientes Inativos
 
 > feature: filtro-reativacao-clientes
-> status: rascunho
+> status: pronta
 
 ## Contexto
 
