@@ -1,6 +1,6 @@
 {
   "feature": "melhorias-agendamento-duplicidade-clientes",
-  "timestamp": "2026-10-28T17:32:26.022Z",
+  "timestamp": "2026-10-28T17:32:53.296Z",
   "gitRev": "b782559",
   "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
