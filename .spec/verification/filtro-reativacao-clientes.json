@@ -1,0 +1,42 @@
+{
+  "feature": "filtro-reativacao-clientes",
+  "timestamp": "2026-10-28T17:26:44.621Z",
+  "gitRev": "f28d3ea",
+  "command": "npx vitest run --passWithNoTests --reporter=json --outputFile=.spec/verification/raw.json",
+  "reporter": "vitest-json",
+  "exitCode": 1,
+  "testsParsed": 558,
+  "results": {
+    "AC-246": {
+      "status": "pass",
+      "testName": "Feature: filtro-reativacao-clientes — UI PatientList e PatientCard AC-246: Filtro de status na tela de clientes com contadores e busca contextual @spec:AC-246 AC-246: Filtro de status na tela de clientes com contadores e busca contextual @spec:AC-246",
+      "method": "vitest-json"
+    },
+    "AC-247": {
+      "status": "pass",
+      "testName": "Feature: filtro-reativacao-clientes — UI PatientList e PatientCard AC-247: Identificação visual de clientes inativos e reativação direta em 1 toque @spec:AC-247 AC-247: Identificação visual de clientes inativos e reativação direta em 1 toque @spec:AC-247",
+      "method": "vitest-json"
+    },
+    "AC-248": {
+      "status": "pass",
+      "testName": "PatientLocalRepository — Reativação, Busca por Telefone e Soft-Delete AC-248: Método reactivatePatient e salvaguarda contra telefone duplicado @spec:AC-248 AC-248: Método reactivatePatient e salvaguarda contra telefone duplicado @spec:AC-248",
+      "method": "vitest-json"
+    },
+    "AC-249": {
+      "status": "pass",
+      "testName": "PatientRepository — Persistência, Isolamento Multi-Tenant e Soft-Delete AC-249: Consulta de inativos e restauração de clientes soft-deleted na API @spec:AC-249 AC-249: Consulta de inativos e restauração de clientes soft-deleted na API @spec:AC-249",
+      "method": "vitest-json"
+    },
+    "AC-250": {
+      "status": "pass",
+      "testName": "Feature: filtro-reativacao-clientes — Reativação Assistida no Cadastro AC-250: Validação de WhatsApp com proposta de reativação de cliente inativo no CreatePatientModal @spec:AC-250 AC-250: Validação de WhatsApp com proposta de reativação de cliente inativo no CreatePatientModal @spec:AC-250",
+      "method": "vitest-json"
+    },
+    "AC-251": {
+      "status": "pass",
+      "testName": "Feature: filtro-reativacao-clientes — Busca Dinâmica e Rolagem de Pacientes na Agenda AC-251: Listagem alfabética com paginação dinâmica por scroll no formulário de agendamento @spec:AC-251 AC-251: Listagem alfabética com paginação dinâmica por scroll no formulário de agendamento @spec:AC-251",
+      "method": "vitest-json"
+    }
+  },
+  "principles": {}
+}
