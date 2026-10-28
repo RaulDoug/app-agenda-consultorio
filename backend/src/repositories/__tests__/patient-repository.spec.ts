@@ -108,4 +108,33 @@ describe('PatientRepository — Persistência, Isolamento Multi-Tenant e Soft-De
     expect(rawRes.rows[0].is_active).toBe(false);
     expect(rawRes.rows[0].deleted_at).not.toBeNull();
   });
+
+  it('AC-249: Consulta de inativos e restauração de clientes soft-deleted na API @spec:AC-249', async () => {
+    const created = await repo.create(tenantA, {
+      name: 'Renata Vasconcelos',
+      whatsapp: '11944445555',
+      notes: 'Paciente para teste de reativação',
+    });
+
+    // Desativa o paciente
+    await repo.softDelete(tenantA, created.id);
+
+    // Listagem padrão não inclui inativo
+    const activeList = await repo.findAll(tenantA);
+    expect(activeList.some(p => p.id === created.id)).toBe(false);
+
+    // Listagem com includeInactive: true inclui o paciente
+    const allList = await repo.findAll(tenantA, { includeInactive: true });
+    expect(allList.some(p => p.id === created.id)).toBe(true);
+
+    // Reativação do paciente via update
+    const reactivated = await repo.update(tenantA, created.id, { is_active: true });
+    expect(reactivated).not.toBeNull();
+    expect(reactivated?.is_active).toBe(true);
+    expect(reactivated?.deleted_at).toBeNull();
+
+    // Agora deve aparecer na listagem ativa normal
+    const finalActiveList = await repo.findAll(tenantA);
+    expect(finalActiveList.some(p => p.id === created.id)).toBe(true);
+  });
 });
