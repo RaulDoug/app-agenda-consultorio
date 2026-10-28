@@ -1,0 +1,166 @@
+{
+  "runId": "App-Agenda-Consultório-filtro-reativacao-clientes-mvsd702u",
+  "feature": "filtro-reativacao-clientes",
+  "agent": "antigravity",
+  "modo": "paralelo",
+  "paralelizar": null,
+  "modeloForcado": null,
+  "esforcoForcado": null,
+  "geradoEm": "2026-10-28 17:04",
+  "branchTrabalho": "spec/filtro-reativacao-clientes",
+  "baseDir": ".spec/features/filtro-reativacao-clientes",
+  "specDir": ".spec",
+  "repoName": "App-Agenda-Consultório",
+  "logsDir": "../onp-worktrees/App-Agenda-Consultório-filtro-reativacao-clientes-logs",
+  "ondas": [
+    [
+      "faixa-1",
+      "faixa-2",
+      "faixa-3"
+    ],
+    [
+      "faixa-4",
+      "faixa-5"
+    ]
+  ],
+  "faixas": [
+    {
+      "id": "faixa-1",
+      "branch": "spec/filtro-reativacao-clientes-faixa-1",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-filtro-reativacao-clientes-faixa-1",
+      "tarefas": [
+        {
+          "id": "T-168",
+          "titulo": "Suporte a Reativação e Consulta de Inativos no Backend PostgreSQL",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "backend/src/repositories/patient-repository.ts",
+            "backend/src/services/patient-service.ts",
+            "backend/src/repositories/__tests__/patient-repository.spec.ts"
+          ],
+          "refs": [
+            "US-139",
+            "AC-249"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "faixa-2",
+      "branch": "spec/filtro-reativacao-clientes-faixa-2",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-filtro-reativacao-clientes-faixa-2",
+      "tarefas": [
+        {
+          "id": "T-169",
+          "titulo": "Método reactivatePatient e Busca por Telefone no Repositório Local",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "frontend/src/db/repositories/patient-local-repository.ts",
+            "frontend/src/db/repositories/__tests__/patient-local-repository.spec.ts"
+          ],
+          "refs": [
+            "US-138",
+            "AC-248"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "faixa-3",
+      "branch": "spec/filtro-reativacao-clientes-faixa-3",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-filtro-reativacao-clientes-faixa-3",
+      "tarefas": [
+        {
+          "id": "T-170",
+          "titulo": "Filtro de Status, Badges Visuais e Reativação em PatientList e PatientCard",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "frontend/src/features/patients/components/PatientList.tsx",
+            "frontend/src/features/patients/components/PatientCard.tsx",
+            "frontend/src/App.tsx",
+            "frontend/src/features/patients/__tests__/filtro-reativacao-paciente-ui.spec.tsx"
+          ],
+          "refs": [
+            "US-137",
+            "AC-246",
+            "AC-247"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "faixa-4",
+      "branch": "spec/filtro-reativacao-clientes-faixa-4",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-filtro-reativacao-clientes-faixa-4",
+      "tarefas": [
+        {
+          "id": "T-171",
+          "titulo": "Validação de WhatsApp Ativo/Inativo e Reativação nos Cadastros (Modal e Agenda)",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "frontend/src/features/patients/components/CreatePatientModal.tsx",
+            "frontend/src/features/agenda/components/InlinePatientForm.tsx",
+            "frontend/src/features/patients/__tests__/cadastro-duplicidade-reativacao.spec.tsx"
+          ],
+          "refs": [
+            "US-140",
+            "AC-250"
+          ]
+        },
+        {
+          "id": "T-172",
+          "titulo": "Card de Lista de Pacientes Ordenada Alfabeticamente com Rolagem Dinâmica na Agenda",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "frontend/src/features/agenda/components/InlinePatientForm.tsx",
+            "frontend/src/features/agenda/__tests__/busca-dinamica-pacientes-agenda.spec.tsx"
+          ],
+          "refs": [
+            "US-141",
+            "AC-251"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "faixa-5",
+      "branch": "spec/filtro-reativacao-clientes-faixa-5",
+      "worktree": "../onp-worktrees/App-Agenda-Consultório-filtro-reativacao-clientes-faixa-5",
+      "tarefas": [
+        {
+          "id": "T-173",
+          "titulo": "Atualização da Documentação Técnica de Frontend e Backend",
+          "modelo": "claude-sonnet-5",
+          "esforco": "medium",
+          "arquivos": [
+            "docs/frontend/funcionalidades/regras_globais.md",
+            "docs/frontend/funcionalidades/cadastro_clientes.md",
+            "docs/backend/funcionalidades/regras_globais.md",
+            "docs/backend/funcionalidades/cadastro_clientes.md"
+          ],
+          "refs": [
+            "US-137",
+            "US-138",
+            "US-139",
+            "US-140",
+            "US-141",
+            "AC-246",
+            "AC-247",
+            "AC-248",
+            "AC-249",
+            "AC-250",
+            "AC-251"
+          ]
+        }
+      ]
+    }
+  ],
+  "sequenciais": [],
+  "concluidas": [],
+  "avisos": []
+}
