@@ -26,6 +26,7 @@ As tabelas que suportam soft-delete contêm os seguintes campos de controle:
 - `updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP`: Registro de última alteração.
 
 ### 1.4 Regras de Implementação nos Repositórios
+5. **Reativação de Entidades:** Ao reativar registros inativados (is_active: true), o repositório atualiza deleted_at = NULL e updated_at = CURRENT_TIMESTAMP, validando salvaguardas de unicidade com outros registros ativos.
 1. **Operação de Exclusão:**
    ```sql
    UPDATE <tabela>
